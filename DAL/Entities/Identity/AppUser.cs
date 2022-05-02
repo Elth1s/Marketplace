@@ -13,9 +13,10 @@ namespace DAL.Entities.Identity
         [StringLength(100)]
         public string Photo { get; set; }
 
-        public int ShopId { get; set; }
+        public int? ShopId { get; set; }
         [ForeignKey(nameof(ShopId))]
         public Shop Shop { get; set; }
 
+        public ICollection<RefreshToken> RefreshTokens { get; set; }
     }
 }
