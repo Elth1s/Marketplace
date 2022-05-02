@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DAL.Entities.Identity
 {
@@ -16,5 +12,10 @@ namespace DAL.Entities.Identity
         public string SecondName { get; set; }
         [StringLength(100)]
         public string Photo { get; set; }
+
+        public int ShopId { get; set; }
+        [ForeignKey(nameof(ShopId))]
+        public Shop Shop { get; set; }
+
     }
 }

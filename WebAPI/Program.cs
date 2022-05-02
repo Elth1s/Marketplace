@@ -9,16 +9,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 // Database & Identity
-builder.Services.AddDbContext<MarketplaceContext>(options =>
+builder.Services.AddDbContext<MarketplaceDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("MarketplaceConnection")));
-
-// Add Identity DbContext
-builder.Services.AddDbContext<AppIdentityDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection")));
 
 
 builder.Services.AddIdentity<AppUser, IdentityRole>()
-                .AddEntityFrameworkStores<AppIdentityDbContext>().AddDefaultTokenProviders();
+                .AddEntityFrameworkStores<MarketplaceDbContext>().AddDefaultTokenProviders();
 
 
 builder.Services.AddEndpointsApiExplorer();
@@ -48,6 +44,21 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var scopedProvider = scope.ServiceProvider;
+    try
+    {
+        var catalogContext = scopedProvider.GetRequiredService<MarketplaceDbContext>();
+        await MarketplaceDbContextSeed.SeedAsync(catalogContext);
+
+    }
+    catch (Exception ex)
+    {
+        app.Logger.LogError(ex, "An error occurred seeding the DB.");
+    }
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -58,6 +69,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
-app.UseAuthorization();
+// app.UseAuthorization();
 
 app.Run();
