@@ -7,7 +7,7 @@ namespace WebAPI.Intefaces
     {
         Task<AuthResponse> SignInAsync(SignInRequest request, string ipAddress);
         Task<AuthResponse> SignUpAsync(SignUpRequest request, string ipAddress);
-        Task<AuthResponse> RefreshAccessTokenAsync(TokenRequest request, string ipAddress);
-        Task RevokeToken(TokenRequest request, string ipAddress);
+        Task<AuthResponse> RefreshTokenAsync(TokenRequest request, string ipAddress);
+        Task RevokeTokenAsync(TokenRequest request, string ipAddress);
     }
 }

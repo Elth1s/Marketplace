@@ -68,7 +68,7 @@ namespace WebAPI.Services
             return response;
         }
 
-        public async Task<AuthResponse> RefreshAccessTokenAsync(TokenRequest request, string ipAddress)
+        public async Task<AuthResponse> RefreshTokenAsync(TokenRequest request, string ipAddress)
         {
             var user = _jwtTokenService.GetUserByRefreshToken(request.Token);
             var refreshToken = user.RefreshTokens.Single(x => x.Token == request.Token);
@@ -95,7 +95,7 @@ namespace WebAPI.Services
             return response;
         }
 
-        public async Task RevokeToken(TokenRequest request, string ipAddress)
+        public async Task RevokeTokenAsync(TokenRequest request, string ipAddress)
         {
             var user = _jwtTokenService.GetUserByRefreshToken(request.Token);
             var refreshToken = user.RefreshTokens.Single(x => x.Token == request.Token);
