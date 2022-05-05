@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace WebAPI.Middleware
+namespace WebAPI.Middlewares
 {
     public class ErrorDetails
     {

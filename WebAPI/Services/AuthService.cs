@@ -3,7 +3,7 @@ using DAL.Entities;
 using DAL.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using WebAPI.Exceptions;
-using WebAPI.Intefaces;
+using WebAPI.Interfaces;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Response;
 
@@ -79,7 +79,7 @@ namespace WebAPI.Services
             }
             if (!refreshToken.IsActive)
             {
-                throw new AppException("Ivalid token.");
+                throw new AppException("Invalid token.");
             }
             var newRefreshToken = RotateRefreshToken(refreshToken, ipAddress);
             await _jwtTokenService.SaveRefreshToken(newRefreshToken, user);
@@ -105,7 +105,7 @@ namespace WebAPI.Services
             }
             if (!refreshToken.IsActive)
             {
-                throw new AppException("Ivalid token.");
+                throw new AppException("Invalid token.");
             }
             RevokeRefreshToken(refreshToken, ipAddress);
             await _userManager.UpdateAsync(user);

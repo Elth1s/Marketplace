@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using WebAPI.Exceptions;
 
-namespace WebAPI.Middleware
+namespace WebAPI.Middlewares
 {
     public class ErrorHandlerMiddleware
     {

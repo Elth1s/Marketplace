@@ -1,7 +1,7 @@
 ﻿using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Response;
 
-namespace WebAPI.Intefaces
+namespace WebAPI.Interfaces
 {
     public interface IAuthService
     {

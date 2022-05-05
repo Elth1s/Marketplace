@@ -1,7 +1,7 @@
 ﻿using DAL.Entities;
 using DAL.Entities.Identity;
 
-namespace WebAPI.Intefaces
+namespace WebAPI.Interfaces
 {
     public interface IJwtTokenService
     {

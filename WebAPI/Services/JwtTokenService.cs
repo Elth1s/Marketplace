@@ -8,7 +8,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using WebAPI.Exceptions;
-using WebAPI.Intefaces;
+using WebAPI.Interfaces;
 using WebAPI.Settings;
 
 namespace WebAPI.Services
@@ -31,13 +31,13 @@ namespace WebAPI.Services
 
             List<Claim> claims = new()
             {
-                new Claim("id", user.Id),
-                new Claim("email", user.Email)
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(ClaimTypes.Email, user.Email)
             };
 
             foreach (var role in roles)
             {
-                claims.Add(new Claim("roles", role));
+                claims.Add(new Claim(ClaimsIdentity.DefaultRoleClaimType, role));
             }
             var signinKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
             var signinCredentials = new SigningCredentials(signinKey, SecurityAlgorithms.HmacSha256);
@@ -73,7 +73,7 @@ namespace WebAPI.Services
         {
             var user = _userManager.Users.SingleOrDefault(u => u.RefreshTokens.Any(t => t.Token == token));
             if (user == null)
-                throw new AppException("Ivalid token.");
+                throw new AppException("Invalid token.");
 
             return user;
         }
