@@ -9,9 +9,9 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text;
-using WebAPI.Intefaces;
+using WebAPI.Interfaces;
 using WebAPI.Mapper;
-using WebAPI.Middleware;
+using WebAPI.Middlewares;
 using WebAPI.Services;
 using WebAPI.Settings;
 
