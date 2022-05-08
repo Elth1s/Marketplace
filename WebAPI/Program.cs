@@ -5,10 +5,12 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text;
+using WebAPI.Constants;
 using WebAPI.Interfaces;
 using WebAPI.Mapper;
 using WebAPI.Middlewares;
@@ -33,7 +35,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
 //Services
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
-
+builder.Services.AddScoped<IUserService, UserService>();
 
 //Mapper
 builder.Services.AddAutoMapper(typeof(AppMappingProfile));
@@ -41,7 +43,10 @@ builder.Services.AddAutoMapper(typeof(AppMappingProfile));
 //Validation
 builder.Services.AddFluentValidation(x => x.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
 
-
+builder.Services.AddSpaStaticFiles(configuration =>
+{
+    configuration.RootPath = "client-app/build";
+});
 
 builder.Services.AddEndpointsApiExplorer();
 
@@ -118,7 +123,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseStaticFiles();
-//app.UseSpaStaticFiles();
+app.UseSpaStaticFiles();
 
 app.UseRouting();
 
@@ -129,6 +134,31 @@ app.UseAuthorization();
 
 //Middleware
 app.UseMiddleware<ErrorHandlerMiddleware>();
+
+
+
+var root = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.RootImagePath);
+if (!Directory.Exists(root))
+{
+    Directory.CreateDirectory(root);
+}
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(root),
+    RequestPath = ImagePath.RequestRootImagePath
+});
+
+var usersImages = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.UsersImagePath);
+if (!Directory.Exists(usersImages))
+{
+    Directory.CreateDirectory(usersImages);
+}
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(usersImages),
+    RequestPath = ImagePath.RequestUsersImagePath
+});
+
 
 app.UseEndpoints(endpoints =>
 {

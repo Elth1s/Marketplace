@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using WebAPI.Helpers;
 using WebAPI.Interfaces;
 using WebAPI.ViewModels.Request;
@@ -43,13 +42,6 @@ namespace WebAPI.Controllers
         {
             await _authService.RevokeTokenAsync(request, IpUtil.GetIpAddress(Request, HttpContext));
             return Ok("Logout success");
-        }
-
-        [Authorize]
-        [HttpPost("Test")]
-        public IActionResult Test()
-        {
-            return Ok();
         }
     }
 }

@@ -9,6 +9,7 @@ using System.Security.Cryptography;
 using System.Text;
 using WebAPI.Exceptions;
 using WebAPI.Interfaces;
+using WebAPI.Resources;
 using WebAPI.Settings;
 
 namespace WebAPI.Services
@@ -35,10 +36,8 @@ namespace WebAPI.Services
                 new Claim(ClaimTypes.Email, user.Email)
             };
 
-            foreach (var role in roles)
-            {
-                claims.Add(new Claim(ClaimsIdentity.DefaultRoleClaimType, role));
-            }
+            claims.AddRange(roles.Select(role => new Claim(ClaimsIdentity.DefaultRoleClaimType, role)));
+
             var signinKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
             var signinCredentials = new SigningCredentials(signinKey, SecurityAlgorithms.HmacSha256);
 
@@ -73,7 +72,7 @@ namespace WebAPI.Services
         {
             var user = _userManager.Users.SingleOrDefault(u => u.RefreshTokens.Any(t => t.Token == token));
             if (user == null)
-                throw new AppException("Invalid token.");
+                throw new AppException(ErrorMessages.InvalidToken);
 
             return user;
         }
