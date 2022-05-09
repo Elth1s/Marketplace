@@ -13,17 +13,17 @@ import {
     LoginServerError,
     RegisterServerError
 } from "./types";
-import http from "../../http_comon"
+import http, { setLocalRefreshToken, setLocalAccessToken } from "../../http_comon"
 
 import { accessToken, refreshToken } from "./constants"
 
 export const LoginUser = (data: ILoginModel) => {
     return async (dispatch: Dispatch<AuthAction>) => {
         try {
-            let response = await http.post<IAuthResponse>('api/Auth/SignIn', data)
+            let response = await http.post<IAuthResponse>('/api/Auth/SignIn', data)
             const tokens = response.data;
-            localStorage.setItem(accessToken, tokens.accessToken);
-            localStorage.setItem(refreshToken, tokens.refreshToken);
+            setLocalAccessToken(tokens.accessToken);
+            setLocalRefreshToken(tokens.refreshToken);
 
             AuthUser(tokens.accessToken);
             return Promise.resolve();
@@ -44,10 +44,10 @@ export const LoginUser = (data: ILoginModel) => {
 export const RegisterUser = (data: IRegisterModel) => {
     return async (dispatch: Dispatch<AuthAction>) => {
         try {
-            let response = await http.post<IAuthResponse>('api/Auth/SignUp', data)
+            let response = await http.post<IAuthResponse>('/api/Auth/SignUp', data)
             const tokens = response.data;
-            localStorage.setItem(accessToken, tokens.accessToken);
-            localStorage.setItem(refreshToken, tokens.refreshToken);
+            setLocalAccessToken(tokens.accessToken);
+            setLocalRefreshToken(tokens.refreshToken);
 
             AuthUser(tokens.accessToken);
             return Promise.resolve();
@@ -68,7 +68,8 @@ export const RegisterUser = (data: IRegisterModel) => {
 export const LogoutUser = () => {
     return async (dispatch: Dispatch<AuthAction>) => {
         dispatch({ type: AuthActionTypes.AUTH_LOGOUT });
-        localStorage.removeItem("token")
+        localStorage.removeItem(accessToken)
+        localStorage.removeItem(refreshToken)
     }
 }
 
@@ -77,7 +78,7 @@ export const AuthUser = (token: string) => {
         const user = jwt_decode(token) as IUser;
         dispatch({
             type: AuthActionTypes.AUTH_SUCCESS,
-            payload: { id: user.id, name: user.name, surname: user.surname, photo: user.photo, email: user.email, roles: user.roles }
+            payload: { id: user.id, firstName: user.firstName, secondName: user.secondName, photo: user.photo, email: user.email, roles: user.roles }
         })
     }
 }

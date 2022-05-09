@@ -7,7 +7,8 @@ namespace WebAPI.Helpers
     {
         public static Bitmap FromBase64StringToImage(this string base64String)
         {
-            byte[] byteBuffer = Convert.FromBase64String(base64String);
+            var cleanBase64 = base64String.Substring(22);
+            byte[] byteBuffer = Convert.FromBase64String(cleanBase64);
             try
             {
                 using (MemoryStream memoryStream = new MemoryStream(byteBuffer))

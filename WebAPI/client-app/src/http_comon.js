@@ -1,7 +1,7 @@
 import axios from "axios";
 import { accessToken as at, refreshToken as rt } from "./components/auth/constants"
 
-export const baseURL = "http://localhost:5147/"
+export const baseURL = "http://localhost:5147"
 
 
 function getLocalAccessToken() {
@@ -15,11 +15,11 @@ function getLocalRefreshToken() {
 }
 
 
-function setLocalAccessToken(token) {
+export function setLocalAccessToken(token) {
     window.localStorage.setItem(at, token);
 }
 
-function setLocalRefreshToken(token) {
+export function setLocalRefreshToken(token) {
     window.localStorage.setItem(rt, token);
 }
 

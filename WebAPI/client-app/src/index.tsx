@@ -9,7 +9,7 @@ import { store } from './store'
 import reportWebVitals from './reportWebVitals';
 
 import './index.css';
-
+import "cropperjs/dist/cropper.css";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

@@ -33,7 +33,7 @@ namespace WebAPI.Services
 
             user.UserNullChecking();
 
-            if (request.Photo != null)
+            if (!string.IsNullOrEmpty(request.Photo))
             {
                 var filePath = Path.Combine(
                     Directory.GetCurrentDirectory(),
