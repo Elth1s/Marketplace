@@ -2,8 +2,11 @@
 using DAL.Entities;
 using DAL.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
+using System.Net;
 using WebAPI.Exceptions;
+using WebAPI.Extensions;
 using WebAPI.Interfaces;
+using WebAPI.Resources;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Response;
 
@@ -27,7 +30,7 @@ namespace WebAPI.Services
             var resultPasswordCheck = await _userManager.CheckPasswordAsync(user, request.Password);
             if (!resultPasswordCheck)
             {
-                throw new AppException("Invalid email or password!");
+                throw new AppException(ErrorMessages.InvalidUserEmailPassword, HttpStatusCode.Unauthorized);
             }
 
             var newRefreshToken = _jwtTokenService.GenerateRefreshToken(ipAddress);
@@ -49,7 +52,7 @@ namespace WebAPI.Services
             var resultCreate = await _userManager.CreateAsync(user, request.Password);
             if (!resultCreate.Succeeded)
             {
-                throw new AppException("User creation failed!");
+                throw new AppException(ErrorMessages.UserCreateFail);
             }
             //var resultRole = await _userManager.AddToRoleAsync(_user, Roles.User);
             //if (!resultRole.Succeeded)
@@ -74,13 +77,14 @@ namespace WebAPI.Services
             var refreshToken = user.RefreshTokens.Single(x => x.Token == request.Token);
             if (refreshToken.IsRevoked)
             {
-                RevokeDescendantRefreshTokens(refreshToken, user, ipAddress, $"Attempted reuse of revoked ancestor token: {request.Token}");
+                RevokeDescendantRefreshTokens(
+                    refreshToken,
+                    user,
+                    ipAddress, $"Attempted reuse of revoked ancestor token: {request.Token}");
                 await _userManager.UpdateAsync(user);
             }
-            if (!refreshToken.IsActive)
-            {
-                throw new AppException("Invalid token.");
-            }
+            refreshToken.RefreshTokenNotActiveChecking();
+
             var newRefreshToken = RotateRefreshToken(refreshToken, ipAddress);
             await _jwtTokenService.SaveRefreshToken(newRefreshToken, user);
 
@@ -99,14 +103,11 @@ namespace WebAPI.Services
         {
             var user = _jwtTokenService.GetUserByRefreshToken(request.Token);
             var refreshToken = user.RefreshTokens.Single(x => x.Token == request.Token);
-            if (refreshToken.IsRevoked)
-            {
-                throw new AppException("Token already revoked");
-            }
-            if (!refreshToken.IsActive)
-            {
-                throw new AppException("Invalid token.");
-            }
+
+            refreshToken.RefreshTokenNotActiveChecking();
+
+            refreshToken.RefreshTokenNotActiveChecking();
+
             RevokeRefreshToken(refreshToken, ipAddress);
             await _userManager.UpdateAsync(user);
         }

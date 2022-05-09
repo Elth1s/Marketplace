@@ -7,8 +7,8 @@ import {
 const initialState: AuthState = {
     user: {
         id: "",
-        name: "",
-        surname: "",
+        firstName: "",
+        secondName: "",
         photo: "",
         email: "",
         roles: ""
@@ -29,8 +29,8 @@ export const authReducer = (state = initialState, action: AuthAction): AuthState
                 ...state,
                 user: {
                     id: "",
-                    name: "",
-                    surname: "",
+                    firstName: "",
+                    secondName: "",
                     photo: "",
                     email: "",
                     roles: ""

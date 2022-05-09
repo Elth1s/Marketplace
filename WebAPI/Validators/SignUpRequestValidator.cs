@@ -24,7 +24,7 @@ namespace WebAPI.Validators
 
             //Phone
             RuleFor(x => x.Phone).Cascade(CascadeMode.Stop)
-              .NotEmpty().WithName("Phone number").WithMessage("{PropertyName} is required!")
+              .NotEmpty().WithName("Phone number").WithMessage("{PropertyName} is required")
               .Matches(@"^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$")
               .WithMessage("Invalid format of {PropertyName}")
               .Must(IsUniquePhone).WithMessage("User with this {PropertyName} already exists");
@@ -37,9 +37,10 @@ namespace WebAPI.Validators
 
             //Password
             RuleFor(x => x.Password).Cascade(CascadeMode.Stop)
-           .NotEmpty().WithMessage("{PropertyName} is required!")
+           .NotEmpty().WithMessage("{PropertyName} is required")
            .MinimumLength(8).WithMessage("{PropertyName} must be at least 8 characters")
-           .Matches(@"(?=.*[A-Z])").WithMessage("{PropertyName} must contain at least one uppercase letter ")
+           .Matches(@"(?=.*[A-Z])").WithMessage("{PropertyName} must contain at least one lowercase letter")
+           .Matches(@"(?=.*[A-Z])").WithMessage("{PropertyName} must contain at least one uppercase letter")
            .Matches(@"(?=.*?[0-9])").WithMessage("{PropertyName} must contain at least one digit")
            .Matches(@"(?=.*?[!@#\$&*~_-])").WithMessage("{PropertyName} must contain at least one special character");
 
