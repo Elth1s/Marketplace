@@ -16,16 +16,23 @@ namespace WebAPI.Services
     {
         private readonly IMapper _mapper;
         private readonly IJwtTokenService _jwtTokenService;
+        private readonly IRecaptchaService _recaptchaService;
         private readonly UserManager<AppUser> _userManager;
-        public AuthService(IMapper mapper, IJwtTokenService jwtTokenService, UserManager<AppUser> userManager)
+        public AuthService(IMapper mapper, IJwtTokenService jwtTokenService, IRecaptchaService recaptchaService, UserManager<AppUser> userManager)
         {
             _mapper = mapper;
             _jwtTokenService = jwtTokenService;
+            _recaptchaService = recaptchaService;
             _userManager = userManager;
         }
 
         public async Task<AuthResponse> SignInAsync(SignInRequest request, string ipAddress)
         {
+            if (!_recaptchaService.IsValid(request.ReCaptchaToken))
+            {
+                throw new AppException(ErrorMessages.CaptchaVerificationFailed);
+            }
+
             var user = await _userManager.FindByEmailAsync(request.Email);
             var resultPasswordCheck = await _userManager.CheckPasswordAsync(user, request.Password);
             if (!resultPasswordCheck)
@@ -47,6 +54,11 @@ namespace WebAPI.Services
         }
         public async Task<AuthResponse> SignUpAsync(SignUpRequest request, string ipAddress)
         {
+            if (!_recaptchaService.IsValid(request.ReCaptchaToken))
+            {
+                throw new AppException(ErrorMessages.CaptchaVerificationFailed);
+            }
+
             var user = _mapper.Map<AppUser>(request);
 
             var resultCreate = await _userManager.CreateAsync(user, request.Password);
