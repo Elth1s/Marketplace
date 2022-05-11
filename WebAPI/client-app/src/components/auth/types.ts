@@ -48,7 +48,14 @@ export interface RegisterServerError {
     errors: Array<any>,
 }
 
-
+export interface IExternalLoginModel {
+    provider: string,
+    token: string
+};
+export interface ExternalLoginServerError {
+    statusCode: string,
+    error: string
+}
 export interface AuthSuccessAction {
     type: AuthActionTypes.AUTH_SUCCESS,
     payload: IUser

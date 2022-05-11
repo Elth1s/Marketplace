@@ -18,6 +18,7 @@ import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { SignUpSchema } from "../validation";
 import { useActions } from "../../../hooks/useActions";
 import { IRegisterModel, RegisterServerError } from "../types";
+import GoogleSignIn from "../Google/GoogleSignIn";
 
 const SignUpPage = () => {
     const { RegisterUser } = useActions();
@@ -196,6 +197,9 @@ const SignUpPage = () => {
                                             error={Boolean(touched.confirmPassword && errors.confirmPassword)}
                                             helperText={touched.confirmPassword && errors.confirmPassword}
                                         />
+                                    </Grid>
+                                    <Grid item xs={12} md={6}>
+                                        <GoogleSignIn />
                                     </Grid>
                                     <Grid item xs={12} mt={3} display="flex" justifyContent="center" >
                                         <LoadingButton

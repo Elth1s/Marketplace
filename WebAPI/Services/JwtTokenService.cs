@@ -1,5 +1,6 @@
 ﻿using DAL.Entities;
 using DAL.Entities.Identity;
+using Google.Apis.Auth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -11,6 +12,7 @@ using WebAPI.Exceptions;
 using WebAPI.Interfaces;
 using WebAPI.Resources;
 using WebAPI.Settings;
+using WebAPI.ViewModels.Request;
 
 namespace WebAPI.Services
 {
@@ -18,11 +20,14 @@ namespace WebAPI.Services
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly JwtSettings _jwtSettings;
+        private readonly GoogleAuthSettings _googleAuthSettings;
 
         public JwtTokenService(IOptions<JwtSettings> jwtSettings,
+                               IOptions<GoogleAuthSettings> googleAuthSettings,
                                UserManager<AppUser> userManager)
         {
             _jwtSettings = jwtSettings.Value;
+            _googleAuthSettings = googleAuthSettings.Value;
             _userManager = userManager;
         }
 
@@ -98,5 +103,18 @@ namespace WebAPI.Services
             }
             await _userManager.UpdateAsync(user);
         }
+
+        public async Task<GoogleJsonWebSignature.Payload> VerifyGoogleToken(ExternalLoginRequest request)
+        {
+
+            var settings = new GoogleJsonWebSignature.ValidationSettings()
+            {
+                Audience = new List<string>() { _googleAuthSettings.ClientId }
+            };
+
+            var payload = await GoogleJsonWebSignature.ValidateAsync(request.Token, settings);
+            return payload;
+        }
+
     }
 }

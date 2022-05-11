@@ -9,5 +9,6 @@ namespace WebAPI.Interfaces
         Task<AuthResponse> SignUpAsync(SignUpRequest request, string ipAddress);
         Task<AuthResponse> RefreshTokenAsync(TokenRequest request, string ipAddress);
         Task RevokeTokenAsync(TokenRequest request, string ipAddress);
+        Task<AuthResponse> ExternalLoginAsync(ExternalLoginRequest request, string ipAddress);
     }
 }

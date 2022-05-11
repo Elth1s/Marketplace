@@ -43,6 +43,14 @@ namespace WebAPI.Controllers
             await _authService.RevokeTokenAsync(request, IpUtil.GetIpAddress(Request, HttpContext));
             return Ok("Logout success");
         }
+
+
+        [HttpPost("GoogleExternalLogin")]
+        public async Task<IActionResult> GoogleExternalLoginAsync([FromBody] ExternalLoginRequest request)
+        {
+            var result = await _authService.ExternalLoginAsync(request, IpUtil.GetIpAddress(Request, HttpContext));
+            return Ok(result);
+        }
     }
 }
 

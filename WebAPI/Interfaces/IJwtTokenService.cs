@@ -1,5 +1,7 @@
 ﻿using DAL.Entities;
 using DAL.Entities.Identity;
+using Google.Apis.Auth;
+using WebAPI.ViewModels.Request;
 
 namespace WebAPI.Interfaces
 {
@@ -14,6 +16,8 @@ namespace WebAPI.Interfaces
         Task SaveRefreshToken(RefreshToken token, AppUser user);
 
         AppUser GetUserByRefreshToken(string token);
+
+        Task<GoogleJsonWebSignature.Payload> VerifyGoogleToken(ExternalLoginRequest request);
 
     }
 }

@@ -18,6 +18,7 @@ import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { LogInSchema } from "../validation";
 import { useActions } from "../../../hooks/useActions";
 import { ILoginModel, LoginServerError } from "../types";
+import GoogleSignIn from "../Google/GoogleSignIn";
 
 
 const SignIn = () => {
@@ -144,6 +145,9 @@ const SignIn = () => {
                                             error={Boolean(touched.password && errors.password)}
                                             helperText={touched.password && errors.password}
                                         />
+                                    </Grid>
+                                    <Grid item xs={8} mx="auto">
+                                        <GoogleSignIn />
                                     </Grid>
                                     <Grid item xs={12} mt={3} display="flex" justifyContent="center" >
                                         <LoadingButton
