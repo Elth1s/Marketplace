@@ -36,6 +36,8 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
+//Recaptcha
+builder.Services.AddTransient<IRecaptchaService, RecaptchaService>();
 
 //Mapper
 builder.Services.AddAutoMapper(typeof(AppMappingProfile));

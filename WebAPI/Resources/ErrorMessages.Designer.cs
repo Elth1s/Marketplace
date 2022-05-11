@@ -61,6 +61,15 @@ namespace WebAPI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You have not passed the captcha verification.
+        /// </summary>
+        internal static string CaptchaVerificationFailed {
+            get {
+                return ResourceManager.GetString("CaptchaVerificationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid refresh token.
         /// </summary>
         internal static string InvalidToken {

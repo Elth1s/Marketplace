@@ -17,10 +17,10 @@ import http, { setLocalRefreshToken, setLocalAccessToken } from "../../http_como
 
 import { accessToken, refreshToken } from "./constants"
 
-export const LoginUser = (data: ILoginModel) => {
+export const LoginUser = (data: ILoginModel, reCaptchaToken: string) => {
     return async (dispatch: Dispatch<AuthAction>) => {
         try {
-            let response = await http.post<IAuthResponse>('/api/Auth/SignIn', data)
+            let response = await http.post<IAuthResponse>('/api/Auth/SignIn', { ...data, reCaptchaToken: reCaptchaToken })
             const tokens = response.data;
             setLocalAccessToken(tokens.accessToken);
             setLocalRefreshToken(tokens.refreshToken);
@@ -41,10 +41,10 @@ export const LoginUser = (data: ILoginModel) => {
     }
 }
 
-export const RegisterUser = (data: IRegisterModel) => {
+export const RegisterUser = (data: IRegisterModel, reCaptchaToken: string) => {
     return async (dispatch: Dispatch<AuthAction>) => {
         try {
-            let response = await http.post<IAuthResponse>('/api/Auth/SignUp', data)
+            let response = await http.post<IAuthResponse>('/api/Auth/SignUp', { ...data, reCaptchaToken: reCaptchaToken })
             const tokens = response.data;
             setLocalAccessToken(tokens.accessToken);
             setLocalRefreshToken(tokens.refreshToken);
