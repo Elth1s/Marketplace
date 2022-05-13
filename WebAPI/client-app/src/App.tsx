@@ -7,6 +7,10 @@ import SignIn from './components/auth/SignIn';
 import SignUp from './components/auth/SignUp';
 import Profile from './components/user/Profile';
 
+import CategoryTable from './components/category/Table';
+import CategoryCreate from './components/category/Create';
+import CategoryUpdate from './components/category/Update';
+
 function App() {
   return (
     <>
@@ -17,6 +21,9 @@ function App() {
           <Route path="/auth/signup" element={<SignUp />} />
           <Route path="/auth/profile" element={<Profile />} />
 
+          <Route path="/category" element={<CategoryTable />} />
+          <Route path="/category/create" element={<CategoryCreate />} />
+          <Route path="/category/update" element={<CategoryUpdate />} />
         </Route>
 
 

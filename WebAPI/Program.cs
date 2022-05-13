@@ -36,6 +36,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 //Mapper
 builder.Services.AddAutoMapper(typeof(AppMappingProfile));
@@ -157,6 +158,17 @@ app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(usersImages),
     RequestPath = ImagePath.RequestUsersImagePath
+});
+
+var categoriesImages = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.CategoriesImagePath);
+if (!Directory.Exists(categoriesImages))
+{
+    Directory.CreateDirectory(categoriesImages);
+}
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(categoriesImages),
+    RequestPath = ImagePath.RequestCategoriesImagePath
 });
 
 

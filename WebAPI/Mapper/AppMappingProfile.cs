@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DAL.Entities;
 using DAL.Entities.Identity;
 using WebAPI.Constants;
 using WebAPI.ViewModels.Request;
@@ -21,6 +22,14 @@ namespace WebAPI.Mapper
 
             CreateMap<UpdateProfileRequest, AppUser>()
                 .ForMember(u => u.Photo, opt => opt.Ignore());
+
+            //Category
+            CreateMap<Category, CategoryResponse>()
+				.ForMember(u => u.Image, opt => opt.MapFrom(vm => !string.IsNullOrEmpty(vm.Image) ? String.Concat(ImagePath.RequestCategoriesImagePath, "/", vm.Image) : ""));
+            CreateMap<Category, CategoryForSelectResponse>();
+
+            CreateMap<CategoryRequest, Category>()
+                .ForMember(u => u.Image, opt => opt.Ignore());
         }
     }
 }
