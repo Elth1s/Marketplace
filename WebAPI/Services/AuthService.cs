@@ -124,6 +124,59 @@ namespace WebAPI.Services
             await _userManager.UpdateAsync(user);
         }
 
+        public async Task<AuthResponse> ExternalLoginAsync(ExternalLoginRequest request, string ipAddress)
+        {
+            var payload = await _jwtTokenService.VerifyGoogleToken(request);
+            if (payload == null)
+            {
+                throw new AppException(ErrorMessages.InvalidExternalLoginRequest);
+            }
+
+            var info = new UserLoginInfo(request.Provider, payload.Subject, request.Provider);
+
+            var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
+
+            if (user == null)
+            {
+                user = await _userManager.FindByEmailAsync(payload.Email);
+
+                if (user == null)
+                {
+                    user = new AppUser
+                    {
+                        Email = payload.Email,
+                        UserName = payload.Email,
+                        FirstName = payload.GivenName,
+                        SecondName = payload.FamilyName
+                    };
+                    var resultCreate = await _userManager.CreateAsync(user);
+                    if (!resultCreate.Succeeded)
+                    {
+                        throw new AppException(ErrorMessages.UserCreateFail);
+                    }
+
+                }
+
+                var resultAddLogin = await _userManager.AddLoginAsync(user, info);
+                if (!resultAddLogin.Succeeded)
+                {
+                    throw new AppException(ErrorMessages.ExternalLoginAddFail);
+                }
+            }
+
+            var refreshToken = _jwtTokenService.GenerateRefreshToken(ipAddress);
+            await _jwtTokenService.SaveRefreshToken(refreshToken, user);
+
+            var response = new AuthResponse
+            {
+                AccessToken = await _jwtTokenService.GenerateJwtToken(user),
+                RefreshToken = refreshToken.Token
+            };
+
+            return (response);
+        }
+
+
         private RefreshToken RotateRefreshToken(RefreshToken refreshToken, string ipAddress)
         {
             var newRefreshToken = _jwtTokenService.GenerateRefreshToken(ipAddress);

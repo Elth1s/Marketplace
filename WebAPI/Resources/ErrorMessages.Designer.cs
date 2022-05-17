@@ -61,6 +61,24 @@ namespace WebAPI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to add external login.
+        /// </summary>
+        internal static string ExternalLoginAddFail {
+            get {
+                return ResourceManager.GetString("ExternalLoginAddFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid external login request.
+        /// </summary>
+        internal static string InvalidExternalLoginRequest {
+            get {
+                return ResourceManager.GetString("InvalidExternalLoginRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You have not passed the captcha verification.
         /// </summary>
         internal static string CaptchaVerificationFailed {
