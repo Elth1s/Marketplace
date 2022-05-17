@@ -1,22 +1,3 @@
-using DAL.Data;
-using DAL.Entities.Identity;
-using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.FileProviders;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using System.Reflection;
-using System.Text;
-using WebAPI.Constants;
-using WebAPI.Interfaces;
-using WebAPI.Mapper;
-using WebAPI.Middlewares;
-using WebAPI.Services;
-using WebAPI.Settings;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
@@ -34,11 +15,15 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
 
 
 //Services
+builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+builder.Services.AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>));
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
-
-//ReCaptcha
+builder.Services.AddScoped<ICountryService, CountryService>();
+builder.Services.AddScoped<ICityService, CityService>();
+builder.Services.AddScoped<IShopService, ShopService>();
+//Recaptcha
 builder.Services.AddTransient<IRecaptchaService, RecaptchaService>();
 
 //Mapper
@@ -162,7 +147,16 @@ app.UseStaticFiles(new StaticFileOptions
     FileProvider = new PhysicalFileProvider(usersImages),
     RequestPath = ImagePath.RequestUsersImagePath
 });
-
+var shopsImages = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.ShopsImagePath);
+if (!Directory.Exists(shopsImages))
+{
+    Directory.CreateDirectory(shopsImages);
+}
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(shopsImages),
+    RequestPath = ImagePath.RequestShopsImagePath
+});
 
 app.UseEndpoints(endpoints =>
 {

@@ -42,5 +42,35 @@ namespace WebAPI.Extensions
                 throw new AppException(ErrorMessages.TokenRevorked);
             }
         }
+
+        public static void ShopNullChecking(this Shop shop)
+        {
+            if (shop == null)
+            {
+                throw new AppException(
+                    ErrorMessages.ShopNotFound,
+                    HttpStatusCode.NotFound);
+            }
+        }
+
+        public static void CountryNullChecking(this Country country)
+        {
+            if (country == null)
+            {
+                throw new AppException(
+                    ErrorMessages.CountryNotFound,
+                    HttpStatusCode.NotFound);
+            }
+        }
+
+        public static void CityNullChecking(this City city)
+        {
+            if (city == null)
+            {
+                throw new AppException(
+                    ErrorMessages.CityNotFound,
+                    HttpStatusCode.NotFound);
+            }
+        }
     }
 }

@@ -88,6 +88,24 @@ namespace WebAPI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to City was not found.
+        /// </summary>
+        internal static string CityNotFound {
+            get {
+                return ResourceManager.GetString("CityNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to County was not found.
+        /// </summary>
+        internal static string CountryNotFound {
+            get {
+                return ResourceManager.GetString("CountryNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid refresh token.
         /// </summary>
         internal static string InvalidToken {
@@ -102,6 +120,15 @@ namespace WebAPI.Resources {
         internal static string InvalidUserEmailPassword {
             get {
                 return ResourceManager.GetString("InvalidUserEmailPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shop was not found.
+        /// </summary>
+        internal static string ShopNotFound {
+            get {
+                return ResourceManager.GetString("ShopNotFound", resourceCulture);
             }
         }
         
