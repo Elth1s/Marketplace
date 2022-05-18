@@ -123,6 +123,9 @@
   <data name="CharacteristicGroupNotFound" xml:space="preserve">
     <value>Characteristic group was not found</value>
   </data>
+  <data name="CharacteristicNotFound" xml:space="preserve">
+    <value>Characteristic was not found</value>
+  </data>
   <data name="InvalidToken" xml:space="preserve">
     <value>Invalid refresh token</value>
   </data>

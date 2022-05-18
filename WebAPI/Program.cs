@@ -41,6 +41,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICharacteristicGroupService, CharacteristicGroupService>();
+builder.Services.AddScoped<ICharacteristicService, CharacteristicService>();
 
 //Mapper
 builder.Services.AddAutoMapper(typeof(AppMappingProfile));

@@ -11,6 +11,7 @@ namespace WebAPI.Specifications
                 .Include(c => c.Characteristic)
                 .AsSplitQuery();
         }
+
         public CategoryIncludeFullInfoSpecification(int id)
         {
             Query.Where(o => o.Id == id)

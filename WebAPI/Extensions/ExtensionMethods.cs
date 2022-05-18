@@ -62,5 +62,15 @@ namespace WebAPI.Extensions
                     HttpStatusCode.NotFound);
             }
         }
+
+        public static void CharacteristicNullChecking(this Characteristic characteristic)
+        {
+            if (characteristic == null)
+            {
+                throw new AppException(
+                    ErrorMessages.CharacteristicNotFound,
+                    HttpStatusCode.NotFound);
+            }
+        }
     }
 }

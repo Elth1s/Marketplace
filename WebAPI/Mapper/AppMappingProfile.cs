@@ -34,6 +34,11 @@ namespace WebAPI.Mapper
             //CharacteristicGroup
             CreateMap<CharacteristicGroupRequest, CharacteristicGroup>();
             CreateMap<CharacteristicGroup, CharacteristicGroupResponse>();
+
+            //Characteristic
+            CreateMap<CharacteristicRequest, Characteristic>();
+            CreateMap<Characteristic, CharacteristicResponse>()
+                .ForMember(u => u.CharacteristicGroupName, opt => opt.MapFrom(vm => vm.CharacteristicGroup.Name));
         }
     }
 }
