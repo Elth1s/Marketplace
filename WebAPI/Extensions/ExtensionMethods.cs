@@ -52,5 +52,15 @@ namespace WebAPI.Extensions
                     HttpStatusCode.NotFound);
             }
         }
+
+        public static void CharacteristicGroupNullChecking(this CharacteristicGroup characteristicGroup)
+        {
+            if (characteristicGroup == null)
+            {
+                throw new AppException(
+                    ErrorMessages.CharacteristicGroupNotFound,
+                    HttpStatusCode.NotFound);
+            }
+        }
     }
 }

@@ -40,6 +40,7 @@ builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ICharacteristicGroupService, CharacteristicGroupService>();
 
 //Mapper
 builder.Services.AddAutoMapper(typeof(AppMappingProfile));

@@ -30,6 +30,10 @@ namespace WebAPI.Mapper
 
             CreateMap<CategoryRequest, Category>()
                 .ForMember(u => u.Image, opt => opt.Ignore());
+
+            //CharacteristicGroup
+            CreateMap<CharacteristicGroupRequest, CharacteristicGroup>();
+            CreateMap<CharacteristicGroup, CharacteristicGroupResponse>();
         }
     }
 }

@@ -70,6 +70,15 @@ namespace WebAPI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Characteristic group was not found.
+        /// </summary>
+        internal static string CharacteristicGroupNotFound {
+            get {
+                return ResourceManager.GetString("CharacteristicGroupNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid refresh token.
         /// </summary>
         internal static string InvalidToken {
