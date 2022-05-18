@@ -42,5 +42,15 @@ namespace WebAPI.Extensions
                 throw new AppException(ErrorMessages.TokenRevorked);
             }
         }
+
+        public static void CategotyNullChecking(this Category category)
+        {
+            if (category == null)
+            {
+                throw new AppException(
+                    ErrorMessages.CategoryNotFound,
+                    HttpStatusCode.NotFound);
+            }
+        }
     }
 }

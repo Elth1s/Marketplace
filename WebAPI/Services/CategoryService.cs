@@ -1,12 +1,12 @@
-﻿using Ardalis.Specification.EntityFrameworkCore;
-using AutoMapper;
-using DAL.Data;
+﻿using AutoMapper;
+using DAL;
 using DAL.Entities;
-using Microsoft.EntityFrameworkCore;
 using System.Drawing.Imaging;
 using WebAPI.Constants;
+using WebAPI.Extensions;
 using WebAPI.Helpers;
 using WebAPI.Interfaces;
+using WebAPI.Specifications;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Response;
 
@@ -14,30 +14,34 @@ namespace WebAPI.Services
 {
     public class CategoryService : ICategoryService
     {
+        private readonly IRepository<Category> _categorRepository;
         private readonly IMapper _mapper;
-        private readonly MarketplaceDbContext _context;
 
-        public CategoryService(IMapper mapper, MarketplaceDbContext context)
+        public CategoryService(IRepository<Category> categorRepository, IMapper mapper)
         {
+            _categorRepository = categorRepository;
             _mapper = mapper;
-            _context = context;
         }
 
         public async Task<IEnumerable<CategoryResponse>> GetAsync()
         {
-            var categories = await _context.Categories.ToListAsync();
+            var spec = new CategoryIncludeFullInfoSpecification();
+            var categories = await _categorRepository.ListAsync(spec);
             return _mapper.Map<IEnumerable<CategoryResponse>>(categories);
         }
 
         public async Task<IEnumerable<CategoryForSelectResponse>> GetForSelectAsync()
         {
-            var categories = await _context.Categories.ToListAsync();
+            var categories = await _categorRepository.ListAsync();
             return _mapper.Map<IEnumerable<CategoryForSelectResponse>>(categories);
         }
 
         public async Task<CategoryResponse> GetByIdAsync(int id)
         {
-            var category = await _context.Categories.FirstOrDefaultAsync(u => u.Id == id);
+            var spec = new CategoryIncludeFullInfoSpecification(id);
+            var category = await _categorRepository.GetBySpecAsync(spec);
+            category.CategotyNullChecking();
+
             return _mapper.Map<CategoryResponse>(category);
         }
 
@@ -60,67 +64,64 @@ namespace WebAPI.Services
                 }
             }
 
-            await _context.AddRangeAsync(category);
-            await _context.SaveChangesAsync();
+            await _categorRepository.AddAsync(category);
+            await _categorRepository.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(int id, CategoryRequest request)
         {
-            var category = await _context.Categories.FirstOrDefaultAsync(u => u.Id == id);
+            var category = await _categorRepository.GetByIdAsync(id);
+            category.CategotyNullChecking();
 
-            if (category != null)
+            if (!string.IsNullOrEmpty(request.Image))
             {
-                if (!string.IsNullOrEmpty(request.Image))
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), request.Image.Replace(ImagePath.RequestCategoriesImagePath, ImagePath.CategoriesImagePath));
+                if (!File.Exists(filePath))
                 {
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), request.Image.Replace(ImagePath.RequestCategoriesImagePath, ImagePath.CategoriesImagePath));
-                    if (!File.Exists(filePath))
+                    if (category.Image != null)
                     {
-                        if (category.Image != null)
-                        {
-                            filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.CategoriesImagePath, category.Image);
+                        filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.CategoriesImagePath, category.Image);
 
-                            if (File.Exists(filePath))
-                            {
-                                File.Delete(filePath);
-                            }
-                        }
-                        var img = ImageWorker.FromBase64StringToImage(request.Image);
-                        string randomFilename = Path.GetRandomFileName() + ".jpg";
-                        var dir = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.CategoriesImagePath, randomFilename);
-                        img.Save(dir, ImageFormat.Jpeg);
-
-                        category.Image = randomFilename;
-                    }
-                }
-
-                _mapper.Map(request, category);
-
-                await _context.SaveChangesAsync();
-            }
-        }
-
-        public async Task DeleteAsync(int id)
-        {
-            var category = await _context.Categories.FirstOrDefaultAsync(u => u.Id == id);
-
-            if (category != null)
-            {
-                if (!string.IsNullOrEmpty(category.Image))
-                {
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.CategoriesImagePath, category.Image);
-
-                    if (File.Exists(filePath))
-                    {
                         if (File.Exists(filePath))
                         {
                             File.Delete(filePath);
                         }
                     }
-                }
+                    var img = ImageWorker.FromBase64StringToImage(request.Image);
+                    string randomFilename = Path.GetRandomFileName() + ".jpg";
+                    var dir = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.CategoriesImagePath, randomFilename);
+                    img.Save(dir, ImageFormat.Jpeg);
 
-                _context.Categories.Remove(category);
-                await _context.SaveChangesAsync();
+                    category.Image = randomFilename;
+                }
             }
+
+            _mapper.Map(request, category);
+
+            await _categorRepository.UpdateAsync(category);
+            await _categorRepository.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var category = await _categorRepository.GetByIdAsync(id);
+            category.CategotyNullChecking();
+
+            if (!string.IsNullOrEmpty(category.Image))
+            {
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.CategoriesImagePath, category.Image);
+
+                if (File.Exists(filePath))
+                {
+                    if (File.Exists(filePath))
+                    {
+                        File.Delete(filePath);
+                    }
+                }
+            }
+
+            await _categorRepository.DeleteAsync(category);
+            await _categorRepository.SaveChangesAsync();
         }
     }
 }

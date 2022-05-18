@@ -1,3 +1,4 @@
+using DAL;
 using DAL.Data;
 using DAL.Entities.Identity;
 using FluentValidation.AspNetCore;
@@ -33,6 +34,8 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
 
 
 //Services
+builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+builder.Services.AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>));
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
