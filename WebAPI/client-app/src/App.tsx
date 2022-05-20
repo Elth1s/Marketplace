@@ -15,6 +15,10 @@ import CharacteristicGroupTable from './views/characteristicGroup/Table';
 import CharacteristicGroupCreate from './views/characteristicGroup/Create';
 import CharacteristicGroupUpdate from './views/characteristicGroup/Update';
 
+import CharacteristicTable from './views/characteristic/Table';
+import CharacteristicCreate from './views/characteristic/Create';
+import CharacteristicUpdate from './views/characteristic/Update';
+
 function App() {
   return (
     <>
@@ -32,6 +36,10 @@ function App() {
           <Route path="/CharacteristicGroup" element={<CharacteristicGroupTable />} />
           <Route path="/CharacteristicGroup/create" element={<CharacteristicGroupCreate />} />
           <Route path="/CharacteristicGroup/update" element={<CharacteristicGroupUpdate />} />
+
+          <Route path="/characteristic" element={<CharacteristicTable />} />
+          <Route path="/characteristic/create" element={<CharacteristicCreate />} />
+          <Route path="/characteristic/update" element={<CharacteristicUpdate />} />
         </Route>
 
 
