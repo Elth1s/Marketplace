@@ -72,5 +72,25 @@ namespace WebAPI.Extensions
                     HttpStatusCode.NotFound);
             }
         }
+
+        public static void FilterGroupNullChecking(this FilterGroup filterGroup)
+        {
+            if (filterGroup == null)
+            {
+                throw new AppException(
+                    ErrorMessages.FilterGroupNotFound,
+                    HttpStatusCode.NotFound);
+            }
+        }
+
+        public static void FilterNullChecking(this Filter filter)
+        {
+            if (filter == null)
+            {
+                throw new AppException(
+                    ErrorMessages.FilterNotFound,
+                    HttpStatusCode.NotFound);
+            }
+        }
     }
 }

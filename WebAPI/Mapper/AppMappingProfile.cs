@@ -32,6 +32,15 @@ namespace WebAPI.Mapper
             CreateMap<City, CityResponse>()
                 .ForMember(u => u.CountryName, opt => opt.MapFrom(vm => vm.Country.Name));
 
+            //FilterGroup
+            CreateMap<FilterGroupRequest, FilterGroup>();
+            CreateMap<FilterGroup, FilterGroupResponse>();
+
+            //Country
+            CreateMap<FilterRequest, Filter>();
+            CreateMap<Filter, FilterResponse>()
+                .ForMember(u => u.FilterGroupName, opt => opt.MapFrom(vm => vm.FilterGroup.Name));
+
             //Shop
             CreateMap<Shop, ShopResponse>()
                 .ForMember(u => u.CountryName, opt => opt.MapFrom(vm => vm.City.Country.Name))

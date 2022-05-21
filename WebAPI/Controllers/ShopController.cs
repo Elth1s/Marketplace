@@ -34,7 +34,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> CreateShop([FromBody] ShopRequest request)
         {
             await _shopService.CreateShopAsync(request, UserId);
-            return Ok("Shop updated successfully");
+            return Ok("Shop created successfully");
         }
 
         [HttpPut("UpdateShop/{shopId}")]

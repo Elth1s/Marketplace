@@ -31,7 +31,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> CreateCity([FromBody] CityRequest request)
         {
             await _cityService.CreateCityAsync(request);
-            return Ok("City updated successfully");
+            return Ok("City created successfully");
         }
 
         [HttpPut("UpdateCity/{cityId}")]

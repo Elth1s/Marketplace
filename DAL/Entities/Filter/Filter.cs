@@ -12,5 +12,6 @@ namespace DAL.Entities
         public FilterGroup FilterGroup { get; set; }
 
         public ICollection<Product> Products { get; set; }
+        public ICollection<Category> Categories { get; set; }
     }
 }

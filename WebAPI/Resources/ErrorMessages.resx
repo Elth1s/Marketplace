@@ -153,4 +153,10 @@
   <data name="UserNotFound" xml:space="preserve">
     <value>User was not found</value>
   </data>
+  <data name="FilterGroupNotFound" xml:space="preserve">
+    <value>Filter group was not found</value>
+  </data>
+  <data name="FilterNotFound" xml:space="preserve">
+    <value>Filter was not found</value>
+  </data>
 </root>

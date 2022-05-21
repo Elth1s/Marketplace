@@ -8,15 +8,13 @@ namespace DAL.Entities
         public string Image { get; set; }
 
         public int? ParentId { get; set; }
-        public int CharacteristicId { get; set; }
 
         [ForeignKey(nameof(ParentId))]
         public Category Parent { get; set; }
-        [ForeignKey(nameof(CharacteristicId))]
-        public Characteristic Characteristic { get; set; }
 
         public ICollection<Category> Children { get; set; }
         public ICollection<Product> Products { get; set; }
-        public ICollection<FilterGroup> FilterGroups { get; set; }
+        public ICollection<Filter> Filters { get; set; }
+        public ICollection<Characteristic> Characteristics { get; set; }
     }
 }

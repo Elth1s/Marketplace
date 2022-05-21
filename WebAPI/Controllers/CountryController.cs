@@ -31,7 +31,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> CreateCountry([FromBody] CountryRequest request)
         {
             await _countryService.CreateCountryAsync(request);
-            return Ok("Country updated successfully");
+            return Ok("Country created successfully");
         }
 
         [HttpPut("UpdateCountry/{countryId}")]
