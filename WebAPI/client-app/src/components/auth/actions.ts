@@ -11,16 +11,18 @@ import {
     IRegisterModel,
     AuthActionTypes,
     LoginServerError,
-    RegisterServerError
+    RegisterServerError,
+    IExternalLoginModel,
+    ExternalLoginServerError
 } from "./types";
 import http, { setLocalRefreshToken, setLocalAccessToken } from "../../http_comon"
 
 import { accessToken, refreshToken } from "./constants"
 
-export const LoginUser = (data: ILoginModel) => {
+export const LoginUser = (data: ILoginModel, reCaptchaToken: string) => {
     return async (dispatch: Dispatch<AuthAction>) => {
         try {
-            let response = await http.post<IAuthResponse>('/api/Auth/SignIn', data)
+            let response = await http.post<IAuthResponse>('/api/Auth/SignIn', { ...data, reCaptchaToken: reCaptchaToken })
             const tokens = response.data;
             setLocalAccessToken(tokens.accessToken);
             setLocalRefreshToken(tokens.refreshToken);
@@ -41,10 +43,10 @@ export const LoginUser = (data: ILoginModel) => {
     }
 }
 
-export const RegisterUser = (data: IRegisterModel) => {
+export const RegisterUser = (data: IRegisterModel, reCaptchaToken: string) => {
     return async (dispatch: Dispatch<AuthAction>) => {
         try {
-            let response = await http.post<IAuthResponse>('/api/Auth/SignUp', data)
+            let response = await http.post<IAuthResponse>('/api/Auth/SignUp', { ...data, reCaptchaToken: reCaptchaToken })
             const tokens = response.data;
             setLocalAccessToken(tokens.accessToken);
             setLocalRefreshToken(tokens.refreshToken);
@@ -70,6 +72,29 @@ export const LogoutUser = () => {
         dispatch({ type: AuthActionTypes.AUTH_LOGOUT });
         localStorage.removeItem(accessToken)
         localStorage.removeItem(refreshToken)
+    }
+}
+
+export const GoogleExternalLogin = (data: IExternalLoginModel) => {
+    return async () => {
+        try {
+            let response = await http.post<IAuthResponse>('/api/Auth/GoogleExternalLogin', data)
+            const tokens = response.data;
+            setLocalAccessToken(tokens.accessToken);
+            setLocalRefreshToken(tokens.refreshToken);
+
+            AuthUser(tokens.accessToken);
+            return Promise.resolve();
+        }
+        catch (error) {
+            if (axios.isAxiosError(error)) {
+                const serverError = error as AxiosError<ExternalLoginServerError>;
+                if (serverError && serverError.response) {
+                    return Promise.reject(serverError.response.data);
+                }
+            }
+            return Promise.reject(error)
+        }
     }
 }
 

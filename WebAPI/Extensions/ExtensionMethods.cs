@@ -43,6 +43,7 @@ namespace WebAPI.Extensions
             }
         }
 
+
         public static void CategotyNullChecking(this Category category)
         {
             if (category == null)
@@ -52,6 +53,17 @@ namespace WebAPI.Extensions
                     HttpStatusCode.NotFound);
             }
         }
+      
+        public static void ShopNullChecking(this Shop shop)
+        {
+            if (shop == null)
+            {
+                throw new AppException(
+                    ErrorMessages.ShopNotFound,
+                    HttpStatusCode.NotFound);
+            }
+        }
+
 
         public static void CharacteristicGroupNullChecking(this CharacteristicGroup characteristicGroup)
         {
@@ -62,6 +74,17 @@ namespace WebAPI.Extensions
                     HttpStatusCode.NotFound);
             }
         }
+      
+        public static void CountryNullChecking(this Country country)
+        {
+            if (country == null)
+            {
+                throw new AppException(
+                    ErrorMessages.CountryNotFound,
+                    HttpStatusCode.NotFound);
+            }
+        }
+
 
         public static void CharacteristicNullChecking(this Characteristic characteristic)
         {
@@ -69,6 +92,36 @@ namespace WebAPI.Extensions
             {
                 throw new AppException(
                     ErrorMessages.CharacteristicNotFound,
+                    HttpStatusCode.NotFound);
+            }
+        }
+      
+        public static void CityNullChecking(this City city)
+        {
+            if (city == null)
+            {
+                throw new AppException(
+                    ErrorMessages.CityNotFound,
+                    HttpStatusCode.NotFound);
+            }
+        }
+
+        public static void FilterGroupNullChecking(this FilterGroup filterGroup)
+        {
+            if (filterGroup == null)
+            {
+                throw new AppException(
+                    ErrorMessages.FilterGroupNotFound,
+                    HttpStatusCode.NotFound);
+            }
+        }
+
+        public static void FilterNullChecking(this Filter filter)
+        {
+            if (filter == null)
+            {
+                throw new AppException(
+                    ErrorMessages.FilterNotFound,
                     HttpStatusCode.NotFound);
             }
         }

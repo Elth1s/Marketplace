@@ -26,11 +26,9 @@ namespace WebAPI.Services
         public async Task UpdateProfileAsync(string id, UpdateProfileRequest request)
         {
             var userObject = await _userManager.FindByNameAsync(request.UserName);
-
             userObject.UserWithUserNameExistChecking(id);
 
             var user = await _userManager.FindByIdAsync(id);
-
             user.UserNullChecking();
 
             if (!string.IsNullOrEmpty(request.Photo))
@@ -41,7 +39,7 @@ namespace WebAPI.Services
                     ImagePath.UsersImagePath));
                 if (!File.Exists(filePath))
                 {
-                    if (user.Photo != null)
+                    if (!string.IsNullOrEmpty(user.Photo))
                     {
                         filePath = Path.Combine(
                            Directory.GetCurrentDirectory(),

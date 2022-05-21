@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace WebAPI.Middlewares
 {
@@ -8,7 +9,10 @@ namespace WebAPI.Middlewares
         public string Error { get; set; }
         public override string ToString()
         {
-            return JsonConvert.SerializeObject(this);
+            var serializerSettings = new JsonSerializerSettings();
+            serializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            var json = JsonConvert.SerializeObject(this, serializerSettings);
+            return json;
         }
     }
 }

@@ -68,6 +68,14 @@ namespace WebAPI.Resources {
                 return ResourceManager.GetString("CategoryNotFound", resourceCulture);
             }
         }
+        /// <summary>
+        ///   Looks up a localized string similar to You have not passed the captcha verification.
+        /// </summary>
+        internal static string CaptchaVerificationFailed {
+            get {
+                return ResourceManager.GetString("CaptchaVerificationFailed", resourceCulture);
+            }
+        }
         
         /// <summary>
         ///   Looks up a localized string similar to Characteristic group was not found.
@@ -79,11 +87,64 @@ namespace WebAPI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to City was not found.
+        /// </summary>
+        internal static string CityNotFound {
+            get {
+                return ResourceManager.GetString("CityNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Characteristic was not found.
         /// </summary>
         internal static string CharacteristicNotFound {
             get {
                 return ResourceManager.GetString("CharacteristicNotFound", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to County was not found.
+        /// </summary>
+        internal static string CountryNotFound {
+            get {
+                return ResourceManager.GetString("CountryNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to add external login.
+        /// </summary>
+        internal static string ExternalLoginAddFail {
+            get {
+                return ResourceManager.GetString("ExternalLoginAddFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter group was not found.
+        /// </summary>
+        internal static string FilterGroupNotFound {
+            get {
+                return ResourceManager.GetString("FilterGroupNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter was not found.
+        /// </summary>
+        internal static string FilterNotFound {
+            get {
+                return ResourceManager.GetString("FilterNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid external login request.
+        /// </summary>
+        internal static string InvalidExternalLoginRequest {
+            get {
+                return ResourceManager.GetString("InvalidExternalLoginRequest", resourceCulture);
             }
         }
         
@@ -102,6 +163,15 @@ namespace WebAPI.Resources {
         internal static string InvalidUserEmailPassword {
             get {
                 return ResourceManager.GetString("InvalidUserEmailPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shop was not found.
+        /// </summary>
+        internal static string ShopNotFound {
+            get {
+                return ResourceManager.GetString("ShopNotFound", resourceCulture);
             }
         }
         

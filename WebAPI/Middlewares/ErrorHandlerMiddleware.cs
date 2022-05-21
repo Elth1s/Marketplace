@@ -29,7 +29,7 @@ namespace WebAPI.Middlewares
 
         private async Task HandleExceptionAsync(HttpContext context,
             HttpStatusCode statusCode = HttpStatusCode.InternalServerError,
-            string errorBody = "Unknown error has occured")
+            string errorBody = "Unknown error has occurred")
         {
 
             var result = new ErrorDetails()

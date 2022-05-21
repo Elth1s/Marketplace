@@ -23,6 +23,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
+builder.Services.Configure<GoogleAuthSettings>(builder.Configuration.GetSection("GoogleAuthSettings"));
 
 // Database & Identity
 builder.Services.AddDbContext<MarketplaceDbContext>(options =>
@@ -42,6 +43,14 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICharacteristicGroupService, CharacteristicGroupService>();
 builder.Services.AddScoped<ICharacteristicService, CharacteristicService>();
+builder.Services.AddScoped<ICountryService, CountryService>();
+builder.Services.AddScoped<ICityService, CityService>();
+builder.Services.AddScoped<IFilterGroupService, FilterGroupService>();
+builder.Services.AddScoped<IFilterService, FilterService>();
+builder.Services.AddScoped<IShopService, ShopService>();
+//Recaptcha
+builder.Services.AddTransient<IRecaptchaService, RecaptchaService>();
+
 
 //Mapper
 builder.Services.AddAutoMapper(typeof(AppMappingProfile));
@@ -165,6 +174,7 @@ app.UseStaticFiles(new StaticFileOptions
     RequestPath = ImagePath.RequestUsersImagePath
 });
 
+
 var categoriesImages = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.CategoriesImagePath);
 if (!Directory.Exists(categoriesImages))
 {
@@ -174,6 +184,18 @@ app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(categoriesImages),
     RequestPath = ImagePath.RequestCategoriesImagePath
+});
+
+
+var shopsImages = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.ShopsImagePath);
+if (!Directory.Exists(shopsImages))
+{
+    Directory.CreateDirectory(shopsImages);
+}
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(shopsImages),
+    RequestPath = ImagePath.RequestShopsImagePath
 });
 
 
