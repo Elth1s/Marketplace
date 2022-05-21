@@ -24,7 +24,7 @@ namespace WebAPI.Validators
         private bool IsUniqueName(string name)
         {
             var spec = new CategoryGetByNameSpecification(name);
-            return _categoryRequest.GetByIdAsync(spec).Result == null;
+            return _categoryRequest.GetBySpecAsync(spec).Result == null;
         }
     }
 }

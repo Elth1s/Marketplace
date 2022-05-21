@@ -12,11 +12,13 @@ namespace WebAPI.Services
     public class CharacteristicService : ICharacteristicService
     {
         private readonly IRepository<Characteristic> _characteristicRepository;
+        private readonly IRepository<CharacteristicGroup> _characteristicGroupRepository;
         private readonly IMapper _mapper;
 
-        public CharacteristicService(IRepository<Characteristic> countryRepository, IMapper mapper)
+        public CharacteristicService(IRepository<Characteristic> countryRepository, IRepository<CharacteristicGroup> characteristicGroupRepository, IMapper mapper)
         {
             _characteristicRepository = countryRepository;
+            _characteristicGroupRepository = characteristicGroupRepository;
             _mapper = mapper;
         }
 
@@ -39,6 +41,9 @@ namespace WebAPI.Services
 
         public async Task CreateAsync(CharacteristicRequest request)
         {
+            var characteristicGroup = await _characteristicGroupRepository.GetByIdAsync(request.CharacteristicGroupId);
+            characteristicGroup.CharacteristicGroupNullChecking();
+
             var characteristic = _mapper.Map<Characteristic>(request);
 
             await _characteristicRepository.AddAsync(characteristic);
@@ -47,6 +52,9 @@ namespace WebAPI.Services
 
         public async Task UpdateAsync(int id, CharacteristicRequest request)
         {
+            var characteristicGroup = await _characteristicGroupRepository.GetByIdAsync(request.CharacteristicGroupId);
+            characteristicGroup.CharacteristicGroupNullChecking();
+
             var characteristic = await _characteristicRepository.GetByIdAsync(id);
             characteristic.CharacteristicNullChecking();
 

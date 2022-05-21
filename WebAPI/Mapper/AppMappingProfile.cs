@@ -26,7 +26,7 @@ namespace WebAPI.Mapper
 
             //Category
             CreateMap<Category, CategoryResponse>()
-				        .ForMember(u => u.Image, opt => opt.MapFrom(vm => !string.IsNullOrEmpty(vm.Image) ? String.Concat(ImagePath.RequestCategoriesImagePath, "/", vm.Image) : ""));
+                .ForMember(u => u.Image, opt => opt.MapFrom(vm => !string.IsNullOrEmpty(vm.Image) ? String.Concat(ImagePath.RequestCategoriesImagePath, "/", vm.Image) : ""));
             CreateMap<Category, CategoryForSelectResponse>();
 
             CreateMap<CategoryRequest, Category>()

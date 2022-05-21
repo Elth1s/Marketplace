@@ -12,14 +12,17 @@ namespace WebAPI.Services
     public class CityService : ICityService
     {
         private readonly IRepository<City> _cityRepository;
+        private readonly IRepository<Country> _countryRepository;
         private readonly IMapper _mapper;
 
         public CityService(
             IRepository<City> cityRepository,
+            IRepository<Country> countryRepository,
             IMapper mapper
             )
         {
             _cityRepository = cityRepository;
+            _countryRepository = countryRepository;
             _mapper = mapper;
         }
 
@@ -43,6 +46,9 @@ namespace WebAPI.Services
 
         public async Task CreateCityAsync(CityRequest request)
         {
+            var country = await _countryRepository.GetByIdAsync(request.CountryId);
+            country.CountryNullChecking();
+
             var city = _mapper.Map<City>(request);
 
             await _cityRepository.AddAsync(city);
@@ -51,6 +57,9 @@ namespace WebAPI.Services
 
         public async Task UpdateCityAsync(int cityId, CityRequest request)
         {
+            var country = await _countryRepository.GetByIdAsync(request.CountryId);
+            country.CountryNullChecking();
+
             var city = await _cityRepository.GetByIdAsync(cityId);
             city.CityNullChecking();
 

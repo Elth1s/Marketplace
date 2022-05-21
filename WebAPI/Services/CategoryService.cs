@@ -15,11 +15,13 @@ namespace WebAPI.Services
     public class CategoryService : ICategoryService
     {
         private readonly IRepository<Category> _categorRepository;
+        private readonly IRepository<Characteristic> _characteristicRepository;
         private readonly IMapper _mapper;
 
-        public CategoryService(IRepository<Category> categorRepository, IMapper mapper)
+        public CategoryService(IRepository<Category> categorRepository, IRepository<Characteristic> characteristicRepository, IMapper mapper)
         {
             _categorRepository = categorRepository;
+            _characteristicRepository = characteristicRepository;
             _mapper = mapper;
         }
 
@@ -47,6 +49,12 @@ namespace WebAPI.Services
 
         public async Task CreateAsync(CategoryRequest request)
         {
+            if (request.ParentId != null)
+            {
+                var parentCategory = await _categorRepository.GetByIdAsync(request.ParentId);
+                parentCategory.CategotyNullChecking();
+            }
+
             var category = _mapper.Map<Category>(request);
 
             if (!string.IsNullOrEmpty(request.Image))
@@ -70,6 +78,12 @@ namespace WebAPI.Services
 
         public async Task UpdateAsync(int id, CategoryRequest request)
         {
+            if (request.ParentId != null)
+            {
+                var parentCategory = await _categorRepository.GetByIdAsync(request.ParentId);
+                parentCategory.CategotyNullChecking();
+            }
+
             var category = await _categorRepository.GetByIdAsync(id);
             category.CategotyNullChecking();
 

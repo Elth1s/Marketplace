@@ -8,7 +8,6 @@ namespace WebAPI.Specifications
         public CategoryIncludeFullInfoSpecification()
         {
             Query.Include(p => p.Parent)
-                .Include(c => c.Characteristic)
                 .AsSplitQuery();
         }
 
@@ -16,7 +15,6 @@ namespace WebAPI.Specifications
         {
             Query.Where(o => o.Id == id)
                 .Include(p => p.Parent)
-                .Include(c => c.Characteristic)
                 .AsSplitQuery();
         }
     }
