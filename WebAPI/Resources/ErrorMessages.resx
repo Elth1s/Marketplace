@@ -126,11 +126,20 @@
   <data name="CaptchaVerificationFailed" xml:space="preserve">
     <value>You have not passed the captcha verification</value>
   </data>
+  <data name="CityNotFound" xml:space="preserve">
+    <value>City was not found</value>
+  </data>
+  <data name="CountryNotFound" xml:space="preserve">
+    <value>County was not found</value>
+  </data>
   <data name="InvalidToken" xml:space="preserve">
     <value>Invalid refresh token</value>
   </data>
   <data name="InvalidUserEmailPassword" xml:space="preserve">
     <value>Invalid email or password</value>
+  </data>
+  <data name="ShopNotFound" xml:space="preserve">
+    <value>Shop was not found</value>
   </data>
   <data name="TokenRevorked" xml:space="preserve">
     <value>Token already revoked</value>
@@ -143,5 +152,11 @@
   </data>
   <data name="UserNotFound" xml:space="preserve">
     <value>User was not found</value>
+  </data>
+  <data name="FilterGroupNotFound" xml:space="preserve">
+    <value>Filter group was not found</value>
+  </data>
+  <data name="FilterNotFound" xml:space="preserve">
+    <value>Filter was not found</value>
   </data>
 </root>

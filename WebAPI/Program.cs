@@ -1,3 +1,4 @@
+using DAL;
 using DAL.Data;
 using DAL.Entities.Identity;
 using FluentValidation.AspNetCore;
@@ -34,11 +35,17 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
 
 
 //Services
+builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+builder.Services.AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>));
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
-
-//ReCaptcha
+builder.Services.AddScoped<ICountryService, CountryService>();
+builder.Services.AddScoped<ICityService, CityService>();
+builder.Services.AddScoped<IFilterGroupService, FilterGroupService>();
+builder.Services.AddScoped<IFilterService, FilterService>();
+builder.Services.AddScoped<IShopService, ShopService>();
+//Recaptcha
 builder.Services.AddTransient<IRecaptchaService, RecaptchaService>();
 
 //Mapper
@@ -162,7 +169,16 @@ app.UseStaticFiles(new StaticFileOptions
     FileProvider = new PhysicalFileProvider(usersImages),
     RequestPath = ImagePath.RequestUsersImagePath
 });
-
+var shopsImages = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.ShopsImagePath);
+if (!Directory.Exists(shopsImages))
+{
+    Directory.CreateDirectory(shopsImages);
+}
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(shopsImages),
+    RequestPath = ImagePath.RequestShopsImagePath
+});
 
 app.UseEndpoints(endpoints =>
 {
