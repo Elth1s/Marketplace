@@ -43,6 +43,17 @@ namespace WebAPI.Extensions
             }
         }
 
+
+        public static void CategotyNullChecking(this Category category)
+        {
+            if (category == null)
+            {
+                throw new AppException(
+                    ErrorMessages.CategoryNotFound,
+                    HttpStatusCode.NotFound);
+            }
+        }
+      
         public static void ShopNullChecking(this Shop shop)
         {
             if (shop == null)
@@ -53,6 +64,17 @@ namespace WebAPI.Extensions
             }
         }
 
+
+        public static void CharacteristicGroupNullChecking(this CharacteristicGroup characteristicGroup)
+        {
+            if (characteristicGroup == null)
+            {
+                throw new AppException(
+                    ErrorMessages.CharacteristicGroupNotFound,
+                    HttpStatusCode.NotFound);
+            }
+        }
+      
         public static void CountryNullChecking(this Country country)
         {
             if (country == null)
@@ -63,6 +85,17 @@ namespace WebAPI.Extensions
             }
         }
 
+
+        public static void CharacteristicNullChecking(this Characteristic characteristic)
+        {
+            if (characteristic == null)
+            {
+                throw new AppException(
+                    ErrorMessages.CharacteristicNotFound,
+                    HttpStatusCode.NotFound);
+            }
+        }
+      
         public static void CityNullChecking(this City city)
         {
             if (city == null)

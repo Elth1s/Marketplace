@@ -23,11 +23,29 @@ namespace WebAPI.Mapper
             CreateMap<UpdateProfileRequest, AppUser>()
                 .ForMember(u => u.Photo, opt => opt.Ignore());
 
+
+            //Category
+            CreateMap<Category, CategoryResponse>()
+				        .ForMember(u => u.Image, opt => opt.MapFrom(vm => !string.IsNullOrEmpty(vm.Image) ? String.Concat(ImagePath.RequestCategoriesImagePath, "/", vm.Image) : ""));
+            CreateMap<Category, CategoryForSelectResponse>();
+
+            CreateMap<CategoryRequest, Category>()
+                .ForMember(u => u.Image, opt => opt.Ignore());
+
+            //CharacteristicGroup
+            CreateMap<CharacteristicGroupRequest, CharacteristicGroup>();
+            CreateMap<CharacteristicGroup, CharacteristicGroupResponse>();
+
+            //Characteristic
+            CreateMap<CharacteristicRequest, Characteristic>();
+            CreateMap<Characteristic, CharacteristicResponse>()
+                .ForMember(u => u.CharacteristicGroupName, opt => opt.MapFrom(vm => vm.CharacteristicGroup.Name));
+
             //Country
             CreateMap<CountryRequest, Country>();
             CreateMap<Country, CountryResponse>();
 
-            //Country
+            //City
             CreateMap<CityRequest, City>();
             CreateMap<City, CityResponse>()
                 .ForMember(u => u.CountryName, opt => opt.MapFrom(vm => vm.Country.Name));
@@ -36,7 +54,7 @@ namespace WebAPI.Mapper
             CreateMap<FilterGroupRequest, FilterGroup>();
             CreateMap<FilterGroup, FilterGroupResponse>();
 
-            //Country
+            //Filter
             CreateMap<FilterRequest, Filter>();
             CreateMap<Filter, FilterResponse>()
                 .ForMember(u => u.FilterGroupName, opt => opt.MapFrom(vm => vm.FilterGroup.Name));
@@ -48,6 +66,7 @@ namespace WebAPI.Mapper
                 .ForMember(u => u.Photo, opt => opt.MapFrom(vm => !string.IsNullOrEmpty(vm.Photo) ? String.Concat(ImagePath.RequestShopsImagePath, "/", vm.Photo) : ""));
             CreateMap<ShopRequest, Shop>()
                 .ForMember(u => u.Photo, opt => opt.Ignore());
+
         }
     }
 }

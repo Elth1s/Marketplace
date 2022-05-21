@@ -4,10 +4,13 @@
     {
         public const string RootImagePath = "uploads";
         public const string UsersImagePath = "uploads/users";
+        public const string CategoriesImagePath = "uploads/categories";
         public const string ShopsImagePath = "uploads/shops";
-
+      
         public const string RequestRootImagePath = "/images";
         public const string RequestUsersImagePath = "/images/users";
+        public const string RequestCategoriesImagePath = "/images/categories";
         public const string RequestShopsImagePath = "/images/shops";
+        
     }
 }

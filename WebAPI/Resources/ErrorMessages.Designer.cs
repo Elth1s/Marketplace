@@ -61,11 +61,28 @@ namespace WebAPI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Category was not found.
+        /// </summary>
+        internal static string CategoryNotFound {
+            get {
+                return ResourceManager.GetString("CategoryNotFound", resourceCulture);
+            }
+        }
+        /// <summary>
         ///   Looks up a localized string similar to You have not passed the captcha verification.
         /// </summary>
         internal static string CaptchaVerificationFailed {
             get {
                 return ResourceManager.GetString("CaptchaVerificationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Characteristic group was not found.
+        /// </summary>
+        internal static string CharacteristicGroupNotFound {
+            get {
+                return ResourceManager.GetString("CharacteristicGroupNotFound", resourceCulture);
             }
         }
         
@@ -78,6 +95,14 @@ namespace WebAPI.Resources {
             }
         }
         
+        /// <summary>
+        ///   Looks up a localized string similar to Characteristic was not found.
+        /// </summary>
+        internal static string CharacteristicNotFound {
+            get {
+                return ResourceManager.GetString("CharacteristicNotFound", resourceCulture);
+            }
+        }
         /// <summary>
         ///   Looks up a localized string similar to County was not found.
         /// </summary>

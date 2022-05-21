@@ -40,6 +40,9 @@ builder.Services.AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>));
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ICharacteristicGroupService, CharacteristicGroupService>();
+builder.Services.AddScoped<ICharacteristicService, CharacteristicService>();
 builder.Services.AddScoped<ICountryService, CountryService>();
 builder.Services.AddScoped<ICityService, CityService>();
 builder.Services.AddScoped<IFilterGroupService, FilterGroupService>();
@@ -47,6 +50,7 @@ builder.Services.AddScoped<IFilterService, FilterService>();
 builder.Services.AddScoped<IShopService, ShopService>();
 //Recaptcha
 builder.Services.AddTransient<IRecaptchaService, RecaptchaService>();
+
 
 //Mapper
 builder.Services.AddAutoMapper(typeof(AppMappingProfile));
@@ -169,6 +173,20 @@ app.UseStaticFiles(new StaticFileOptions
     FileProvider = new PhysicalFileProvider(usersImages),
     RequestPath = ImagePath.RequestUsersImagePath
 });
+
+
+var categoriesImages = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.CategoriesImagePath);
+if (!Directory.Exists(categoriesImages))
+{
+    Directory.CreateDirectory(categoriesImages);
+}
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(categoriesImages),
+    RequestPath = ImagePath.RequestCategoriesImagePath
+});
+
+
 var shopsImages = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.ShopsImagePath);
 if (!Directory.Exists(shopsImages))
 {
@@ -179,6 +197,7 @@ app.UseStaticFiles(new StaticFileOptions
     FileProvider = new PhysicalFileProvider(shopsImages),
     RequestPath = ImagePath.RequestShopsImagePath
 });
+
 
 app.UseEndpoints(endpoints =>
 {
