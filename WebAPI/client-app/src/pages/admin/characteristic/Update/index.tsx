@@ -1,15 +1,15 @@
-import { 
-    Box, 
-    Grid, 
-    Stack, 
-    Typography, 
-    CircularProgress, 
-    TextField, 
-    FormControl, 
-    InputLabel, 
-    Select, 
-    MenuItem, 
-    Autocomplete 
+import {
+    Box,
+    Grid,
+    Stack,
+    Typography,
+    CircularProgress,
+    TextField,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
+    Autocomplete
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 
@@ -17,8 +17,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { Form, FormikProvider, useFormik } from "formik";
 
-import { useActions } from "../../../hooks/useActions";
-import { useTypedSelector } from "../../../hooks/useTypedSelector";
+import { useActions } from "../../../../hooks/useActions";
+import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 
 import { validationFields } from "../validation";
 import { ICharacteristic } from "../types";
@@ -30,8 +30,8 @@ const CharacteristicUpdate = () => {
     const { characteristicInfo } = useTypedSelector((store) => store.characteristic);
     const { characteristicGroups } = useTypedSelector((store) => store.characteristicGroup);
 
-    const characteristic: ICharacteristic = { 
-        name: characteristicInfo.name, 
+    const characteristic: ICharacteristic = {
+        name: characteristicInfo.name,
         characteristicGroupId: characteristicGroups.find(n => n.name === characteristicInfo.characteristicGroupName)?.id!
     }
 
@@ -51,7 +51,7 @@ const CharacteristicUpdate = () => {
 
             await GetCharacteristicGroups();
             await GetByIdCharacteristic(id);
-            
+
 
             setLoading(false);
         } catch (ex) {
@@ -90,8 +90,8 @@ const CharacteristicUpdate = () => {
             {loading ? (
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                     <CircularProgress sx={{ color: "#66fcf1", mt: 3 }} />
-                </Box> 
-                ):(
+                </Box>
+            ) : (
                 <Box sx={{ mt: 3 }} >
                     <FormikProvider value={formik} >
                         <Form autoComplete="off" noValidate onSubmit={handleSubmit}>

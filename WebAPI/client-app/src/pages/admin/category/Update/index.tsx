@@ -5,12 +5,12 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { Form, FormikProvider, useFormik } from "formik";
 
-import { useActions } from "../../../hooks/useActions";
-import { useTypedSelector } from "../../../hooks/useTypedSelector";
+import { useActions } from "../../../../hooks/useActions";
+import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import { validationFields } from "../validation";
 import { ICategory } from "../types";
 
-import CropperDialog from "../../comon/CropperDialog";
+import CropperDialog from "../../../../components/CropperDialog";
 
 const CategoryUpdate = () => {
     const { GetCategoryForSelect, GetByIdCategory, UpdateCategory } = useActions();
@@ -47,7 +47,7 @@ const CategoryUpdate = () => {
             navigator("/category");
         }
         catch (ex) {
-           
+
         }
     }
 

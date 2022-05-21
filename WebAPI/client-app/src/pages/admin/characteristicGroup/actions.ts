@@ -1,18 +1,20 @@
 import { Dispatch } from "react"
 import axios, { AxiosError } from "axios"
 
-import http from "../../http_comon"
-import { ICharacteristicGroup, 
+import http from "../../../http_comon"
+import {
+    ICharacteristicGroup,
     ICharacteristicGroupInfo,
-    CharacteristicGroupAction, 
-    CharacteristicGroupActionTypes, 
-    CharacteristicGroupServerError } from "./types"
+    CharacteristicGroupAction,
+    CharacteristicGroupActionTypes,
+    CharacteristicGroupServerError
+} from "./types"
 
 export const GetByIdCharacteristicGroup = (id: string | null) => {
     return async (dispatch: Dispatch<CharacteristicGroupAction>) => {
         try {
             let response = await http.get<ICharacteristicGroupInfo>(`/api/CharacteristicGroup/GetById/${id}`)
-            
+
             dispatch({
                 type: CharacteristicGroupActionTypes.GET_BY_ID_CHARACTERISTIC_GROUP,
                 payload: response.data

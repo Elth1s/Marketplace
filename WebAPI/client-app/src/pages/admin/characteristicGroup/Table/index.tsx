@@ -20,17 +20,19 @@ import EditIcon from '@mui/icons-material/Edit';
 
 import { useEffect, useState } from "react";
 
-import { useActions } from "../../../hooks/useActions";
-import { useTypedSelector } from "../../../hooks/useTypedSelector";
+import { useActions } from "../../../../hooks/useActions";
+import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 
-const CharacteristicTable = () => {
-    const { GetCharacteristics, DeleteCharacteristic } = useActions();
+import { baseURL } from '../../../../http_comon';
+
+const CharacteristicGroupTable = () => {
+    const { GetCharacteristicGroups, DeleteCharacteristicGroup } = useActions();
     const [loading, setLoading] = useState<boolean>(false);
 
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
-    const { characteristics } = useTypedSelector((store) => store.characteristic);
+    const { characteristicGroups } = useTypedSelector((store) => store.characteristicGroup);
 
     useEffect(() => {
         getData();
@@ -39,8 +41,8 @@ const CharacteristicTable = () => {
     const getData = async () => {
         setLoading(true);
         try {
-            document.title = "Characteristic";
-            await GetCharacteristics();
+            document.title = "Characteristic Group";
+            await GetCharacteristicGroups();
             setLoading(false);
         } catch (ex) {
             setLoading(false);
@@ -48,7 +50,7 @@ const CharacteristicTable = () => {
     };
 
     const onDelete = async (id: number) => {
-        await DeleteCharacteristic(id);
+        await DeleteCharacteristicGroup(id);
         getData();
     }
 
@@ -70,7 +72,7 @@ const CharacteristicTable = () => {
                 sx={{ pt: 8, pb: 6 }}>
                 <Button
                     variant="contained"
-                    href="/characteristic/create"
+                    href="/characteristicGroup/create"
                     sx={{
                         my: 2,
                         px: 4,
@@ -90,7 +92,7 @@ const CharacteristicTable = () => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {characteristics && characteristics.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) =>
+                                {characteristicGroups && characteristicGroups.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) =>
                                 (
                                     <TableRow key={row.id}>
                                         <TableCell component="th" scope="row">
@@ -100,12 +102,9 @@ const CharacteristicTable = () => {
                                             {row.name}
                                         </TableCell>
                                         <TableCell>
-                                            {row.characteristicGroupName}
-                                        </TableCell>
-                                        <TableCell>
                                             <IconButton
                                                 aria-label="edit"
-                                                href={"/characteristic/update?id=" + row.id}>
+                                                href={"/characteristicGroup/update?id=" + row.id}>
                                                 <EditIcon />
                                             </IconButton>
                                             <IconButton
@@ -122,7 +121,7 @@ const CharacteristicTable = () => {
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
                         component="div"
-                        count={characteristics.length}
+                        count={characteristicGroups.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}
@@ -134,4 +133,4 @@ const CharacteristicTable = () => {
     );
 }
 
-export default CharacteristicTable
+export default CharacteristicGroupTable

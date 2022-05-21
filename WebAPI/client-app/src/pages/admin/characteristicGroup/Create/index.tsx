@@ -1,12 +1,5 @@
-import {
-    Box,
-    Grid,
-    Stack,
-    Typography,
-    CircularProgress,
-    TextField,
-    MenuItem,
-} from "@mui/material";
+
+import { Box, Grid, Stack, Typography, CircularProgress, TextField, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
@@ -15,64 +8,48 @@ import { LoadingButton } from "@mui/lab";
 
 import { Form, FormikProvider, useFormik } from "formik";
 
-import { useActions } from "../../../hooks/useActions";
-import { useTypedSelector } from "../../../hooks/useTypedSelector";
+import { useActions } from "../../../../hooks/useActions";
+import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 
 import { validationFields } from "../validation";
-import { ICharacteristic } from "../types";
+import { ICharacteristicGroup } from "../types";
 
-const CharacteristicCreate = () => {
-    const { CreateCharacteristic, GetCharacteristicGroups } = useActions();
+const CharacteristicGroupCreate = () => {
+    const { CreateCharacteristicGroup } = useActions();
     const [loading, setLoading] = useState<boolean>(false);
 
-    const { characteristicGroups } = useTypedSelector((store) => store.characteristicGroup);
-    
-    const characteristic: ICharacteristic = {
-        name: "",
-        characteristicGroupId: 0
+    const category: ICharacteristicGroup = {
+        name: ""
     }
 
     const navigator = useNavigate();
 
     useEffect(() => {
-        getData();
+
     }, []);
 
-    const getData = async () => {
-        setLoading(true);
+    const onHandleSubmit = async (values: ICharacteristicGroup) => {
         try {
-            document.title = "Characteristic";
-
-            await GetCharacteristicGroups();
-
-            setLoading(false);
-        } catch (ex) {
-            setLoading(false);
-        }
-    }
-
-    const onHandleSubmit = async (values: ICharacteristic) => {
-        try {
-            await CreateCharacteristic(values);
-            navigator("/characteristic");
+            await CreateCharacteristicGroup(values);
+            navigator("/characteristicGroup");
         } catch (ex) {
 
         }
     }
 
     const formik = useFormik({
-        initialValues: characteristic,
+        initialValues: category,
         validationSchema: validationFields,
         onSubmit: onHandleSubmit
     });
 
-    const { errors, touched, isSubmitting, handleSubmit, getFieldProps, setFieldValue } = formik;
+    const { errors, touched, isSubmitting, handleSubmit, getFieldProps } = formik;
 
     return (
         <Box sx={{ flexGrow: 1, m: 1, mx: 3, }}>
             <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ py: 1 }}>
                 <Typography variant="h4" gutterBottom sx={{ my: "auto" }}>
-                    Characteristic Create
+                    Characteristic Group Create
                 </Typography>
             </Stack>
             {loading ? (
@@ -96,24 +73,6 @@ const CharacteristicCreate = () => {
                                             helperText={touched.name && errors.name}
                                         />
                                     </Grid>
-
-                                    <Grid item xs={12}>
-                                        <TextField
-                                            select
-                                            fullWidth
-                                            id="characteristic-groups-select"
-                                            label="Characteristic Groups"
-                                            {...getFieldProps('characteristicGroupId')}
-                                            error={Boolean(touched.characteristicGroupId && errors.characteristicGroupId)}
-                                            helperText={touched.characteristicGroupId && errors.characteristicGroupId}
-                                        >
-                                            <MenuItem disabled value="0">No Selected</MenuItem>
-                                            {characteristicGroups && characteristicGroups.map((item) =>
-                                                <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
-                                            )}
-                                        </TextField>
-                                    </Grid>
-
                                     <Grid item xs={12} mt={3} display="flex" justifyContent="space-between" >
                                         <LoadingButton
                                             sx={{ paddingX: "35px" }}
@@ -135,4 +94,4 @@ const CharacteristicCreate = () => {
     )
 }
 
-export default CharacteristicCreate;
+export default CharacteristicGroupCreate;

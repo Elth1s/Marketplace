@@ -1,23 +1,23 @@
 import { Routes, Route } from 'react-router-dom';
 
-import AuthLayout from './components/containers/AuthLayout';
+import AuthLayout from './containers/AuthLayout';
 
 import './App.css';
-import SignIn from './components/auth/SignIn';
-import SignUp from './components/auth/SignUp';
-import Profile from './components/user/Profile';
+import SignIn from './pages/auth/SignIn';
+import SignUp from './pages/auth/SignUp';
+import Profile from './pages/user/Profile';
 
-import CategoryTable from './components/category/Table';
-import CategoryCreate from './components/category/Create';
-import CategoryUpdate from './components/category/Update';
+import CategoryTable from './pages/admin/category/Table';
+import CategoryCreate from './pages/admin/category/Create';
+import CategoryUpdate from './pages/admin/category/Update';
 
-import CharacteristicGroupTable from './views/characteristicGroup/Table';
-import CharacteristicGroupCreate from './views/characteristicGroup/Create';
-import CharacteristicGroupUpdate from './views/characteristicGroup/Update';
+import CharacteristicGroupTable from './pages/admin/characteristicGroup/Table';
+import CharacteristicGroupCreate from './pages/admin/characteristicGroup/Create';
+import CharacteristicGroupUpdate from './pages/admin/characteristicGroup/Update';
 
-import CharacteristicTable from './views/characteristic/Table';
-import CharacteristicCreate from './views/characteristic/Create';
-import CharacteristicUpdate from './views/characteristic/Update';
+import CharacteristicTable from './pages/admin/characteristic/Table';
+import CharacteristicCreate from './pages/admin/characteristic/Create';
+import CharacteristicUpdate from './pages/admin/characteristic/Update';
 
 function App() {
   return (

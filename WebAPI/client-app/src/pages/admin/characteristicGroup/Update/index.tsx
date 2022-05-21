@@ -1,62 +1,96 @@
-
-import { Box, Grid, Stack, Typography, CircularProgress, TextField, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+import {
+    Box,
+    Grid,
+    Stack,
+    Typography,
+    CircularProgress,
+    TextField,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
+    Autocomplete
+} from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-
-import { LoadingButton } from "@mui/lab";
-
 import { Form, FormikProvider, useFormik } from "formik";
 
-import { useActions } from "../../../hooks/useActions";
-import { useTypedSelector } from "../../../hooks/useTypedSelector";
+import { useActions } from "../../../../hooks/useActions";
+import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 
 import { validationFields } from "../validation";
 import { ICharacteristicGroup } from "../types";
 
-const CharacteristicGroupCreate = () => {
-    const { CreateCharacteristicGroup } = useActions();
+const CharacteristicGroupUpdate = () => {
+    const { GetByIdCharacteristicGroup, UpdateCharacteristicGroup } = useActions();
     const [loading, setLoading] = useState<boolean>(false);
 
-    const category: ICharacteristicGroup = { 
-        name: "" 
+    const { characteristicGroupInfo } = useTypedSelector((store) => store.characteristicGroup);
+    const characteristicGroup: ICharacteristicGroup = {
+        name: characteristicGroupInfo.name,
     }
 
     const navigator = useNavigate();
 
     useEffect(() => {
-        
+        getData();
     }, []);
+
+    const getData = async () => {
+        setLoading(true);
+        try {
+            document.title = "CharacteristicGroup";
+
+            const params = new URLSearchParams(window.location.search);
+            let id = params.get("id");
+
+            await GetByIdCharacteristicGroup(id);
+
+            setLoading(false);
+        } catch (ex) {
+            setLoading(false);
+        }
+    }
 
     const onHandleSubmit = async (values: ICharacteristicGroup) => {
         try {
-            await CreateCharacteristicGroup(values);
+            await UpdateCharacteristicGroup(characteristicGroupInfo.id, values);
             navigator("/characteristicGroup");
-        } catch (ex) {
+        }
+        catch (ex) {
 
         }
     }
 
     const formik = useFormik({
-        initialValues: category,
+        initialValues: characteristicGroup,
         validationSchema: validationFields,
+        enableReinitialize: true,
         onSubmit: onHandleSubmit
     });
 
-    const { errors, touched, isSubmitting, handleSubmit, getFieldProps } = formik;
+    const onSave = async (base64: string) => {
+        setFieldValue("image", base64)
+    };
+
+    const { errors, touched, isSubmitting, handleSubmit, getFieldProps, setFieldValue } = formik;
 
     return (
         <Box sx={{ flexGrow: 1, m: 1, mx: 3, }}>
+
             <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ py: 1 }}>
                 <Typography variant="h4" gutterBottom sx={{ my: "auto" }}>
-                    Characteristic Group Create
+                    Characteristic Group Update
                 </Typography>
             </Stack>
+
             {loading ? (
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                     <CircularProgress sx={{ color: "#66fcf1", mt: 3 }} />
-                </Box> 
-                ):(
+                </Box>
+            ) : (
                 <Box sx={{ mt: 3 }} >
                     <FormikProvider value={formik} >
                         <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
@@ -73,6 +107,7 @@ const CharacteristicGroupCreate = () => {
                                             helperText={touched.name && errors.name}
                                         />
                                     </Grid>
+
                                     <Grid item xs={12} mt={3} display="flex" justifyContent="space-between" >
                                         <LoadingButton
                                             sx={{ paddingX: "35px" }}
@@ -81,7 +116,7 @@ const CharacteristicGroupCreate = () => {
                                             variant="contained"
                                             loading={isSubmitting}
                                         >
-                                            Create
+                                            Update
                                         </LoadingButton>
                                     </Grid>
                                 </Grid>
@@ -94,4 +129,4 @@ const CharacteristicGroupCreate = () => {
     )
 }
 
-export default CharacteristicGroupCreate;
+export default CharacteristicGroupUpdate;

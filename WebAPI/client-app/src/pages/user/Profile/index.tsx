@@ -17,7 +17,7 @@ import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import { ProfileSchema } from "./validation";
 import { ProfileServerError } from "./types";
 
-import CropperDialog from "../../comon/CropperDialog";
+import CropperDialog from "../../../components/CropperDialog";
 
 
 const Profile = () => {

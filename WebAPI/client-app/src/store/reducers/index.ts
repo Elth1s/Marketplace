@@ -1,10 +1,10 @@
 import { combineReducers } from "redux";
 
-import { authReducer } from "../../components/auth/reducer";
-import { profileReducer } from "../../components/user/Profile/reducer";
-import { categoryReducer } from "../../components/category/reducer";
-import { characteristicGroupReducer } from "../../views/characteristicGroup/reducer";
-import { characteristicReducer } from "../../views/characteristic/reducer";
+import { authReducer } from "../../pages/auth/reducer";
+import { profileReducer } from "../../pages/user/Profile/reducer";
+import { categoryReducer } from "../../pages/admin/category/reducer";
+import { characteristicGroupReducer } from "../../pages/admin/characteristicGroup/reducer";
+import { characteristicReducer } from "../../pages/admin/characteristic/reducer";
 
 export const rootReducer = combineReducers({
     auth: authReducer,

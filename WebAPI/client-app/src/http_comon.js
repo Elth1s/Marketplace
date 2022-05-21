@@ -1,5 +1,5 @@
 import axios from "axios";
-import { accessToken as at, refreshToken as rt } from "./components/auth/constants"
+import { accessToken as at, refreshToken as rt } from "./pages/auth/constants"
 
 export const baseURL = "http://localhost:5147"
 

@@ -1,8 +1,8 @@
-import * as AuthActionCreators from "../../components/auth/actions"
-import * as ProfileActionCreators from "../../components/user/Profile/actions"
-import * as CategoryActionCreators from "../../components/category/actions"
-import * as CharacteristicGroupActionCreators from "../../views/characteristicGroup/actions"
-import * as CharacteristicActionCreators from "../../views/characteristic/actions"
+import * as AuthActionCreators from "../../pages/auth/actions"
+import * as ProfileActionCreators from "../../pages/user/Profile/actions"
+import * as CategoryActionCreators from "../../pages/admin/category/actions"
+import * as CharacteristicGroupActionCreators from "../../pages/admin/characteristicGroup/actions"
+import * as CharacteristicActionCreators from "../../pages/admin/characteristic/actions"
 
 const actions = {
     ...AuthActionCreators,

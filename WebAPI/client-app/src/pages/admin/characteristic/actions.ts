@@ -1,20 +1,20 @@
 import { Dispatch } from "react"
 import axios, { AxiosError } from "axios"
 
-import http from "../../http_comon"
-import { 
-    ICharacteristic, 
+import http from "../../../http_comon"
+import {
+    ICharacteristic,
     ICharacteristicInfo,
-    CharacteristicAction, 
-    CharacteristicActionTypes, 
-    CharacteristicServerError 
+    CharacteristicAction,
+    CharacteristicActionTypes,
+    CharacteristicServerError
 } from "./types"
 
 export const GetByIdCharacteristic = (id: string | null) => {
     return async (dispatch: Dispatch<CharacteristicAction>) => {
         try {
             let response = await http.get<ICharacteristicInfo>(`/api/Characteristic/GetById/${id}`)
-            
+
             dispatch({
                 type: CharacteristicActionTypes.GET_BY_ID_CHARACTERISTIC,
                 payload: response.data

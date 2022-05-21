@@ -20,38 +20,37 @@ import EditIcon from '@mui/icons-material/Edit';
 
 import { useEffect, useState } from "react";
 
-import { useActions } from "../../../hooks/useActions";
-import { useTypedSelector } from "../../../hooks/useTypedSelector";
+import { useActions } from "../../../../hooks/useActions";
+import { useTypedSelector } from "../../../../hooks/useTypedSelector";
+import { baseURL } from '../../../../http_comon';
 
-import { baseURL } from '../../../http_comon';
-
-const CharacteristicGroupTable = () => {
-    const { GetCharacteristicGroups, DeleteCharacteristicGroup } = useActions();
+const CategoryTable = () => {
+    const { GetCategory, DeleteCategory } = useActions();
     const [loading, setLoading] = useState<boolean>(false);
 
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
-    const { characteristicGroups } = useTypedSelector((store) => store.characteristicGroup);
+    const { categories } = useTypedSelector((store) => store.category);
 
     useEffect(() => {
-        getData();
+        getCategory();
     }, []);
 
-    const getData = async () => {
+    const getCategory: () => void = async () => {
         setLoading(true);
         try {
-            document.title = "Characteristic Group";
-            await GetCharacteristicGroups();
+            document.title = "Category";
+            await GetCategory();
             setLoading(false);
         } catch (ex) {
             setLoading(false);
         }
     };
 
-    const onDelete = async (id: number) => {
-        await DeleteCharacteristicGroup(id);
-        getData();
+    const onDeleteCategoty = async (id: number) => {
+        await DeleteCategory(id);
+        getCategory();
     }
 
     const handleChangePage = (event: unknown, newPage: number) => {
@@ -72,7 +71,7 @@ const CharacteristicGroupTable = () => {
                 sx={{ pt: 8, pb: 6 }}>
                 <Button
                     variant="contained"
-                    href="/characteristicGroup/create"
+                    href="/category/create"
                     sx={{
                         my: 2,
                         px: 4,
@@ -88,28 +87,61 @@ const CharacteristicGroupTable = () => {
                                 <TableRow>
                                     <TableCell>Id</TableCell>
                                     <TableCell>Name</TableCell>
+                                    <TableCell>parentId</TableCell>
+                                    <TableCell>characteristicId</TableCell>
                                     <TableCell>Action</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {characteristicGroups && characteristicGroups.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) =>
+                                {categories && categories.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) =>
                                 (
-                                    <TableRow key={row.id}>
-                                        <TableCell component="th" scope="row">
+                                    <TableRow
+                                        key={row.id}
+                                        sx={{
+                                            '&:last-child td, &:last-child th': { border: 0 }
+                                        }}>
+                                        <TableCell
+                                            component="th"
+                                            scope="row">
                                             {row.id}
                                         </TableCell>
-                                        <TableCell>
-                                            {row.name}
+                                        <TableCell
+                                            sx={{
+                                                display: "flex",
+                                                alignItems: "center"
+                                            }}>
+                                            <Box sx={{
+                                                backgroundImage: `url(` + baseURL + row.image + `)`,
+                                                backgroundPosition: "center center",
+                                                backgroundSize: "cover",
+                                                display: "flex",
+                                                width: "80px",
+                                                height: "80px",
+                                                borderRadius: "8px",
+                                            }}>
+                                            </Box>
+                                            <Box>
+                                                <Typography
+                                                    sx={{
+                                                        ml: 1
+                                                    }}
+                                                    variant="h6"
+                                                    component="h6">
+                                                    {row.name}
+                                                </Typography>
+                                            </Box>
                                         </TableCell>
+                                        <TableCell>{row.parentId}</TableCell>
+                                        <TableCell>{row.characteristicId}</TableCell>
                                         <TableCell>
                                             <IconButton
                                                 aria-label="edit"
-                                                href={"/characteristicGroup/update?id=" + row.id}>
+                                                href={"/category/update?id=" + row.id}>
                                                 <EditIcon />
                                             </IconButton>
                                             <IconButton
                                                 aria-label="delete"
-                                                onClick={() => onDelete(row.id)}>
+                                                onClick={() => onDeleteCategoty(row.id)}>
                                                 <DeleteIcon />
                                             </IconButton>
                                         </TableCell>
@@ -121,7 +153,7 @@ const CharacteristicGroupTable = () => {
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
                         component="div"
-                        count={characteristicGroups.length}
+                        count={categories.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}
@@ -133,4 +165,4 @@ const CharacteristicGroupTable = () => {
     );
 }
 
-export default CharacteristicGroupTable
+export default CategoryTable

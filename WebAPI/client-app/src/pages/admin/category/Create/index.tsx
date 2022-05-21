@@ -8,10 +8,10 @@ import { LoadingButton } from "@mui/lab";
 
 import { Form, FormikProvider, useFormik } from "formik";
 
-import { useActions } from "../../../hooks/useActions";
-import { useTypedSelector } from "../../../hooks/useTypedSelector";
+import { useActions } from "../../../../hooks/useActions";
+import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 
-import CropperDialog from "../../comon/CropperDialog";
+import CropperDialog from "../../../../components/CropperDialog";
 
 import { validationFields } from "../validation";
 import { ICreateCategory } from "../types";
@@ -37,7 +37,7 @@ const CategoryCreate = () => {
             setLoading(false);
         }
     };
-       
+
     const onHandleSubmit = async (values: ICreateCategory) => {
         try {
             await CreateCategory(values);
