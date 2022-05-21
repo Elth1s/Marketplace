@@ -5,8 +5,7 @@ const initialState: CategoryState = {
         id: 0,
         name: "",
         image: "",
-        parentId: undefined,
-        characteristicId: 0
+        parentName: ""
     },
     categories: [],
     categoriesForSelect: [],

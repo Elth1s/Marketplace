@@ -87,8 +87,7 @@ const CategoryTable = () => {
                                 <TableRow>
                                     <TableCell>Id</TableCell>
                                     <TableCell>Name</TableCell>
-                                    <TableCell>parentId</TableCell>
-                                    <TableCell>characteristicId</TableCell>
+                                    <TableCell>Parent</TableCell>
                                     <TableCell>Action</TableCell>
                                 </TableRow>
                             </TableHead>
@@ -131,8 +130,7 @@ const CategoryTable = () => {
                                                 </Typography>
                                             </Box>
                                         </TableCell>
-                                        <TableCell>{row.parentId}</TableCell>
-                                        <TableCell>{row.characteristicId}</TableCell>
+                                        <TableCell>{row.parentName}</TableCell>
                                         <TableCell>
                                             <IconButton
                                                 aria-label="edit"
