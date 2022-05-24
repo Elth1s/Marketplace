@@ -1,13 +1,20 @@
 import { Dispatch } from "react"
 import axios, { AxiosError } from "axios"
 
-import http, { baseURL } from "../../../http_comon"
-import { ICategory, CategoryAction, CategoryActionTypes, ICreateCategory, ICategoryForSelect, CategoryServerError } from "./types"
+import http from "../../../http_comon"
+import { 
+    ICategory, 
+    ICategoryInfo, 
+    ICategoryForSelect, 
+    CategoryAction, 
+    CategoryActionTypes, 
+    CategoryServerError 
+} from "./types"
 
 export const GetByIdCategory = (id: string | null) => {
     return async (dispatch: Dispatch<CategoryAction>) => {
         try {
-            let response = await http.get<ICategory>(`/api/Category/GetById/${id}`)
+            let response = await http.get<ICategoryInfo>(`/api/Category/GetById/${id}`)
 
             dispatch({
                 type: CategoryActionTypes.GET_BY_ID_CATEGORY,
@@ -31,7 +38,7 @@ export const GetByIdCategory = (id: string | null) => {
 export const GetCategory = () => {
     return async (dispatch: Dispatch<CategoryAction>) => {
         try {
-            let response = await http.get<Array<ICategory>>(`/api/Category/Get`)
+            let response = await http.get<Array<ICategoryInfo>>(`/api/Category/Get`)
 
             dispatch({
                 type: CategoryActionTypes.GET_CATEGORIES,
@@ -76,7 +83,7 @@ export const GetCategoryForSelect = () => {
     }
 }
 
-export const CreateCategory = (data: ICreateCategory) => {
+export const CreateCategory = (data: ICategory) => {
     return async () => {
         try {
             await http.post("api/Category/Create", data);
@@ -94,10 +101,11 @@ export const CreateCategory = (data: ICreateCategory) => {
     }
 }
 
-export const UpdateCategory = (data: ICategory) => {
+export const UpdateCategory = (id: number, data: ICategory) => {
     return async () => {
         try {
-            await http.put<ICategory>(`api/Category/Update/${data.id}`, data);
+            console.log("data", data);
+            await http.put<ICategory>(`api/Category/Update/${id}`, data);
             return Promise.resolve();
         } catch (ex) {
             if (axios.isAxiosError(ex)) {
