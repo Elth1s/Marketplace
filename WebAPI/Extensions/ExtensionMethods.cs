@@ -53,7 +53,7 @@ namespace WebAPI.Extensions
                     HttpStatusCode.NotFound);
             }
         }
-      
+
         public static void ShopNullChecking(this Shop shop)
         {
             if (shop == null)
@@ -74,7 +74,7 @@ namespace WebAPI.Extensions
                     HttpStatusCode.NotFound);
             }
         }
-      
+
         public static void CountryNullChecking(this Country country)
         {
             if (country == null)
@@ -95,7 +95,7 @@ namespace WebAPI.Extensions
                     HttpStatusCode.NotFound);
             }
         }
-      
+
         public static void CityNullChecking(this City city)
         {
             if (city == null)
@@ -122,6 +122,46 @@ namespace WebAPI.Extensions
             {
                 throw new AppException(
                     ErrorMessages.FilterNotFound,
+                    HttpStatusCode.NotFound);
+            }
+        }
+
+        public static void ProductStatusNullChecking(this ProductStatus productStatus)
+        {
+            if (productStatus == null)
+            {
+                throw new AppException(
+                    ErrorMessages.ProductStatusNotFound,
+                    HttpStatusCode.NotFound);
+            }
+        }
+
+        public static void ProductNullChecking(this Product product)
+        {
+            if (product == null)
+            {
+                throw new AppException(
+                    ErrorMessages.ProductNotFound,
+                    HttpStatusCode.NotFound);
+            }
+        }
+
+        public static void ProductImageNullChecking(this ProductImage productImage)
+        {
+            if (productImage == null)
+            {
+                throw new AppException(
+                    ErrorMessages.ProductImageNotFound,
+                    HttpStatusCode.NotFound);
+            }
+        }
+
+        public static void ProductCharacteristicNullChecking(this ProductCharacteristic productCharacteristic)
+        {
+            if (productCharacteristic == null)
+            {
+                throw new AppException(
+                    ErrorMessages.ProductCharacteristicNotFound,
                     HttpStatusCode.NotFound);
             }
         }

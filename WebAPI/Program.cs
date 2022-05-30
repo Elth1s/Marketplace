@@ -48,6 +48,11 @@ builder.Services.AddScoped<ICityService, CityService>();
 builder.Services.AddScoped<IFilterGroupService, FilterGroupService>();
 builder.Services.AddScoped<IFilterService, FilterService>();
 builder.Services.AddScoped<IShopService, ShopService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IProductImageService, ProductImageService>();
+builder.Services.AddScoped<IProductStatusService, ProductStatusService>();
+builder.Services.AddScoped<IProductCharacteristicService, ProductCharacteristicService>();
+
 //Recaptcha
 builder.Services.AddTransient<IRecaptchaService, RecaptchaService>();
 
@@ -196,6 +201,17 @@ app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(shopsImages),
     RequestPath = ImagePath.RequestShopsImagePath
+});
+
+var productsImages = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.ProductsImagePath);
+if (!Directory.Exists(productsImages))
+{
+    Directory.CreateDirectory(productsImages);
+}
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(productsImages),
+    RequestPath = ImagePath.RequestProductsImagePath
 });
 
 
