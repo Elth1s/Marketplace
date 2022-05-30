@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebAPI.Interfaces;
 using WebAPI.ViewModels.Request;
 
@@ -12,12 +13,15 @@ namespace WebAPI.Controllers
             _filterService = filterService;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("GetFilters")]
         public async Task<IActionResult> GetFilters()
         {
             var result = await _filterService.GetFiltersAsync();
             return Ok(result);
         }
+
+        [Authorize(Roles = "Admin")]
         [HttpGet("GetFilterById/{filterId}")]
         public async Task<IActionResult> GetFilterById(int filterId)
         {
@@ -25,6 +29,7 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("CreateFilter")]
         public async Task<IActionResult> CreateFilter([FromBody] FilterRequest request)
         {
@@ -32,6 +37,7 @@ namespace WebAPI.Controllers
             return Ok("Filter created successfully");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("UpdateFilter/{filterId}")]
         public async Task<IActionResult> UpdateFilter(int filterId, [FromBody] FilterRequest request)
         {
@@ -39,6 +45,7 @@ namespace WebAPI.Controllers
             return Ok("Filter updated successfully");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("DeleteFilter/{filterId}")]
         public async Task<IActionResult> DeleteFilter(int filterId)
         {

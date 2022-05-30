@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebAPI.Interfaces;
 using WebAPI.ViewModels.Request;
 
@@ -14,12 +15,15 @@ namespace WebAPI.Controllers
             _countryService = countryService;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("GetCountries")]
         public async Task<IActionResult> GetCountries()
         {
             var result = await _countryService.GetCountriesAsync();
             return Ok(result);
         }
+
+        [Authorize(Roles = "Admin")]
         [HttpGet("GetCountryById/{countryId}")]
         public async Task<IActionResult> GetCountryById(int countryId)
         {
@@ -27,6 +31,7 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("CreateCountry")]
         public async Task<IActionResult> CreateCountry([FromBody] CountryRequest request)
         {
@@ -34,6 +39,7 @@ namespace WebAPI.Controllers
             return Ok("Country created successfully");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("UpdateCountry/{countryId}")]
         public async Task<IActionResult> UpdateCountry(int countryId, [FromBody] CountryRequest request)
         {
@@ -41,6 +47,7 @@ namespace WebAPI.Controllers
             return Ok("Country updated successfully");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("DeleteCountry/{countryId}")]
         public async Task<IActionResult> DeleteCountry(int countryId)
         {

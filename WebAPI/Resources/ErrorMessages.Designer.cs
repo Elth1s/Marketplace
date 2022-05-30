@@ -61,19 +61,20 @@ namespace WebAPI.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Category was not found.
-        /// </summary>
-        internal static string CategoryNotFound {
-            get {
-                return ResourceManager.GetString("CategoryNotFound", resourceCulture);
-            }
-        }
-        /// <summary>
         ///   Looks up a localized string similar to You have not passed the captcha verification.
         /// </summary>
         internal static string CaptchaVerificationFailed {
             get {
                 return ResourceManager.GetString("CaptchaVerificationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Category was not found.
+        /// </summary>
+        internal static string CategoryNotFound {
+            get {
+                return ResourceManager.GetString("CategoryNotFound", resourceCulture);
             }
         }
         
@@ -87,6 +88,15 @@ namespace WebAPI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Characteristic was not found.
+        /// </summary>
+        internal static string CharacteristicNotFound {
+            get {
+                return ResourceManager.GetString("CharacteristicNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to City was not found.
         /// </summary>
         internal static string CityNotFound {
@@ -95,14 +105,6 @@ namespace WebAPI.Resources {
             }
         }
         
-        /// <summary>
-        ///   Looks up a localized string similar to Characteristic was not found.
-        /// </summary>
-        internal static string CharacteristicNotFound {
-            get {
-                return ResourceManager.GetString("CharacteristicNotFound", resourceCulture);
-            }
-        }
         /// <summary>
         ///   Looks up a localized string similar to County was not found.
         /// </summary>
@@ -181,6 +183,15 @@ namespace WebAPI.Resources {
         internal static string TokenRevorked {
             get {
                 return ResourceManager.GetString("TokenRevorked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to add seller role.
+        /// </summary>
+        internal static string UserAddRoleFail {
+            get {
+                return ResourceManager.GetString("UserAddRoleFail", resourceCulture);
             }
         }
         

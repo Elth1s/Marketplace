@@ -17,7 +17,7 @@ import {
 } from "./types";
 import http, { setLocalRefreshToken, setLocalAccessToken } from "../../http_comon"
 
-import { accessToken, refreshToken } from "./constants"
+import { accessToken, refreshToken, emailClaim, roleClaim } from "./constants"
 
 export const LoginUser = (data: ILoginModel, reCaptchaToken: string) => {
     return async (dispatch: Dispatch<AuthAction>) => {
@@ -100,10 +100,10 @@ export const GoogleExternalLogin = (data: IExternalLoginModel) => {
 
 export const AuthUser = (token: string) => {
     return async (dispatch: Dispatch<AuthAction>) => {
-        const user = jwt_decode(token) as IUser;
+        const decodedToken = jwt_decode(token) as any;
         dispatch({
             type: AuthActionTypes.AUTH_SUCCESS,
-            payload: { id: user.id, firstName: user.firstName, secondName: user.secondName, photo: user.photo, email: user.email, roles: user.roles }
+            payload: { email: decodedToken[emailClaim], role: decodedToken[roleClaim] }
         })
     }
 }

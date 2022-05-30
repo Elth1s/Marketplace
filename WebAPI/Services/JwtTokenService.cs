@@ -49,7 +49,7 @@ namespace WebAPI.Services
             var jwt = new JwtSecurityToken(
                 audience: _jwtSettings.Audience,
                 issuer: _jwtSettings.Issuer,
-                expires: DateTime.Now.AddHours(_jwtSettings.AccessTokenDuration),
+                expires: DateTime.UtcNow.AddHours(_jwtSettings.AccessTokenDuration),
                 signingCredentials: signinCredentials,
                 claims: claims
             );
@@ -64,10 +64,10 @@ namespace WebAPI.Services
                 generator.GetBytes(randomNumber);
                 return new RefreshToken
                 {
-                    Created = DateTime.Now,
+                    Created = DateTime.UtcNow,
                     CreatedByIp = ipAddress,
                     Token = Convert.ToBase64String(randomNumber),
-                    Expires = DateTime.Now.AddDays(_jwtSettings.RefreshTokenDuration),
+                    Expires = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenDuration),
                 };
             }
 

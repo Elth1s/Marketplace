@@ -13,8 +13,7 @@ namespace WebAPI.Mapper
         {
             //User
             CreateMap<SignUpRequest, AppUser>()
-                .ForMember(u => u.UserName, opt => opt.MapFrom(vm => vm.Email))
-                .ForMember(u => u.PhoneNumber, opt => opt.MapFrom(vm => vm.Phone));
+                .ForMember(u => u.UserName, opt => opt.MapFrom(vm => vm.Email));
 
             CreateMap<AppUser, ProfileResponse>()
                 .ForMember(u => u.Phone, opt => opt.MapFrom(vm => vm.PhoneNumber))

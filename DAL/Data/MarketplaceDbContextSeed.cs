@@ -1,28 +1,32 @@
-﻿using DAL.Entities;
+﻿using DAL.Constants;
+using DAL.Entities;
+using DAL.Entities.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Data
 {
     public class MarketplaceDbContextSeed
     {
-        public static async Task SeedAsync(MarketplaceDbContext marketplaceDbContext/*, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager*/)
+        public static async Task SeedAsync(MarketplaceDbContext marketplaceDbContext, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
         {
 
-            if (marketplaceDbContext.Database.IsSqlServer())
+            if (marketplaceDbContext.Database.IsNpgsql())
             {
                 marketplaceDbContext.Database.Migrate();
             }
 
-            //await roleManager.CreateAsync(new IdentityRole(BlazorShared.Authorization.Constants.Roles.ADMINISTRATORS));
+            await roleManager.CreateAsync(new IdentityRole(Roles.Admin));
+            await roleManager.CreateAsync(new IdentityRole(Roles.Seller));
 
-            //var defaultUser = new ApplicationUser { UserName = "demouser@microsoft.com", Email = "demouser@microsoft.com" };
-            //await userManager.CreateAsync(defaultUser, AuthorizationConstants.DEFAULT_PASSWORD);
+            var defaultUser = new AppUser { UserName = UsersInfo.DefaultUserName, Email = UsersInfo.DefaultUserName };
+            await userManager.CreateAsync(defaultUser, UsersInfo.DefaultPassword);
+            defaultUser = await userManager.FindByNameAsync(UsersInfo.DefaultUserName);
 
-            //string adminUserName = "admin@microsoft.com";
-            //var adminUser = new ApplicationUser { UserName = adminUserName, Email = adminUserName };
-            //await userManager.CreateAsync(adminUser, AuthorizationConstants.DEFAULT_PASSWORD);
-            //adminUser = await userManager.FindByNameAsync(adminUserName);
-            //await userManager.AddToRoleAsync(adminUser, BlazorShared.Authorization.Constants.Roles.ADMINISTRATORS);
+            var adminUser = new AppUser { UserName = UsersInfo.AdminUserName, Email = UsersInfo.AdminUserName };
+            await userManager.CreateAsync(adminUser, UsersInfo.DefaultPassword);
+            adminUser = await userManager.FindByNameAsync(UsersInfo.AdminUserName);
+            await userManager.AddToRoleAsync(adminUser, Roles.Admin);
         }
 
         static IEnumerable<Category> GetPreconfiguredMarketplaceCategory()

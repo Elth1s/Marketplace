@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebAPI.Interfaces;
 using WebAPI.ViewModels.Request;
 
@@ -14,12 +15,15 @@ namespace WebAPI.Controllers
             _filterGroupService = filterGroupService;
         }
 
-        [HttpGet("GetCountries")]
-        public async Task<IActionResult> GetCountries()
+        [Authorize(Roles = "Admin")]
+        [HttpGet("GetFilterGroups")]
+        public async Task<IActionResult> GetFilterGroups()
         {
             var result = await _filterGroupService.GetFilterGroupsAsync();
             return Ok(result);
         }
+
+        [Authorize(Roles = "Admin")]
         [HttpGet("GetFilterGroupById/{filterGroupId}")]
         public async Task<IActionResult> GetFilterGroupById(int filterGroupId)
         {
@@ -27,6 +31,7 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("CreateFilterGroup")]
         public async Task<IActionResult> CreateFilterGroup([FromBody] FilterGroupRequest request)
         {
@@ -34,6 +39,7 @@ namespace WebAPI.Controllers
             return Ok("Filter group created successfully");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("UpdateFilterGroup/{filterGroupId}")]
         public async Task<IActionResult> UpdateFilterGroup(int filterGroupId, [FromBody] FilterGroupRequest request)
         {
@@ -41,6 +47,7 @@ namespace WebAPI.Controllers
             return Ok("Filter group updated successfully");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("DeleteFilterGroup/{filterGroupId}")]
         public async Task<IActionResult> DeleteFilterGroup(int filterGroupId)
         {

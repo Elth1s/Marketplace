@@ -117,7 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-
   <data name="CategoryNotFound" xml:space="preserve">
     <value>Category was not found</value>
   </data>
@@ -168,5 +167,8 @@
   </data>
   <data name="FilterNotFound" xml:space="preserve">
     <value>Filter was not found</value>
+  </data>
+  <data name="UserAddRoleFail" xml:space="preserve">
+    <value>Failed to add seller role</value>
   </data>
 </root>
