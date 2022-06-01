@@ -1,30 +1,46 @@
-import { Box, Grid, Stack, Typography, CircularProgress, TextField, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
-import { LoadingButton } from "@mui/lab";
+import {
+    Box,
+    Grid,
+    Stack,
+    Typography,
+    CircularProgress,
+    TextField,
+    Autocomplete
+} from "@mui/material";
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+
 import { Form, FormikProvider, useFormik } from "formik";
+import { LoadingButton } from "@mui/lab";
 
 import { useActions } from "../../../../hooks/useActions";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
+
 import { validationFields } from "../validation";
 import { ICategory } from "../types";
 
 import CropperDialog from "../../../../components/CropperDialog";
 
 const CategoryUpdate = () => {
-    const { GetCategoryForSelect, GetByIdCategory, UpdateCategory } = useActions();
+    const { GetByIdCategory, GetCategoryForSelect, GetCharacteristics, UpdateCategory } = useActions();
     const [loading, setLoading] = useState<boolean>(false);
 
     const { categoryInfo, categoriesForSelect } = useTypedSelector((store) => store.category);
 
+    const category: ICategory = {
+        name: categoryInfo.name,
+        image: categoryInfo.image,
+        parentId:categoriesForSelect.find(c => c.name === categoryInfo.parentName)?.id! || null,
+    }
+
     const navigator = useNavigate();
 
     useEffect(() => {
-        getCategory();
+        getData();
     }, []);
 
-    const getCategory: () => void = async () => {
+    const getData = async () => {
         setLoading(true);
         try {
             document.title = "Category";
@@ -33,7 +49,8 @@ const CategoryUpdate = () => {
             let id = params.get("id");
 
             await GetByIdCategory(id);
-            await GetCategoryForSelect()
+            await GetCategoryForSelect();
+            await GetCharacteristics();
 
             setLoading(false);
         } catch (ex) {
@@ -43,7 +60,7 @@ const CategoryUpdate = () => {
 
     const onHandleSubmit = async (values: ICategory) => {
         try {
-            await UpdateCategory(values);
+            await UpdateCategory(categoryInfo.id, values);
             navigator("/category");
         }
         catch (ex) {
@@ -52,7 +69,7 @@ const CategoryUpdate = () => {
     }
 
     const formik = useFormik({
-        initialValues: categoryInfo,
+        initialValues: category,
         validationSchema: validationFields,
         enableReinitialize: true,
         onSubmit: onHandleSubmit
@@ -73,42 +90,37 @@ const CategoryUpdate = () => {
                 </Typography>
             </Stack>
 
-            {loading ? <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                <CircularProgress sx={{ color: "#66fcf1", mt: 3 }} />
-            </Box> :
-
+            {loading ? (
+                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <CircularProgress sx={{ color: "#66fcf1", mt: 3 }} />
+                </Box>
+            ) : (
                 <Box sx={{ mt: 3 }} >
                     <FormikProvider value={formik} >
                         <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
                             <Stack direction="row">
                                 <Grid container spacing={4} sx={{ width: "70%" }}>
 
-                                    <Grid item xs={12} md={6}>
-                                        <FormControl fullWidth>
-                                            <InputLabel id="parent-select-label">Parent</InputLabel>
-                                            <Select
-                                                labelId="parent-select-label"
-                                                id="parent-select"
-                                                label="Parent"
-                                                {...getFieldProps('parentId')}
-                                            >
-                                                {categoriesForSelect && categoriesForSelect.map((item) =>
-                                                (
-                                                    <MenuItem value={item.id}>{item.name}</MenuItem>
-                                                ))}
-                                            </Select>
-                                        </FormControl>
-                                    </Grid>
-
-                                    <Grid item xs={12} md={6}>
-                                        <TextField
-                                            fullWidth
-                                            autoComplete="characteristicId"
-                                            type="number"
-                                            label="Characteristic Id"
-                                            {...getFieldProps('characteristicId')}
-                                            error={Boolean(touched.characteristicId && errors.characteristicId)}
-                                            helperText={touched.characteristicId && errors.characteristicId}
+                                    <Grid item xs={12}>
+                                        <Autocomplete
+                                            autoHighlight
+                                            id="parent-categoty-select"
+                                            options={categoriesForSelect}
+                                            getOptionLabel={(option) => option.name}
+                                            isOptionEqualToValue={(option, value) => option.id === value.id}
+                                            defaultValue={categoriesForSelect.find(value => value.id === category.parentId)}
+                                            onChange={(e, value) => { setFieldValue("parentId", value?.id || null) }}
+                                            //{...getFieldProps('parentId')}
+                                            renderInput={(params) => (
+                                                <TextField
+                                                    {...params}
+                                                    id="parentId"
+                                                    label="Parent categoty"
+                                                    name="parentId"
+                                                    error={Boolean(touched.parentId && errors.parentId)}
+                                                    helperText={touched.parentId && errors.parentId}
+                                                />
+                                            )}
                                         />
                                     </Grid>
 
@@ -148,8 +160,7 @@ const CategoryUpdate = () => {
                         </Form>
                     </FormikProvider>
                 </Box>
-
-            }
+            )}
         </Box>
     )
 }

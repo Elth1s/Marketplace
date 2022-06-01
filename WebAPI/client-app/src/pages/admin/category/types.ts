@@ -4,21 +4,19 @@ export enum CategoryActionTypes {
     GET_BY_ID_CATEGORY = "GET_BY_ID_CATEGORY",
     CREATE_CATEGOTY = "CREATE_CATEGOTY",
     UPDATE_CATEGORY = "UPDATE_CATEGORY",
-    DELETE_CATEGORY = "DELETE_CATEGORY",
 }
 
 export interface ICategory {
+    name: string,
+    image: string,
+    parentId: number | null
+}
+
+export interface ICategoryInfo {
     id: number
     name: string,
     image: string,
-    parentId: number | undefined,
-    characteristicId: number
-}
-export interface ICreateCategory {
-    name: string,
-    image: string,
-    parentId: number | undefined,
-    characteristicId: number
+    parentName: string
 }
 
 export interface ICategoryForSelect {
@@ -28,8 +26,8 @@ export interface ICategoryForSelect {
 
 
 export interface CategoryState {
-    categoryInfo: ICategory,
-    categories: Array<ICategory>,
+    categoryInfo: ICategoryInfo,
+    categories: Array<ICategoryInfo>,
     categoriesForSelect: Array<ICategoryForSelect>,
     last_page: number
 }
@@ -43,7 +41,7 @@ export interface CategoryServerError {
 
 export interface GetCategoriesAction {
     type: CategoryActionTypes.GET_CATEGORIES,
-    payload: Array<ICategory>
+    payload: Array<ICategoryInfo>
 }
 
 export interface GetCategoriesForSelectAction {
@@ -53,12 +51,12 @@ export interface GetCategoriesForSelectAction {
 
 export interface GetByIdCategoryAction {
     type: CategoryActionTypes.GET_BY_ID_CATEGORY,
-    payload: ICategory
+    payload: ICategoryInfo
 }
 
 export interface CreateCategoryAction {
     type: CategoryActionTypes.CREATE_CATEGOTY,
-    payload: ICreateCategory
+    payload: ICategory
 }
 
 export interface UpdateCategoryAction {
