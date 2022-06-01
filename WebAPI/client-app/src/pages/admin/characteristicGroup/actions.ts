@@ -13,7 +13,7 @@ import {
 export const GetByIdCharacteristicGroup = (id: string | null) => {
     return async (dispatch: Dispatch<CharacteristicGroupAction>) => {
         try {
-            let response = await http.get<ICharacteristicGroupInfo>(`/api/CharacteristicGroup/GetById/${id}`)
+            let response = await http.get<ICharacteristicGroupInfo>(`api/CharacteristicGroup/GetById/${id}`)
 
             dispatch({
                 type: CharacteristicGroupActionTypes.GET_BY_ID_CHARACTERISTIC_GROUP,
@@ -37,7 +37,7 @@ export const GetByIdCharacteristicGroup = (id: string | null) => {
 export const GetCharacteristicGroups = () => {
     return async (dispatch: Dispatch<CharacteristicGroupAction>) => {
         try {
-            let response = await http.get<Array<ICharacteristicGroupInfo>>(`/api/CharacteristicGroup/Get`)
+            let response = await http.get<Array<ICharacteristicGroupInfo>>(`api/CharacteristicGroup/Get`)
 
             dispatch({
                 type: CharacteristicGroupActionTypes.GET_CHARACTERISTIC_GROUPS,

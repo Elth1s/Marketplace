@@ -26,8 +26,10 @@ builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSet
 builder.Services.Configure<GoogleAuthSettings>(builder.Configuration.GetSection("GoogleAuthSettings"));
 
 // Database & Identity
+//builder.Services.AddDbContext<MarketplaceDbContext>(options =>
+//                options.UseSqlServer(builder.Configuration.GetConnectionString("MarketplaceConnection")));
 builder.Services.AddDbContext<MarketplaceDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("MarketplaceConnection")));
+options.UseNpgsql("Server=3.120.192.219;Port=5743;Database=dbdimakarina;User Id=userdimakarina;Password=$544$dij*78BG)K$t!Ube22}xk;"));
 
 
 builder.Services.AddIdentity<AppUser, IdentityRole>()
@@ -121,8 +123,9 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var catalogContext = scopedProvider.GetRequiredService<MarketplaceDbContext>();
-        await MarketplaceDbContextSeed.SeedAsync(catalogContext);
-
+        var userManager = scopedProvider.GetRequiredService<UserManager<AppUser>>();
+        var roleManager = scopedProvider.GetRequiredService<RoleManager<IdentityRole>>();
+        await MarketplaceDbContextSeed.SeedAsync(catalogContext, userManager, roleManager);
     }
     catch (Exception ex)
     {

@@ -1,6 +1,7 @@
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
+import { StyledEngineProvider } from '@mui/material/styles';
 
 
 import App from './App';
@@ -13,7 +14,9 @@ import "cropperjs/dist/cropper.css";
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
-      <App />
+      <StyledEngineProvider injectFirst>
+        <App />
+      </StyledEngineProvider>
     </BrowserRouter>
   </Provider>,
   document.getElementById('root')
