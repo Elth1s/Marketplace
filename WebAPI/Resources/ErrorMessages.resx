@@ -168,6 +168,18 @@
   <data name="FilterNotFound" xml:space="preserve">
     <value>Filter was not found</value>
   </data>
+  <data name="ProductStatusNotFound" xml:space="preserve">
+    <value>Product Status was not found</value>
+  </data>
+  <data name="ProductNotFound" xml:space="preserve">
+    <value>Product was not found</value>
+  </data>
+  <data name="ProductCharacteristicNotFound" xml:space="preserve">
+    <value>Product Characteristic was not found</value>
+  </data>
+  <data name="ProductImageNotFound" xml:space="preserve">
+    <value>Product Image was not found</value>
+  </data>
   <data name="UserAddRoleFail" xml:space="preserve">
     <value>Failed to add seller role</value>
   </data>

@@ -169,6 +169,42 @@ namespace WebAPI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Product Characteristic was not found.
+        /// </summary>
+        internal static string ProductCharacteristicNotFound {
+            get {
+                return ResourceManager.GetString("ProductCharacteristicNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Product Image was not found.
+        /// </summary>
+        internal static string ProductImageNotFound {
+            get {
+                return ResourceManager.GetString("ProductImageNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Product was not found.
+        /// </summary>
+        internal static string ProductNotFound {
+            get {
+                return ResourceManager.GetString("ProductNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Product Status was not found.
+        /// </summary>
+        internal static string ProductStatusNotFound {
+            get {
+                return ResourceManager.GetString("ProductStatusNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shop was not found.
         /// </summary>
         internal static string ShopNotFound {
