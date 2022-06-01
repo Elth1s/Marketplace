@@ -1,5 +1,6 @@
 .left_menu_container{
-    width: 25%;
+    width: 100%;
+    float: left;
     height:100vh;
     background-color: white;
     box-shadow: 6px 3px 10px 2px #dddddd;

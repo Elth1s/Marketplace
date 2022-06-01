@@ -7,19 +7,22 @@ import SignIn from './components/auth/SignIn';
 import SignUp from './components/auth/SignUp';
 import Profile from './components/user/Profile';
 import Admin from './components/admin_panel';
+import AdminLayout from './components/containers/AdminLayout/AdminLayout';
 function App() {
   return (
     <>
       <Routes>
 
-        <Route element={<AuthLayout />}>
+        {/* <Route element={<AuthLayout />}>
           <Route path="/auth/signin" element={<SignIn />} />
           <Route path="/auth/signup" element={<SignUp />} />
           <Route path="/auth/profile" element={<Profile />} />
-          <Route path='/admin' element={<Admin/>}/>
+        </Route> */}
+
+
+        <Route path='/admin/' element={<AdminLayout/>}>
+            <Route path="auth/signin" element={<SignIn />} />
         </Route>
-
-
         {/* <Route path="*" element={<NotFound />} /> */}
       </Routes>
     </>
