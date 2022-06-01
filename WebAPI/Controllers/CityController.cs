@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebAPI.Interfaces;
 using WebAPI.ViewModels.Request;
 
@@ -14,12 +15,15 @@ namespace WebAPI.Controllers
             _cityService = cityService;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("GetCities")]
         public async Task<IActionResult> GetCities()
         {
             var result = await _cityService.GetCitiesAsync();
             return Ok(result);
         }
+
+        [Authorize(Roles = "Admin")]
         [HttpGet("GetCityById/{cityId}")]
         public async Task<IActionResult> GetCityById(int cityId)
         {
@@ -27,6 +31,7 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("CreateCity")]
         public async Task<IActionResult> CreateCity([FromBody] CityRequest request)
         {
@@ -34,6 +39,7 @@ namespace WebAPI.Controllers
             return Ok("City created successfully");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("UpdateCity/{cityId}")]
         public async Task<IActionResult> UpdateCity(int cityId, [FromBody] CityRequest request)
         {
@@ -41,6 +47,7 @@ namespace WebAPI.Controllers
             return Ok("City updated successfully");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("DeleteCity/{cityId}")]
         public async Task<IActionResult> DeleteCity(int cityId)
         {

@@ -8,7 +8,7 @@ import { IProfile, ProfileAction, ProfileActionTypes, ProfileServerError } from 
 export const GetProfile = () => {
     return async (dispatch: Dispatch<ProfileAction>) => {
         try {
-            let response = await http.get<IProfile>(`/api/User/Profile`)
+            let response = await http.get<IProfile>(`api/User/Profile`)
             if (response.data.photo != "")
                 response.data.photo = baseURL + response.data.photo;
             dispatch({
@@ -34,7 +34,7 @@ export const UpdateProfile = (data: IProfile) => {
     return async (dispatch: Dispatch<AuthAction>) => {
         try {
 
-            let response = await http.put(`/api/User/UpdateProfile`, data)
+            let response = await http.put(`api/User/UpdateProfile`, data)
 
             // AuthUser(token);
             return Promise.resolve();

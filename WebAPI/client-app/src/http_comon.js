@@ -1,10 +1,10 @@
 import axios from "axios";
 import { accessToken as at, refreshToken as rt } from "./pages/auth/constants"
 
-export const baseURL = "http://localhost:5147"
+export const baseURL = "/"
 
 
-function getLocalAccessToken() {
+export function getLocalAccessToken() {
     const accessToken = window.localStorage.getItem(at);
     return accessToken;
 }

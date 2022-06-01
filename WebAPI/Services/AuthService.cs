@@ -66,11 +66,7 @@ namespace WebAPI.Services
             {
                 throw new AppException(ErrorMessages.UserCreateFail);
             }
-            //var resultRole = await _userManager.AddToRoleAsync(_user, Roles.User);
-            //if (!resultRole.Succeeded)
-            //{
-            //    throw new AppException($"Failed to add { Roles.User } role to { _user.Email}.");
-            //}
+
             var refreshToken = _jwtTokenService.GenerateRefreshToken(ipAddress);
             await _jwtTokenService.SaveRefreshToken(refreshToken, user);
 

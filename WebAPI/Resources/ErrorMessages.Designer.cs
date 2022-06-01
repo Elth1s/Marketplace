@@ -223,6 +223,15 @@ namespace WebAPI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to add seller role.
+        /// </summary>
+        internal static string UserAddRoleFail {
+            get {
+                return ResourceManager.GetString("UserAddRoleFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User creation failed.
         /// </summary>
         internal static string UserCreateFail {

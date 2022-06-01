@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebAPI.Interfaces;
 using WebAPI.ViewModels.Request;
 
@@ -6,7 +7,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoryController  : ControllerBase
+    public class CategoryController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
 
@@ -22,6 +23,7 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("GetForSelect")]
         public async Task<IActionResult> GetForSelectCategory()
         {
@@ -29,6 +31,7 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("GetById/{id}")]
         public async Task<IActionResult> GetByIdCategory(int id)
         {
@@ -36,6 +39,7 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("Create")]
         public async Task<IActionResult> CreateCategory([FromBody] CategoryRequest request)
         {
@@ -43,6 +47,7 @@ namespace WebAPI.Controllers
             return Ok("Category created successfully");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("Update/{id}")]
         public async Task<IActionResult> UpdateCategory(int id, [FromBody] CategoryRequest request)
         {
@@ -50,6 +55,7 @@ namespace WebAPI.Controllers
             return Ok("Category updated successfully");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> DeleteCategory(int id)
         {

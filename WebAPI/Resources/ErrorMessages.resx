@@ -180,4 +180,7 @@
   <data name="ProductImageNotFound" xml:space="preserve">
     <value>Product Image was not found</value>
   </data>
+  <data name="UserAddRoleFail" xml:space="preserve">
+    <value>Failed to add seller role</value>
+  </data>
 </root>

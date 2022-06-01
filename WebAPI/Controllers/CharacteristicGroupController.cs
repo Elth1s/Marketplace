@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebAPI.Interfaces;
 using WebAPI.ViewModels.Request;
 
@@ -14,6 +15,7 @@ namespace WebAPI.Controllers
             _characteristicGroupService = characteristicGroupService;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("Get")]
         public async Task<IActionResult> Get()
         {
@@ -21,6 +23,7 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("GetById/{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -28,6 +31,7 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("Create")]
         public async Task<IActionResult> Create([FromBody] CharacteristicGroupRequest request)
         {
@@ -35,6 +39,7 @@ namespace WebAPI.Controllers
             return Ok("CharacteristicGroup updated successfully");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("Update/{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] CharacteristicGroupRequest request)
         {
@@ -42,6 +47,7 @@ namespace WebAPI.Controllers
             return Ok("CharacteristicGroup updated successfully");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {

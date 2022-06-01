@@ -13,7 +13,7 @@ import {
 export const GetByIdCharacteristic = (id: string | null) => {
     return async (dispatch: Dispatch<CharacteristicAction>) => {
         try {
-            let response = await http.get<ICharacteristicInfo>(`/api/Characteristic/GetById/${id}`)
+            let response = await http.get<ICharacteristicInfo>(`api/Characteristic/GetById/${id}`)
 
             dispatch({
                 type: CharacteristicActionTypes.GET_BY_ID_CHARACTERISTIC,
@@ -37,7 +37,7 @@ export const GetByIdCharacteristic = (id: string | null) => {
 export const GetCharacteristics = () => {
     return async (dispatch: Dispatch<CharacteristicAction>) => {
         try {
-            let response = await http.get<Array<ICharacteristicInfo>>(`/api/Characteristic/Get`)
+            let response = await http.get<Array<ICharacteristicInfo>>(`api/Characteristic/Get`)
 
             dispatch({
                 type: CharacteristicActionTypes.GET_CHARACTERISTICS,

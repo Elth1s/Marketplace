@@ -1,13 +1,16 @@
 ﻿using AutoMapper;
 using DAL;
+using DAL.Constants;
 using DAL.Entities;
 using DAL.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using System.Drawing.Imaging;
 using WebAPI.Constants;
+using WebAPI.Exceptions;
 using WebAPI.Extensions;
 using WebAPI.Helpers;
 using WebAPI.Interfaces;
+using WebAPI.Resources;
 using WebAPI.Specifications;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Response;
@@ -54,6 +57,15 @@ namespace WebAPI.Services
             var user = await _userManager.FindByIdAsync(userId);
             user.UserNullChecking();
 
+            if (_userManager.GetRolesAsync(user) == null)
+            {
+                var resultRole = await _userManager.AddToRoleAsync(user, Roles.Seller);
+                if (!resultRole.Succeeded)
+                {
+                    throw new AppException(ErrorMessages.UserAddRoleFail);
+                }
+            }
+
             var shop = _mapper.Map<Shop>(request);
             shop.UserId = userId;
 
@@ -69,6 +81,8 @@ namespace WebAPI.Services
 
             await _shopRepository.AddAsync(shop);
             await _shopRepository.SaveChangesAsync();
+
+
         }
 
         public async Task UpdateShopAsync(int shopId, ShopRequest request, string userId)

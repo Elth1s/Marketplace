@@ -4,12 +4,8 @@ export enum AuthActionTypes {
 }
 
 export interface IUser {
-    id: string,
-    firstName: string,
-    secondName: string,
-    photo: string,
     email: string,
-    roles: string
+    role: string
 }
 
 export interface IAuthResponse {
@@ -36,10 +32,8 @@ export interface LoginServerError {
 export interface IRegisterModel {
     firstName: string,
     secondName: string,
-    phone: string,
     email: string,
     password: string,
-    confirmPassword: string
 };
 
 export interface RegisterServerError {
