@@ -7,7 +7,7 @@ import { ICategory, CategoryAction, CategoryActionTypes, ICreateCategory, ICateg
 export const GetByIdCategory = (id: string | null) => {
     return async (dispatch: Dispatch<CategoryAction>) => {
         try {
-            let response = await http.get<ICategory>(`/api/Category/GetById/${id}`)
+            let response = await http.get<ICategory>(`api/Category/GetById/${id}`)
 
             dispatch({
                 type: CategoryActionTypes.GET_BY_ID_CATEGORY,
@@ -31,7 +31,7 @@ export const GetByIdCategory = (id: string | null) => {
 export const GetCategory = () => {
     return async (dispatch: Dispatch<CategoryAction>) => {
         try {
-            let response = await http.get<Array<ICategory>>(`/api/Category/Get`)
+            let response = await http.get<Array<ICategory>>(`api/Category/Get`)
 
             dispatch({
                 type: CategoryActionTypes.GET_CATEGORIES,
@@ -55,7 +55,7 @@ export const GetCategory = () => {
 export const GetCategoryForSelect = () => {
     return async (dispatch: Dispatch<CategoryAction>) => {
         try {
-            let response = await http.get<Array<ICategoryForSelect>>(`/api/Category/GetForSelect`)
+            let response = await http.get<Array<ICategoryForSelect>>(`api/Category/GetForSelect`)
 
             dispatch({
                 type: CategoryActionTypes.GET_CATEGORIES_FOR_SELECT,

@@ -22,7 +22,7 @@ import { accessToken, refreshToken, emailClaim, roleClaim } from "./constants"
 export const LoginUser = (data: ILoginModel, reCaptchaToken: string) => {
     return async (dispatch: Dispatch<AuthAction>) => {
         try {
-            let response = await http.post<IAuthResponse>('/api/Auth/SignIn', { ...data, reCaptchaToken: reCaptchaToken })
+            let response = await http.post<IAuthResponse>('api/Auth/SignIn', { ...data, reCaptchaToken: reCaptchaToken })
             const tokens = response.data;
             setLocalAccessToken(tokens.accessToken);
             setLocalRefreshToken(tokens.refreshToken);
@@ -46,7 +46,7 @@ export const LoginUser = (data: ILoginModel, reCaptchaToken: string) => {
 export const RegisterUser = (data: IRegisterModel, reCaptchaToken: string) => {
     return async (dispatch: Dispatch<AuthAction>) => {
         try {
-            let response = await http.post<IAuthResponse>('/api/Auth/SignUp', { ...data, reCaptchaToken: reCaptchaToken })
+            let response = await http.post<IAuthResponse>('api/Auth/SignUp', { ...data, reCaptchaToken: reCaptchaToken })
             const tokens = response.data;
             setLocalAccessToken(tokens.accessToken);
             setLocalRefreshToken(tokens.refreshToken);
@@ -78,7 +78,7 @@ export const LogoutUser = () => {
 export const GoogleExternalLogin = (data: IExternalLoginModel) => {
     return async () => {
         try {
-            let response = await http.post<IAuthResponse>('/api/Auth/GoogleExternalLogin', data)
+            let response = await http.post<IAuthResponse>('api/Auth/GoogleExternalLogin', data)
             const tokens = response.data;
             setLocalAccessToken(tokens.accessToken);
             setLocalRefreshToken(tokens.refreshToken);
