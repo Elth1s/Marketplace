@@ -17,7 +17,7 @@ import {
 } from "./types";
 import http, { setLocalRefreshToken, setLocalAccessToken } from "../../http_comon"
 
-import { accessToken, refreshToken, emailClaim, roleClaim } from "./constants"
+import { accessToken, refreshToken, emailClaim, roleClaim, isEmailConfirmedClaim } from "./constants"
 
 export const LoginUser = (data: ILoginModel, reCaptchaToken: string) => {
     return async (dispatch: Dispatch<AuthAction>) => {
@@ -76,10 +76,11 @@ export const LogoutUser = () => {
 }
 
 export const GoogleExternalLogin = (data: IExternalLoginModel) => {
-    return async () => {
+    return async (dispatch: Dispatch<AuthAction>) => {
         try {
             let response = await http.post<IAuthResponse>('api/Auth/GoogleExternalLogin', data)
             const tokens = response.data;
+            console.log(tokens)
             setLocalAccessToken(tokens.accessToken);
             setLocalRefreshToken(tokens.refreshToken);
 

@@ -14,25 +14,27 @@ import { Form, FormikProvider, useFormik } from "formik";
 
 import { useActions } from "../../../hooks/useActions";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
-import { ProfileSchema } from "./validation";
-import { ProfileServerError } from "./types";
+import { ProfileSchema } from "../validation";
+import { ProfileServerError } from "../types";
 
 import CropperDialog from "../../../components/CropperDialog";
 
 
 const Profile = () => {
 
-    const { GetProfile, UpdateProfile } = useActions();
+    const { GetProfile, UpdateProfile, SendConfirmEmail, IsEmailConfirmed } = useActions();
     const [loading, setLoading] = useState<boolean>(false);
 
-    const { userInfo } = useTypedSelector((store) => store.profile);
 
+    const { userInfo } = useTypedSelector((store) => store.profile);
     useEffect(() => {
         async function getProfile() {
             setLoading(true);
             try {
                 document.title = "Profile";
                 await GetProfile();
+                await IsEmailConfirmed()
+                console.log("1")
                 setLoading(false);
             } catch (ex) {
                 // toast.error("Loading profile failed.");
@@ -76,7 +78,9 @@ const Profile = () => {
     const onSave = async (base64: string) => {
         setFieldValue("photo", base64)
     };
-
+    const onClickConfirmEmailBtn = async () => {
+        await SendConfirmEmail();
+    };
 
     const { errors, touched, isSubmitting, handleSubmit, getFieldProps, setFieldValue } = formik;
 
@@ -129,7 +133,28 @@ const Profile = () => {
                                                 helperText={touched.userName && errors.userName}
                                             />
                                         </Grid>
-
+                                        {!userInfo.isEmailConfirmed &&
+                                            <>
+                                                <Grid item xs={12} md={6}>
+                                                    <TextField
+                                                        fullWidth
+                                                        autoComplete="email"
+                                                        type="text"
+                                                        label="Email"
+                                                        disabled={true}
+                                                        {...getFieldProps('email')}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs={12} md={6} display="flex" justifyContent="space-between">
+                                                    <Button
+                                                        sx={{ alignSelf: "center" }}
+                                                        size="large"
+                                                        variant="contained" onClick={onClickConfirmEmailBtn}>
+                                                        Confirm email
+                                                    </Button>
+                                                </Grid>
+                                            </>
+                                        }
                                         <Grid item xs={12} mt={3} display="flex" justifyContent="space-between" >
                                             <LoadingButton
                                                 sx={{ paddingX: "35px" }}

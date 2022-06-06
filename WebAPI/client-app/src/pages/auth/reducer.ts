@@ -7,7 +7,8 @@ import {
 const initialState: AuthState = {
     user: {
         email: "",
-        role: ""
+        role: "",
+        isEmailConfirmed: false
     },
     isAuth: false,
 }
@@ -25,7 +26,8 @@ export const authReducer = (state = initialState, action: AuthAction): AuthState
                 ...state,
                 user: {
                     email: "",
-                    role: ""
+                    role: "",
+                    isEmailConfirmed: false
                 },
                 isAuth: false
             }

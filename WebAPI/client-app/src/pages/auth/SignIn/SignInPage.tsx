@@ -147,7 +147,7 @@ const SignIn = () => {
                                     />
                                 </Grid>
                                 <Grid item xs={12} sx={{ marginTop: "62px" }} display="flex" justifyContent="flex-end">
-                                    <AuthSideTypography sx={{ cursor: "pointer" }} >Забули пароль?</AuthSideTypography>
+                                    <AuthSideTypography component={Link} to="/resetPassword" sx={{ cursor: "pointer", textDecoration: "none", color: "#000" }} >Забули пароль?</AuthSideTypography>
                                 </Grid>
                                 <Grid item xs={8} mx="auto">
 
