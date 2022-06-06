@@ -17,7 +17,7 @@ import {
 } from "./types";
 import http, { setLocalRefreshToken, setLocalAccessToken } from "../../http_comon"
 
-import { accessToken, refreshToken, emailClaim, roleClaim, isEmailConfirmedClaim } from "./constants"
+import { accessToken, refreshToken, emailClaim, roleClaim } from "./constants"
 
 export const LoginUser = (data: ILoginModel, reCaptchaToken: string) => {
     return async (dispatch: Dispatch<AuthAction>) => {

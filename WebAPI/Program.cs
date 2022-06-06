@@ -28,12 +28,12 @@ builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailS
 builder.Services.Configure<ClientUrl>(builder.Configuration.GetSection("ClientServer"));
 
 // Database & Identity
-if (builder.Environment.IsDevelopment())
-    builder.Services.AddDbContext<MarketplaceDbContext>(options =>
-                    options.UseSqlServer(builder.Configuration.GetConnectionString("MarketplaceConnection")));
-else
-    builder.Services.AddDbContext<MarketplaceDbContext>(options =>
-                    options.UseNpgsql(builder.Configuration.GetConnectionString("MarketplaceConnection")));
+//if (builder.Environment.IsDevelopment())
+builder.Services.AddDbContext<MarketplaceDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("MarketplaceConnection")));
+//else
+//builder.Services.AddDbContext<MarketplaceDbContext>(options =>
+//                options.UseNpgsql(builder.Configuration.GetConnectionString("MarketplaceConnection")));
 
 
 builder.Services.AddIdentity<AppUser, IdentityRole>()
