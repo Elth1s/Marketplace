@@ -10,6 +10,7 @@ import AuthLayout from './containers/AuthLayout';
 import SignIn from './pages/auth/SignIn';
 import SignUp from './pages/auth/SignUp';
 import Profile from './pages/user/Profile';
+import ConfirmEmail from './pages/user/ConfirmEmail';
 
 import CategoryTable from './pages/admin/category/Table';
 import CategoryCreate from './pages/admin/category/Create';
@@ -23,6 +24,8 @@ import CharacteristicTable from './pages/admin/characteristic/Table';
 import CharacteristicCreate from './pages/admin/characteristic/Create';
 import CharacteristicUpdate from './pages/admin/characteristic/Update';
 import { useTypedSelector } from './hooks/useTypedSelector';
+import ResetPassword from './pages/user/ForgotPassword/Reset';
+import ChangePassword from './pages/user/ForgotPassword/Change';
 
 function App() {
   const { isAuth } = useTypedSelector(store => store.auth);
@@ -64,7 +67,10 @@ function App() {
           <Route path="/auth/signup" element={<SignUp />} />
         </Route>
 
-        <Route path="/user/profile" element={<Profile />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/confirmEmail" element={<ConfirmEmail />} />
+        <Route path="/resetPassword" element={<ResetPassword />} />
+        <Route path="/resetPassword/:token" element={<ChangePassword />} />
 
         <Route path="/category" element={<CategoryTable />} />
         <Route path="/category/create" element={<CategoryCreate />} />

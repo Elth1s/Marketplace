@@ -27,6 +27,15 @@ namespace WebAPI.Extensions
             }
         }
 
+        public static void UserEmailConfirmedChecking(this AppUser user)
+        {
+            if (user.EmailConfirmed)
+            {
+                throw new AppException(
+                    ErrorMessages.AlreadyComfirmEmail, HttpStatusCode.Unauthorized);
+            }
+        }
+
         public static void RefreshTokenNotActiveChecking(this RefreshToken refreshToken)
         {
             if (!refreshToken.IsActive)

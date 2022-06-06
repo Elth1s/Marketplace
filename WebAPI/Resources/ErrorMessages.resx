@@ -183,4 +183,22 @@
   <data name="UserAddRoleFail" xml:space="preserve">
     <value>Failed to add seller role</value>
   </data>
+  <data name="AlreadyComfirmEmail" xml:space="preserve">
+    <value>Your email address has already been confirmed</value>
+  </data>
+  <data name="EmailSendingFailed" xml:space="preserve">
+    <value>Sending email failed</value>
+  </data>
+  <data name="InvalidConfirmToken" xml:space="preserve">
+    <value>Invalid confirmation token</value>
+  </data>
+  <data name="InvalidPassword" xml:space="preserve">
+    <value>Invalid password</value>
+  </data>
+  <data name="InvalidResetPasswordToken" xml:space="preserve">
+    <value>Invalid password reset token</value>
+  </data>
+  <data name="PasswordUpdateFail" xml:space="preserve">
+    <value>Updating password failed</value>
+  </data>
 </root>

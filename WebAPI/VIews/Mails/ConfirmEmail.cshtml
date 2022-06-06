@@ -1,0 +1,126 @@
+﻿@model WebAPI.ViewModels.Request.UserTokenRequest
+@{
+    Layout = "_MailLayout";
+    //ViewData["ClientUrl"] = Model.Uri;
+}
+
+<table
+ style="border-collapse:collapse;border-spacing:0;display:table;padding:0;text-align:left;vertical-align:top;width:100%">
+    <tbody>
+        <tr style="padding:0;text-align:left;vertical-align:top">
+            <th  style="Margin:0 auto;color:#322f37;font-family:Helvetica,Arial,sans-serif;font-size:18px;font-weight:500;line-height:1.3;margin:0 auto;padding:0;padding-bottom:0!important;padding-left:20px;padding-right:20px;padding-top:0!important;text-align:left;width:560px">
+                <table style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
+                    <tbody>
+                        <tr style="padding:0;text-align:left;vertical-align:top">
+                            <th style="Margin:0;color:#322f37;font-family:Helvetica,Arial,sans-serif;font-size:18px;font-weight:500;line-height:1.3;margin:0;padding:0;text-align:left">
+                                <h6 style="Margin:0;Margin-bottom:10px;color:inherit;font-family:Helvetica,Arial,sans-serif;font-size:18px;font-weight:500;line-height:1.3;margin:0;margin-bottom:0;padding:0;padding-bottom:0;text-align:center;word-wrap:normal;color:black">
+                                      Hey @Model.Name
+                                </h6>
+                            </th>
+                            <th style="Margin:0;color:#322f37;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0!important;text-align:left;width:0">
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+            </th>
+        </tr>
+    </tbody>
+</table>
+<table
+    style="border-collapse:collapse;border-spacing:0;display:table;padding:0;text-align:left;vertical-align:top;width:100%">
+    <tbody>
+        <tr style="padding:0;text-align:left;vertical-align:top">
+            <th
+                style="Margin:0 auto;color:#322f37;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:300;line-height:1.3;margin:0 auto;padding:0;padding-bottom:16px;padding-left:20px;padding-right:20px;padding-top:10px;text-align:left;width:560px">
+                <table
+                    style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
+                    <tbody>
+                        <tr
+                            style="padding:0;text-align:left;vertical-align:top">
+                            <th
+                                style="Margin:0;color:#322f37;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:400;line-height:1.3;margin:0;padding:0;text-align:left">
+                                <p
+                                    style="Margin:0;Margin-bottom:10px;font-family:Helvetica,Arial,Verdana,'Trebuchet MS';font-size:16px;font-weight:300;line-height:24px;margin:0;margin-bottom:0;padding:0;padding-bottom:0;text-align:center">
+                                    Please verify your account.</p>
+                                <table
+                                    style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
+                                    <tbody>
+                                        <tr
+                                            style="padding:0;text-align:left;vertical-align:top">
+                                            <td height="20px"
+                                                style="Margin:0;border-collapse:collapse!important;color:#322f37;font-family:Helvetica,Arial,sans-serif;font-size:10px;font-weight:400;line-height:10px;margin:0;padding:0;text-align:left;vertical-align:top;word-wrap:break-word">
+                                                &nbsp;</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <center style="min-width:520px;width:100%">
+                                    <table
+                                        style="Margin:0 0 16px 0;border-collapse:collapse;border-spacing:0;float:none;font-weight:600;margin:0 0 16px 0;margin-bottom:0;padding:0;padding-bottom:0;text-align:center;vertical-align:top;width:auto">
+                                        <tbody>
+                                            <tr
+                                                style="padding:0;text-align:left;vertical-align:top">
+                                                <td
+                                                    style="Margin:0;border-collapse:collapse!important;color:#322f37;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:600;line-height:1.3;margin:0;padding:0;text-align:left;vertical-align:top;word-wrap:break-word">
+                                                    <table
+                                                        style="border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%;border:none">
+                                                        <tbody>
+                                                            <tr
+                                                                style="padding:0;text-align:left;vertical-align:top">
+                                                                <td
+                                                                    style="Margin:0;background:#F45626;border-collapse:collapse!important;color:#fff;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:600;line-height:1.3;margin:0;padding:0;text-align:left;vertical-align:top;word-wrap:break-word;border-radius:2px;overflow:hidden">
+                                                                    <a href=@Model.CallbackUrl
+                                                                        style="Margin:0;border:0 solid #F45626;border-radius:3px;color:#fff;display:inline-block;font-family:Helvetica,Arial,sans-serif;font-size:14px;font-weight:600;line-height:1.3;margin:0;padding:10px 55px 10px 55px;text-align:left;text-decoration:none"
+                                                                        target="_blank">
+                                                                        Verify
+                                                                        your
+                                                                        account</a>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </center><br>
+                            </th>
+                            <th
+                                style="Margin:0;color:#322f37;font-family:Helvetica,Arial,sans-serif;font-size:14px;font-weight:400;line-height:1.3;margin:0;padding:0!important;text-align:left;width:0">
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+            </th>
+        </tr>
+    </tbody>
+</table>
+<table
+    style="border-collapse:collapse;border-spacing:0;border-top:#efeef1 1px solid;font-size:0;line-height:0;max-height:0;overflow:hidden;padding:0;text-align:left;vertical-align:top;width:100%">
+    <tbody>
+        <tr style="padding:0;text-align:left;vertical-align:top">
+            <th
+                style="Margin:0 auto;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:300;line-height:1.3;margin:0 auto;padding:0;padding-bottom:16px;padding-left:20px;padding-right:20px;padding-top:27px;text-align:left;width:560px">
+                <table
+                    style="border-collapse:collapse;border-spacing:0;padding:0;text-align:left;vertical-align:top;width:100%">
+                    <tbody>
+                        <tr
+                            style="padding:0;text-align:left;vertical-align:top">
+                            <th
+                                style="Margin:0;color:#322f37;font-family:Helvetica,Arial,sans-serif;font-size:16px;font-weight:300;line-height:1.3;margin:0;padding:0;text-align:center">
+                                <!-- Bottom Link -->
+                                <small
+                                    style="color: rgb(153, 153, 153); font-size: 11px; margin: 4px; --darkreader-inline-color:#a8a095;"
+                                    data-darkreader-inline-color="">
+                                    Or follow this link:
+                                    <a href=@Model.CallbackUrl
+                                        style="color: rgb(153, 153, 153); --darkreader-inline-color:#a8a095;"
+                                        target="_blank"
+                                        data-darkreader-inline-color="">@Model.CallbackUrl</a></small>
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+            </th>
+        </tr>
+    </tbody>
+</table>

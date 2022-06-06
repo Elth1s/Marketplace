@@ -7,6 +7,7 @@ using WebAPI.Exceptions;
 using WebAPI.Extensions;
 using WebAPI.Helpers;
 using WebAPI.Interfaces;
+using WebAPI.Resources;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Response;
 
@@ -82,11 +83,11 @@ namespace WebAPI.Services
 
             var resultPasswordCheck = await _userManager.CheckPasswordAsync(user, request.OldPassword);
             if (!resultPasswordCheck)
-                throw new AppException("Invalid password");
+                throw new AppException(ErrorMessages.InvalidPassword);
 
             var resultPasswordUpdate = await _userManager.ChangePasswordAsync(user, request.OldPassword, request.Password);
             if (!resultPasswordUpdate.Succeeded)
-                throw new AppException("Updating password failed");
+                throw new AppException(ErrorMessages.PasswordUpdateFail);
         }
     }
 }

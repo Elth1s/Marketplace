@@ -24,12 +24,16 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 builder.Services.Configure<GoogleAuthSettings>(builder.Configuration.GetSection("GoogleAuthSettings"));
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+builder.Services.Configure<ClientUrl>(builder.Configuration.GetSection("ClientServer"));
 
 // Database & Identity
-//builder.Services.AddDbContext<MarketplaceDbContext>(options =>
-//                options.UseSqlServer(builder.Configuration.GetConnectionString("MarketplaceConnection")));
+//if (builder.Environment.IsDevelopment())
 builder.Services.AddDbContext<MarketplaceDbContext>(options =>
-options.UseNpgsql("Server=3.120.192.219;Port=5743;Database=dbdimakarina;User Id=userdimakarina;Password=$544$dij*78BG)K$t!Ube22}xk;"));
+                options.UseSqlServer(builder.Configuration.GetConnectionString("MarketplaceConnection")));
+//else
+//builder.Services.AddDbContext<MarketplaceDbContext>(options =>
+//                options.UseNpgsql(builder.Configuration.GetConnectionString("MarketplaceConnection")));
 
 
 builder.Services.AddIdentity<AppUser, IdentityRole>()
@@ -54,8 +58,12 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IProductImageService, ProductImageService>();
 builder.Services.AddScoped<IProductStatusService, ProductStatusService>();
 builder.Services.AddScoped<IProductCharacteristicService, ProductCharacteristicService>();
+builder.Services.AddScoped<ITemplateService, TemplateService>();
+builder.Services.AddScoped<IEmailSenderService, EmailSenderService>();
+builder.Services.AddScoped<IConfirmEmailService, ConfirmEmailService>();
+builder.Services.AddScoped<IResetPasswordService, ResetPasswordService>();
 
-//Recaptcha
+//reCaptcha
 builder.Services.AddTransient<IRecaptchaService, RecaptchaService>();
 
 

@@ -76,10 +76,11 @@ export const LogoutUser = () => {
 }
 
 export const GoogleExternalLogin = (data: IExternalLoginModel) => {
-    return async () => {
+    return async (dispatch: Dispatch<AuthAction>) => {
         try {
             let response = await http.post<IAuthResponse>('api/Auth/GoogleExternalLogin', data)
             const tokens = response.data;
+            console.log(tokens)
             setLocalAccessToken(tokens.accessToken);
             setLocalRefreshToken(tokens.refreshToken);
 
