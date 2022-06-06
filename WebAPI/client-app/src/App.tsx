@@ -6,6 +6,7 @@ import { CssBaseline } from '@mui/material';
 import { getLocalAccessToken } from "./http_comon"
 import { useActions } from './hooks/useActions';
 import AuthLayout from './containers/AuthLayout';
+import AdminLayout from './containers/AdminLayout';
 
 import SignIn from './pages/auth/SignIn';
 import SignUp from './pages/auth/SignUp';
@@ -66,11 +67,17 @@ function App() {
           <Route path="/auth/signin" element={<SignIn />} />
           <Route path="/auth/signup" element={<SignUp />} />
         </Route>
+        
+        <Route path='/admin' element={<AdminLayout />}>
+    
+        </Route>
 
         <Route path="/profile" element={<Profile />} />
         <Route path="/confirmEmail" element={<ConfirmEmail />} />
         <Route path="/resetPassword" element={<ResetPassword />} />
         <Route path="/resetPassword/:token" element={<ChangePassword />} />
+
+        
 
         <Route path="/category" element={<CategoryTable />} />
         <Route path="/category/create" element={<CategoryCreate />} />
