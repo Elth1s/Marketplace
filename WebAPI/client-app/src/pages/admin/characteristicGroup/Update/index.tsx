@@ -1,131 +1,106 @@
-import {
-    Box,
-    Grid,
-    Stack,
-    Typography,
-    CircularProgress,
-    TextField,
-    FormControl,
-    InputLabel,
-    Select,
-    MenuItem,
-    Autocomplete
-} from "@mui/material";
-import { LoadingButton } from "@mui/lab";
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import EditIcon from '@mui/icons-material/Edit';
 
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
-import { Form, FormikProvider, useFormik } from "formik";
+import { FC, useState } from "react";
+import { useFormik } from "formik";
 
 import { useActions } from "../../../../hooks/useActions";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 
 import { validationFields } from "../validation";
-import { ICharacteristicGroup } from "../types";
+import { CharacteristicGroupServerError, ICharacteristicGroup } from "../types";
 
-const CharacteristicGroupUpdate = () => {
-    const { GetByIdCharacteristicGroup, UpdateCharacteristicGroup } = useActions();
-    const [loading, setLoading] = useState<boolean>(false);
+import { ICharacteristicGroupUpdate } from './type';
 
+import DialogComponent from '../../../../components/Dialog';
+import TextFieldComponent from '../../../../components/TextField';
+
+const CharacteristicGroupUpdate: FC<ICharacteristicGroupUpdate> = ({ id }) => {
+    const [open, setOpen] = useState(false);
+
+    const { GetCharacteristicGroups, GetByIdCharacteristicGroup, UpdateCharacteristicGroup } = useActions();
     const { characteristicGroupInfo } = useTypedSelector((store) => store.characteristicGroup);
-    const characteristicGroup: ICharacteristicGroup = {
+
+    const item: ICharacteristicGroup = {
         name: characteristicGroupInfo.name,
     }
 
-    const navigator = useNavigate();
+    const handleClickOpen = async () => {
+        setOpen(true);
+        await GetByIdCharacteristicGroup(id);
+    };
 
-    useEffect(() => {
-        getData();
-    }, []);
-
-    const getData = async () => {
-        setLoading(true);
-        try {
-            document.title = "CharacteristicGroup";
-
-            const params = new URLSearchParams(window.location.search);
-            let id = params.get("id");
-
-            await GetByIdCharacteristicGroup(id);
-
-            setLoading(false);
-        } catch (ex) {
-            setLoading(false);
-        }
-    }
+    const handleClickClose = () => {
+        setOpen(false);
+    };
 
     const onHandleSubmit = async (values: ICharacteristicGroup) => {
         try {
             await UpdateCharacteristicGroup(characteristicGroupInfo.id, values);
-            navigator("/characteristicGroup");
+            await GetCharacteristicGroups();
+            handleClickClose();
+            resetForm();
         }
         catch (ex) {
-
+            const serverErrors = ex as CharacteristicGroupServerError;
+            if (serverErrors.errors)
+                Object.entries(serverErrors.errors).forEach(([key, value]) => {
+                    if (Array.isArray(value)) {
+                        let message = "";
+                        value.forEach((item) => {
+                            message += `${item} `;
+                        });
+                        setFieldError(key.toLowerCase(), message);
+                    }
+                });
         }
     }
 
     const formik = useFormik({
-        initialValues: characteristicGroup,
+        initialValues: item,
         validationSchema: validationFields,
         enableReinitialize: true,
         onSubmit: onHandleSubmit
     });
 
-    const onSave = async (base64: string) => {
-        setFieldValue("image", base64)
-    };
-
-    const { errors, touched, isSubmitting, handleSubmit, getFieldProps, setFieldValue } = formik;
+    const { errors, touched, isSubmitting, handleSubmit, setFieldError, getFieldProps, resetForm } = formik;
 
     return (
-        <Box sx={{ flexGrow: 1, m: 1, mx: 3, }}>
+        <DialogComponent
+            open={open}
+            handleClickClose={handleClickClose}
+            button={
+                <IconButton
+                    aria-label="edit"
+                    onClick={handleClickOpen}
+                >
+                    <EditIcon />
+                </IconButton>
+            }
 
-            <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ py: 1 }}>
-                <Typography variant="h4" gutterBottom sx={{ my: "auto" }}>
-                    Characteristic Group Update
-                </Typography>
-            </Stack>
+            formik={formik}
+            isSubmitting={isSubmitting}
+            handleSubmit={handleSubmit}
 
-            {loading ? (
-                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <CircularProgress sx={{ color: "#66fcf1", mt: 3 }} />
-                </Box>
-            ) : (
-                <Box sx={{ mt: 3 }} >
-                    <FormikProvider value={formik} >
-                        <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-                            <Stack direction="row">
-                                <Grid container spacing={4} sx={{ width: "70%" }}>
-                                    <Grid item xs={12}>
-                                        <TextField
-                                            fullWidth
-                                            autoComplete="name"
-                                            type="text"
-                                            label="Name"
-                                            {...getFieldProps('name')}
-                                            error={Boolean(touched.name && errors.name)}
-                                            helperText={touched.name && errors.name}
-                                        />
-                                    </Grid>
+            dialogTitle="Create"
+            dialogBtnCancel="Close"
+            dialogBtnConfirm="Create"
 
-                                    <Grid item xs={12} mt={3} display="flex" justifyContent="space-between" >
-                                        <LoadingButton
-                                            sx={{ paddingX: "35px" }}
-                                            size="large"
-                                            type="submit"
-                                            variant="contained"
-                                            loading={isSubmitting}
-                                        >
-                                            Update
-                                        </LoadingButton>
-                                    </Grid>
-                                </Grid>
-                            </Stack>
-                        </Form>
-                    </FormikProvider>
-                </Box>
-            )}
-        </Box>
+            dialogContent={
+                <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                        <TextFieldComponent
+                            type="text"
+                            label="Name"
+                            error={errors.name}
+                            touched={touched.name}
+                            getFieldProps={{ ...getFieldProps('name') }}
+                        />
+                    </Grid>
+                </Grid>
+            }
+        />
     )
 }
 

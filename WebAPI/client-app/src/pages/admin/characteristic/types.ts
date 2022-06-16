@@ -7,7 +7,7 @@ export enum CharacteristicActionTypes {
 
 export interface ICharacteristic {
     name: string,
-    characteristicGroupId: number,
+    characteristicGroupId: number | string,
 }
 
 export interface ICharacteristicInfo {
