@@ -9,7 +9,7 @@ import {
 } from "./types"
 import { ServerError } from "../../../store/types"
 
-export const GetByIdCharacteristicGroup = (id: string | null) => {
+export const GetByIdCharacteristicGroup = (id: number) => {
     return async (dispatch: Dispatch<CharacteristicGroupAction>) => {
         try {
             let response = await http.get<ICharacteristicGroupInfo>(`api/CharacteristicGroup/GetById/${id}`)

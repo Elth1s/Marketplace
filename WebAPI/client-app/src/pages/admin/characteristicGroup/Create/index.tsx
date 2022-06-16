@@ -1,96 +1,97 @@
-
-import { Box, Grid, Stack, Typography, CircularProgress, TextField, FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
 
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
-
-import { LoadingButton } from "@mui/lab";
-
-import { Form, FormikProvider, useFormik } from "formik";
+import { useFormik } from "formik";
 
 import { useActions } from "../../../../hooks/useActions";
-import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 
 import { validationFields } from "../validation";
-import { ICharacteristicGroup } from "../types";
+import { CharacteristicGroupServerError, ICharacteristicGroup } from "../types";
+
+import DialogComponent from '../../../../components/Dialog';
+import TextFieldComponent from "../../../../components/TextField";
 
 const CharacteristicGroupCreate = () => {
-    const { CreateCharacteristicGroup } = useActions();
-    const [loading, setLoading] = useState<boolean>(false);
+    const [open, setOpen] = useState(false);
 
-    const category: ICharacteristicGroup = {
-        name: ""
-    }
+    const { CreateCharacteristicGroup, GetCharacteristicGroups } = useActions();
 
-    const navigator = useNavigate();
+    const item: ICharacteristicGroup = {
+        name: "",
+    };
 
-    useEffect(() => {
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
 
-    }, []);
+    const handleClickClose = () => {
+        setOpen(false);
+    };
 
     const onHandleSubmit = async (values: ICharacteristicGroup) => {
         try {
             await CreateCharacteristicGroup(values);
-            navigator("/characteristicGroup");
+            await GetCharacteristicGroups();
+            handleClickClose();
+            resetForm();
         } catch (ex) {
-
+            const serverErrors = ex as CharacteristicGroupServerError;
+            if (serverErrors.errors)
+                Object.entries(serverErrors.errors).forEach(([key, value]) => {
+                    if (Array.isArray(value)) {
+                        let message = "";
+                        value.forEach((item) => {
+                            message += `${item} `;
+                        });
+                        setFieldError(key.toLowerCase(), message);
+                    }
+                });
         }
     }
-
     const formik = useFormik({
-        initialValues: category,
+        initialValues: item,
         validationSchema: validationFields,
         onSubmit: onHandleSubmit
     });
 
-    const { errors, touched, isSubmitting, handleSubmit, getFieldProps } = formik;
+    const { errors, touched, isSubmitting, handleSubmit, setFieldError, getFieldProps, resetForm } = formik;
 
     return (
-        <Box sx={{ flexGrow: 1, m: 1, mx: 3, }}>
-            <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ py: 1 }}>
-                <Typography variant="h4" gutterBottom sx={{ my: "auto" }}>
-                    Characteristic Group Create
-                </Typography>
-            </Stack>
-            {loading ? (
-                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <CircularProgress sx={{ color: "#66fcf1", mt: 3 }} />
-                </Box>
-            ) : (
-                <Box sx={{ mt: 3 }} >
-                    <FormikProvider value={formik} >
-                        <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-                            <Stack direction="row">
-                                <Grid container spacing={4} sx={{ width: "70%" }}>
-                                    <Grid item xs={12}>
-                                        <TextField
-                                            fullWidth
-                                            autoComplete="name"
-                                            type="text"
-                                            label="Name"
-                                            {...getFieldProps('name')}
-                                            error={Boolean(touched.name && errors.name)}
-                                            helperText={touched.name && errors.name}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12} mt={3} display="flex" justifyContent="space-between" >
-                                        <LoadingButton
-                                            sx={{ paddingX: "35px" }}
-                                            size="large"
-                                            type="submit"
-                                            variant="contained"
-                                            loading={isSubmitting}
-                                        >
-                                            Create
-                                        </LoadingButton>
-                                    </Grid>
-                                </Grid>
-                            </Stack>
-                        </Form>
-                    </FormikProvider>
-                </Box>
-            )}
-        </Box>
+        <DialogComponent
+            open={open}
+            handleClickClose={handleClickClose}
+            button={
+                <Button
+                    variant="contained"
+                    onClick={handleClickOpen}
+                >
+                    Create
+                </Button>
+            }
+
+            formik={formik}
+            isSubmitting={isSubmitting}
+            handleSubmit={handleSubmit}
+
+            dialogTitle="Create"
+            dialogBtnCancel="Close"
+            dialogBtnConfirm="Create"
+
+            dialogContent={
+                <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                        <TextFieldComponent
+                            type="text"
+                            label="Name"
+                            error={errors.name}
+                            touched={touched.name}
+                            getFieldProps={{ ...getFieldProps('name') }}
+                        />
+                    </Grid>
+                </Grid>
+            }
+        />
     )
 }
 
