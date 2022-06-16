@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { accessToken as at, refreshToken as rt } from "./pages/auth/constants"
 
 export const baseURL = "/"
@@ -48,8 +48,13 @@ instance.interceptors.response.use(
     async (err) => {
         const originalConfig = err.config;
         if (err.response) {
+            // Validation failed, ...
+            console.log("Interceptors", err.response)
+            if (err.response.status === 400 && err.response.data) {
+                return Promise.reject(err.response.data);
+            }
             // Access Token was expired
-            if (err.response.status === 401 && !originalConfig._retry) {
+            if (err.response.status === 401 && !originalConfig._retry && getLocalAccessToken() != null) {
                 originalConfig._retry = true;
                 try {
                     const rs = await refreshAccessToken();
@@ -67,6 +72,14 @@ instance.interceptors.response.use(
             }
             if (err.response.status === 403 && err.response.data) {
                 return Promise.reject(err.response.data);
+            }
+            // Backend not started, ...
+            if (err.response.status === 404) {
+                if (axios.isAxiosError(err)) {
+                    return Promise.reject(err.response.data);
+                }
+                return;
+                // Else Toast
             }
         }
         return Promise.reject(err);

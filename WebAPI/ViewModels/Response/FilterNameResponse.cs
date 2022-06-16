@@ -1,6 +1,6 @@
 ﻿namespace WebAPI.ViewModels.Response
 {
-    public class FilterResponse
+    public class FilterNameResponse
     {
         public int Id { get; set; }
         public string Name { get; set; }

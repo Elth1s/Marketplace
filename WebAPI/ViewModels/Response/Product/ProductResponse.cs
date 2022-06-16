@@ -10,7 +10,5 @@
         public string ShopName { get; set; }
         public string StatusName { get; set; }
         public string CategoryName { get; set; }
-        public IEnumerable<ProductImageForProductResponse> ProductImages { get; set; }
-        public IEnumerable<ProductCharacteristicForProductResponse> ProductCharacteristics { get; set; }
     }
 }

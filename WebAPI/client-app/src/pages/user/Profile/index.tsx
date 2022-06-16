@@ -15,7 +15,7 @@ import { Form, FormikProvider, useFormik } from "formik";
 import { useActions } from "../../../hooks/useActions";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import { ProfileSchema } from "../validation";
-import { ProfileServerError } from "../types";
+import { ServerError } from "../../../store/types";
 
 import CropperDialog from "../../../components/CropperDialog";
 
@@ -55,7 +55,7 @@ const Profile = () => {
                 // toast.success('Update success!');
             }
             catch (exeption) {
-                const serverErrors = exeption as ProfileServerError;
+                const serverErrors = exeption as ServerError;
                 if (serverErrors.errors)
                     Object.entries(serverErrors.errors).forEach(([key, value]) => {
                         if (Array.isArray(value)) {

@@ -23,6 +23,7 @@ namespace WebAPI.Middlewares
             }
             catch (Exception)
             {
+
                 await HandleExceptionAsync(httpContext);
             }
         }
@@ -34,8 +35,8 @@ namespace WebAPI.Middlewares
 
             var result = new ErrorDetails()
             {
-                StatusCode = (int)statusCode,
-                Error = errorBody
+                Title = errorBody,
+                Status = (int)statusCode,
             };
 
             context.Response.ContentType = "application/json";

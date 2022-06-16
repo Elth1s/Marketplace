@@ -17,8 +17,7 @@ export const GetProfile = () => {
     return async (dispatch: Dispatch<ProfileAction>) => {
         try {
             let response = await http.get<IProfile>(`api/User/Profile`)
-            if (response.data.photo != "")
-                response.data.photo = baseURL + response.data.photo;
+
             dispatch({
                 type: ProfileActionTypes.GET_PROFILE,
                 payload: response.data

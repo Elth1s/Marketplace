@@ -1,5 +1,4 @@
 import { Dispatch } from "react"
-import axios, { AxiosError } from "axios"
 
 import http from "../../../http_comon"
 import {
@@ -7,8 +6,8 @@ import {
     ICharacteristicGroupInfo,
     CharacteristicGroupAction,
     CharacteristicGroupActionTypes,
-    CharacteristicGroupServerError
 } from "./types"
+import { ServerError } from "../../../store/types"
 
 export const GetByIdCharacteristicGroup = (id: string | null) => {
     return async (dispatch: Dispatch<CharacteristicGroupAction>) => {
@@ -21,15 +20,9 @@ export const GetByIdCharacteristicGroup = (id: string | null) => {
             })
 
             return Promise.resolve();
-        } catch (ex) {
-            if (axios.isAxiosError(ex)) {
-                const serverError = ex as AxiosError<CharacteristicGroupServerError>;
-                if (serverError && serverError.response) {
-                    serverError.response.data.status = serverError.response.status;
-                    return Promise.reject(serverError.response.data);
-                }
-            }
-            return Promise.reject();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
         }
     }
 }
@@ -45,15 +38,9 @@ export const GetCharacteristicGroups = () => {
             })
 
             return Promise.resolve();
-        } catch (ex) {
-            if (axios.isAxiosError(ex)) {
-                const serverError = ex as AxiosError<CharacteristicGroupServerError>;
-                if (serverError && serverError.response) {
-                    serverError.response.data.status = serverError.response.status;
-                    return Promise.reject(serverError.response.data);
-                }
-            }
-            return Promise.reject();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
         }
     }
 }
@@ -63,15 +50,9 @@ export const CreateCharacteristicGroup = (data: ICharacteristicGroup) => {
         try {
             await http.post("api/CharacteristicGroup/Create", data);
             return Promise.resolve();
-        } catch (ex) {
-            if (axios.isAxiosError(ex)) {
-                const serverError = ex as AxiosError<CharacteristicGroupServerError>;
-                if (serverError && serverError.response) {
-                    serverError.response.data.status = serverError.response.status;
-                    return Promise.reject(serverError.response.data);
-                }
-            }
-            return Promise.reject();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
         }
     }
 }
@@ -81,15 +62,9 @@ export const UpdateCharacteristicGroup = (id: number, data: ICharacteristicGroup
         try {
             await http.put<ICharacteristicGroup>(`api/CharacteristicGroup/Update/${id}`, data);
             return Promise.resolve();
-        } catch (ex) {
-            if (axios.isAxiosError(ex)) {
-                const serverError = ex as AxiosError<CharacteristicGroupServerError>;
-                if (serverError && serverError.response) {
-                    serverError.response.data.status = serverError.response.status;
-                    return Promise.reject(serverError.response.data);
-                }
-            }
-            return Promise.reject();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
         }
     }
 }
@@ -99,15 +74,9 @@ export const DeleteCharacteristicGroup = (id: number) => {
         try {
             await http.delete(`api/CharacteristicGroup/Delete/${id}`);
             return Promise.resolve();
-        } catch (ex) {
-            if (axios.isAxiosError(ex)) {
-                const serverError = ex as AxiosError<CharacteristicGroupServerError>;
-                if (serverError && serverError.response) {
-                    serverError.response.data.status = serverError.response.status;
-                    return Promise.reject(serverError.response.data);
-                }
-            }
-            return Promise.reject();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
         }
     }
 }

@@ -3,13 +3,13 @@ using DAL.Entities;
 
 namespace WebAPI.Specifications
 {
-    public class FilterIncludeFullInfoSpecification : Specification<Filter>, ISingleResultSpecification<Filter>
+    public class FilterNameIncludeFullInfoSpecification : Specification<FilterName>, ISingleResultSpecification<FilterName>
     {
-        public FilterIncludeFullInfoSpecification()
+        public FilterNameIncludeFullInfoSpecification()
         {
             Query.Include(o => o.FilterGroup);
         }
-        public FilterIncludeFullInfoSpecification(int id)
+        public FilterNameIncludeFullInfoSpecification(int id)
         {
             Query.Where(o => o.Id == id)
                 .Include(o => o.FilterGroup);

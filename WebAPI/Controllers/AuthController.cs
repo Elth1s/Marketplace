@@ -23,6 +23,7 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
+
         [HttpPost("SignUp")]
         public async Task<IActionResult> SignUp([FromBody] SignUpRequest request)
         {

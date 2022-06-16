@@ -19,12 +19,6 @@ export interface CharacteristicGroupState {
     characteristicGroups: Array<ICharacteristicGroupInfo>
 }
 
-export interface CharacteristicGroupServerError {
-    title: string,
-    status: number,
-    errors: Array<any>,
-}
-
 
 export interface GetCharacteristicGroupsAction {
     type: CharacteristicGroupActionTypes.GET_CHARACTERISTIC_GROUPS,
@@ -47,7 +41,7 @@ export interface UpdateCharacteristicGroupAction {
 }
 
 
-export type CharacteristicGroupAction = GetCharacteristicGroupsAction | 
-                                        GetByIdCharacteristicGroupAction | 
-                                        CreateCharacteristicGroupAction |
-                                        UpdateCharacteristicGroupAction;
+export type CharacteristicGroupAction = GetCharacteristicGroupsAction |
+    GetByIdCharacteristicGroupAction |
+    CreateCharacteristicGroupAction |
+    UpdateCharacteristicGroupAction;

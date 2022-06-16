@@ -151,11 +151,20 @@ namespace WebAPI.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Filter was not found.
+        ///   Looks up a localized string similar to Filter name was not found.
         /// </summary>
-        internal static string FilterNotFound {
+        internal static string FilterNameNotFound {
             get {
-                return ResourceManager.GetString("FilterNotFound", resourceCulture);
+                return ResourceManager.GetString("FilterNameNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter value was not found.
+        /// </summary>
+        internal static string FilterValueNotFound {
+            get {
+                return ResourceManager.GetString("FilterValueNotFound", resourceCulture);
             }
         }
         
