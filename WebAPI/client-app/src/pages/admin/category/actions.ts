@@ -2,14 +2,14 @@ import { Dispatch } from "react"
 import axios, { AxiosError } from "axios"
 
 import http from "../../../http_comon"
-import { 
-    ICategory, 
-    ICategoryInfo, 
-    ICategoryForSelect, 
-    CategoryAction, 
-    CategoryActionTypes, 
-    CategoryServerError 
+import {
+    ICategory,
+    ICategoryInfo,
+    ICategoryForSelect,
+    CategoryAction,
+    CategoryActionTypes,
 } from "./types"
+import { ServerError } from "../../../store/types"
 
 export const GetByIdCategory = (id: string | null) => {
     return async (dispatch: Dispatch<CategoryAction>) => {
@@ -22,15 +22,9 @@ export const GetByIdCategory = (id: string | null) => {
             })
 
             return Promise.resolve();
-        } catch (ex) {
-            if (axios.isAxiosError(ex)) {
-                const serverError = ex as AxiosError<CategoryServerError>;
-                if (serverError && serverError.response) {
-                    serverError.response.data.status = serverError.response.status;
-                    return Promise.reject(serverError.response.data);
-                }
-            }
-            return Promise.reject();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
         }
     }
 }
@@ -46,15 +40,9 @@ export const GetCategory = () => {
             })
 
             return Promise.resolve();
-        } catch (ex) {
-            if (axios.isAxiosError(ex)) {
-                const serverError = ex as AxiosError<CategoryServerError>;
-                if (serverError && serverError.response) {
-                    serverError.response.data.status = serverError.response.status;
-                    return Promise.reject(serverError.response.data);
-                }
-            }
-            return Promise.reject();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
         }
     }
 }
@@ -70,15 +58,9 @@ export const GetCategoryForSelect = () => {
             })
 
             return Promise.resolve();
-        } catch (ex) {
-            if (axios.isAxiosError(ex)) {
-                const serverError = ex as AxiosError<CategoryServerError>;
-                if (serverError && serverError.response) {
-                    serverError.response.data.status = serverError.response.status;
-                    return Promise.reject(serverError.response.data);
-                }
-            }
-            return Promise.reject();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
         }
     }
 }
@@ -88,15 +70,9 @@ export const CreateCategory = (data: ICategory) => {
         try {
             await http.post("api/Category/Create", data);
             return Promise.resolve();
-        } catch (ex) {
-            if (axios.isAxiosError(ex)) {
-                const serverError = ex as AxiosError<CategoryServerError>;
-                if (serverError && serverError.response) {
-                    serverError.response.data.status = serverError.response.status;
-                    return Promise.reject(serverError.response.data);
-                }
-            }
-            return Promise.reject();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
         }
     }
 }
@@ -107,15 +83,9 @@ export const UpdateCategory = (id: number, data: ICategory) => {
             console.log("data", data);
             await http.put<ICategory>(`api/Category/Update/${id}`, data);
             return Promise.resolve();
-        } catch (ex) {
-            if (axios.isAxiosError(ex)) {
-                const serverError = ex as AxiosError<CategoryServerError>;
-                if (serverError && serverError.response) {
-                    serverError.response.data.status = serverError.response.status;
-                    return Promise.reject(serverError.response.data);
-                }
-            }
-            return Promise.reject();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
         }
     }
 }
@@ -125,15 +95,9 @@ export const DeleteCategory = (id: number) => {
         try {
             await http.delete(`api/Category/Delete/${id}`);
             return Promise.resolve();
-        } catch (ex) {
-            if (axios.isAxiosError(ex)) {
-                const serverError = ex as AxiosError<CategoryServerError>;
-                if (serverError && serverError.response) {
-                    serverError.response.data.status = serverError.response.status;
-                    return Promise.reject(serverError.response.data);
-                }
-            }
-            return Promise.reject();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
         }
     }
 }

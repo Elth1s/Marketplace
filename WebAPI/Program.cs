@@ -28,13 +28,8 @@ builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailS
 builder.Services.Configure<ClientUrl>(builder.Configuration.GetSection("ClientServer"));
 
 // Database & Identity
-//if (builder.Environment.IsDevelopment())
 builder.Services.AddDbContext<MarketplaceDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("MarketplaceConnection")));
-//else
-//builder.Services.AddDbContext<MarketplaceDbContext>(options =>
-//                options.UseNpgsql(builder.Configuration.GetConnectionString("MarketplaceConnection")));
-
 
 builder.Services.AddIdentity<AppUser, IdentityRole>()
                 .AddEntityFrameworkStores<MarketplaceDbContext>().AddDefaultTokenProviders();
@@ -52,12 +47,11 @@ builder.Services.AddScoped<ICharacteristicService, CharacteristicService>();
 builder.Services.AddScoped<ICountryService, CountryService>();
 builder.Services.AddScoped<ICityService, CityService>();
 builder.Services.AddScoped<IFilterGroupService, FilterGroupService>();
-builder.Services.AddScoped<IFilterService, FilterService>();
+builder.Services.AddScoped<IFilterNameService, FilterNameService>();
+builder.Services.AddScoped<IFilterValueService, FilterValueService>();
 builder.Services.AddScoped<IShopService, ShopService>();
 builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<IProductImageService, ProductImageService>();
 builder.Services.AddScoped<IProductStatusService, ProductStatusService>();
-builder.Services.AddScoped<IProductCharacteristicService, ProductCharacteristicService>();
 builder.Services.AddScoped<ITemplateService, TemplateService>();
 builder.Services.AddScoped<IEmailSenderService, EmailSenderService>();
 builder.Services.AddScoped<IConfirmEmailService, ConfirmEmailService>();
@@ -106,9 +100,10 @@ builder.Services.AddAuthentication(options =>
 });
 
 // Swagger
+var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Marketplace", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = assemblyName, Version = "v1" });
     c.AddSecurityDefinition("Bearer",
         new OpenApiSecurityScheme
         {

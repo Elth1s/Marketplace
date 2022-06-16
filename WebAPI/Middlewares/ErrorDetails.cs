@@ -5,8 +5,8 @@ namespace WebAPI.Middlewares
 {
     public class ErrorDetails
     {
-        public int StatusCode { get; set; }
-        public string Error { get; set; }
+        public string Title { get; set; }
+        public int Status { get; set; }
         public override string ToString()
         {
             var serializerSettings = new JsonSerializerSettings();

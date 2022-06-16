@@ -39,14 +39,6 @@ namespace WebAPI.Controllers
         }
 
         [Authorize]
-        [HttpPut("ChangePassword")]
-        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
-        {
-            await _userService.ChangePasswordAsync(UserId, request);
-            return Ok("Password updated successfully");
-        }
-
-        [Authorize]
         [HttpPost("ConfirmEmail")]
         public async Task<IActionResult> SendConfirmEmail()
         {

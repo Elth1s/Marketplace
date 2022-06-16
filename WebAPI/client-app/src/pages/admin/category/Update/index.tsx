@@ -31,7 +31,7 @@ const CategoryUpdate = () => {
     const category: ICategory = {
         name: categoryInfo.name,
         image: categoryInfo.image,
-        parentId:categoriesForSelect.find(c => c.name === categoryInfo.parentName)?.id! || null,
+        parentId: categoriesForSelect.find(c => c.name === categoryInfo.parentName)?.id! || null,
     }
 
     const navigator = useNavigate();

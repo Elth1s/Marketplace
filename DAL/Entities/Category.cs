@@ -14,7 +14,6 @@ namespace DAL.Entities
 
         public ICollection<Category> Children { get; set; }
         public ICollection<Product> Products { get; set; }
-        public ICollection<Filter> Filters { get; set; }
-        public ICollection<Characteristic> Characteristics { get; set; }
+        public ICollection<FilterValue> FiltersValue { get; set; }
     }
 }

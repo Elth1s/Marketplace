@@ -1,20 +1,15 @@
 import { Dispatch } from "react"
-import axios, { AxiosError } from "axios";
-// import jwt from "jsonwebtoken";
 import jwt_decode from "jwt-decode";
 
 import {
-    IUser,
     AuthAction,
     ILoginModel,
     IAuthResponse,
     IRegisterModel,
     AuthActionTypes,
-    LoginServerError,
-    RegisterServerError,
     IExternalLoginModel,
-    ExternalLoginServerError
 } from "./types";
+import { ServerError } from "../../store/types";
 import http, { setLocalRefreshToken, setLocalAccessToken } from "../../http_comon"
 
 import { accessToken, refreshToken, emailClaim, roleClaim } from "./constants"
@@ -31,14 +26,7 @@ export const LoginUser = (data: ILoginModel, reCaptchaToken: string) => {
             return Promise.resolve();
         }
         catch (error) {
-            if (axios.isAxiosError(error)) {
-                const serverError = error as AxiosError<LoginServerError>;
-                if (serverError && serverError.response) {
-                    serverError.response.data.status = serverError.response.status;
-                    return Promise.reject(serverError.response.data);
-                }
-            }
-            return Promise.reject(error)
+            return Promise.reject(error as ServerError)
         }
     }
 }
@@ -55,14 +43,7 @@ export const RegisterUser = (data: IRegisterModel, reCaptchaToken: string) => {
             return Promise.resolve();
         }
         catch (error) {
-            if (axios.isAxiosError(error)) {
-                const serverError = error as AxiosError<RegisterServerError>;
-                if (serverError && serverError.response) {
-                    serverError.response.data.status = serverError.response.status;
-                    return Promise.reject(serverError.response.data);
-                }
-            }
-            return Promise.reject(error)
+            return Promise.reject(error as ServerError)
         }
     }
 }
@@ -88,13 +69,7 @@ export const GoogleExternalLogin = (data: IExternalLoginModel) => {
             return Promise.resolve();
         }
         catch (error) {
-            if (axios.isAxiosError(error)) {
-                const serverError = error as AxiosError<ExternalLoginServerError>;
-                if (serverError && serverError.response) {
-                    return Promise.reject(serverError.response.data);
-                }
-            }
-            return Promise.reject(error)
+            return Promise.reject(error as ServerError)
         }
     }
 }

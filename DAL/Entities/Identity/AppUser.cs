@@ -17,6 +17,7 @@ namespace DAL.Entities.Identity
         [ForeignKey(nameof(ShopId))]
         public Shop Shop { get; set; }
 
+        public ICollection<CharacteristicGroup> CharacteristicGroups { get; set; }
         public ICollection<RefreshToken> RefreshTokens { get; set; }
     }
 }

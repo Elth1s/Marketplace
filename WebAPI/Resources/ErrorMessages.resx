@@ -165,8 +165,8 @@
   <data name="FilterGroupNotFound" xml:space="preserve">
     <value>Filter group was not found</value>
   </data>
-  <data name="FilterNotFound" xml:space="preserve">
-    <value>Filter was not found</value>
+  <data name="FilterNameNotFound" xml:space="preserve">
+    <value>Filter name was not found</value>
   </data>
   <data name="ProductStatusNotFound" xml:space="preserve">
     <value>Product Status was not found</value>
@@ -200,5 +200,8 @@
   </data>
   <data name="PasswordUpdateFail" xml:space="preserve">
     <value>Updating password failed</value>
+  </data>
+  <data name="FilterValueNotFound" xml:space="preserve">
+    <value>Filter value was not found</value>
   </data>
 </root>

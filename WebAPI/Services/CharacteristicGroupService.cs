@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using DAL;
 using DAL.Entities;
+using DAL.Entities.Identity;
+using Microsoft.AspNetCore.Identity;
 using WebAPI.Extensions;
 using WebAPI.Interfaces;
+using WebAPI.Specifications;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Response;
 
@@ -11,17 +14,23 @@ namespace WebAPI.Services
     public class CharacteristicGroupService : ICharacteristicGroupService
     {
         private readonly IRepository<CharacteristicGroup> _characteristicGroupRepository;
+        private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
 
-        public CharacteristicGroupService(IRepository<CharacteristicGroup> characteristicGroupRepository, IMapper mapper)
+        public CharacteristicGroupService(IRepository<CharacteristicGroup> characteristicGroupRepository, UserManager<AppUser> userManager, IMapper mapper)
         {
             _characteristicGroupRepository = characteristicGroupRepository;
+            _userManager = userManager;
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<CharacteristicGroupResponse>> GetAsync()
+        public async Task<IEnumerable<CharacteristicGroupResponse>> GetAsync(string userId)
         {
-            var characteristicGroups = await _characteristicGroupRepository.ListAsync();
+            var user = await _userManager.FindByIdAsync(userId);
+            user.UserNullChecking();
+
+            var spec = new CharacteristicGroupGetByUserIdSpecification(userId);
+            var characteristicGroups = await _characteristicGroupRepository.GetBySpecAsync(spec);
             return _mapper.Map<IEnumerable<CharacteristicGroupResponse>>(characteristicGroups);
         }
 
@@ -33,9 +42,13 @@ namespace WebAPI.Services
             return _mapper.Map<CharacteristicGroupResponse>(characteristicGroup);
         }
 
-        public async Task CreateAsync(CharacteristicGroupRequest request)
+        public async Task CreateAsync(CharacteristicGroupRequest request, string userId)
         {
             var characteristicGroup = _mapper.Map<CharacteristicGroup>(request);
+
+            var user = await _userManager.FindByIdAsync(userId);
+            user.UserNullChecking();
+            characteristicGroup.UserId = userId;
 
             await _characteristicGroupRepository.AddAsync(characteristicGroup);
             await _characteristicGroupRepository.SaveChangesAsync();

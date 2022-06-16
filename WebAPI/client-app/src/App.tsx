@@ -52,9 +52,10 @@ function App() {
       },
     },
     typography: {
-      // fontFamily: [
-      //   'Handlee'
-      // ].join(',')
+      fontFamily: [
+        'Mulish',
+        "sans-serif"
+      ].join(',')
     },
   });
 

@@ -12,7 +12,7 @@ namespace DAL.Entities
 
         public int ShopId { get; set; }
         public int StatusId { get; set; }
-        public int? CategoryId { get; set; }
+        public int CategoryId { get; set; }
 
         [ForeignKey(nameof(ShopId))]
         public Shop Shop { get; set; }
@@ -23,7 +23,7 @@ namespace DAL.Entities
 
 
         public ICollection<ProductImage> Images { get; set; }
-        public ICollection<ProductCharacteristic> Characteristics { get; set; }
-        public ICollection<Filter> Filters { get; set; }
+        public ICollection<Characteristic> Characteristics { get; set; }
+        public ICollection<FilterValueProduct> FilterValueProducts { get; set; }
     }
 }

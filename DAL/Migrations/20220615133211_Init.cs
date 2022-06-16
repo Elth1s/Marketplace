@@ -24,39 +24,6 @@ namespace DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Categories",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ParentId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Categories", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Categories_Categories_ParentId",
-                        column: x => x.ParentId,
-                        principalTable: "Categories",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CharacteristicGroups",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CharacteristicGroups", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Countries",
                 columns: table => new
                 {
@@ -117,26 +84,6 @@ namespace DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Characteristics",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CharacteristicGroupId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Characteristics", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Characteristics_CharacteristicGroups_CharacteristicGroupId",
-                        column: x => x.CharacteristicGroupId,
-                        principalTable: "CharacteristicGroups",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Cities",
                 columns: table => new
                 {
@@ -157,7 +104,7 @@ namespace DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Filter",
+                name: "FilterNames",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -167,35 +114,11 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Filter", x => x.Id);
+                    table.PrimaryKey("PK_FilterNames", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Filter_FilterGroups_FilterGroupId",
+                        name: "FK_FilterNames_FilterGroups_FilterGroupId",
                         column: x => x.FilterGroupId,
                         principalTable: "FilterGroups",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CategoryCharacteristic",
-                columns: table => new
-                {
-                    CategoriesId = table.Column<int>(type: "int", nullable: false),
-                    CharacteristicsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CategoryCharacteristic", x => new { x.CategoriesId, x.CharacteristicsId });
-                    table.ForeignKey(
-                        name: "FK_CategoryCharacteristic_Categories_CategoriesId",
-                        column: x => x.CategoriesId,
-                        principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CategoryCharacteristic_Characteristics_CharacteristicsId",
-                        column: x => x.CharacteristicsId,
-                        principalTable: "Characteristics",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -226,27 +149,29 @@ namespace DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CategoryFilter",
+                name: "Categories",
                 columns: table => new
                 {
-                    CategoriesId = table.Column<int>(type: "int", nullable: false),
-                    FiltersId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ParentId = table.Column<int>(type: "int", nullable: true),
+                    FilterNameId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CategoryFilter", x => new { x.CategoriesId, x.FiltersId });
+                    table.PrimaryKey("PK_Categories", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CategoryFilter_Categories_CategoriesId",
-                        column: x => x.CategoriesId,
+                        name: "FK_Categories_Categories_ParentId",
+                        column: x => x.ParentId,
                         principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_CategoryFilter_Filter_FiltersId",
-                        column: x => x.FiltersId,
-                        principalTable: "Filter",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_Categories_FilterNames_FilterNameId",
+                        column: x => x.FilterNameId,
+                        principalTable: "FilterNames",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -281,6 +206,34 @@ namespace DAL.Migrations
                         column: x => x.ShopId,
                         principalTable: "Shops",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FilterValues",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Min = table.Column<int>(type: "int", nullable: true),
+                    Max = table.Column<int>(type: "int", nullable: true),
+                    FilterNameId = table.Column<int>(type: "int", nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FilterValues", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FilterValues_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_FilterValues_FilterNames_FilterNameId",
+                        column: x => x.FilterNameId,
+                        principalTable: "FilterNames",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -405,6 +358,25 @@ namespace DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CharacteristicGroups",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CharacteristicGroups", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CharacteristicGroups_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RefreshToken",
                 columns: table => new
                 {
@@ -432,50 +404,26 @@ namespace DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FilterProduct",
-                columns: table => new
-                {
-                    FiltersId = table.Column<int>(type: "int", nullable: false),
-                    ProductsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FilterProduct", x => new { x.FiltersId, x.ProductsId });
-                    table.ForeignKey(
-                        name: "FK_FilterProduct_Filter_FiltersId",
-                        column: x => x.FiltersId,
-                        principalTable: "Filter",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_FilterProduct_Products_ProductsId",
-                        column: x => x.ProductsId,
-                        principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ProductCharacteristics",
+                name: "FilterValueProducts",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CharacteristicId = table.Column<int>(type: "int", nullable: false),
+                    CustomValue = table.Column<float>(type: "real", nullable: true),
+                    FilterValueId = table.Column<int>(type: "int", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductCharacteristics", x => x.Id);
+                    table.PrimaryKey("PK_FilterValueProducts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductCharacteristics_Characteristics_CharacteristicId",
-                        column: x => x.CharacteristicId,
-                        principalTable: "Characteristics",
+                        name: "FK_FilterValueProducts_FilterValues_FilterValueId",
+                        column: x => x.FilterValueId,
+                        principalTable: "FilterValues",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ProductCharacteristics_Products_ProductId",
+                        name: "FK_FilterValueProducts_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
@@ -496,6 +444,34 @@ namespace DAL.Migrations
                     table.PrimaryKey("PK_ProductImages", x => x.Id);
                     table.ForeignKey(
                         name: "FK_ProductImages_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Characteristics",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CharacteristicGroupId = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Characteristics", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Characteristics_CharacteristicGroups_CharacteristicGroupId",
+                        column: x => x.CharacteristicGroupId,
+                        principalTable: "CharacteristicGroups",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Characteristics_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
@@ -549,19 +525,19 @@ namespace DAL.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Categories_FilterNameId",
+                table: "Categories",
+                column: "FilterNameId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Categories_ParentId",
                 table: "Categories",
                 column: "ParentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CategoryCharacteristic_CharacteristicsId",
-                table: "CategoryCharacteristic",
-                column: "CharacteristicsId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CategoryFilter_FiltersId",
-                table: "CategoryFilter",
-                column: "FiltersId");
+                name: "IX_CharacteristicGroups_UserId",
+                table: "CharacteristicGroups",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Characteristics_CharacteristicGroupId",
@@ -569,29 +545,39 @@ namespace DAL.Migrations
                 column: "CharacteristicGroupId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Characteristics_ProductId",
+                table: "Characteristics",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Cities_CountryId",
                 table: "Cities",
                 column: "CountryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Filter_FilterGroupId",
-                table: "Filter",
+                name: "IX_FilterNames_FilterGroupId",
+                table: "FilterNames",
                 column: "FilterGroupId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FilterProduct_ProductsId",
-                table: "FilterProduct",
-                column: "ProductsId");
+                name: "IX_FilterValueProducts_FilterValueId",
+                table: "FilterValueProducts",
+                column: "FilterValueId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductCharacteristics_CharacteristicId",
-                table: "ProductCharacteristics",
-                column: "CharacteristicId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProductCharacteristics_ProductId",
-                table: "ProductCharacteristics",
+                name: "IX_FilterValueProducts_ProductId",
+                table: "FilterValueProducts",
                 column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FilterValues_CategoryId",
+                table: "FilterValues",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FilterValues_FilterNameId",
+                table: "FilterValues",
+                column: "FilterNameId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductImages_ProductId",
@@ -637,16 +623,10 @@ namespace DAL.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "CategoryCharacteristic");
+                name: "Characteristics");
 
             migrationBuilder.DropTable(
-                name: "CategoryFilter");
-
-            migrationBuilder.DropTable(
-                name: "FilterProduct");
-
-            migrationBuilder.DropTable(
-                name: "ProductCharacteristics");
+                name: "FilterValueProducts");
 
             migrationBuilder.DropTable(
                 name: "ProductImages");
@@ -658,22 +638,16 @@ namespace DAL.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Filter");
+                name: "CharacteristicGroups");
 
             migrationBuilder.DropTable(
-                name: "Characteristics");
+                name: "FilterValues");
 
             migrationBuilder.DropTable(
                 name: "Products");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
-                name: "FilterGroups");
-
-            migrationBuilder.DropTable(
-                name: "CharacteristicGroups");
 
             migrationBuilder.DropTable(
                 name: "Categories");
@@ -685,7 +659,13 @@ namespace DAL.Migrations
                 name: "Shops");
 
             migrationBuilder.DropTable(
+                name: "FilterNames");
+
+            migrationBuilder.DropTable(
                 name: "Cities");
+
+            migrationBuilder.DropTable(
+                name: "FilterGroups");
 
             migrationBuilder.DropTable(
                 name: "Countries");

@@ -3,9 +3,9 @@ using WebAPI.ViewModels.Request;
 
 namespace WebAPI.Validators
 {
-    public class FilterRequestValidator : AbstractValidator<FilterRequest>
+    public class FilterNameRequestValidator : AbstractValidator<FilterNameRequest>
     {
-        public FilterRequestValidator()
+        public FilterNameRequestValidator()
         {
             //Name
             RuleFor(x => x.Name).Cascade(CascadeMode.Stop)

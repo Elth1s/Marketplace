@@ -14,14 +14,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 // import { toast } from 'react-toastify';
 
+import GoogleExternalLogin from "../../../components/Google";
 
 import { SignUpSchema } from "../validation";
 import { useActions } from "../../../hooks/useActions";
-import { IRegisterModel, RegisterServerError } from "../types";
-import GoogleSignIn from "../Google/GoogleSignIn";
+import { IRegisterModel } from "../types";
+import { ServerError } from "../../../store/types";
+import { AuthAvatar, AuthHeaderTypography, AuthLoadingButton, AuthSideTypography, AuthTextField } from "../styled";
 
 import imageBackground from "../../../assets/signup-background.jpg"
-import { AuthAvatar, AuthHeaderTypography, AuthLoadingButton, AuthSideTypography, AuthTextField } from "../styled";
 
 const SignUpPage = () => {
     const { RegisterUser } = useActions();
@@ -51,7 +52,7 @@ const SignUpPage = () => {
                 // toast.success('Sign up success!');
             }
             catch (exeption) {
-                const serverErrors = exeption as RegisterServerError;
+                const serverErrors = exeption as ServerError;
                 if (serverErrors.errors)
                     Object.entries(serverErrors.errors).forEach(([key, value]) => {
                         if (Array.isArray(value)) {
@@ -80,7 +81,7 @@ const SignUpPage = () => {
         setShowConfirmPassword((show) => !show);
     };
     return (
-        <Grid container sx={{ height: "1080px" }}>
+        <Grid container sx={{ height: "100vh" }}>
             <Grid
                 item
                 xs={false}
@@ -108,14 +109,14 @@ const SignUpPage = () => {
                         justifyContent: 'center',
                         width: "500px"
                     }}>
-                    <AuthHeaderTypography sx={{ marginTop: "101px" }}>
+                    <AuthHeaderTypography sx={{ marginTop: "57px" }}>
                         Зареєструйтесь
                     </AuthHeaderTypography>
                     <FormikProvider value={formik} >
                         <Form autoComplete="off" noValidate onSubmit={handleSubmit} >
 
                             <Grid container >
-                                <Grid item xs={12} sx={{ height: "40px", marginTop: "90px" }}>
+                                <Grid item xs={12} sx={{ height: "40px", marginTop: "76px" }}>
                                     <AuthTextField
                                         fullWidth
                                         variant="standard"
@@ -127,7 +128,7 @@ const SignUpPage = () => {
                                         helperText={touched.firstName && errors.firstName}
                                     />
                                 </Grid>
-                                <Grid item xs={12} sx={{ height: "40px", marginTop: "52px" }}>
+                                <Grid item xs={12} sx={{ height: "40px", marginTop: "55px" }}>
                                     <AuthTextField
                                         fullWidth
                                         variant="standard"
@@ -139,7 +140,7 @@ const SignUpPage = () => {
                                         helperText={touched.secondName && errors.secondName}
                                     />
                                 </Grid>
-                                <Grid item xs={12} sx={{ height: "40px", marginTop: "52px" }}>
+                                <Grid item xs={12} sx={{ height: "40px", marginTop: "55px" }}>
                                     <AuthTextField
                                         fullWidth
                                         variant="standard"
@@ -152,7 +153,7 @@ const SignUpPage = () => {
                                     />
                                 </Grid>
 
-                                <Grid item xs={12} sx={{ height: "40px", marginTop: "52px" }}>
+                                <Grid item xs={12} sx={{ height: "40px", marginTop: "55px" }}>
                                     <AuthTextField
                                         fullWidth
                                         variant="standard"
@@ -173,13 +174,10 @@ const SignUpPage = () => {
                                         helperText={touched.password && errors.password}
                                     />
                                 </Grid>
-                                <Grid item xs={12} sx={{ marginTop: "42px" }} display="flex" justifyContent="flex-end">
+                                <Grid item xs={12} sx={{ marginTop: "20px" }} display="flex" justifyContent="flex-end">
                                     <AuthSideTypography component={Link} to="/auth/signin" sx={{ cursor: "pointer", textDecoration: "none", color: "#000" }} >Маєте акаунт?</AuthSideTypography>
                                 </Grid>
-                                {/* <Grid item xs={12} md={6}>
-                                    <GoogleSignIn />
-                                </Grid> */}
-                                <Grid item xs={12} sx={{ marginTop: "75px" }}>
+                                <Grid item xs={12} sx={{ marginTop: "62px" }}>
                                     <AuthLoadingButton
                                         color="secondary"
                                         variant="contained"
@@ -189,13 +187,13 @@ const SignUpPage = () => {
                                         Реєстрація
                                     </AuthLoadingButton>
                                 </Grid>
-                                <Grid item xs={12} sx={{ marginTop: "64px" }} display="flex" justifyContent="center" >
+                                <Grid item xs={12} sx={{ marginTop: "66px" }} display="flex" justifyContent="center" >
                                     <Box sx={{ width: "98px", height: "17px", borderBottom: "2px solid #000" }} />
                                     <AuthSideTypography sx={{ padding: "0 7px" }}>або</AuthSideTypography>
                                     <Box sx={{ width: "98px", height: "17px", borderBottom: "2px solid #000" }} />
                                 </Grid>
                                 <Grid item xs={12} sx={{ marginTop: "46px" }} display="flex" justifyContent="center" >
-                                    <AuthAvatar>G</AuthAvatar>
+                                    <GoogleExternalLogin />
                                     <AuthAvatar sx={{ marginX: "40px" }}>F</AuthAvatar>
                                     <AuthAvatar>T</AuthAvatar>
                                 </Grid>
