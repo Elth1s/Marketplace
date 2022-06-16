@@ -143,7 +143,8 @@ namespace WebAPI.Services
                         Email = payload.Email,
                         UserName = payload.Email,
                         FirstName = payload.GivenName,
-                        SecondName = payload.FamilyName
+                        SecondName = payload.FamilyName,
+                        EmailConfirmed = true
                     };
                     var resultCreate = await _userManager.CreateAsync(user);
                     if (!resultCreate.Succeeded)

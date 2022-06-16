@@ -32,11 +32,6 @@ export interface CategoryState {
     last_page: number
 }
 
-export interface CategoryServerError {
-    title: string,
-    status: number,
-    errors: Array<any>,
-}
 
 
 export interface GetCategoriesAction {
@@ -46,7 +41,7 @@ export interface GetCategoriesAction {
 
 export interface GetCategoriesForSelectAction {
     type: CategoryActionTypes.GET_CATEGORIES_FOR_SELECT,
-    payload: Array<ICategoryForSelect> 
+    payload: Array<ICategoryForSelect>
 }
 
 export interface GetByIdCategoryAction {

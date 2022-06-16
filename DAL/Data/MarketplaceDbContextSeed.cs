@@ -11,7 +11,7 @@ namespace DAL.Data
         public static async Task SeedAsync(MarketplaceDbContext marketplaceDbContext, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
         {
 
-            if (marketplaceDbContext.Database.IsNpgsql())
+            if (marketplaceDbContext.Database.IsSqlServer())
             {
                 marketplaceDbContext.Database.Migrate();
             }
@@ -112,9 +112,9 @@ namespace DAL.Data
             return categories;
         }
 
-        static IEnumerable<FilterGroup> GetPreconfiguredMarketplaceFilterGroup()
+        static IEnumerable<FilterName> GetPreconfiguredMarketplaceFilterGroup()
         {
-            var filterGroups = new List<FilterGroup>
+            var filterGroups = new List<FilterName>
             {
 /* 1 */         new(){ Name = "Сondition"},
 /* 2 */         new(){ Name = "Purpose"},

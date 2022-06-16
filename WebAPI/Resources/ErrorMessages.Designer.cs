@@ -61,6 +61,15 @@ namespace WebAPI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your email address has already been confirmed.
+        /// </summary>
+        internal static string AlreadyComfirmEmail {
+            get {
+                return ResourceManager.GetString("AlreadyComfirmEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You have not passed the captcha verification.
         /// </summary>
         internal static string CaptchaVerificationFailed {
@@ -115,6 +124,15 @@ namespace WebAPI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sending email failed.
+        /// </summary>
+        internal static string EmailSendingFailed {
+            get {
+                return ResourceManager.GetString("EmailSendingFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed to add external login.
         /// </summary>
         internal static string ExternalLoginAddFail {
@@ -133,11 +151,29 @@ namespace WebAPI.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Filter was not found.
+        ///   Looks up a localized string similar to Filter name was not found.
         /// </summary>
-        internal static string FilterNotFound {
+        internal static string FilterNameNotFound {
             get {
-                return ResourceManager.GetString("FilterNotFound", resourceCulture);
+                return ResourceManager.GetString("FilterNameNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter value was not found.
+        /// </summary>
+        internal static string FilterValueNotFound {
+            get {
+                return ResourceManager.GetString("FilterValueNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid confirmation token.
+        /// </summary>
+        internal static string InvalidConfirmToken {
+            get {
+                return ResourceManager.GetString("InvalidConfirmToken", resourceCulture);
             }
         }
         
@@ -147,6 +183,24 @@ namespace WebAPI.Resources {
         internal static string InvalidExternalLoginRequest {
             get {
                 return ResourceManager.GetString("InvalidExternalLoginRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid password.
+        /// </summary>
+        internal static string InvalidPassword {
+            get {
+                return ResourceManager.GetString("InvalidPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid password reset token.
+        /// </summary>
+        internal static string InvalidResetPasswordToken {
+            get {
+                return ResourceManager.GetString("InvalidResetPasswordToken", resourceCulture);
             }
         }
         
@@ -165,6 +219,15 @@ namespace WebAPI.Resources {
         internal static string InvalidUserEmailPassword {
             get {
                 return ResourceManager.GetString("InvalidUserEmailPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Updating password failed.
+        /// </summary>
+        internal static string PasswordUpdateFail {
+            get {
+                return ResourceManager.GetString("PasswordUpdateFail", resourceCulture);
             }
         }
         

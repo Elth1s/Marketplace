@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebAPI.Interfaces;
 using WebAPI.ViewModels.Request;
 
@@ -14,6 +15,7 @@ namespace WebAPI.Controllers
             _productService = productService;
         }
 
+        [Authorize(Roles = "Admin,Seller")]
         [HttpGet("Get")]
         public async Task<IActionResult> Get()
         {
@@ -21,6 +23,7 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = "Admin,Seller")]
         [HttpGet("GetById/{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -28,6 +31,7 @@ namespace WebAPI.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = "Admin,Seller")]
         [HttpPost("Create")]
         public async Task<IActionResult> Create([FromBody] ProductCreateRequest request)
         {
@@ -35,13 +39,15 @@ namespace WebAPI.Controllers
             return Ok("Product created successfully");
         }
 
-        [HttpPut("Update/{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] ProductUpdateRequest request)
-        {
-            await _productService.UpdateAsync(id, request);
-            return Ok("Product updated successfully");
-        }
+        //[Authorize(Roles = "Admin,Seller")]
+        //[HttpPut("Update/{id}")]
+        //public async Task<IActionResult> Update(int id, [FromBody] ProductUpdateRequest request)
+        //{
+        //    await _productService.UpdateAsync(id, request);
+        //    return Ok("Product updated successfully");
+        //}
 
+        [Authorize(Roles = "Admin,Seller")]
         [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {

@@ -21,12 +21,6 @@ export interface CharacteristicState {
     characteristics: Array<ICharacteristicInfo>
 }
 
-export interface CharacteristicServerError {
-    title: string,
-    status: number,
-    errors: Array<any>,
-}
-
 
 export interface GetCharacteristicsAction {
     type: CharacteristicActionTypes.GET_CHARACTERISTICS,
@@ -49,7 +43,7 @@ export interface UpdateCharacteristicAction {
 }
 
 
-export type CharacteristicAction = GetCharacteristicsAction | 
-                                   GetByIdCharacteristicAction | 
-                                   CreateCharacteristicAction | 
-                                   UpdateCharacteristicAction;
+export type CharacteristicAction = GetCharacteristicsAction |
+    GetByIdCharacteristicAction |
+    CreateCharacteristicAction |
+    UpdateCharacteristicAction;

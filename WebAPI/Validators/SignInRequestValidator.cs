@@ -15,8 +15,7 @@ namespace WebAPI.Validators
             //Password
             RuleFor(x => x.Password)
                 .Cascade(CascadeMode.Stop)
-                .NotEmpty().WithName("Password").WithMessage("{PropertyName} is required")
-                .MinimumLength(8).WithMessage("{PropertyName} must be at least 8 characters");
+                .NotEmpty().WithName("Password").WithMessage("{PropertyName} is required");
         }
     }
 }

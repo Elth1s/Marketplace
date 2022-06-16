@@ -8,7 +8,5 @@ namespace WebAPI.Interfaces
         Task<ProfileResponse> GetProfileAsync(string id);
 
         Task UpdateProfileAsync(string id, UpdateProfileRequest request);
-
-        Task ChangePasswordAsync(string id, ChangePasswordRequest request);
     }
 }

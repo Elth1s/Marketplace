@@ -13,9 +13,13 @@ namespace WebAPI.Controllers
         private string UserId => User?.FindFirstValue(ClaimTypes.NameIdentifier);
 
         private readonly IUserService _userService;
-        public UserController(IUserService userService)
+        private readonly IConfirmEmailService _confirmEmailService;
+        private readonly IResetPasswordService _resetPasswordService;
+        public UserController(IUserService userService, IConfirmEmailService confirmEmailService, IResetPasswordService resetPasswordService)
         {
             _userService = userService;
+            _confirmEmailService = confirmEmailService;
+            _resetPasswordService = resetPasswordService;
         }
 
         [Authorize]
@@ -35,11 +39,44 @@ namespace WebAPI.Controllers
         }
 
         [Authorize]
-        [HttpPut("ChangePassword")]
-        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
+        [HttpPost("ConfirmEmail")]
+        public async Task<IActionResult> SendConfirmEmail()
         {
-            await _userService.ChangePasswordAsync(UserId, request);
-            return Ok("Password updated successfully");
+
+            await _confirmEmailService.SendConfirmMailAsync(UserId);
+            return Ok("Send email for confirmation");
+        }
+
+        [HttpPut("ConfirmEmail")]
+        public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailRequest request)
+        {
+
+            await _confirmEmailService.ConfirmEmailAsync(request);
+            return Ok("Email confirmed");
+        }
+
+        [HttpGet("IsEmailConfirmed")]
+        public async Task<IActionResult> IsEmailConfirmed()
+        {
+
+            var result = await _confirmEmailService.IsEmailConfirmed(UserId);
+            return Ok(result);
+        }
+
+        [HttpPost("ResetPassword")]
+        public async Task<IActionResult> SendResetPassword([FromBody] EmailRequest request)
+        {
+
+            await _resetPasswordService.SendResetPasswordAsync(request);
+            return Ok("Send email for reset password");
+        }
+
+        [HttpPut("ResetPassword")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request)
+        {
+
+            await _resetPasswordService.ResetPasswordAsync(request);
+            return Ok("Password reset successfully");
         }
     }
 }

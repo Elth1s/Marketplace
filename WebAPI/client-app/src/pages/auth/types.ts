@@ -5,7 +5,7 @@ export enum AuthActionTypes {
 
 export interface IUser {
     email: string,
-    role: string
+    role: string,
 }
 
 export interface IAuthResponse {
@@ -23,12 +23,6 @@ export interface ILoginModel {
     password: string,
 }
 
-export interface LoginServerError {
-    title: string,
-    status: number,
-    errors: Array<any>
-}
-
 export interface IRegisterModel {
     firstName: string,
     secondName: string,
@@ -36,20 +30,11 @@ export interface IRegisterModel {
     password: string,
 };
 
-export interface RegisterServerError {
-    title: string,
-    status: number,
-    errors: Array<any>,
-}
-
 export interface IExternalLoginModel {
     provider: string,
     token: string
 };
-export interface ExternalLoginServerError {
-    statusCode: string,
-    error: string
-}
+
 export interface AuthSuccessAction {
     type: AuthActionTypes.AUTH_SUCCESS,
     payload: IUser

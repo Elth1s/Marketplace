@@ -3,7 +3,6 @@ using DAL.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using System.Drawing.Imaging;
 using WebAPI.Constants;
-using WebAPI.Exceptions;
 using WebAPI.Extensions;
 using WebAPI.Helpers;
 using WebAPI.Interfaces;
@@ -75,18 +74,5 @@ namespace WebAPI.Services
             return response;
         }
 
-        public async Task ChangePasswordAsync(string id, ChangePasswordRequest request)
-        {
-            var user = await _userManager.FindByIdAsync(id);
-            user.UserNullChecking();
-
-            var resultPasswordCheck = await _userManager.CheckPasswordAsync(user, request.OldPassword);
-            if (!resultPasswordCheck)
-                throw new AppException("Invalid password");
-
-            var resultPasswordUpdate = await _userManager.ChangePasswordAsync(user, request.OldPassword, request.Password);
-            if (!resultPasswordUpdate.Succeeded)
-                throw new AppException("Updating password failed");
-        }
     }
 }

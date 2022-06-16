@@ -27,6 +27,15 @@ namespace WebAPI.Extensions
             }
         }
 
+        public static void UserEmailConfirmedChecking(this AppUser user)
+        {
+            if (user.EmailConfirmed)
+            {
+                throw new AppException(
+                    ErrorMessages.AlreadyComfirmEmail, HttpStatusCode.Unauthorized);
+            }
+        }
+
         public static void RefreshTokenNotActiveChecking(this RefreshToken refreshToken)
         {
             if (!refreshToken.IsActive)
@@ -116,12 +125,22 @@ namespace WebAPI.Extensions
             }
         }
 
-        public static void FilterNullChecking(this Filter filter)
+        public static void FilterNameNullChecking(this FilterName filterName)
         {
-            if (filter == null)
+            if (filterName == null)
             {
                 throw new AppException(
-                    ErrorMessages.FilterNotFound,
+                    ErrorMessages.FilterNameNotFound,
+                    HttpStatusCode.NotFound);
+            }
+        }
+
+        public static void FilterValueNullChecking(this FilterValue filterValue)
+        {
+            if (filterValue == null)
+            {
+                throw new AppException(
+                    ErrorMessages.FilterValueNotFound,
                     HttpStatusCode.NotFound);
             }
         }
@@ -156,14 +175,6 @@ namespace WebAPI.Extensions
             }
         }
 
-        public static void ProductCharacteristicNullChecking(this ProductCharacteristic productCharacteristic)
-        {
-            if (productCharacteristic == null)
-            {
-                throw new AppException(
-                    ErrorMessages.ProductCharacteristicNotFound,
-                    HttpStatusCode.NotFound);
-            }
-        }
+
     }
 }

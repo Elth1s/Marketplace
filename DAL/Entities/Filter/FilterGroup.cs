@@ -4,6 +4,6 @@
     {
         public string Name { get; set; }
 
-        public ICollection<Filter> Filters { get; set; }
+        public ICollection<FilterName> FiltersName { get; set; }
     }
 }

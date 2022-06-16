@@ -11,6 +11,6 @@ namespace DAL.Entities
         [ForeignKey(nameof(CharacteristicGroupId))]
         public CharacteristicGroup CharacteristicGroup { get; set; }
 
-        public ICollection<Category> Categories { get; set; }
+        public ICollection<Product> Products { get; set; }
     }
 }
