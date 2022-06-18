@@ -8,7 +8,8 @@ import { useActions } from "../../../../hooks/useActions";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 
 import { validationFields } from "../validation";
-import { CharacteristicServerError, ICharacteristic } from "../types";
+import { ICharacteristic } from "../types";
+import { ServerError } from '../../../../store/types';
 
 import DialogComponent from '../../../../components/Dialog';
 import SelectComponent from "../../../../components/Select";
@@ -43,7 +44,7 @@ const CharacteristicCreate = () => {
             handleClickClose();
             resetForm();
         } catch (ex) {
-            const serverErrors = ex as CharacteristicServerError;
+            const serverErrors = ex as ServerError;
             if (serverErrors.errors)
                 Object.entries(serverErrors.errors).forEach(([key, value]) => {
                     if (Array.isArray(value)) {

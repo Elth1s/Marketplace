@@ -15,11 +15,11 @@ import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 
 import { validationFields } from "../validation";
 import { ICategory } from "../types";
+import { ServerError } from "../../../../store/types";
 
 import CropperDialog from "../../../../components/CropperDialog";
 import TextFieldComponent from "../../../../components/TextField";
 import AutocompleteComponent from "../../../../components/Autocomplete";
-import { CharacteristicServerError } from "../../characteristic/types";
 
 const CategoryUpdate = () => {
     const { GetByIdCategory, GetCategoryForSelect, GetCharacteristics, UpdateCategory } = useActions();
@@ -63,7 +63,7 @@ const CategoryUpdate = () => {
             navigator("/category");
         }
         catch (ex) {
-            const serverErrors = ex as CharacteristicServerError;
+            const serverErrors = ex as ServerError;
             if (serverErrors.errors)
                 Object.entries(serverErrors.errors).forEach(([key, value]) => {
                     if (Array.isArray(value)) {

@@ -65,7 +65,7 @@ namespace WebAPI.Services
             productStatus.ProductStatusNullChecking();
 
             var category = await _categoryRepository.GetByIdAsync(request.CategoryId);
-            category.CategotyNullChecking();
+            category.CategoryNullChecking();
 
             var product = _mapper.Map<Product>(request);
 
