@@ -17,12 +17,14 @@ import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 import GoogleExternalLogin from "../../../components/Google";
 
+
 import { LogInSchema } from "../validation";
 import { useActions } from "../../../hooks/useActions";
 import { ILoginModel } from "../types";
 import { ServerError } from "../../../store/types";
 
-import imageBackground from "../../../assets/login-background.jpg"
+import { login } from "../../../assets/backgrounds";
+import { twitter, facebook } from "../../../assets/icons";
 
 const SignIn = () => {
     const { LoginUser } = useActions();
@@ -87,7 +89,7 @@ const SignIn = () => {
                 sm={4}
                 md={6}
                 sx={{
-                    backgroundImage: `url(${imageBackground})`,
+                    backgroundImage: `url(${login})`,
                     backgroundRepeat: 'no-repeat',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center'
@@ -167,15 +169,15 @@ const SignIn = () => {
                                 </Grid>
                                 <Grid item xs={12} sx={{ position: "relative", marginTop: "45px" }} display="flex" justifyContent="center" >
                                     <GoogleExternalLogin />
-                                    <AuthAvatar sx={{ marginX: "40px" }}>F</AuthAvatar>
-                                    <AuthAvatar>T</AuthAvatar>
+                                    <AuthAvatar src={facebook} sx={{ marginX: "40px" }}>F</AuthAvatar>
+                                    <AuthAvatar src={twitter} />
                                 </Grid>
                             </Grid>
                         </Form>
                     </FormikProvider>
                 </Box>
             </Grid>
-        </Grid >
+        </Grid>
     );
 }
 

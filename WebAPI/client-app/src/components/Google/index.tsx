@@ -6,6 +6,8 @@ import { useActions } from '../../hooks/useActions';
 import { ServerError } from '../../store/types';
 import { AuthAvatar } from '../../pages/auth/styled';
 
+import { google } from "../../assets/icons"
+
 const clientId = "776665906575-0a864tctbrd5t6h6m8j84oktpm75jhng.apps.googleusercontent.com";
 
 function GoogleExternalLogin() {
@@ -47,7 +49,7 @@ function GoogleExternalLogin() {
             cookiePolicy='single_host_origin'
             prompt='select_account'
             render={renderProps => (
-                <AuthAvatar onClick={renderProps.onClick} sx={{ cursor: "pointer" }}>G</AuthAvatar>
+                <AuthAvatar onClick={renderProps.onClick} sx={{ cursor: "pointer" }} src={google} />
             )}
         />
     );

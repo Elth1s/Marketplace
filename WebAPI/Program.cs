@@ -223,6 +223,28 @@ app.UseStaticFiles(new StaticFileOptions
     RequestPath = ImagePath.RequestProductsImagePath
 });
 
+var backgroundImages = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.BackgroundImagePath);
+if (!Directory.Exists(backgroundImages))
+{
+    Directory.CreateDirectory(backgroundImages);
+}
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(backgroundImages),
+    RequestPath = ImagePath.BackgroundAssetsPath
+});
+
+var iconsImages = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.IconsImagePath);
+if (!Directory.Exists(iconsImages))
+{
+    Directory.CreateDirectory(iconsImages);
+}
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(iconsImages),
+    RequestPath = ImagePath.IconsAssetsPath
+});
+
 
 app.UseEndpoints(endpoints =>
 {
