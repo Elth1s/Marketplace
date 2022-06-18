@@ -22,7 +22,8 @@ import { IRegisterModel } from "../types";
 import { ServerError } from "../../../store/types";
 import { AuthAvatar, AuthHeaderTypography, AuthLoadingButton, AuthSideTypography, AuthTextField } from "../styled";
 
-import imageBackground from "../../../assets/signup-background.jpg"
+import { signup } from "../../../assets/backgrounds"
+import { twitter, facebook } from "../../../assets/icons";
 
 const SignUpPage = () => {
     const { RegisterUser } = useActions();
@@ -89,7 +90,7 @@ const SignUpPage = () => {
                 md={5}
                 lg={6}
                 sx={{
-                    backgroundImage: `url(${imageBackground})`,
+                    backgroundImage: `url(${signup})`,
                     backgroundRepeat: 'no-repeat',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
@@ -194,8 +195,8 @@ const SignUpPage = () => {
                                 </Grid>
                                 <Grid item xs={12} sx={{ marginTop: "46px" }} display="flex" justifyContent="center" >
                                     <GoogleExternalLogin />
-                                    <AuthAvatar sx={{ marginX: "40px" }}>F</AuthAvatar>
-                                    <AuthAvatar>T</AuthAvatar>
+                                    <AuthAvatar src={facebook} sx={{ marginX: "40px" }}>F</AuthAvatar>
+                                    <AuthAvatar src={twitter} />
                                 </Grid>
 
                             </Grid>

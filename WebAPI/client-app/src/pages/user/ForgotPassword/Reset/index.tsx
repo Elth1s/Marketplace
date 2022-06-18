@@ -15,7 +15,8 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useActions } from "../../../../hooks/useActions";
 
-import imageBackground from "../../../../assets/signup-background.jpg"
+import { signup } from "../../../../assets/backgrounds"
+
 import { IResetPassword, ResetPasswordServerError } from "../../types";
 import { LoadingButton } from "@mui/lab";
 import { ResetPasswordSchema } from "../../validation";
@@ -68,7 +69,7 @@ const ResetPassword = () => {
                 md={5}
                 lg={6}
                 sx={{
-                    backgroundImage: `url(${imageBackground})`,
+                    backgroundImage: `url(${signup})`,
                     backgroundRepeat: 'no-repeat',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',

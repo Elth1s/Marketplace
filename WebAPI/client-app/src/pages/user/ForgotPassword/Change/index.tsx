@@ -14,7 +14,8 @@ import { Form, FormikProvider, useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
-import imageBackground from "../../../../assets/signup-background.jpg"
+import { signup } from "../../../../assets/backgrounds"
+
 import { IResetChangePassword, ResetPasswordServerError } from "../../types";
 import { ResetChangePasswordSchema } from "../../validation";
 import { useActions } from "../../../../hooks/useActions";
@@ -81,7 +82,7 @@ const ChangePassword = () => {
                 md={5}
                 lg={6}
                 sx={{
-                    backgroundImage: `url(${imageBackground})`,
+                    backgroundImage: `url(${signup})`,
                     backgroundRepeat: 'no-repeat',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
