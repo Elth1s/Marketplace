@@ -1,24 +1,28 @@
-﻿using WebAPI.Interfaces;
+﻿using Microsoft.Extensions.Options;
+using WebAPI.Interfaces;
+using WebAPI.Settings;
 using WebAPI.ViewModels.Response;
 
 namespace WebAPI.Services
 {
     public class RecaptchaService : IRecaptchaService
     {
-        private readonly IConfiguration _configuration;
-        public RecaptchaService(IConfiguration configuration)
+        private readonly ReCaptchaSettings _reCaptchaSettings;
+        public RecaptchaService(IOptions<ReCaptchaSettings> reCaptchaSettings)
         {
-            _configuration = configuration;
+            _reCaptchaSettings = reCaptchaSettings.Value;
         }
 
         public bool IsValid(string recaptchaToken)
         {
-            var client = new System.Net.WebClient();
-
-            //TODO: Insert key in appsettings.json
-            string PrivateKey = _configuration.GetValue<string>("Recaptcha:SecretKey");
-            string requestComm = string.Format("https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}", PrivateKey, recaptchaToken);
-            var GoogleReply = client.DownloadString(requestComm);
+            using var httpClient = new HttpClient();
+            string requestComm = string.Format("https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}",
+                                               _reCaptchaSettings.SecretKey,
+                                               recaptchaToken);
+            var request = new HttpRequestMessage(HttpMethod.Get, requestComm);
+            var response = httpClient.Send(request);
+            using var reader = new StreamReader(response.Content.ReadAsStream());
+            var GoogleReply = reader.ReadToEnd();
 
             var captchaResponse = Newtonsoft.Json.JsonConvert.DeserializeObject<RecaptchaResponse>(GoogleReply);
 

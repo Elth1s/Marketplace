@@ -25,6 +25,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 builder.Services.Configure<GoogleAuthSettings>(builder.Configuration.GetSection("GoogleAuthSettings"));
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+builder.Services.Configure<ReCaptchaSettings>(builder.Configuration.GetSection("ReCaptcha"));
 builder.Services.Configure<ClientUrl>(builder.Configuration.GetSection("ClientServer"));
 
 // Database & Identity
@@ -121,6 +122,8 @@ builder.Services.AddSwaggerGen(c =>
                         },new List<string>()
                     }
                 });
+    var fileDoc = Path.Combine(System.AppContext.BaseDirectory, $"{assemblyName}.xml");
+    c.IncludeXmlComments(fileDoc);
 });
 
 var app = builder.Build();

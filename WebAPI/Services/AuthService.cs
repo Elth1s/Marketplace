@@ -114,7 +114,7 @@ namespace WebAPI.Services
 
             refreshToken.RefreshTokenNotActiveChecking();
 
-            refreshToken.RefreshTokenNotActiveChecking();
+            refreshToken.RefreshTokenRevokedChecking();
 
             RevokeRefreshToken(refreshToken, ipAddress);
             await _userManager.UpdateAsync(user);

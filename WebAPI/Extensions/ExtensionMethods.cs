@@ -53,7 +53,7 @@ namespace WebAPI.Extensions
         }
 
 
-        public static void CategotyNullChecking(this Category category)
+        public static void CategoryNullChecking(this Category category)
         {
             if (category == null)
             {

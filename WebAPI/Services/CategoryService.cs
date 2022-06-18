@@ -42,7 +42,7 @@ namespace WebAPI.Services
         {
             var spec = new CategoryIncludeFullInfoSpecification(id);
             var category = await _categorRepository.GetBySpecAsync(spec);
-            category.CategotyNullChecking();
+            category.CategoryNullChecking();
 
             return _mapper.Map<CategoryResponse>(category);
         }
@@ -52,7 +52,7 @@ namespace WebAPI.Services
             if (request.ParentId != null)
             {
                 var parentCategory = await _categorRepository.GetByIdAsync(request.ParentId);
-                parentCategory.CategotyNullChecking();
+                parentCategory.CategoryNullChecking();
             }
 
             var category = _mapper.Map<Category>(request);
@@ -81,11 +81,11 @@ namespace WebAPI.Services
             if (request.ParentId != null)
             {
                 var parentCategory = await _categorRepository.GetByIdAsync(request.ParentId);
-                parentCategory.CategotyNullChecking();
+                parentCategory.CategoryNullChecking();
             }
 
             var category = await _categorRepository.GetByIdAsync(id);
-            category.CategotyNullChecking();
+            category.CategoryNullChecking();
 
             if (!string.IsNullOrEmpty(request.Image))
             {
@@ -119,7 +119,7 @@ namespace WebAPI.Services
         public async Task DeleteAsync(int id)
         {
             var category = await _categorRepository.GetByIdAsync(id);
-            category.CategotyNullChecking();
+            category.CategoryNullChecking();
 
             if (!string.IsNullOrEmpty(category.Image))
             {

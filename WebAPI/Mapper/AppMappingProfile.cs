@@ -16,7 +16,6 @@ namespace WebAPI.Mapper
                 .ForMember(u => u.UserName, opt => opt.MapFrom(vm => vm.Email));
 
             CreateMap<AppUser, ProfileResponse>()
-                .ForMember(u => u.Phone, opt => opt.MapFrom(vm => vm.PhoneNumber))
                 .ForMember(u => u.Photo, opt => opt.MapFrom(vm => !string.IsNullOrEmpty(vm.Photo) ? string.Concat(ImagePath.RequestUsersImagePath, "/", vm.Photo) : ""));
 
             CreateMap<UpdateProfileRequest, AppUser>()

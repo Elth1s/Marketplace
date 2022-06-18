@@ -14,6 +14,8 @@ import SignIn from './pages/auth/SignIn';
 import SignUp from './pages/auth/SignUp';
 import Profile from './pages/user/Profile';
 import ConfirmEmail from './pages/user/ConfirmEmail';
+import ResetPassword from './pages/user/ForgotPassword/Reset';
+import ChangePassword from './pages/user/ForgotPassword/Change';
 
 import CategoryTable from './pages/admin/category/Table';
 import CategoryCreate from './pages/admin/category/Create';
@@ -62,9 +64,9 @@ function App() {
           <Route path="/auth/signin" element={<SignIn />} />
           <Route path="/auth/signup" element={<SignUp />} />
         </Route>
-        
+
         <Route path='/admin' element={<AdminLayout />}>
-    
+
         </Route>
 
         <Route path="/profile" element={<Profile />} />
@@ -72,7 +74,7 @@ function App() {
         <Route path="/resetPassword" element={<ResetPassword />} />
         <Route path="/resetPassword/:token" element={<ChangePassword />} />
 
-        
+
 
         <Route path="/category" element={<CategoryTable />} />
         <Route path="/category/create" element={<CategoryCreate />} />

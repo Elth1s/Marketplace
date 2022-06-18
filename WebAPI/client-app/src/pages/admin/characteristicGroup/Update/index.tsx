@@ -9,7 +9,8 @@ import { useActions } from "../../../../hooks/useActions";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 
 import { validationFields } from "../validation";
-import { CharacteristicGroupServerError, ICharacteristicGroup } from "../types";
+import { ICharacteristicGroup } from "../types";
+import { ServerError } from '../../../../store/types';
 
 import { ICharacteristicGroupUpdate } from './type';
 
@@ -43,7 +44,7 @@ const CharacteristicGroupUpdate: FC<ICharacteristicGroupUpdate> = ({ id }) => {
             resetForm();
         }
         catch (ex) {
-            const serverErrors = ex as CharacteristicGroupServerError;
+            const serverErrors = ex as ServerError;
             if (serverErrors.errors)
                 Object.entries(serverErrors.errors).forEach(([key, value]) => {
                     if (Array.isArray(value)) {
