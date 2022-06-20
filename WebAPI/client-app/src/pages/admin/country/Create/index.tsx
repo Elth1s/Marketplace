@@ -1,52 +1,42 @@
 import Grid from '@mui/material/Grid';
-import IconButton from '@mui/material/IconButton';
-import EditIcon from '@mui/icons-material/Edit';
+import Button from '@mui/material/Button';
 
-import { FC, useState } from "react";
+import { useState } from "react";
 import { useFormik } from "formik";
 
 import { useActions } from "../../../../hooks/useActions";
-import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 
 import { validationFields } from "../validation";
-import { ICharacteristic, ICharacteristicUpdatePage } from "../types";
+import { ICountry } from "../types";
 import { ServerError } from '../../../../store/types';
 
 import DialogComponent from '../../../../components/Dialog';
-import SelectComponent from '../../../../components/Select';
-import TextFieldComponent from '../../../../components/TextField';
+import TextFieldComponent from "../../../../components/TextField";
 
-const CharacteristicUpdate: FC<ICharacteristicUpdatePage> = ({ id }) => {
+const CountryCreate = () => {
     const [open, setOpen] = useState(false);
 
-    const { GetByIdCharacteristic, GetCharacteristicGroups, UpdateCharacteristic, GetCharacteristics } = useActions();
+    const { CreateCountry, GetCountries } = useActions();
 
-    const { characteristicInfo } = useTypedSelector((store) => store.characteristic);
-    const { characteristicGroups } = useTypedSelector((store) => store.characteristicGroup);
+    const item: ICountry = {
+        name: "",
+    };
 
-    const item: ICharacteristic = {
-        name: characteristicInfo.name,
-        characteristicGroupId: characteristicGroups.find(n => n.name === characteristicInfo.characteristicGroupName)?.id || ''
-    }
-
-    const handleClickOpen = async () => {
+    const handleClickOpen = () => {
         setOpen(true);
-        await GetCharacteristicGroups();
-        await GetByIdCharacteristic(id);
     };
 
     const handleClickClose = () => {
         setOpen(false);
     };
 
-    const onHandleSubmit = async (values: ICharacteristic) => {
+    const onHandleSubmit = async (values: ICountry) => {
         try {
-            await UpdateCharacteristic(characteristicInfo.id, values);
-            await GetCharacteristics();
+            await CreateCountry(values);
+            await GetCountries();
             handleClickClose();
             resetForm();
-        }
-        catch (ex) {
+        } catch (ex) {
             const serverErrors = ex as ServerError;
             if (serverErrors.errors)
                 Object.entries(serverErrors.errors).forEach(([key, value]) => {
@@ -60,11 +50,9 @@ const CharacteristicUpdate: FC<ICharacteristicUpdatePage> = ({ id }) => {
                 });
         }
     }
-
     const formik = useFormik({
         initialValues: item,
         validationSchema: validationFields,
-        enableReinitialize: true,
         onSubmit: onHandleSubmit
     });
 
@@ -75,21 +63,25 @@ const CharacteristicUpdate: FC<ICharacteristicUpdatePage> = ({ id }) => {
             open={open}
             handleClickClose={handleClickClose}
             button={
-                <IconButton
-                    aria-label="edit"
+                <Button
+                    variant="contained"
+                    sx={{
+                        my: 2,
+                        px: 4,
+                    }}
                     onClick={handleClickOpen}
                 >
-                    <EditIcon />
-                </IconButton>
+                    Create
+                </Button>
             }
 
             formik={formik}
             isSubmitting={isSubmitting}
             handleSubmit={handleSubmit}
 
-            dialogTitle="Update"
+            dialogTitle="Create"
             dialogBtnCancel="Close"
-            dialogBtnConfirm="Update"
+            dialogBtnConfirm="Create"
 
             dialogContent={
                 <Grid container spacing={2}>
@@ -102,19 +94,10 @@ const CharacteristicUpdate: FC<ICharacteristicUpdatePage> = ({ id }) => {
                             getFieldProps={{ ...getFieldProps('name') }}
                         />
                     </Grid>
-                    <Grid item xs={12}>
-                        <SelectComponent
-                            label="Characteristic group"
-                            items={characteristicGroups}
-                            error={errors.characteristicGroupId}
-                            touched={touched.characteristicGroupId}
-                            getFieldProps={{ ...getFieldProps('characteristicGroupId') }}
-                        />
-                    </Grid>
                 </Grid>
             }
         />
     )
 }
 
-export default CharacteristicUpdate;
+export default CountryCreate;

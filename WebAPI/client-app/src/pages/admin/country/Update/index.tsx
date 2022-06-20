@@ -9,40 +9,35 @@ import { useActions } from "../../../../hooks/useActions";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 
 import { validationFields } from "../validation";
-import { ICharacteristic, ICharacteristicUpdatePage } from "../types";
+import { ICountry, ICountryUpdatePage } from "../types";
 import { ServerError } from '../../../../store/types';
 
 import DialogComponent from '../../../../components/Dialog';
-import SelectComponent from '../../../../components/Select';
 import TextFieldComponent from '../../../../components/TextField';
 
-const CharacteristicUpdate: FC<ICharacteristicUpdatePage> = ({ id }) => {
+const CountryUpdate: FC<ICountryUpdatePage> = ({ id }) => {
     const [open, setOpen] = useState(false);
 
-    const { GetByIdCharacteristic, GetCharacteristicGroups, UpdateCharacteristic, GetCharacteristics } = useActions();
+    const { GetCountries, GetByIdCountry, UpdateCountry } = useActions();
+    const { countryInfo } = useTypedSelector((store) => store.country);
 
-    const { characteristicInfo } = useTypedSelector((store) => store.characteristic);
-    const { characteristicGroups } = useTypedSelector((store) => store.characteristicGroup);
-
-    const item: ICharacteristic = {
-        name: characteristicInfo.name,
-        characteristicGroupId: characteristicGroups.find(n => n.name === characteristicInfo.characteristicGroupName)?.id || ''
+    const item: ICountry = {
+        name: countryInfo.name,
     }
 
     const handleClickOpen = async () => {
         setOpen(true);
-        await GetCharacteristicGroups();
-        await GetByIdCharacteristic(id);
+        await GetByIdCountry(id);
     };
 
     const handleClickClose = () => {
         setOpen(false);
     };
 
-    const onHandleSubmit = async (values: ICharacteristic) => {
+    const onHandleSubmit = async (values: ICountry) => {
         try {
-            await UpdateCharacteristic(characteristicInfo.id, values);
-            await GetCharacteristics();
+            await UpdateCountry(countryInfo.id, values);
+            await GetCountries();
             handleClickClose();
             resetForm();
         }
@@ -87,9 +82,9 @@ const CharacteristicUpdate: FC<ICharacteristicUpdatePage> = ({ id }) => {
             isSubmitting={isSubmitting}
             handleSubmit={handleSubmit}
 
-            dialogTitle="Update"
+            dialogTitle="Create"
             dialogBtnCancel="Close"
-            dialogBtnConfirm="Update"
+            dialogBtnConfirm="Create"
 
             dialogContent={
                 <Grid container spacing={2}>
@@ -102,19 +97,10 @@ const CharacteristicUpdate: FC<ICharacteristicUpdatePage> = ({ id }) => {
                             getFieldProps={{ ...getFieldProps('name') }}
                         />
                     </Grid>
-                    <Grid item xs={12}>
-                        <SelectComponent
-                            label="Characteristic group"
-                            items={characteristicGroups}
-                            error={errors.characteristicGroupId}
-                            touched={touched.characteristicGroupId}
-                            getFieldProps={{ ...getFieldProps('characteristicGroupId') }}
-                        />
-                    </Grid>
                 </Grid>
             }
         />
     )
 }
 
-export default CharacteristicUpdate;
+export default CountryUpdate;
