@@ -65,6 +65,10 @@ const CharacteristicGroupCreate = () => {
             button={
                 <Button
                     variant="contained"
+                    sx={{
+                        my: 2,
+                        px: 4,
+                    }}
                     onClick={handleClickOpen}
                 >
                     Create

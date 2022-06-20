@@ -1,4 +1,3 @@
-import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
 
 import { useEffect, useState } from "react";
@@ -41,44 +40,38 @@ const CharacteristicTable = () => {
 
     return (
         <>
-            <Container
-                disableGutters
-                maxWidth="lg"
-                component="main"
-                sx={{ pt: 8, pb: 6 }}>
-                <CharacteristicCreate />
-                <Paper>
-                    <TableComponent
-                        headLabel={["Id", "Name", "Characteristic", "Action"]}
-                        rowsPerPageOptions={[5, 10, 25]}
-                        itemsCount={characteristics.length}
-                        bodyItems={characteristics
-                            .map((row, index) => {
-                                return [
-                                    <TableCellComponent
-                                        key={row.id}
-                                        label={row.id}
-                                    />,
-                                    <TableCellComponent
-                                        key={row.name}
-                                        label={row.name}
-                                    />,
-                                    <TableCellComponent
-                                        key={row.characteristicGroupName}
-                                        label={row.characteristicGroupName}
-                                    />,
-                                    <TableCellActionComponent
-                                        key={index}
-                                        path={null}
-                                        edit={<CharacteristicUpdate id={row.id} />}
-                                        onDelete={() => onDelete(row.id)}
-                                    />
-                                ]
-                            })
-                        }
-                    />
-                </Paper>
-            </Container>
+            <CharacteristicCreate />
+            <Paper>
+                <TableComponent
+                    headLabel={["Id", "Name", "Characteristic", "Action"]}
+                    rowsPerPageOptions={[5, 10, 25]}
+                    itemsCount={characteristics.length}
+                    bodyItems={characteristics
+                        .map((row, index) => {
+                            return [
+                                <TableCellComponent
+                                    key={row.id}
+                                    label={row.id}
+                                />,
+                                <TableCellComponent
+                                    key={row.name}
+                                    label={row.name}
+                                />,
+                                <TableCellComponent
+                                    key={row.characteristicGroupName}
+                                    label={row.characteristicGroupName}
+                                />,
+                                <TableCellActionComponent
+                                    key={index}
+                                    path={null}
+                                    edit={<CharacteristicUpdate id={row.id} />}
+                                    onDelete={() => onDelete(row.id)}
+                                />
+                            ]
+                        })
+                    }
+                />
+            </Paper>
         </>
     );
 }

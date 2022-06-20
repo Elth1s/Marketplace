@@ -3,6 +3,8 @@ import * as ProfileActionCreators from "../../pages/user/actions"
 import * as CategoryActionCreators from "../../pages/admin/category/actions"
 import * as CharacteristicGroupActionCreators from "../../pages/admin/characteristicGroup/actions"
 import * as CharacteristicActionCreators from "../../pages/admin/characteristic/actions"
+import * as CountryActionCreators from "../../pages/admin/country/actions"
+import * as CityActionCreators from "../../pages/admin/city/actions"
 
 const actions = {
     ...AuthActionCreators,
@@ -10,5 +12,7 @@ const actions = {
     ...CategoryActionCreators,
     ...CharacteristicGroupActionCreators,
     ...CharacteristicActionCreators,
+    ...CountryActionCreators,
+    ...CityActionCreators,
 }
 export default actions;

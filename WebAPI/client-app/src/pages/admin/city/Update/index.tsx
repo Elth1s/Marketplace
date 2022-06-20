@@ -9,40 +9,41 @@ import { useActions } from "../../../../hooks/useActions";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 
 import { validationFields } from "../validation";
-import { ICharacteristic, ICharacteristicUpdatePage } from "../types";
+import { ICity, ICityUpdatePage } from "../types";
 import { ServerError } from '../../../../store/types';
 
 import DialogComponent from '../../../../components/Dialog';
 import SelectComponent from '../../../../components/Select';
 import TextFieldComponent from '../../../../components/TextField';
 
-const CharacteristicUpdate: FC<ICharacteristicUpdatePage> = ({ id }) => {
+const CityUpdate: FC<ICityUpdatePage> = ({ id }) => {
     const [open, setOpen] = useState(false);
 
-    const { GetByIdCharacteristic, GetCharacteristicGroups, UpdateCharacteristic, GetCharacteristics } = useActions();
+    const { GetByIdCity, GetCountries, UpdateCity, GetCities } = useActions();
 
-    const { characteristicInfo } = useTypedSelector((store) => store.characteristic);
-    const { characteristicGroups } = useTypedSelector((store) => store.characteristicGroup);
+    const { cityInfo } = useTypedSelector((store) => store.city);
+    const { countries } = useTypedSelector((store) => store.country);
 
-    const item: ICharacteristic = {
-        name: characteristicInfo.name,
-        characteristicGroupId: characteristicGroups.find(n => n.name === characteristicInfo.characteristicGroupName)?.id || ''
+    const item: ICity = {
+        name: cityInfo.name,
+        countryId: countries.find(n => n.name === cityInfo.countryName)?.id || ''
     }
 
     const handleClickOpen = async () => {
         setOpen(true);
-        await GetCharacteristicGroups();
-        await GetByIdCharacteristic(id);
+        await GetCountries();
+        await GetByIdCity(id);
     };
 
     const handleClickClose = () => {
         setOpen(false);
     };
 
-    const onHandleSubmit = async (values: ICharacteristic) => {
+    const onHandleSubmit = async (values: ICity) => {
+        console.log("data", values);
         try {
-            await UpdateCharacteristic(characteristicInfo.id, values);
-            await GetCharacteristics();
+            await UpdateCity(cityInfo.id, values);
+            await GetCities();
             handleClickClose();
             resetForm();
         }
@@ -104,11 +105,11 @@ const CharacteristicUpdate: FC<ICharacteristicUpdatePage> = ({ id }) => {
                     </Grid>
                     <Grid item xs={12}>
                         <SelectComponent
-                            label="Characteristic group"
-                            items={characteristicGroups}
-                            error={errors.characteristicGroupId}
-                            touched={touched.characteristicGroupId}
-                            getFieldProps={{ ...getFieldProps('characteristicGroupId') }}
+                            label="City"
+                            items={countries}
+                            error={errors.countryId}
+                            touched={touched.countryId}
+                            getFieldProps={{ ...getFieldProps('countryId') }}
                         />
                     </Grid>
                 </Grid>
@@ -117,4 +118,4 @@ const CharacteristicUpdate: FC<ICharacteristicUpdatePage> = ({ id }) => {
     )
 }
 
-export default CharacteristicUpdate;
+export default CityUpdate;

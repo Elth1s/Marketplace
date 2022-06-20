@@ -22,6 +22,11 @@ export interface CharacteristicState {
 }
 
 
+export interface ICharacteristicUpdatePage {
+    id: number,
+};
+
+
 export interface GetCharacteristicsAction {
     type: CharacteristicActionTypes.GET_CHARACTERISTICS,
     payload: Array<ICharacteristicInfo>
