@@ -5,10 +5,10 @@ namespace WebAPI.Interfaces
 {
     public interface ICountryService
     {
-        Task<IEnumerable<CountryResponse>> GetCountriesAsync();
-        Task<CountryResponse> GetCountryByIdAsync(int countryId);
-        Task CreateCountryAsync(CountryRequest request);
-        Task UpdateCountryAsync(int countryId, CountryRequest request);
+        Task<IEnumerable<UnitResponse>> GetCountriesAsync();
+        Task<UnitResponse> GetCountryByIdAsync(int countryId);
+        Task CreateCountryAsync(UnitRequest request);
+        Task UpdateCountryAsync(int countryId, UnitRequest request);
         Task DeleteCountryAsync(int countryId);
     }
 }

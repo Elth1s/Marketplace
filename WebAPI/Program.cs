@@ -13,9 +13,19 @@ using System.Reflection;
 using System.Text;
 using WebAPI.Constants;
 using WebAPI.Interfaces;
+using WebAPI.Interfaces.Characteristics;
+using WebAPI.Interfaces.Emails;
+using WebAPI.Interfaces.Filters;
+using WebAPI.Interfaces.Products;
+using WebAPI.Interfaces.Users;
 using WebAPI.Mapper;
 using WebAPI.Middlewares;
 using WebAPI.Services;
+using WebAPI.Services.Characteristcs;
+using WebAPI.Services.Emails;
+using WebAPI.Services.Filters;
+using WebAPI.Services.Products;
+using WebAPI.Services.Users;
 using WebAPI.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -44,12 +54,14 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICharacteristicGroupService, CharacteristicGroupService>();
-builder.Services.AddScoped<ICharacteristicService, CharacteristicService>();
+builder.Services.AddScoped<ICharacteristicNameService, CharacteristicNameService>();
+builder.Services.AddScoped<ICharacteristicValueService, CharacteristicValueService>();
 builder.Services.AddScoped<ICountryService, CountryService>();
 builder.Services.AddScoped<ICityService, CityService>();
 builder.Services.AddScoped<IFilterGroupService, FilterGroupService>();
 builder.Services.AddScoped<IFilterNameService, FilterNameService>();
 builder.Services.AddScoped<IFilterValueService, FilterValueService>();
+builder.Services.AddScoped<IUnitService, UnitService>();
 builder.Services.AddScoped<IShopService, ShopService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IProductStatusService, ProductStatusService>();
@@ -60,7 +72,6 @@ builder.Services.AddScoped<IResetPasswordService, ResetPasswordService>();
 
 //reCaptcha
 builder.Services.AddTransient<IRecaptchaService, RecaptchaService>();
-
 
 //Mapper
 builder.Services.AddAutoMapper(typeof(AppMappingProfile));

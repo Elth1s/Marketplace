@@ -3,7 +3,8 @@ using DAL;
 using DAL.Entities;
 using WebAPI.Extensions;
 using WebAPI.Interfaces;
-using WebAPI.Specifications;
+using WebAPI.Resources;
+using WebAPI.Specifications.Cities;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Response;
 
@@ -49,6 +50,10 @@ namespace WebAPI.Services
             var country = await _countryRepository.GetByIdAsync(request.CountryId);
             country.CountryNullChecking();
 
+            var spec = new CityGetByNameAndCountryIdSpecification(request.Name, request.CountryId);
+            if (await _cityRepository.GetBySpecAsync(spec) != null)
+                throw new ApplicationException(ErrorMessages.CityCountryNotUnique);
+
             var city = _mapper.Map<City>(request);
 
             await _cityRepository.AddAsync(city);
@@ -62,6 +67,10 @@ namespace WebAPI.Services
 
             var city = await _cityRepository.GetByIdAsync(cityId);
             city.CityNullChecking();
+
+            var spec = new CityGetByNameAndCountryIdSpecification(request.Name, request.CountryId);
+            if (await _cityRepository.GetBySpecAsync(spec) != null)
+                throw new ApplicationException(ErrorMessages.CityCountryNotUnique);
 
             _mapper.Map(request, city);
 

@@ -23,7 +23,7 @@ namespace DAL.Entities
 
 
         public ICollection<ProductImage> Images { get; set; }
-        public ICollection<Characteristic> Characteristics { get; set; }
+        public ICollection<CharacteristicValue> CharacteristicValues { get; set; }
         public ICollection<FilterValueProduct> FilterValueProducts { get; set; }
     }
 }

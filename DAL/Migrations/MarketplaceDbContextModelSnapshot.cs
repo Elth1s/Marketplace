@@ -22,19 +22,19 @@ namespace DAL.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("CharacteristicProduct", b =>
+            modelBuilder.Entity("CharacteristicValueProduct", b =>
                 {
-                    b.Property<int>("CharacteristicsId")
+                    b.Property<int>("CharacteristicValuesId")
                         .HasColumnType("int");
 
                     b.Property<int>("ProductsId")
                         .HasColumnType("int");
 
-                    b.HasKey("CharacteristicsId", "ProductsId");
+                    b.HasKey("CharacteristicValuesId", "ProductsId");
 
                     b.HasIndex("ProductsId");
 
-                    b.ToTable("CharacteristicProduct");
+                    b.ToTable("CharacteristicValueProduct", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Entities.Category", b =>
@@ -63,28 +63,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("DAL.Entities.Characteristic", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("CharacteristicGroupId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CharacteristicGroupId");
-
-                    b.ToTable("Characteristics");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Entities.CharacteristicGroup", b =>
@@ -105,7 +84,54 @@ namespace DAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("CharacteristicGroups");
+                    b.ToTable("CharacteristicGroups", (string)null);
+                });
+
+            modelBuilder.Entity("DAL.Entities.CharacteristicName", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CharacteristicGroupId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("UnitId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CharacteristicGroupId");
+
+                    b.HasIndex("UnitId");
+
+                    b.ToTable("CharacteristicNames", (string)null);
+                });
+
+            modelBuilder.Entity("DAL.Entities.CharacteristicValue", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CharacteristicNameId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CharacteristicNameId");
+
+                    b.ToTable("CharacteristicValues", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Entities.City", b =>
@@ -126,7 +152,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("Cities");
+                    b.ToTable("Cities", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Entities.Country", b =>
@@ -145,7 +171,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries");
+                    b.ToTable("Countries", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Entities.FilterGroup", b =>
@@ -161,7 +187,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FilterGroups");
+                    b.ToTable("FilterGroups", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Entities.FilterName", b =>
@@ -187,7 +213,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("UnitId");
 
-                    b.ToTable("FilterNames");
+                    b.ToTable("FilterNames", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Entities.FilterValue", b =>
@@ -210,9 +236,6 @@ namespace DAL.Migrations
                     b.Property<int?>("Min")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UnitId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
 
@@ -222,9 +245,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("FilterNameId");
 
-                    b.HasIndex("UnitId");
-
-                    b.ToTable("FilterValues");
+                    b.ToTable("FilterValues", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Entities.FilterValueProduct", b =>
@@ -250,7 +271,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("FilterValueProducts");
+                    b.ToTable("FilterValueProducts", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Entities.Identity.AppUser", b =>
@@ -374,7 +395,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("StatusId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Entities.ProductImage", b =>
@@ -395,7 +416,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductImages");
+                    b.ToTable("ProductImages", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Entities.ProductStatus", b =>
@@ -411,7 +432,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductStatuses");
+                    b.ToTable("ProductStatuses", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Entities.Shop", b =>
@@ -447,7 +468,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("CityId");
 
-                    b.ToTable("Shops");
+                    b.ToTable("Shops", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Entities.Unit", b =>
@@ -463,7 +484,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Unit");
+                    b.ToTable("Unit", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -599,11 +620,11 @@ namespace DAL.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("CharacteristicProduct", b =>
+            modelBuilder.Entity("CharacteristicValueProduct", b =>
                 {
-                    b.HasOne("DAL.Entities.Characteristic", null)
+                    b.HasOne("DAL.Entities.CharacteristicValue", null)
                         .WithMany()
-                        .HasForeignKey("CharacteristicsId")
+                        .HasForeignKey("CharacteristicValuesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -627,17 +648,6 @@ namespace DAL.Migrations
                     b.Navigation("Parent");
                 });
 
-            modelBuilder.Entity("DAL.Entities.Characteristic", b =>
-                {
-                    b.HasOne("DAL.Entities.CharacteristicGroup", "CharacteristicGroup")
-                        .WithMany("Characteristics")
-                        .HasForeignKey("CharacteristicGroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CharacteristicGroup");
-                });
-
             modelBuilder.Entity("DAL.Entities.CharacteristicGroup", b =>
                 {
                     b.HasOne("DAL.Entities.Identity.AppUser", "User")
@@ -645,6 +655,34 @@ namespace DAL.Migrations
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DAL.Entities.CharacteristicName", b =>
+                {
+                    b.HasOne("DAL.Entities.CharacteristicGroup", "CharacteristicGroup")
+                        .WithMany("CharacteristicNames")
+                        .HasForeignKey("CharacteristicGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DAL.Entities.Unit", "Unit")
+                        .WithMany("CharacteristicNames")
+                        .HasForeignKey("UnitId");
+
+                    b.Navigation("CharacteristicGroup");
+
+                    b.Navigation("Unit");
+                });
+
+            modelBuilder.Entity("DAL.Entities.CharacteristicValue", b =>
+                {
+                    b.HasOne("DAL.Entities.CharacteristicName", "CharacteristicName")
+                        .WithMany("CharacteristicValues")
+                        .HasForeignKey("CharacteristicNameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CharacteristicName");
                 });
 
             modelBuilder.Entity("DAL.Entities.City", b =>
@@ -667,7 +705,7 @@ namespace DAL.Migrations
                         .IsRequired();
 
                     b.HasOne("DAL.Entities.Unit", "Unit")
-                        .WithMany()
+                        .WithMany("FilterNames")
                         .HasForeignKey("UnitId");
 
                     b.Navigation("FilterGroup");
@@ -686,10 +724,6 @@ namespace DAL.Migrations
                         .HasForeignKey("FilterNameId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("DAL.Entities.Unit", null)
-                        .WithMany("FilterNames")
-                        .HasForeignKey("UnitId");
 
                     b.Navigation("FilterName");
                 });
@@ -719,7 +753,7 @@ namespace DAL.Migrations
                         .WithOne("User")
                         .HasForeignKey("DAL.Entities.Identity.AppUser", "ShopId");
 
-                    b.OwnsMany("DAL.Entities.RefreshToken", "RefreshTokens", b1 =>
+                    b.OwnsMany("DAL.Entities.Identity.AppUser.RefreshTokens#DAL.Entities.RefreshToken", "RefreshTokens", b1 =>
                         {
                             b1.Property<string>("AppUserId")
                                 .HasColumnType("nvarchar(450)");
@@ -756,7 +790,7 @@ namespace DAL.Migrations
 
                             b1.HasKey("AppUserId", "Id");
 
-                            b1.ToTable("RefreshToken");
+                            b1.ToTable("RefreshToken", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("AppUserId");
@@ -878,7 +912,12 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.CharacteristicGroup", b =>
                 {
-                    b.Navigation("Characteristics");
+                    b.Navigation("CharacteristicNames");
+                });
+
+            modelBuilder.Entity("DAL.Entities.CharacteristicName", b =>
+                {
+                    b.Navigation("CharacteristicValues");
                 });
 
             modelBuilder.Entity("DAL.Entities.City", b =>
@@ -929,6 +968,8 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.Unit", b =>
                 {
+                    b.Navigation("CharacteristicNames");
+
                     b.Navigation("FilterNames");
                 });
 #pragma warning restore 612, 618

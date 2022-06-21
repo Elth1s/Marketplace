@@ -123,8 +123,8 @@
   <data name="CharacteristicGroupNotFound" xml:space="preserve">
     <value>Characteristic group was not found</value>
   </data>
-  <data name="CharacteristicNotFound" xml:space="preserve">
-    <value>Characteristic was not found</value>
+  <data name="CharacteristicNameNotFound" xml:space="preserve">
+    <value>Characteristic name was not found</value>
   </data>
   <data name="ExternalLoginAddFail" xml:space="preserve">
     <value>Failed to add external login</value>
@@ -203,5 +203,23 @@
   </data>
   <data name="FilterValueNotFound" xml:space="preserve">
     <value>Filter value was not found</value>
+  </data>
+  <data name="UnitNotFound" xml:space="preserve">
+    <value>Unit was not found</value>
+  </data>
+  <data name="CharacteristicNameUnitNotUnique" xml:space="preserve">
+    <value>Characteristic name with this unit measure already exists</value>
+  </data>
+  <data name="FilterNameUnitNotUnique" xml:space="preserve">
+    <value>Filter name with this unit measure already exists</value>
+  </data>
+  <data name="CityCountryNotUnique" xml:space="preserve">
+    <value>City with this country already exists</value>
+  </data>
+  <data name="CharacteristicValueNotFound" xml:space="preserve">
+    <value>Characteristic value was not found</value>
+  </data>
+  <data name="CharacteristicValueNameNotUnique" xml:space="preserve">
+    <value>Characteristic value with this characteristic name already exists</value>
   </data>
 </root>

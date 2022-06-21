@@ -31,13 +31,13 @@ function App() {
   const { AuthUser } = useActions();
 
   useEffect(() => {
-    console.log("%c" + "Астанавитесь!", "color:red;font-weight:bold;font-size:64px;");
-    console.log("%c" + "https://www.youtube.com/watch?v=LJsQZ6QNdmU", "font-size:22px;");
-    console.log("%c" + "Ця функція браузера призначена для розробників. Якщо хтось сказав вам щось скопіювати і сюди вставити, щоб включити функцію Mall або «зламати» чиюсь сторінку, це шахраї. Виконавши ці дії, ви надасте їм доступ до своєї сторінки Mall.", "font-size:22px;");
     let token = getLocalAccessToken();
     if (token) {
       AuthUser(token);
     }
+    console.log("%c" + "Астанавитесь!", "color:red;font-weight:bold;font-size:64px;");
+    console.log("%c" + "https://www.youtube.com/watch?v=LJsQZ6QNdmU", "font-size:22px;");
+    console.log("%c" + "Ця функція браузера призначена для розробників. Якщо хтось сказав вам щось скопіювати і сюди вставити, щоб включити функцію Mall або «зламати» чиюсь сторінку, це шахраї. Виконавши ці дії, ви надасте їм доступ до своєї сторінки Mall.", "font-size:22px;");
   }, []);
 
   const theme = createTheme({
