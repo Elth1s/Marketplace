@@ -8,23 +8,23 @@ using WebAPI.ViewModels.Response;
 namespace WebAPI.Controllers
 {
     /// <summary>
-    /// The country controller class
+    /// The unit controller class
     /// </summary>
     /// <seealso cref="ControllerBase" />
     [Route("api/[controller]")]
     [ApiController]
-    public class CountryController : ControllerBase
+    public class UnitController : ControllerBase
     {
-        private readonly ICountryService _countryService;
-        public CountryController(ICountryService countryService)
+        private readonly IUnitService _unitService;
+        public UnitController(IUnitService unitService)
         {
-            _countryService = countryService;
+            _unitService = unitService;
         }
 
         /// <summary>
-        /// Returns all countries
+        /// Returns all units
         /// </summary>
-        /// <response code="200">Getting countries completed successfully</response>
+        /// <response code="200">Getting units completed successfully</response>
         /// <response code="401">You are not authorized</response>
         /// <response code="403">You don't have permission</response>
         /// <response code="500">An internal error has occurred</response>
@@ -33,21 +33,21 @@ namespace WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
-        [HttpGet("GetCountries")]
-        public async Task<IActionResult> GetCountries()
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetUnits()
         {
-            var result = await _countryService.GetCountriesAsync();
+            var result = await _unitService.GetAllAsync();
             return Ok(result);
         }
 
         /// <summary>
-        /// Returns country with the given identifier
+        /// Returns unit with the given identifier
         /// </summary>
-        /// <param name="countryId">Country identifier</param>
-        /// <response code="200">Getting country completed successfully</response>
+        /// <param name="id">Unit identifier</param>
+        /// <response code="200">Getting unit completed successfully</response>
         /// <response code="401">You are not authorized</response>
         /// <response code="403">You don't have permission</response>
-        /// <response code="404">Country not found</response>
+        /// <response code="404">Unit not found</response>
         /// <response code="500">An internal error has occurred</response>
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(UnitResponse))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
@@ -55,18 +55,18 @@ namespace WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
-        [HttpGet("GetCountryById/{countryId}")]
-        public async Task<IActionResult> GetCountryById(int countryId)
+        [HttpGet("GetById/{id}")]
+        public async Task<IActionResult> GetUnitById(int id)
         {
-            var result = await _countryService.GetCountryByIdAsync(countryId);
+            var result = await _unitService.GetByIdAsync(id);
             return Ok(result);
         }
 
         /// <summary>
-        /// Create new country
+        /// Create new unit
         /// </summary>
-        /// <param name="request">New country</param>
-        /// <response code="200">Country creation completed successfully</response>
+        /// <param name="request">New unit</param>
+        /// <response code="200">Unit creation completed successfully</response>
         /// <response code="401">You are not authorized</response>
         /// <response code="403">You don't have permission</response>        
         /// <response code="500">An internal error has occurred</response>
@@ -75,22 +75,22 @@ namespace WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
-        [HttpPost("CreateCountry")]
-        public async Task<IActionResult> CreateCountry([FromBody] UnitRequest request)
+        [HttpPost("Create")]
+        public async Task<IActionResult> CreateUnit([FromBody] UnitRequest request)
         {
-            await _countryService.CreateCountryAsync(request);
-            return Ok("Country created successfully");
+            await _unitService.CreateAsync(request);
+            return Ok("Unit created successfully");
         }
 
         /// <summary>
-        /// Update an existing country
+        /// Update an existing unit
         /// </summary>
-        /// <param name="countryId">Country identifier</param>
-        /// <param name="request">Country</param>
-        /// <response code="200">Country update completed successfully</response>
+        /// <param name="id">Unit identifier</param>
+        /// <param name="request">Unit</param>
+        /// <response code="200">Unit update completed successfully</response>
         /// <response code="401">You are not authorized</response>
         /// <response code="403">You don't have permission</response>
-        /// <response code="404">Country not found</response>
+        /// <response code="404">Unit not found</response>
         /// <response code="500">An internal error has occurred</response>
         [SwaggerResponse(StatusCodes.Status200OK)]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
@@ -98,20 +98,20 @@ namespace WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
-        [HttpPut("UpdateCountry/{countryId}")]
-        public async Task<IActionResult> UpdateCountry(int countryId, [FromBody] UnitRequest request)
+        [HttpPut("Update/{id}")]
+        public async Task<IActionResult> UpdateUnit(int id, [FromBody] UnitRequest request)
         {
-            await _countryService.UpdateCountryAsync(countryId, request);
-            return Ok("Country updated successfully");
+            await _unitService.UpdateAsync(id, request);
+            return Ok("Unit updated successfully");
         }
 
         /// <summary>
-        /// Delete an existing country
+        /// Delete an existing unit
         /// </summary>
-        /// <response code="200">Country deletion completed successfully</response>
+        /// <response code="200">Unit deletion completed successfully</response>
         /// <response code="401">You are not authorized</response>
         /// <response code="403">You don't have permission</response>
-        /// <response code="404">Country not found</response>
+        /// <response code="404">Unit not found</response>
         /// <response code="500">An internal error has occurred</response>
         [SwaggerResponse(StatusCodes.Status200OK)]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
@@ -119,11 +119,11 @@ namespace WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
-        [HttpDelete("DeleteCountry/{countryId}")]
-        public async Task<IActionResult> DeleteCountry(int countryId)
+        [HttpDelete("Delete/{id}")]
+        public async Task<IActionResult> DeleteUnit(int id)
         {
-            await _countryService.DeleteCountryAsync(countryId);
-            return Ok("Country deleted successfully");
+            await _unitService.DeleteAsync(id);
+            return Ok("Unit deleted successfully");
         }
     }
 }

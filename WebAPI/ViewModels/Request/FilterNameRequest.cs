@@ -17,6 +17,11 @@ namespace WebAPI.ViewModels.Request
         /// </summary>
         /// <example>1</example>
         public int FilterGroupId { get; set; }
+        /// <summary>
+        /// Unit identifier
+        /// </summary>
+        /// <example>1</example>
+        public int? UnitId { get; set; }
     }
 
     /// <summary>

@@ -3,7 +3,7 @@ using DAL.Entities;
 
 namespace WebAPI.Specifications
 {
-    public class CharacteristicGroupGetByUserIdSpecification : Specification<CharacteristicGroup>, ISingleResultSpecification<CharacteristicGroup>
+    public class CharacteristicGroupGetByUserIdSpecification : Specification<CharacteristicGroup>
     {
         public CharacteristicGroupGetByUserIdSpecification(string userId)
         {

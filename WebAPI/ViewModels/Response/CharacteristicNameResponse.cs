@@ -1,29 +1,29 @@
 ﻿namespace WebAPI.ViewModels.Response
 {
     /// <summary>
-    /// Characteristic class returned from the controller
+    /// Characteristic name class returned from the controller
     /// </summary>
-    public class CharacteristicResponse
+    public class CharacteristicNameResponse
     {
         /// <summary>
-        /// Characteristic identifier
+        /// Characteristic name identifier
         /// </summary>
         /// <example>1</example>
         public int Id { get; set; }
         /// <summary>
-        /// Name of characteristic
+        /// Name of characteristic name
         /// </summary>
         /// <example>Package</example>
         public string Name { get; set; }
-        /// <summary>
-        /// Characteristic value
-        /// </summary>
-        /// <example>Documents</example>
-        public string Value { get; set; }
         /// <summary>
         /// Name of characteristic group
         /// </summary>
         /// <example>Main</example>
         public string CharacteristicGroupName { get; set; }
+        /// <summary>
+        /// Measure of unit
+        /// </summary>
+        /// <example>Main</example>
+        public string UnitMeasure { get; set; }
     }
 }

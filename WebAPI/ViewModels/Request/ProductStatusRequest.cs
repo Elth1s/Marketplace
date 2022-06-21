@@ -1,4 +1,7 @@
-﻿using FluentValidation;
+﻿using DAL;
+using DAL.Entities;
+using FluentValidation;
+using WebAPI.Specifications;
 
 namespace WebAPI.ViewModels.Request
 {
@@ -19,12 +22,21 @@ namespace WebAPI.ViewModels.Request
     /// </summary>
     public class ProductStatusRequestValidator : AbstractValidator<ProductStatusRequest>
     {
-        public ProductStatusRequestValidator()
+        private readonly IRepository<ProductStatus> _productStatusRepository;
+        public ProductStatusRequestValidator(IRepository<ProductStatus> productStatusRepository)
         {
+            _productStatusRepository = productStatusRepository;
             //Name
             RuleFor(x => x.Name).Cascade(CascadeMode.Stop)
                .NotEmpty().WithName("Name").WithMessage("{PropertyName} is required")
+               .Must(IsUniqueName).WithMessage("Product status with this {PropertyName} already exists")
                .Length(2, 20).WithMessage("{PropertyName} should be between 2 and 20 characters");
+        }
+
+        private bool IsUniqueName(string name)
+        {
+            var spec = new ProductStatusGetByNameSpecification(name);
+            return _productStatusRepository.GetBySpecAsync(spec).Result == null;
         }
     }
 }

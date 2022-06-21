@@ -7,12 +7,14 @@ namespace WebAPI.Specifications
     {
         public FilterValueIncludeFullInfoSpecification()
         {
-            Query.Include(o => o.FilterName);
+            Query.Include(o => o.FilterName)
+                 .AsSplitQuery();
         }
         public FilterValueIncludeFullInfoSpecification(int id)
         {
             Query.Where(o => o.Id == id)
-                .Include(o => o.FilterName);
+                .Include(o => o.FilterName)
+                .AsSplitQuery();
         }
 
     }

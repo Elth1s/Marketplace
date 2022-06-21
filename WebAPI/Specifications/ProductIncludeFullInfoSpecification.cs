@@ -11,7 +11,8 @@ namespace WebAPI.Specifications
                 .Include(st => st.Status)
                 .Include(c => c.Category)
                 .Include(pi => pi.Images)
-                .Include(pc => pc.Characteristics)
+                .Include(pc => pc.FilterValueProducts)
+                .Include(pc => pc.CharacteristicValues)
                 .AsSplitQuery();
         }
         public ProductIncludeFullInfoSpecification(int id)
@@ -21,7 +22,8 @@ namespace WebAPI.Specifications
                 .Include(st => st.Status)
                 .Include(c => c.Category)
                 .Include(pi => pi.Images)
-                .Include(pc => pc.Characteristics)
+                .Include(pc => pc.FilterValueProducts)
+                .Include(pc => pc.CharacteristicValues)
                 .AsSplitQuery();
         }
     }

@@ -1,6 +1,7 @@
 ﻿using DAL;
 using DAL.Entities;
 using FluentValidation;
+using WebAPI.Specifications;
 
 namespace WebAPI.ViewModels.Request
 {
@@ -30,7 +31,14 @@ namespace WebAPI.ViewModels.Request
             //Name
             RuleFor(x => x.Name).Cascade(CascadeMode.Stop)
                .NotEmpty().WithName("Name").WithMessage("{PropertyName} is required")
+               .Must(IsUniqueName).WithMessage("Characteristic group with this {PropertyName} already exists")
                .Length(2, 30).WithMessage("{PropertyName} should be between 2 and 30 characters");
+        }
+
+        private bool IsUniqueName(string name)
+        {
+            var spec = new CharacteristicGroupGetByNameSpecification(name);
+            return _characteristicGroupRequest.GetBySpecAsync(spec).Result == null;
         }
     }
 }

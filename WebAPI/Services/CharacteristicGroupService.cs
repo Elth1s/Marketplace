@@ -30,7 +30,7 @@ namespace WebAPI.Services
             user.UserNullChecking();
 
             var spec = new CharacteristicGroupGetByUserIdSpecification(userId);
-            var characteristicGroups = await _characteristicGroupRepository.GetBySpecAsync(spec);
+            var characteristicGroups = await _characteristicGroupRepository.ListAsync(spec);
             return _mapper.Map<IEnumerable<CharacteristicGroupResponse>>(characteristicGroups);
         }
 

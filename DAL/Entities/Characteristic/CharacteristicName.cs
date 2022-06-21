@@ -2,15 +2,19 @@
 
 namespace DAL.Entities
 {
-    public class Characteristic : BaseEntity, IAggregateRoot
+    public class CharacteristicName : BaseEntity, IAggregateRoot
     {
         public string Name { get; set; }
 
         public int CharacteristicGroupId { get; set; }
+        public int? UnitId { get; set; }
+
 
         [ForeignKey(nameof(CharacteristicGroupId))]
         public CharacteristicGroup CharacteristicGroup { get; set; }
+        [ForeignKey(nameof(UnitId))]
+        public Unit Unit { get; set; }
 
-        public ICollection<Product> Products { get; set; }
+        public ICollection<CharacteristicValue> CharacteristicValues { get; set; }
     }
 }

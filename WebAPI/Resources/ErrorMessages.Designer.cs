@@ -97,11 +97,47 @@ namespace WebAPI.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Characteristic was not found.
+        ///   Looks up a localized string similar to Characteristic name was not found.
         /// </summary>
-        internal static string CharacteristicNotFound {
+        internal static string CharacteristicNameNotFound {
             get {
-                return ResourceManager.GetString("CharacteristicNotFound", resourceCulture);
+                return ResourceManager.GetString("CharacteristicNameNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Characteristic name with this unit measure already exists.
+        /// </summary>
+        internal static string CharacteristicNameUnitNotUnique {
+            get {
+                return ResourceManager.GetString("CharacteristicNameUnitNotUnique", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Characteristic value with this characteristic name already exists.
+        /// </summary>
+        internal static string CharacteristicValueNameNotUnique {
+            get {
+                return ResourceManager.GetString("CharacteristicValueNameNotUnique", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Characteristic value was not found.
+        /// </summary>
+        internal static string CharacteristicValueNotFound {
+            get {
+                return ResourceManager.GetString("CharacteristicValueNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to City with this country already exists.
+        /// </summary>
+        internal static string CityCountryNotUnique {
+            get {
+                return ResourceManager.GetString("CityCountryNotUnique", resourceCulture);
             }
         }
         
@@ -156,6 +192,15 @@ namespace WebAPI.Resources {
         internal static string FilterNameNotFound {
             get {
                 return ResourceManager.GetString("FilterNameNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter name with this unit measure already exists.
+        /// </summary>
+        internal static string FilterNameUnitNotUnique {
+            get {
+                return ResourceManager.GetString("FilterNameUnitNotUnique", resourceCulture);
             }
         }
         
@@ -282,6 +327,15 @@ namespace WebAPI.Resources {
         internal static string TokenRevorked {
             get {
                 return ResourceManager.GetString("TokenRevorked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unit was not found.
+        /// </summary>
+        internal static string UnitNotFound {
+            get {
+                return ResourceManager.GetString("UnitNotFound", resourceCulture);
             }
         }
         

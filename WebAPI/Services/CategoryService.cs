@@ -15,10 +15,10 @@ namespace WebAPI.Services
     public class CategoryService : ICategoryService
     {
         private readonly IRepository<Category> _categorRepository;
-        private readonly IRepository<Characteristic> _characteristicRepository;
+        private readonly IRepository<CharacteristicValue> _characteristicRepository;
         private readonly IMapper _mapper;
 
-        public CategoryService(IRepository<Category> categorRepository, IRepository<Characteristic> characteristicRepository, IMapper mapper)
+        public CategoryService(IRepository<Category> categorRepository, IRepository<CharacteristicValue> characteristicRepository, IMapper mapper)
         {
             _categorRepository = categorRepository;
             _characteristicRepository = characteristicRepository;

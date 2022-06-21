@@ -3,7 +3,7 @@ using DAL.Entities;
 
 namespace WebAPI.Specifications
 {
-    public class ProductImageGetByProductSpecification : Specification<ProductImage>, ISingleResultSpecification<ProductImage>
+    public class ProductImageGetByProductSpecification : Specification<ProductImage>
     {
         public ProductImageGetByProductSpecification(int productId)
         {

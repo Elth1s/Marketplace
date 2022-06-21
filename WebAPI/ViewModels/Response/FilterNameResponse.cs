@@ -20,5 +20,10 @@
         /// </summary>
         /// <example>Main</example>
         public string FilterGroupName { get; set; }
+        /// <summary>
+        /// Measure of unit
+        /// </summary>
+        /// <example>Main</example>
+        public string UnitMeasure { get; set; }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using DAL;
 using DAL.Entities;
+using WebAPI.Exceptions;
 using WebAPI.Extensions;
 using WebAPI.Interfaces;
+using WebAPI.Resources;
 using WebAPI.Specifications;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Response;
@@ -13,16 +15,19 @@ namespace WebAPI.Services
     {
         private readonly IRepository<FilterName> _filterNameRepository;
         private readonly IRepository<FilterGroup> _filterGroupRepository;
+        private readonly IRepository<Unit> _unitRepository;
         private readonly IMapper _mapper;
 
         public FilterNameService(
             IRepository<FilterName> filterNameRepository,
             IRepository<FilterGroup> filterGroupRepository,
+            IRepository<Unit> unitRepository,
             IMapper mapper
             )
         {
             _filterNameRepository = filterNameRepository;
             _filterGroupRepository = filterGroupRepository;
+            _unitRepository = unitRepository;
             _mapper = mapper;
         }
 
@@ -49,6 +54,16 @@ namespace WebAPI.Services
             var filterGroup = await _filterGroupRepository.GetByIdAsync(request.FilterGroupId);
             filterGroup.FilterGroupNullChecking();
 
+            if (request.UnitId != null)
+            {
+                var unit = await _unitRepository.GetByIdAsync(request.UnitId);
+                unit.UnitNullChecking();
+            }
+
+            var spec = new FilterNameGetByNameAndUnitIdSpecification(request.Name, request.UnitId);
+            if (await _filterNameRepository.GetBySpecAsync(spec) != null)
+                throw new AppException(ErrorMessages.FilterNameUnitNotUnique);
+
             var filter = _mapper.Map<FilterName>(request);
 
             await _filterNameRepository.AddAsync(filter);
@@ -59,6 +74,16 @@ namespace WebAPI.Services
         {
             var filterGroup = await _filterGroupRepository.GetByIdAsync(request.FilterGroupId);
             filterGroup.FilterGroupNullChecking();
+
+            if (request.UnitId != null)
+            {
+                var unit = await _unitRepository.GetByIdAsync(request.UnitId);
+                unit.UnitNullChecking();
+            }
+
+            var spec = new FilterNameGetByNameAndUnitIdSpecification(request.Name, request.UnitId.Value);
+            if (await _filterNameRepository.GetBySpecAsync(spec) != null)
+                throw new AppException(ErrorMessages.FilterNameUnitNotUnique);
 
             var filter = await _filterNameRepository.GetByIdAsync(filterNameId);
             filter.FilterNameNullChecking();

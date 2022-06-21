@@ -3,12 +3,12 @@
 namespace WebAPI.ViewModels.Request
 {
     /// <summary>
-    /// Characteristic class to create and update characteristic
+    /// Characteristic class to create and update characteristic name
     /// </summary>
-    public class CharacteristicRequest
+    public class CharacteristicNameRequest
     {
         /// <summary>
-        /// Name of characteristic
+        /// Name of characteristic name
         /// </summary>
         /// <example>Size</example>
         public string Name { get; set; }
@@ -17,14 +17,19 @@ namespace WebAPI.ViewModels.Request
         /// </summary>
         /// <example>1</example>
         public int CharacteristicGroupId { get; set; }
+        /// <summary>
+        /// Unit identifier
+        /// </summary>
+        /// <example>1</example>
+        public int? UnitId { get; set; }
     }
 
     /// <summary>
-    /// Class for <seealso cref="CharacteristicRequest" /> validation
+    /// Class for <seealso cref="CharacteristicNameRequest" /> validation
     /// </summary>
-    public class CharacteristicRequestValidator : AbstractValidator<CharacteristicRequest>
+    public class CharacteristicNameRequestValidator : AbstractValidator<CharacteristicNameRequest>
     {
-        public CharacteristicRequestValidator()
+        public CharacteristicNameRequestValidator()
         {
             //Name
             RuleFor(x => x.Name).Cascade(CascadeMode.Stop)

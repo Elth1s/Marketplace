@@ -95,12 +95,22 @@ namespace WebAPI.Extensions
         }
 
 
-        public static void CharacteristicNullChecking(this Characteristic characteristic)
+        public static void CharacteristicNameNullChecking(this CharacteristicName characteristicName)
         {
-            if (characteristic == null)
+            if (characteristicName == null)
             {
                 throw new AppException(
-                    ErrorMessages.CharacteristicNotFound,
+                    ErrorMessages.CharacteristicNameNotFound,
+                    HttpStatusCode.NotFound);
+            }
+        }
+
+        public static void CharacteristicValueNullChecking(this CharacteristicValue characteristicValue)
+        {
+            if (characteristicValue == null)
+            {
+                throw new AppException(
+                    ErrorMessages.CharacteristicValueNotFound,
                     HttpStatusCode.NotFound);
             }
         }
@@ -175,6 +185,14 @@ namespace WebAPI.Extensions
             }
         }
 
-
+        public static void UnitNullChecking(this Unit unit)
+        {
+            if (unit == null)
+            {
+                throw new AppException(
+                    ErrorMessages.UnitNotFound,
+                    HttpStatusCode.NotFound);
+            }
+        }
     }
 }
