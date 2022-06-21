@@ -6,9 +6,9 @@ using WebAPI.Constants;
 using WebAPI.Extensions;
 using WebAPI.Helpers;
 using WebAPI.Interfaces;
-using WebAPI.Specifications;
+using WebAPI.Specifications.Categories;
 using WebAPI.ViewModels.Request;
-using WebAPI.ViewModels.Response;
+using WebAPI.ViewModels.Response.Categories;
 
 namespace WebAPI.Services
 {

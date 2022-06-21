@@ -4,7 +4,7 @@ using DAL.Entities;
 using WebAPI.Extensions;
 using WebAPI.Interfaces;
 using WebAPI.Resources;
-using WebAPI.Specifications;
+using WebAPI.Specifications.Cities;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Response;
 

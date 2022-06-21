@@ -1,7 +1,7 @@
 ﻿using DAL;
 using DAL.Entities;
 using FluentValidation;
-using WebAPI.Specifications;
+using WebAPI.Specifications.Categories;
 
 namespace WebAPI.ViewModels.Request
 {

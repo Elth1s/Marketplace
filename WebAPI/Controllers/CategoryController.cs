@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using WebAPI.Interfaces;
 using WebAPI.ViewModels.Request;
-using WebAPI.ViewModels.Response;
+using WebAPI.ViewModels.Response.Categories;
 
 namespace WebAPI.Controllers
 {
