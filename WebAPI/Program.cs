@@ -256,6 +256,17 @@ app.UseStaticFiles(new StaticFileOptions
     RequestPath = ImagePath.IconsAssetsPath
 });
 
+var logosImages = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.LogosImagePath);
+if (!Directory.Exists(logosImages))
+{
+    Directory.CreateDirectory(logosImages);
+}
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(logosImages),
+    RequestPath = ImagePath.LogosAssetsPath
+});
+
 
 app.UseEndpoints(endpoints =>
 {

@@ -25,9 +25,10 @@ import { ServerError } from "../../../store/types";
 
 import { login } from "../../../assets/backgrounds";
 import { twitter, facebook } from "../../../assets/icons";
+import { getLocalAccessToken } from "../../../http_comon";
 
 const SignIn = () => {
-    const { LoginUser } = useActions();
+    const { LoginUser, AuthUser } = useActions();
     const { executeRecaptcha } = useGoogleReCaptcha();
 
     const [showPassword, setShowPassword] = useState(false);

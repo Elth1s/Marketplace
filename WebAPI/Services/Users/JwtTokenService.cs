@@ -8,6 +8,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using WebAPI.Constants;
 using WebAPI.Exceptions;
 using WebAPI.Interfaces.Users;
 using WebAPI.Resources;
@@ -38,6 +39,8 @@ namespace WebAPI.Services.Users
             List<Claim> claims = new()
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim("photo", !string.IsNullOrEmpty(user.Photo) ? string.Concat(ImagePath.RequestUsersImagePath, "/", user.Photo) : ""),
                 new Claim(ClaimTypes.Email, user.Email)
             };
 

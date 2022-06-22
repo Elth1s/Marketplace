@@ -7,6 +7,7 @@ import { getLocalAccessToken } from "./http_comon"
 import { useActions } from './hooks/useActions';
 import { useTypedSelector } from './hooks/useTypedSelector';
 
+import DefaultLayout from './containers/DefaultLayout';
 import AuthLayout from './containers/AuthLayout';
 import AdminLayout from './containers/AdminLayout';
 
@@ -31,10 +32,6 @@ function App() {
   const { AuthUser } = useActions();
 
   useEffect(() => {
-    let token = getLocalAccessToken();
-    if (token) {
-      AuthUser(token);
-    }
     console.log("%c" + "Астанавитесь!", "color:red;font-weight:bold;font-size:64px;");
     console.log("%c" + "https://www.youtube.com/watch?v=LJsQZ6QNdmU", "font-size:22px;");
     console.log("%c" + "Ця функція браузера призначена для розробників. Якщо хтось сказав вам щось скопіювати і сюди вставити, щоб включити функцію Mall або «зламати» чиюсь сторінку, це шахраї. Виконавши ці дії, ви надасте їм доступ до своєї сторінки Mall.", "font-size:22px;");
@@ -52,6 +49,20 @@ function App() {
         main: '#AF0000',
       },
     },
+    components: {
+      MuiIconButton: {
+        defaultProps: {
+          color: "secondary"
+        },
+      },
+      MuiSwitch: {
+        styleOverrides: {
+          switchBase: {
+            color: "#0E7C3A"
+          },
+        }
+      },
+    },
     typography: {
       fontFamily: [
         'Mulish',
@@ -65,12 +76,16 @@ function App() {
       <CssBaseline />
       <Routes>
 
+        <Route path="/" element={<DefaultLayout />}>
+          <Route path="/profile" element={<Profile />} />
+        </Route>
+
         <Route element={<AuthLayout />}>
           <Route path="/auth/signin" element={<SignIn />} />
           <Route path="/auth/signup" element={<SignUp />} />
         </Route>
 
-        <Route element={<AdminLayout />}>
+        <Route path="/admin" element={<AdminLayout />}>
           <Route path="/admin/category" element={<CategoryTable />} />
           <Route path="/admin/category/create" element={<CategoryCreate />} />
           <Route path="/admin/category/update" element={<CategoryUpdate />} />
@@ -79,9 +94,8 @@ function App() {
           <Route path="/admin/characteristic" element={<CharacteristicTable />} />
           <Route path="/admin/country" element={<CountryTable />} />
           <Route path="/admin/city" element={<CityTable />} />
-        </Route>
+        </Route>5
 
-        <Route path="/profile" element={<Profile />} />
         <Route path="/confirmEmail" element={<ConfirmEmail />} />
         <Route path="/resetPassword" element={<ResetPassword />} />
         <Route path="/resetPassword/:token" element={<ChangePassword />} />

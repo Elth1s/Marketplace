@@ -15,7 +15,7 @@ import Notification from './Notification'
 const Header: FC<IHeader> = ({ handleDrawerToggle }) => {
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static">
+            <AppBar position="static" color="transparent">
                 <Toolbar>
                     <Box sx={{ flexGrow: 1 }}>
                         <IconButton

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Outlet } from "react-router-dom";
 
 import Header from './Header';
-import Sitebar from './Sitebar';
+import Sitebar from './Sidebar';
 
 const AdminLayout = () => {
     const [open, setOpen] = useState(true);

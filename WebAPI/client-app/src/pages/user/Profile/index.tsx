@@ -84,7 +84,7 @@ const Profile = () => {
     const { errors, touched, isSubmitting, handleSubmit, getFieldProps, setFieldValue } = formik;
 
     return (
-        <Box sx={{ flexGrow: 1, m: 1, mx: 3, }}>
+        <Box sx={{ flexGrow: 1 }}>
             <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ py: 1 }}>
                 <Typography variant="h4" gutterBottom sx={{ my: "auto" }}>
                     Profile info

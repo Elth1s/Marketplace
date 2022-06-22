@@ -24,9 +24,10 @@ import { AuthAvatar, AuthHeaderTypography, AuthLoadingButton, AuthSideTypography
 
 import { signup } from "../../../assets/backgrounds"
 import { twitter, facebook } from "../../../assets/icons";
+import { getLocalAccessToken } from "../../../http_comon";
 
 const SignUpPage = () => {
-    const { RegisterUser } = useActions();
+    const { RegisterUser, AuthUser } = useActions();
     const { executeRecaptcha } = useGoogleReCaptcha();
 
     const [showPassword, setShowPassword] = useState(false);

@@ -12,7 +12,7 @@ import {
 import { ServerError } from "../../store/types";
 import http, { setLocalRefreshToken, setLocalAccessToken } from "../../http_comon"
 
-import { accessToken, refreshToken, emailClaim, roleClaim } from "./constants"
+import { accessToken, refreshToken, emailClaim, roleClaim, usernameClaim, photoClaim } from "./constants"
 
 export const LoginUser = (data: ILoginModel, reCaptchaToken: string) => {
     return async (dispatch: Dispatch<AuthAction>) => {
@@ -22,7 +22,7 @@ export const LoginUser = (data: ILoginModel, reCaptchaToken: string) => {
             setLocalAccessToken(tokens.accessToken);
             setLocalRefreshToken(tokens.refreshToken);
 
-            AuthUser(tokens.accessToken);
+            AuthUser(tokens.accessToken, dispatch);
             return Promise.resolve();
         }
         catch (error) {
@@ -39,7 +39,7 @@ export const RegisterUser = (data: IRegisterModel, reCaptchaToken: string) => {
             setLocalAccessToken(tokens.accessToken);
             setLocalRefreshToken(tokens.refreshToken);
 
-            AuthUser(tokens.accessToken);
+            AuthUser(tokens.accessToken, dispatch);
             return Promise.resolve();
         }
         catch (error) {
@@ -65,7 +65,7 @@ export const GoogleExternalLogin = (data: IExternalLoginModel) => {
             setLocalAccessToken(tokens.accessToken);
             setLocalRefreshToken(tokens.refreshToken);
 
-            AuthUser(tokens.accessToken);
+            AuthUser(tokens.accessToken, dispatch);
             return Promise.resolve();
         }
         catch (error) {
@@ -74,12 +74,10 @@ export const GoogleExternalLogin = (data: IExternalLoginModel) => {
     }
 }
 
-export const AuthUser = (token: string) => {
-    return async (dispatch: Dispatch<AuthAction>) => {
-        const decodedToken = jwt_decode(token) as any;
-        dispatch({
-            type: AuthActionTypes.AUTH_SUCCESS,
-            payload: { email: decodedToken[emailClaim], role: decodedToken[roleClaim] }
-        })
-    }
+export const AuthUser = (token: string, dispatch: Dispatch<AuthAction>) => {
+    const decodedToken = jwt_decode(token) as any;
+    dispatch({
+        type: AuthActionTypes.AUTH_SUCCESS,
+        payload: { username: decodedToken[usernameClaim], photo: decodedToken[photoClaim], email: decodedToken[emailClaim], roles: decodedToken[roleClaim] }
+    })
 }
