@@ -21,7 +21,7 @@ namespace DAL.Entities
         [ForeignKey(nameof(CategoryId))]
         public Category Category { get; set; }
 
-
+        public ICollection<BasketItem> BasketItems { get; set; }
         public ICollection<ProductImage> Images { get; set; }
         public ICollection<Characteristic> Characteristics { get; set; }
         public ICollection<FilterValueProduct> FilterValueProducts { get; set; }

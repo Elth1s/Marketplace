@@ -31,6 +31,7 @@ namespace DAL.Data
 
         public DbSet<Shop> Shops { get; set; }
 
+        public DbSet<BasketItem> BasketItems  { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

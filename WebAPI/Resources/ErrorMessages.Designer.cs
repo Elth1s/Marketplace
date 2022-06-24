@@ -86,7 +86,18 @@ namespace WebAPI.Resources {
                 return ResourceManager.GetString("CategoryNotFound", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to BasketItem was not found.
+        /// </summary>
+        internal static string BasketItemNotFound
+        {
+            get
+            {
+                return ResourceManager.GetString("CategoryNotFound", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Characteristic group was not found.
         /// </summary>

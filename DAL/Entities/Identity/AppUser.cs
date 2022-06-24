@@ -19,5 +19,7 @@ namespace DAL.Entities.Identity
 
         public ICollection<CharacteristicGroup> CharacteristicGroups { get; set; }
         public ICollection<RefreshToken> RefreshTokens { get; set; }
+        public ICollection<BasketItem> BasketItems { get; set; }
+
     }
 }
