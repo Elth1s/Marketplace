@@ -18,6 +18,8 @@ import ConfirmEmail from './pages/user/ConfirmEmail';
 import ResetPassword from './pages/user/ForgotPassword/Reset';
 import ChangePassword from './pages/user/ForgotPassword/Change';
 
+import Product from './pages/default/product';
+
 import CategoryTable from './pages/admin/category/Table';
 import CategoryCreate from './pages/admin/category/Create';
 import CategoryUpdate from './pages/admin/category/Update';
@@ -62,6 +64,11 @@ function App() {
           },
         }
       },
+      MuiAppBar:{
+        defaultProps: {
+          color: "inherit"
+        },
+      },
     },
     typography: {
       fontFamily: [
@@ -78,6 +85,7 @@ function App() {
 
         <Route path="/" element={<DefaultLayout />}>
           <Route path="/profile" element={<Profile />} />
+          <Route path="/product" element={<Product />} />
         </Route>
 
         <Route element={<AuthLayout />}>
@@ -94,7 +102,7 @@ function App() {
           <Route path="/admin/characteristic" element={<CharacteristicTable />} />
           <Route path="/admin/country" element={<CountryTable />} />
           <Route path="/admin/city" element={<CityTable />} />
-        </Route>5
+        </Route>
 
         <Route path="/confirmEmail" element={<ConfirmEmail />} />
         <Route path="/resetPassword" element={<ResetPassword />} />

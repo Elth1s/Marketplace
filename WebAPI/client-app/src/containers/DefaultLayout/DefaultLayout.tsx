@@ -1,4 +1,4 @@
-import { Container, IconButton } from "@mui/material";
+import { Box, Container, IconButton } from "@mui/material";
 import { ArrowUpward } from '@mui/icons-material';
 import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
@@ -30,8 +30,8 @@ const DefaultLayout = () => {
                     <IconButton aria-label="edit" sx={{ border: 2, borderColor: "#45A29E", borderRadius: 3, color: "#f1f1f1" }} onClick={scrollToTop} style={{ position: "fixed", bottom: "20px", right: "20px" }}>
                         <ArrowUpward fontSize="large" />
                     </IconButton>
-                )}
-            </Container>
+                )}  
+             </Container>
         </>
     );
 }

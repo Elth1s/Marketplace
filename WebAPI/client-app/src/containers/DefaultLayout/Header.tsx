@@ -36,7 +36,7 @@ const Header = () => {
 
     return (
         <Box sx={{ flexGrow: 1 }} mb={{ xs: 9, sm: 11 }} >
-            <AppBar color="transparent" sx={{ borderBottom: 1, borderColor: '#F45626' }} position="fixed" >
+            <AppBar sx={{ borderBottom: 1, borderColor: '#F45626' }} position="fixed" >
                 <Container sx={{ maxWidth: { xl: "xl", lg: "lg", md: "md" } }}>
                     <Toolbar style={{ paddingLeft: 0, paddingRight: 0 }}>
                         <Link to="/" style={{ textDecoration: 'none', color: 'unset' }} /*onClick={handleClose}*/>
