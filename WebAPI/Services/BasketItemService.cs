@@ -49,7 +49,6 @@ namespace WebAPI.Services
             await _basketItemRepository.AddAsync(basketItem);
             await _basketItemRepository.SaveChangesAsync();
 
-            throw new NotImplementedException();
         }
 
         public async Task DeleteAsync(int id)
