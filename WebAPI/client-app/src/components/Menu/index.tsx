@@ -64,20 +64,15 @@ const MainMenu = () => {
 
     return (
         <>
-            <Button
-                sx={{
-                    minWidth: 36,
-                    height: 36,
-                    p: 0,
-                    borderRadius: 2
-
-                }}
-                onClick={handleClick}
-                size="medium"
+            <IconButton
+                sx={{ borderRadius: '12px', p: 0 }}
+                size="large"
+                aria-label="search"
                 color="primary"
+                onClick={handleClick}
             >
-                <PersonOutlineOutlined sx={{ fontSize: "30px" }} />
-            </Button>
+                <PersonOutlineOutlined sx={{ fontSize: "45px" }} />
+            </IconButton>
             <Menu
                 anchorEl={anchorEl}
                 id="account-menu"
@@ -103,7 +98,7 @@ const MainMenu = () => {
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
                 {isAuth &&
-                    <>
+                    <Box>
                         <Link to="/profile" style={{ textDecoration: 'none', color: 'unset' }} onClick={handleClose}>
                             <Box sx={{ my: 0.5, mb: 1.5, px: 2.5 }}>
                                 <Typography variant="subtitle1" noWrap >
@@ -129,7 +124,7 @@ const MainMenu = () => {
                                     </Typography>
                                 </MenuItem>
                             </Link>}
-                    </>
+                    </Box>
                 }
                 {/* <Divider sx={{ my: 1, background: "#45a29e" }} /> */}
                 {UISettings.map((option) => (

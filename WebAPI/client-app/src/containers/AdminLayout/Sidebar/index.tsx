@@ -1,63 +1,76 @@
-import Box from '@mui/material/Box';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
+import {
+    List,
+    ListItem,
+    ListItemButton,
+    ListItemText,
+    ListItemIcon
+} from '@mui/material';
 
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import { FC, useEffect, useState } from 'react';
+import { useLocation, Link } from "react-router-dom";
+import { BooleanSchema } from 'yup';
 
-import { FC } from 'react';
-import { Link } from "react-router-dom";
+import { DrawerStyle, RotatedBox, ListItemButtonStyle } from './styled';
 
-import Logo from '../../../components/Logo';
-import DrawerStyle from './styled';
+export interface IDrawer {
+    open: boolean,
+}
 
-import { IDrawer } from './type';
-import { logo } from '../../../assets/logos';
+export interface IMenuItem {
+    lable: string,
+    path: string,
+    rotete?: boolean
+}
 
-const menuItems = [
-    { lable: 'Category', path: '/admin/category', },
-    { lable: 'Characteristic Group', path: '/admin/characteristicGroup', },
-    { lable: 'Characteristic', path: '/admin/characteristic', },
-    { lable: 'Country', path: '/admin/country', },
-    { lable: 'City', path: '/admin/city', },
-];
+const Sidebar: FC<IDrawer> = ({ open }) => {
+    const [menuItems, setMenuItems] = useState<Array<IMenuItem>>([
+        { lable: 'Category', path: '/admin/category', rotete: undefined },
+        { lable: 'Characteristic Group', path: '/admin/characteristicGroup', rotete: undefined },
+        { lable: 'Characteristic', path: '/admin/characteristic', rotete: undefined },
+        { lable: 'Country', path: '/admin/country', rotete: undefined },
+        { lable: 'City', path: '/admin/city', rotete: undefined },
+    ]);
+    const [selected, setSelected] = useState<string>("");
+    const location = useLocation();
 
-const Sitebar: FC<IDrawer> = ({ open }) => {
+    useEffect(() => {
+        const pathnames = location.pathname.split('/').filter((x) => x);
+        let newArr = [...menuItems];
+        newArr.forEach(element => {
+            if (element.path.split('/').filter((x) => x)[1] == pathnames[1]) {
+                element.rotete = true;
+                console.log(element.lable)
+                setSelected(element.lable);
+            }
+        });
+        setMenuItems(newArr);
+    }, []);
+
+    const changeSelected = (id: number) => {
+        let newArr = [...menuItems];
+        newArr.forEach(element => {
+            if (element.rotete == true)
+                element.rotete = false;
+        });
+        newArr[id].rotete = true;
+        setSelected("");
+        setMenuItems(newArr);
+    }
+
     return (
         <DrawerStyle variant="permanent" open={open} >
-            <Box
-                sx={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    p: 1,
-                }}
-            >
-                <Link to="/" style={{ textDecoration: 'none', color: 'unset' }}>
-                    <img
-
-                        style={{ cursor: "pointer", width: "196px" }}
-                        src={logo}
-                        alt="logo"
-                    />
-                </Link>
-            </Box>
-            <List>
-                {menuItems.map((item, index) => (
-                    <ListItem key={index} component={Link} to={item.path} disablePadding style={{ textDecoration: 'none', color: 'unset' }} >
-                        <ListItemButton>
-                            <ListItemIcon>
-                                <NavigateNextIcon />
-                            </ListItemIcon>
-                            <ListItemText primary={item.lable} />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
-            </List>
-        </DrawerStyle>
+            {menuItems.map((item, index) => (
+                <ListItem key={index} component={Link} to={item.path} disablePadding style={{ textDecoration: 'none', color: 'unset' }} >
+                    <ListItemButtonStyle onClick={() => changeSelected(index)}>
+                        <ListItemIcon sx={{ minWidth: "auto" }}>
+                            <RotatedBox rotete={item.rotete} isRoteted={selected === item.lable ? true : false} />
+                        </ListItemIcon>
+                        <ListItemText primary={item.lable} />
+                    </ListItemButtonStyle>
+                </ListItem>
+            ))}
+        </DrawerStyle >
     );
 };
 
-export default Sitebar;
+export default Sidebar;

@@ -132,14 +132,6 @@ const TableComponent: FC<ITable> = ({
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCellStyle
-                                padding="checkbox">
-                                <CheckboxStyle
-                                    indeterminate={selected.length > 0 && selected.length < itemsCount}
-                                    checked={itemsCount > 0 && selected.length === itemsCount}
-                                    onChange={handleSelectAllClick}
-                                />
-                            </TableCellStyle>
                             {headLabel.map((headCell) => (
                                 <TableCellStyle
                                     key={headCell}>
@@ -167,14 +159,6 @@ const TableComponent: FC<ITable> = ({
                                         selected={isItemSelected}
                                         aria-checked={isItemSelected}
                                     >
-                                        <TableCellStyle
-                                            padding="checkbox"
-                                        >
-                                            <CheckboxStyle
-                                                checked={isItemSelected}
-                                                onChange={(event) => handleClick(event, item[0].key)}
-                                            />
-                                        </TableCellStyle>
                                         {item}
                                     </TableRow>
                                 )
@@ -186,7 +170,6 @@ const TableComponent: FC<ITable> = ({
                         <TableRow>
                             <TablePaginationStyle
                                 rowsPerPageOptions={rowsPerPageOptions}
-                                //component={Select}
                                 colSpan={3}
                                 count={itemsCount}
                                 rowsPerPage={rowsPerPage}

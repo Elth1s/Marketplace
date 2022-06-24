@@ -112,7 +112,7 @@ const SignUpPage = () => {
                         width: "500px"
                     }}>
                     <AuthHeaderTypography sx={{ marginTop: "57px" }}>
-                        Зареєструйтесь
+                        Sign Up
                     </AuthHeaderTypography>
                     <FormikProvider value={formik} >
                         <Form autoComplete="off" noValidate onSubmit={handleSubmit} >
@@ -177,7 +177,7 @@ const SignUpPage = () => {
                                     />
                                 </Grid>
                                 <Grid item xs={12} sx={{ marginTop: "20px" }} display="flex" justifyContent="flex-end">
-                                    <AuthSideTypography component={Link} to="/auth/signin" sx={{ cursor: "pointer", textDecoration: "none", color: "#000" }} >Маєте акаунт?</AuthSideTypography>
+                                    <AuthSideTypography component={Link} to="/auth/signin" sx={{ cursor: "pointer", textDecoration: "none", color: "#000" }} >Have an account?</AuthSideTypography>
                                 </Grid>
                                 <Grid item xs={12} sx={{ marginTop: "62px" }}>
                                     <AuthLoadingButton
@@ -186,12 +186,12 @@ const SignUpPage = () => {
                                         loading={isSubmitting}
                                         type="submit"
                                     >
-                                        Реєстрація
+                                        Sign Up
                                     </AuthLoadingButton>
                                 </Grid>
                                 <Grid item xs={12} sx={{ marginTop: "66px" }} display="flex" justifyContent="center" >
                                     <Box sx={{ width: "98px", height: "17px", borderBottom: "2px solid #000" }} />
-                                    <AuthSideTypography sx={{ padding: "0 7px" }}>або</AuthSideTypography>
+                                    <AuthSideTypography sx={{ padding: "0 7px" }}>or</AuthSideTypography>
                                     <Box sx={{ width: "98px", height: "17px", borderBottom: "2px solid #000" }} />
                                 </Grid>
                                 <Grid item xs={12} sx={{ marginTop: "46px" }} display="flex" justifyContent="center" >

@@ -28,6 +28,7 @@ import CharacteristicGroupTable from './pages/admin/characteristicGroup/Table';
 import CharacteristicTable from './pages/admin/characteristic/Table';
 import CountryTable from './pages/admin/country/Table';
 import CityTable from './pages/admin/city/Table';
+import HomePage from './pages/HomePage';
 
 function App() {
   const { isAuth } = useTypedSelector(store => store.auth);
@@ -49,12 +50,17 @@ function App() {
       },
       error: {
         main: '#AF0000',
-      },
+      }
     },
     components: {
       MuiIconButton: {
         defaultProps: {
           color: "secondary"
+        },
+      },
+      MuiTypography: {
+        defaultProps: {
+          color: "#000"
         },
       },
       MuiSwitch: {
@@ -64,11 +70,11 @@ function App() {
           },
         }
       },
-      MuiAppBar:{
+      MuiAppBar: {
         defaultProps: {
           color: "inherit"
-        },
-      },
+        }
+      }
     },
     typography: {
       fontFamily: [
@@ -84,9 +90,11 @@ function App() {
       <Routes>
 
         <Route path="/" element={<DefaultLayout />}>
+          <Route index element={<HomePage />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/product" element={<Product />} />
         </Route>
+
 
         <Route element={<AuthLayout />}>
           <Route path="/auth/signin" element={<SignIn />} />
