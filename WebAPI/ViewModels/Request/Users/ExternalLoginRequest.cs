@@ -8,11 +8,6 @@ namespace WebAPI.ViewModels.Request.Users
     public class ExternalLoginRequest
     {
         /// <summary>
-        /// Provider for external login
-        /// </summary>
-        /// <example>Google</example>
-        public string Provider { get; set; }
-        /// <summary>
         /// External user login token
         /// </summary>
         /// <example>some_external_login_token</example>
@@ -27,10 +22,6 @@ namespace WebAPI.ViewModels.Request.Users
     {
         public ExternalLoginRequestValidator()
         {
-            RuleFor(x => x.Provider).Cascade(CascadeMode.Stop)
-                .NotNull()
-                .NotEmpty();
-
             RuleFor(x => x.Token).Cascade(CascadeMode.Stop)
                 .NotNull()
                 .NotEmpty();

@@ -4,6 +4,7 @@ using Google.Apis.Auth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -13,6 +14,7 @@ using WebAPI.Interfaces.Users;
 using WebAPI.Resources;
 using WebAPI.Settings;
 using WebAPI.ViewModels.Request.Users;
+using WebAPI.ViewModels.Response;
 
 namespace WebAPI.Services.Users
 {
@@ -116,5 +118,22 @@ namespace WebAPI.Services.Users
             return payload;
         }
 
+        public async Task<FacebookResponse> VerifyFacebookToken(ExternalLoginRequest request)
+        {
+            string facebookGraphUrl = $"https://graph.facebook.com/v4.0/me?access_token={request.Token}&fields=email,first_name,last_name";
+
+            var httpClient = new HttpClient();
+            var response = await httpClient.GetAsync(facebookGraphUrl);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new AppException("Failed to get Facebook user from token");
+            }
+
+            var result = await response.Content.ReadAsStringAsync();
+            var facebookResponse = JsonConvert.DeserializeObject<FacebookResponse>(result);
+
+            return facebookResponse;
+        }
     }
 }

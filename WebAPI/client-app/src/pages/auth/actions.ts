@@ -74,6 +74,24 @@ export const GoogleExternalLogin = (data: IExternalLoginModel) => {
     }
 }
 
+export const FacebookExternalLogin = (data: IExternalLoginModel) => {
+    return async (dispatch: Dispatch<AuthAction>) => {
+        try {
+            let response = await http.post<IAuthResponse>('api/Auth/FacebookExternalLogin', data)
+            const tokens = response.data;
+            console.log(tokens)
+            setLocalAccessToken(tokens.accessToken);
+            setLocalRefreshToken(tokens.refreshToken);
+
+            AuthUser(tokens.accessToken);
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
+        }
+    }
+}
+
 export const AuthUser = (token: string) => {
     return async (dispatch: Dispatch<AuthAction>) => {
         const decodedToken = jwt_decode(token) as any;

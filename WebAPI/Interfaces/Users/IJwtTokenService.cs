@@ -2,6 +2,7 @@
 using DAL.Entities.Identity;
 using Google.Apis.Auth;
 using WebAPI.ViewModels.Request.Users;
+using WebAPI.ViewModels.Response;
 
 namespace WebAPI.Interfaces.Users
 {
@@ -19,5 +20,6 @@ namespace WebAPI.Interfaces.Users
 
         Task<GoogleJsonWebSignature.Payload> VerifyGoogleToken(ExternalLoginRequest request);
 
+        Task<FacebookResponse> VerifyFacebookToken(ExternalLoginRequest request);
     }
 }

@@ -23,7 +23,8 @@ import { ServerError } from "../../../store/types";
 import { AuthAvatar, AuthHeaderTypography, AuthLoadingButton, AuthSideTypography, AuthTextField } from "../styled";
 
 import { signup } from "../../../assets/backgrounds"
-import { twitter, facebook } from "../../../assets/icons";
+import FacebookExternalLogin from "../../../components/Facebook";
+import { twitter } from "../../../assets/icons";
 
 const SignUpPage = () => {
     const { RegisterUser } = useActions();
@@ -195,7 +196,7 @@ const SignUpPage = () => {
                                 </Grid>
                                 <Grid item xs={12} sx={{ marginTop: "46px" }} display="flex" justifyContent="center" >
                                     <GoogleExternalLogin />
-                                    <AuthAvatar src={facebook} sx={{ marginX: "40px" }}>F</AuthAvatar>
+                                    <FacebookExternalLogin />
                                     <AuthAvatar src={twitter} />
                                 </Grid>
 

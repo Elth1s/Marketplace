@@ -9,6 +9,7 @@ namespace WebAPI.Interfaces.Users
         Task<AuthResponse> SignUpAsync(SignUpRequest request, string ipAddress);
         Task<AuthResponse> RefreshTokenAsync(TokenRequest request, string ipAddress);
         Task RevokeTokenAsync(TokenRequest request, string ipAddress);
-        Task<AuthResponse> ExternalLoginAsync(ExternalLoginRequest request, string ipAddress);
+        Task<AuthResponse> GoogleExternalLoginAsync(ExternalLoginRequest request, string ipAddress);
+        Task<AuthResponse> FacebookExternalLoginAsync(ExternalLoginRequest request, string ipAddress);
     }
 }

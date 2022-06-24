@@ -31,7 +31,6 @@ export interface IRegisterModel {
 };
 
 export interface IExternalLoginModel {
-    provider: string,
     token: string
 };
 

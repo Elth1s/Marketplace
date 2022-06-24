@@ -24,7 +24,8 @@ import { ILoginModel } from "../types";
 import { ServerError } from "../../../store/types";
 
 import { login } from "../../../assets/backgrounds";
-import { twitter, facebook } from "../../../assets/icons";
+import { twitter } from "../../../assets/icons";
+import FacebookExternalLogin from "../../../components/Facebook";
 
 const SignIn = () => {
     const { LoginUser } = useActions();
@@ -169,7 +170,7 @@ const SignIn = () => {
                                 </Grid>
                                 <Grid item xs={12} sx={{ position: "relative", marginTop: "45px" }} display="flex" justifyContent="center" >
                                     <GoogleExternalLogin />
-                                    <AuthAvatar src={facebook} sx={{ marginX: "40px" }}>F</AuthAvatar>
+                                    <FacebookExternalLogin />
                                     <AuthAvatar src={twitter} />
                                 </Grid>
                             </Grid>
