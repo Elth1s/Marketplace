@@ -97,9 +97,14 @@ namespace WebAPI.Mapper
             CreateMap<ProductStatusRequest, ProductStatus>();
             CreateMap<ProductStatus, ProductStatusResponse>();
 
+            //BasketItem
+            CreateMap<BasketCreateRequest, BasketItem>();
+            CreateMap<BasketItem, BasketResponse>();
+
             //Unit
             CreateMap<UnitRequest, Unit>();
             CreateMap<Unit, UnitResponse>();
+
         }
     }
 }
