@@ -40,11 +40,7 @@ const CharacteristicGroupTable = () => {
     }
 
     return (
-        <Container
-            disableGutters
-            maxWidth="lg"
-            component="main"
-            sx={{ pt: 8, pb: 6 }}>
+        <>
             <CharacteristicGroupCreate />
             <Paper>
                 <TableComponent
@@ -71,7 +67,7 @@ const CharacteristicGroupTable = () => {
                     }
                 />
             </Paper>
-        </Container>
+        </>
     );
 }
 

@@ -6,19 +6,19 @@ using WebAPI.Constants;
 using WebAPI.Extensions;
 using WebAPI.Helpers;
 using WebAPI.Interfaces;
-using WebAPI.Specifications;
+using WebAPI.Specifications.Categories;
 using WebAPI.ViewModels.Request;
-using WebAPI.ViewModels.Response;
+using WebAPI.ViewModels.Response.Categories;
 
 namespace WebAPI.Services
 {
     public class CategoryService : ICategoryService
     {
         private readonly IRepository<Category> _categorRepository;
-        private readonly IRepository<Characteristic> _characteristicRepository;
+        private readonly IRepository<CharacteristicValue> _characteristicRepository;
         private readonly IMapper _mapper;
 
-        public CategoryService(IRepository<Category> categorRepository, IRepository<Characteristic> characteristicRepository, IMapper mapper)
+        public CategoryService(IRepository<Category> categorRepository, IRepository<CharacteristicValue> characteristicRepository, IMapper mapper)
         {
             _categorRepository = categorRepository;
             _characteristicRepository = characteristicRepository;

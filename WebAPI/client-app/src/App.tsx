@@ -23,19 +23,21 @@ import CategoryUpdate from './pages/admin/category/Update';
 
 import CharacteristicGroupTable from './pages/admin/characteristicGroup/Table';
 import CharacteristicTable from './pages/admin/characteristic/Table';
+import CountryTable from './pages/admin/country/Table';
+import CityTable from './pages/admin/city/Table';
 
 function App() {
   const { isAuth } = useTypedSelector(store => store.auth);
   const { AuthUser } = useActions();
 
   useEffect(() => {
-    console.log("%c" + "Астанавитесь!", "color:red;font-weight:bold;font-size:64px;");
-    console.log("%c" + "https://www.youtube.com/watch?v=LJsQZ6QNdmU", "font-size:22px;");
-    console.log("%c" + "Ця функція браузера призначена для розробників. Якщо хтось сказав вам щось скопіювати і сюди вставити, щоб включити функцію Mall або «зламати» чиюсь сторінку, це шахраї. Виконавши ці дії, ви надасте їм доступ до своєї сторінки Mall.", "font-size:22px;");
     let token = getLocalAccessToken();
     if (token) {
       AuthUser(token);
     }
+    console.log("%c" + "Астанавитесь!", "color:red;font-weight:bold;font-size:64px;");
+    console.log("%c" + "https://www.youtube.com/watch?v=LJsQZ6QNdmU", "font-size:22px;");
+    console.log("%c" + "Ця функція браузера призначена для розробників. Якщо хтось сказав вам щось скопіювати і сюди вставити, щоб включити функцію Mall або «зламати» чиюсь сторінку, це шахраї. Виконавши ці дії, ви надасте їм доступ до своєї сторінки Mall.", "font-size:22px;");
   }, []);
 
   const theme = createTheme({
@@ -68,8 +70,15 @@ function App() {
           <Route path="/auth/signup" element={<SignUp />} />
         </Route>
 
-        <Route path='/admin' element={<AdminLayout />}>
+        <Route element={<AdminLayout />}>
+          <Route path="/admin/category" element={<CategoryTable />} />
+          <Route path="/admin/category/create" element={<CategoryCreate />} />
+          <Route path="/admin/category/update" element={<CategoryUpdate />} />
 
+          <Route path="/admin/characteristicGroup" element={<CharacteristicGroupTable />} />
+          <Route path="/admin/characteristic" element={<CharacteristicTable />} />
+          <Route path="/admin/country" element={<CountryTable />} />
+          <Route path="/admin/city" element={<CityTable />} />
         </Route>
 
         <Route path="/profile" element={<Profile />} />
@@ -78,13 +87,6 @@ function App() {
         <Route path="/resetPassword/:token" element={<ChangePassword />} />
 
 
-
-        <Route path="/category" element={<CategoryTable />} />
-        <Route path="/category/create" element={<CategoryCreate />} />
-        <Route path="/category/update" element={<CategoryUpdate />} />
-
-        <Route path="/CharacteristicGroup" element={<CharacteristicGroupTable />} />
-        <Route path="/characteristic" element={<CharacteristicTable />} />
 
         {/* <Route path="*" element={<NotFound />} /> */}
       </Routes>

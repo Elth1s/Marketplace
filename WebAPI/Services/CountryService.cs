@@ -22,23 +22,23 @@ namespace WebAPI.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<CountryResponse>> GetCountriesAsync()
+        public async Task<IEnumerable<UnitResponse>> GetCountriesAsync()
         {
             var countries = await _countryRepository.ListAsync();
 
-            var response = countries.Select(c => _mapper.Map<CountryResponse>(c));
+            var response = countries.Select(c => _mapper.Map<UnitResponse>(c));
             return response;
         }
-        public async Task<CountryResponse> GetCountryByIdAsync(int countryId)
+        public async Task<UnitResponse> GetCountryByIdAsync(int countryId)
         {
             var country = await _countryRepository.GetByIdAsync(countryId);
             country.CountryNullChecking();
 
-            var response = _mapper.Map<CountryResponse>(country);
+            var response = _mapper.Map<UnitResponse>(country);
             return response;
         }
 
-        public async Task CreateCountryAsync(CountryRequest request)
+        public async Task CreateCountryAsync(UnitRequest request)
         {
             var country = _mapper.Map<Country>(request);
 
@@ -46,7 +46,7 @@ namespace WebAPI.Services
             await _countryRepository.SaveChangesAsync();
         }
 
-        public async Task UpdateCountryAsync(int countryId, CountryRequest request)
+        public async Task UpdateCountryAsync(int countryId, UnitRequest request)
         {
             var country = await _countryRepository.GetByIdAsync(countryId);
             country.CountryNullChecking();

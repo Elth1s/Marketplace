@@ -9,16 +9,14 @@ import { useActions } from "../../../../hooks/useActions";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 
 import { validationFields } from "../validation";
-import { ICharacteristic } from "../types";
-import { ICharacteristicUpdate } from './type';
+import { ICharacteristic, ICharacteristicUpdatePage } from "../types";
 import { ServerError } from '../../../../store/types';
-
 
 import DialogComponent from '../../../../components/Dialog';
 import SelectComponent from '../../../../components/Select';
 import TextFieldComponent from '../../../../components/TextField';
 
-const CharacteristicUpdate: FC<ICharacteristicUpdate> = ({ id }) => {
+const CharacteristicUpdate: FC<ICharacteristicUpdatePage> = ({ id }) => {
     const [open, setOpen] = useState(false);
 
     const { GetByIdCharacteristic, GetCharacteristicGroups, UpdateCharacteristic, GetCharacteristics } = useActions();

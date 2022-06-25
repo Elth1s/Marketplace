@@ -40,53 +40,47 @@ const CategoryTable = () => {
 
     return (
         <>
-            <Container
-                disableGutters
-                maxWidth="lg"
-                component="main"
-                sx={{ pt: 8, pb: 6 }}>
-                <Button
-                    variant="contained"
-                    href="/category/create"
-                    sx={{
-                        my: 2,
-                        px: 4,
-                    }}>
-                    Create
-                </Button>
-                <Paper>
-                    <TableComponent
-                        headLabel={["Id", "Name", "Parent", "Action"]}
-                        rowsPerPageOptions={[1, 5, 10, 25]}
-                        itemsCount={categories.length}
-                        bodyItems={categories
-                            .map((row, index) => {
-                                return [
-                                    <TableCellComponent
-                                        key={row.id}
-                                        label={row.id}
-                                    />,
-                                    <TableCellImageComponent
-                                        key={row.name}
-                                        image={row.image}
-                                        label={row.name}
-                                    />,
-                                    <TableCellComponent
-                                        key={row.parentName}
-                                        label={row.parentName}
-                                    />,
-                                    <TableCellActionComponent
-                                        key={index}
-                                        path={"category/update?id=" + row.id}
-                                        edit={null}
-                                        onDelete={() => onDelete(row.id)}
-                                    />,
-                                ]
-                            })
-                        }
-                    />
-                </Paper>
-            </Container>
+            <Button
+                variant="contained"
+                href="/category/create"
+                sx={{
+                    my: 2,
+                    px: 4,
+                }}>
+                Create
+            </Button>
+            <Paper>
+                <TableComponent
+                    headLabel={["Id", "Name", "Parent", "Action"]}
+                    rowsPerPageOptions={[1, 5, 10, 25]}
+                    itemsCount={categories.length}
+                    bodyItems={categories
+                        .map((row, index) => {
+                            return [
+                                <TableCellComponent
+                                    key={row.id}
+                                    label={row.id}
+                                />,
+                                <TableCellImageComponent
+                                    key={row.name}
+                                    image={row.image}
+                                    label={row.name}
+                                />,
+                                <TableCellComponent
+                                    key={row.parentName}
+                                    label={row.parentName}
+                                />,
+                                <TableCellActionComponent
+                                    key={index}
+                                    path={"category/update?id=" + row.id}
+                                    edit={null}
+                                    onDelete={() => onDelete(row.id)}
+                                />,
+                            ]
+                        })
+                    }
+                />
+            </Paper>
         </>
     );
 }

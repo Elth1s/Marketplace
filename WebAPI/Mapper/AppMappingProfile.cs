@@ -3,7 +3,15 @@ using DAL.Entities;
 using DAL.Entities.Identity;
 using WebAPI.Constants;
 using WebAPI.ViewModels.Request;
+using WebAPI.ViewModels.Request.Characteristics;
+using WebAPI.ViewModels.Request.Filters;
+using WebAPI.ViewModels.Request.Products;
+using WebAPI.ViewModels.Request.Users;
 using WebAPI.ViewModels.Response;
+using WebAPI.ViewModels.Response.Categories;
+using WebAPI.ViewModels.Response.Characteristics;
+using WebAPI.ViewModels.Response.Filters;
+using WebAPI.ViewModels.Response.Products;
 
 namespace WebAPI.Mapper
 {
@@ -34,14 +42,20 @@ namespace WebAPI.Mapper
             CreateMap<CharacteristicGroupRequest, CharacteristicGroup>();
             CreateMap<CharacteristicGroup, CharacteristicGroupResponse>();
 
-            //Characteristic
-            CreateMap<CharacteristicRequest, Characteristic>();
-            CreateMap<Characteristic, CharacteristicResponse>()
-                .ForMember(u => u.CharacteristicGroupName, opt => opt.MapFrom(vm => vm.CharacteristicGroup.Name));
+            //CharacteristicName
+            CreateMap<CharacteristicNameRequest, CharacteristicName>();
+            CreateMap<CharacteristicName, CharacteristicNameResponse>()
+                .ForMember(u => u.CharacteristicGroupName, opt => opt.MapFrom(vm => vm.CharacteristicGroup.Name))
+                .ForMember(u => u.UnitMeasure, opt => opt.MapFrom(vm => vm.Unit.Measure));
+
+            //CharacteristicValue
+            CreateMap<CharacteristicValueRequest, CharacteristicValue>();
+            CreateMap<CharacteristicValue, CharacteristicValueResponse>()
+                .ForMember(u => u.CharacteristicName, opt => opt.MapFrom(vm => vm.CharacteristicName.Name));
 
             //Country
-            CreateMap<CountryRequest, Country>();
-            CreateMap<Country, CountryResponse>();
+            CreateMap<UnitRequest, Country>();
+            CreateMap<Country, UnitResponse>();
 
             //City
             CreateMap<CityRequest, City>();
@@ -55,7 +69,8 @@ namespace WebAPI.Mapper
             //FilterName
             CreateMap<FilterNameRequest, FilterName>();
             CreateMap<FilterName, FilterNameResponse>()
-                .ForMember(u => u.FilterGroupName, opt => opt.MapFrom(vm => vm.FilterGroup.Name));
+                .ForMember(u => u.FilterGroupName, opt => opt.MapFrom(vm => vm.FilterGroup.Name))
+                .ForMember(u => u.UnitMeasure, opt => opt.MapFrom(vm => vm.Unit.Measure));
 
             //FilterValue
             CreateMap<FilterValueRequest, FilterValue>();
@@ -85,6 +100,11 @@ namespace WebAPI.Mapper
             //BasketItem
             CreateMap<BasketCreateRequest, BasketItem>();
             CreateMap<BasketItem, BasketResponse>();
+
+            //Unit
+            CreateMap<UnitRequest, Unit>();
+            CreateMap<Unit, UnitResponse>();
+
         }
     }
 }

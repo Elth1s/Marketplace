@@ -12,6 +12,6 @@ namespace DAL.Entities
         [ForeignKey(nameof(UserId))]
         public AppUser User { get; set; }
 
-        public ICollection<Characteristic> Characteristics { get; set; }
+        public ICollection<CharacteristicName> CharacteristicNames { get; set; }
     }
 }

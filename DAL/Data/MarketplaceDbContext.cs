@@ -13,7 +13,8 @@ namespace DAL.Data
         }
 
         public DbSet<CharacteristicGroup> CharacteristicGroups { get; set; }
-        public DbSet<Characteristic> Characteristics { get; set; }
+        public DbSet<CharacteristicName> CharacteristicNames { get; set; }
+        public DbSet<CharacteristicValue> CharacteristicValues { get; set; }
 
         public DbSet<FilterGroup> FilterGroups { get; set; }
         public DbSet<FilterName> FilterNames { get; set; }

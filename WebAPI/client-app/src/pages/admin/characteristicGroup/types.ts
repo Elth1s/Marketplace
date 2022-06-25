@@ -20,6 +20,11 @@ export interface CharacteristicGroupState {
 }
 
 
+export interface ICharacteristicGroupUpdatePage {
+    id: number,
+}
+
+
 export interface GetCharacteristicGroupsAction {
     type: CharacteristicGroupActionTypes.GET_CHARACTERISTIC_GROUPS,
     payload: Array<ICharacteristicGroupInfo>

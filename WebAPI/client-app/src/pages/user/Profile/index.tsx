@@ -34,7 +34,6 @@ const Profile = () => {
                 document.title = "Profile";
                 await GetProfile();
                 await IsEmailConfirmed()
-                console.log("1")
                 setLoading(false);
             } catch (ex) {
                 // toast.error("Loading profile failed.");
