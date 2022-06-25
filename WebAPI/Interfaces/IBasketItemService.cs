@@ -7,7 +7,7 @@ namespace WebAPI.Interfaces
     {
         Task<IEnumerable<BasketResponse>> GetAllAsync(string userId);
         Task CreateAsync(BasketCreateRequest request,string userId);
-        Task UpdateAsync(int id, BasketUpdateRequest request, string userId);
+        Task UpdateAsync(int basketId, BasketUpdateRequest request, string userId);
         Task DeleteAsync(int id);
     }
 }

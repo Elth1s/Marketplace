@@ -59,9 +59,15 @@ namespace WebAPI.Services
             await _basketItemRepository.SaveChangesAsync();
         }
 
-        public Task UpdateAsync(int id, BasketUpdateRequest request, string userId)
-        {
-            throw new NotImplementedException();
+        public async Task UpdateAsync(int basketId, BasketUpdateRequest request, string userId)
+        {         
+            var basket = await _basketItemRepository.GetByIdAsync(basketId);
+            basket.BasketItemNullChecking();
+
+            _mapper.Map(request, basket);
+
+            await _basketItemRepository.UpdateAsync(basket);
+            await _basketItemRepository.SaveChangesAsync();
         }
     }
 }
