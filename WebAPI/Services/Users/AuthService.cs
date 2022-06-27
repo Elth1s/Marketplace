@@ -3,6 +3,7 @@ using DAL.Entities;
 using DAL.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using System.Net;
+using WebAPI.Constants;
 using WebAPI.Exceptions;
 using WebAPI.Extensions;
 using WebAPI.Interfaces.Users;
@@ -120,7 +121,7 @@ namespace WebAPI.Services.Users
             await _userManager.UpdateAsync(user);
         }
 
-        public async Task<AuthResponse> ExternalLoginAsync(ExternalLoginRequest request, string ipAddress)
+        public async Task<AuthResponse> GoogleExternalLoginAsync(ExternalLoginRequest request, string ipAddress)
         {
             var payload = await _jwtTokenService.VerifyGoogleToken(request);
             if (payload == null)
@@ -128,7 +129,7 @@ namespace WebAPI.Services.Users
                 throw new AppException(ErrorMessages.InvalidExternalLoginRequest);
             }
 
-            var info = new UserLoginInfo(request.Provider, payload.Subject, request.Provider);
+            var info = new UserLoginInfo(ExternalLoginProviderName.Google, payload.Subject, ExternalLoginProviderName.Google);
 
             var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
 
@@ -173,6 +174,58 @@ namespace WebAPI.Services.Users
             return response;
         }
 
+        public async Task<AuthResponse> FacebookExternalLoginAsync(ExternalLoginRequest request, string ipAddress)
+        {
+            var payload = await _jwtTokenService.VerifyFacebookToken(request);
+            if (payload == null)
+            {
+                throw new AppException(ErrorMessages.InvalidExternalLoginRequest);
+            }
+
+            var info = new UserLoginInfo(ExternalLoginProviderName.Facebook, payload.Id, ExternalLoginProviderName.Facebook);
+
+            var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
+
+            if (user == null)
+            {
+                user = await _userManager.FindByEmailAsync(payload.Email);
+
+                if (user == null)
+                {
+                    user = new AppUser
+                    {
+                        Email = payload.Email,
+                        UserName = payload.Email,
+                        FirstName = payload.FirstName,
+                        SecondName = payload.SecondName,
+                        EmailConfirmed = !string.IsNullOrEmpty(payload.Email)
+                    };
+                    var resultCreate = await _userManager.CreateAsync(user);
+                    if (!resultCreate.Succeeded)
+                    {
+                        throw new AppException(ErrorMessages.UserCreateFail);
+                    }
+
+                }
+
+                var resultAddLogin = await _userManager.AddLoginAsync(user, info);
+                if (!resultAddLogin.Succeeded)
+                {
+                    throw new AppException(ErrorMessages.ExternalLoginAddFail);
+                }
+            }
+
+            var refreshToken = _jwtTokenService.GenerateRefreshToken(ipAddress);
+            await _jwtTokenService.SaveRefreshToken(refreshToken, user);
+
+            var response = new AuthResponse
+            {
+                AccessToken = await _jwtTokenService.GenerateJwtToken(user),
+                RefreshToken = refreshToken.Token
+            };
+
+            return response;
+        }
 
         private RefreshToken RotateRefreshToken(RefreshToken refreshToken, string ipAddress)
         {
@@ -201,5 +254,6 @@ namespace WebAPI.Services.Users
                     RevokeDescendantRefreshTokens(childToken, user, ipAddress, reason);
             }
         }
+
     }
 }

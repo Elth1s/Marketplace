@@ -42,7 +42,7 @@ builder.Services.Configure<ClientUrl>(builder.Configuration.GetSection("ClientSe
 builder.Services.AddDbContext<MarketplaceDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("MarketplaceConnection")));
 
-builder.Services.AddIdentity<AppUser, IdentityRole>()
+builder.Services.AddIdentity<AppUser, IdentityRole>(o => o.User.RequireUniqueEmail = false)
                 .AddEntityFrameworkStores<MarketplaceDbContext>().AddDefaultTokenProviders();
 
 
