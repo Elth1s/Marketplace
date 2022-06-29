@@ -87,8 +87,7 @@ const CharacteristicUpdate: FC<ICharacteristicUpdatePage> = ({ id }) => {
             isSubmitting={isSubmitting}
             handleSubmit={handleSubmit}
 
-            dialogTitle="Update"
-            dialogBtnCancel="Close"
+            dialogTitle="Update characteristic"
             dialogBtnConfirm="Update"
 
             dialogContent={

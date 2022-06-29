@@ -1,4 +1,5 @@
 import { Dispatch } from "react"
+import qs from "qs"
 
 import http from "../../../http_comon"
 import {
@@ -6,16 +7,28 @@ import {
     ICountryInfo,
     CountryAction,
     CountryActionTypes,
+    ISearchCountries,
 } from "./types"
 import { ServerError } from "../../../store/types"
 
-export const GetByIdCountry = (id: number) => {
+export const SearchCountries = (page: number, rowsPerPage: number, name: string, isAscOrder: boolean, orderBy: string) => {
     return async (dispatch: Dispatch<CountryAction>) => {
         try {
-            let response = await http.get<ICountryInfo>(`api/Country/GetCountryById/${id}`)
+            let response = await http.get<ISearchCountries>(`api/Country/SearchCountries`, {
+                params: {
+                    page: page,
+                    rowsPerPage: rowsPerPage,
+                    name: name,
+                    isAscOrder: isAscOrder,
+                    orderBy: orderBy
+                },
+                paramsSerializer: params => {
+                    return qs.stringify({ ...params })
+                }
+            })
 
             dispatch({
-                type: CountryActionTypes.GET_BY_ID_COUNTRY,
+                type: CountryActionTypes.SEARCH_COUNTRIES,
                 payload: response.data
             })
 
@@ -34,6 +47,24 @@ export const GetCountries = () => {
 
             dispatch({
                 type: CountryActionTypes.GET_COUNTRIES,
+                payload: response.data
+            })
+
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
+        }
+    }
+}
+
+export const GetByIdCountry = (id: number) => {
+    return async (dispatch: Dispatch<CountryAction>) => {
+        try {
+            let response = await http.get<ICountryInfo>(`api/Country/GetCountryById/${id}`)
+
+            dispatch({
+                type: CountryActionTypes.GET_BY_ID_COUNTRY,
                 payload: response.data
             })
 
@@ -73,6 +104,25 @@ export const DeleteCountry = (id: number) => {
     return async () => {
         try {
             await http.delete(`api/Country/DeleteCountry/${id}`);
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
+        }
+    }
+}
+
+export const DeleteCountries = (ids: readonly number[]) => {
+    return async () => {
+        try {
+            await http.delete(`api/Country/DeleteCountries`, {
+                params: {
+                    ids: ids,
+                },
+                paramsSerializer: params => {
+                    return qs.stringify({ ...params })
+                }
+            })
             return Promise.resolve();
         }
         catch (error) {

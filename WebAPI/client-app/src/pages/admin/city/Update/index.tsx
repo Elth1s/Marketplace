@@ -31,7 +31,7 @@ const CityUpdate: FC<ICityUpdatePage> = ({ id }) => {
 
     const handleClickOpen = async () => {
         setOpen(true);
-        await GetCountries();
+        // await GetCountries();
         await GetByIdCity(id);
     };
 
@@ -88,8 +88,7 @@ const CityUpdate: FC<ICityUpdatePage> = ({ id }) => {
             isSubmitting={isSubmitting}
             handleSubmit={handleSubmit}
 
-            dialogTitle="Update"
-            dialogBtnCancel="Close"
+            dialogTitle="Update city"
             dialogBtnConfirm="Update"
 
             dialogContent={

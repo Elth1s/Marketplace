@@ -39,7 +39,6 @@ const Sidebar: FC<IDrawer> = ({ open }) => {
         newArr.forEach(element => {
             if (element.path.split('/').filter((x) => x)[1] == pathnames[1]) {
                 element.rotete = true;
-                console.log(element.lable)
                 setSelected(element.lable);
             }
         });

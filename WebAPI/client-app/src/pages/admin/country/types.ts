@@ -3,31 +3,40 @@ export enum CountryActionTypes {
     GET_BY_ID_COUNTRY = "GET_BY_ID_COUNTRY",
     CREATE_COUNTRY = "CREATE_COUNTRY",
     UPDATE_COUNTRY = "UPDATE_COUNTRY",
+    SEARCH_COUNTRIES = "SEARCH_COUNTRIES"
 }
 
 export interface ICountry {
-    name: string
+    name: string,
+    code: string
 }
 
 export interface ICountryInfo {
-    id: number
-    name: string
+    id: number,
+    name: string,
+    code: string
+}
+
+export interface ISearchCountries {
+    count: number,
+    countries: Array<ICountryInfo>
 }
 
 export interface CountryState {
     countryInfo: ICountryInfo,
+    count: number,
     countries: Array<ICountryInfo>
 }
 
 
-export interface ICountryUpdatePage {
-    id: number
-}
-
-
-export interface GetCountrysAction {
+export interface GetCountriesAction {
     type: CountryActionTypes.GET_COUNTRIES,
     payload: Array<ICountryInfo>
+}
+
+export interface SearchCountriesAction {
+    type: CountryActionTypes.SEARCH_COUNTRIES,
+    payload: ISearchCountries
 }
 
 export interface GetByIdCountryAction {
@@ -46,7 +55,8 @@ export interface UpdateCountryAction {
 }
 
 
-export type CountryAction = GetCountrysAction |
+export type CountryAction = GetCountriesAction |
+    SearchCountriesAction |
     GetByIdCountryAction |
     CreateCountryAction |
     UpdateCountryAction;

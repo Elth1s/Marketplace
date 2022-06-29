@@ -27,7 +27,7 @@ namespace WebAPI.ViewModels.Request
         {
             _unitRepository = unitRepository;
 
-            //Name
+            //Measure
             RuleFor(x => x.Measure).Cascade(CascadeMode.Stop)
                .NotEmpty().WithName("Measure").WithMessage("{PropertyName} is required")
                .Must(IsUniqueName).WithMessage("Unit with this {PropertyName} already exists")

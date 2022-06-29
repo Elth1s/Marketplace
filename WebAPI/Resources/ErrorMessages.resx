@@ -222,4 +222,10 @@
   <data name="CharacteristicValueNameNotUnique" xml:space="preserve">
     <value>Characteristic value with this characteristic name already exists</value>
   </data>
+  <data name="CountryWithCodeExist" xml:space="preserve">
+    <value>Country with this code already exist</value>
+  </data>
+  <data name="CountryWithNameExist" xml:space="preserve">
+    <value>Country with this name already exist</value>
+  </data>
 </root>

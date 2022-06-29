@@ -42,9 +42,9 @@ namespace WebAPI.Services.Products
         public async Task<IEnumerable<ProductResponse>> GetAsync()
         {
             var spec = new ProductIncludeFullInfoSpecification();
-            var product = await _productRepository.ListAsync(spec);
+            var products = await _productRepository.ListAsync(spec);
 
-            return _mapper.Map<IEnumerable<ProductResponse>>(product);
+            return _mapper.Map<IEnumerable<ProductResponse>>(products);
         }
 
         public async Task<ProductResponse> GetByIdAsync(int id)

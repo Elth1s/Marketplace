@@ -4,12 +4,14 @@ using DAL.Entities.Identity;
 using WebAPI.Constants;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Request.Characteristics;
+using WebAPI.ViewModels.Request.Countries;
 using WebAPI.ViewModels.Request.Filters;
 using WebAPI.ViewModels.Request.Products;
 using WebAPI.ViewModels.Request.Users;
 using WebAPI.ViewModels.Response;
 using WebAPI.ViewModels.Response.Categories;
 using WebAPI.ViewModels.Response.Characteristics;
+using WebAPI.ViewModels.Response.Countries;
 using WebAPI.ViewModels.Response.Filters;
 using WebAPI.ViewModels.Response.Products;
 
@@ -54,8 +56,8 @@ namespace WebAPI.Mapper
                 .ForMember(u => u.CharacteristicName, opt => opt.MapFrom(vm => vm.CharacteristicName.Name));
 
             //Country
-            CreateMap<UnitRequest, Country>();
-            CreateMap<Country, UnitResponse>();
+            CreateMap<CountryRequest, Country>();
+            CreateMap<Country, CountryResponse>();
 
             //City
             CreateMap<CityRequest, City>();

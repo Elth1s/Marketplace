@@ -26,7 +26,7 @@ namespace WebAPI.Services
         {
             var units = await _unitRepository.ListAsync();
 
-            var response = units.Select(c => _mapper.Map<UnitResponse>(c));
+            var response = _mapper.Map<IEnumerable<UnitResponse>>(units);
             return response;
         }
         public async Task<UnitResponse> GetByIdAsync(int id)

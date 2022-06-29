@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeProvider, createTheme } from '@mui/material';
 import { CssBaseline } from '@mui/material';
 
 import { getLocalAccessToken } from "./http_comon"
@@ -42,14 +42,21 @@ function App() {
 
   const theme = createTheme({
     palette: {
+      mode: "light",
       primary: {
         main: '#F45626',
+        dark: "#CB2525"
       },
       secondary: {
         main: '#0E7C3A',
+        light: "#30AA61"
       },
       error: {
         main: '#AF0000',
+      },
+      common: {
+        black: "#000",
+        white: "#fff"
       }
     },
     components: {

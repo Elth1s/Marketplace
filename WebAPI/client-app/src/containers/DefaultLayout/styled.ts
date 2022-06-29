@@ -22,5 +22,11 @@ export const TextFieldStyle = styled(TextField)(({ theme }) => ({
         paddingTop: "0px",
         paddingBottom: "0px",
         fontSize: "18px"
+    },
+    "& .MuiOutlinedInput-root": {
+        color: "#777777",
+        "& fieldset": {
+            borderColor: "#7E7E7E"
+        }
     }
 }));

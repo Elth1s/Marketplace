@@ -1,4 +1,4 @@
-import { ListItemButton, Button, styled } from "@mui/material";
+import { ListItemButton, Button, Box, styled } from "@mui/material";
 
 export const ListItemButtonStyle = styled(ListItemButton)(({ theme }) => ({
     width: "100%",
@@ -25,4 +25,12 @@ export const ButtonNoveltyStyle = styled(Button)(({ theme }) => ({
     justifyContent: "space-between",
     paddingLeft: "21px",
     paddingRight: "20px",
+}));
+
+export const BoxProductOfTheDayStyle = styled(Box)(({ theme }) => ({
+    width: "1100px",
+    height: "410px",
+    borderTopLeftRadius: "9px",
+    borderBottomLeftRadius: "9px",
+    background: `${theme.palette.primary.main}`
 }));

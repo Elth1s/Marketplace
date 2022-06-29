@@ -8,7 +8,9 @@ const initialState: CountryState = {
     countryInfo: {
         id: 0,
         name: "",
+        code: ""
     },
+    count: 0,
     countries: []
 }
 
@@ -18,6 +20,12 @@ export const countryReducer = (state = initialState, action: CountryAction): Cou
             return {
                 ...state,
                 countries: action.payload,
+            }
+        case CountryActionTypes.SEARCH_COUNTRIES:
+            return {
+                ...state,
+                count: action.payload.count,
+                countries: action.payload.countries,
             }
         case CountryActionTypes.GET_BY_ID_COUNTRY:
             return {

@@ -87,8 +87,7 @@ const CharacteristicCreate = () => {
             isSubmitting={isSubmitting}
             handleSubmit={handleSubmit}
 
-            dialogTitle="Create"
-            dialogBtnCancel="Close"
+            dialogTitle="Create characteristic"
             dialogBtnConfirm="Create"
 
             dialogContent={

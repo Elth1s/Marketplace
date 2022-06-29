@@ -171,8 +171,7 @@ const SignIn = () => {
                                 </Grid>
                                 <Grid item xs={12} sx={{ position: "relative", marginTop: "45px" }} display="flex" justifyContent="center" >
                                     <GoogleExternalLogin />
-                                    <AuthAvatar src={facebook} sx={{ marginX: "40px" }}>F</AuthAvatar>
-                                    <AuthAvatar src={twitter} />
+                                    <AuthAvatar src={facebook} sx={{ ml: "60px" }}>F</AuthAvatar>
                                 </Grid>
                             </Grid>
                         </Form>

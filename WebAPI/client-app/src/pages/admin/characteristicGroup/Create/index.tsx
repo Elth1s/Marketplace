@@ -79,8 +79,7 @@ const CharacteristicGroupCreate = () => {
             isSubmitting={isSubmitting}
             handleSubmit={handleSubmit}
 
-            dialogTitle="Create"
-            dialogBtnCancel="Close"
+            dialogTitle="Create characteristic group"
             dialogBtnConfirm="Create"
 
             dialogContent={

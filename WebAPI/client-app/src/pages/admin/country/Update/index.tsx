@@ -1,29 +1,40 @@
-import Grid from '@mui/material/Grid';
-import IconButton from '@mui/material/IconButton';
-import EditIcon from '@mui/icons-material/Edit';
+import {
+    Box,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    Grid,
+    IconButton,
+    Paper,
+    Slide,
+    TableCell
+} from "@mui/material";
+import { Close, Edit } from "@mui/icons-material";
 
-import { FC, useState } from "react";
-import { useFormik } from "formik";
-
-import { useActions } from "../../../../hooks/useActions";
+import { LegacyRef, forwardRef, useRef, useState, useEffect, FC } from "react";
+import Cropper from "cropperjs";
+import { Form, FormikProvider, useFormik } from "formik";
+import { ServerError } from "../../../../store/types";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
+import { useActions } from "../../../../hooks/useActions";
+import { countryValidation } from "../validation";
+import TextFieldComponent from "../../../../components/TextField";
+import { LoadingButton } from "@mui/lab";
+import DialogComponent from "../../../../components/Dialog";
 
-import { validationFields } from "../validation";
-import { ICountry, ICountryUpdatePage } from "../types";
-import { ServerError } from '../../../../store/types';
 
-import DialogComponent from '../../../../components/Dialog';
-import TextFieldComponent from '../../../../components/TextField';
+interface Props {
+    id: number,
+    afterUpdate: any
+}
 
-const CountryUpdate: FC<ICountryUpdatePage> = ({ id }) => {
+const EditCountryDialog: FC<Props> = ({ id, afterUpdate }) => {
     const [open, setOpen] = useState(false);
 
-    const { GetCountries, GetByIdCountry, UpdateCountry } = useActions();
+    const { GetByIdCountry, UpdateCountry } = useActions();
     const { countryInfo } = useTypedSelector((store) => store.country);
-
-    const item: ICountry = {
-        name: countryInfo.name,
-    }
 
     const handleClickOpen = async () => {
         setOpen(true);
@@ -34,60 +45,52 @@ const CountryUpdate: FC<ICountryUpdatePage> = ({ id }) => {
         setOpen(false);
     };
 
-    const onHandleSubmit = async (values: ICountry) => {
-        try {
-            await UpdateCountry(countryInfo.id, values);
-            await GetCountries();
-            handleClickClose();
-            resetForm();
-        }
-        catch (ex) {
-            const serverErrors = ex as ServerError;
-            if (serverErrors.errors)
-                Object.entries(serverErrors.errors).forEach(([key, value]) => {
-                    if (Array.isArray(value)) {
-                        let message = "";
-                        value.forEach((item) => {
-                            message += `${item} `;
-                        });
-                        setFieldError(key.toLowerCase(), message);
-                    }
-                });
-        }
-    }
-
     const formik = useFormik({
-        initialValues: item,
-        validationSchema: validationFields,
+        initialValues: countryInfo,
+        validationSchema: countryValidation,
         enableReinitialize: true,
-        onSubmit: onHandleSubmit
+        onSubmit: async (values, { setFieldError }) => {
+            try {
+                await UpdateCountry(countryInfo.id, values);
+                // await GetCountries();
+                afterUpdate();
+                handleClickClose();
+            }
+            catch (ex) {
+                const serverErrors = ex as ServerError;
+                if (serverErrors.errors)
+                    Object.entries(serverErrors.errors).forEach(([key, value]) => {
+                        if (Array.isArray(value)) {
+                            let message = "";
+                            value.forEach((item) => {
+                                message += `${item} `;
+                            });
+                            setFieldError(key.toLowerCase(), message);
+                        }
+                    });
+            }
+        }
     });
 
-    const { errors, touched, isSubmitting, handleSubmit, setFieldError, getFieldProps, resetForm } = formik;
+    const { errors, touched, isSubmitting, handleSubmit, getFieldProps, resetForm } = formik;
 
     return (
         <DialogComponent
             open={open}
             handleClickClose={handleClickClose}
             button={
-                <IconButton
-                    aria-label="edit"
-                    onClick={handleClickOpen}
-                >
-                    <EditIcon />
-                </IconButton>
+                <Edit onClick={() => handleClickOpen()} />
             }
 
             formik={formik}
             isSubmitting={isSubmitting}
             handleSubmit={handleSubmit}
 
-            dialogTitle="Create"
-            dialogBtnCancel="Close"
-            dialogBtnConfirm="Create"
+            dialogTitle="Update country"
+            dialogBtnConfirm="Update"
 
             dialogContent={
-                <Grid container spacing={2}>
+                <Grid container rowSpacing={2}>
                     <Grid item xs={12}>
                         <TextFieldComponent
                             type="text"
@@ -97,10 +100,18 @@ const CountryUpdate: FC<ICountryUpdatePage> = ({ id }) => {
                             getFieldProps={{ ...getFieldProps('name') }}
                         />
                     </Grid>
+                    <Grid item xs={12}>
+                        <TextFieldComponent
+                            type="text"
+                            label="Code"
+                            error={errors.code}
+                            touched={touched.code}
+                            getFieldProps={{ ...getFieldProps('code') }}
+                        />
+                    </Grid>
                 </Grid>
             }
         />
     )
 }
-
-export default CountryUpdate;
+export default EditCountryDialog;

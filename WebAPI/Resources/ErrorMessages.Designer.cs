@@ -160,6 +160,24 @@ namespace WebAPI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Country with this code already exist.
+        /// </summary>
+        internal static string CountryWithCodeExist {
+            get {
+                return ResourceManager.GetString("CountryWithCodeExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Country with this name already exist.
+        /// </summary>
+        internal static string CountryWithNameExist {
+            get {
+                return ResourceManager.GetString("CountryWithNameExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sending email failed.
         /// </summary>
         internal static string EmailSendingFailed {

@@ -28,7 +28,7 @@ const CityCreate = () => {
     }
 
     const handleClickOpen = async () => {
-        await GetCountries();
+        // await GetCountries();
 
         setOpen(true);
     };
@@ -87,8 +87,7 @@ const CityCreate = () => {
             isSubmitting={isSubmitting}
             handleSubmit={handleSubmit}
 
-            dialogTitle="Create"
-            dialogBtnCancel="Close"
+            dialogTitle="Create city"
             dialogBtnConfirm="Create"
 
             dialogContent={

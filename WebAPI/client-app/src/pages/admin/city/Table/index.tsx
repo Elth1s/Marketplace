@@ -11,7 +11,6 @@ import CityUpdate from '../Update';
 import TableComponent from '../../../../components/Table';
 import TableCellComponent from '../../../../components/TableCell/TableCellComponent';
 import TableCellActionComponent from '../../../../components/TableCell/TableCellActionComponent';
-import EnhancedTable from '../../../../components/DataTable';
 
 const CityTable = () => {
     const [loading, setLoading] = useState<boolean>(false);
@@ -42,7 +41,6 @@ const CityTable = () => {
     return (
         <>
             <CityCreate />
-            <EnhancedTable />
             <Paper>
                 <TableComponent
                     headLabel={["Id", "Name", "City", "Action"]}

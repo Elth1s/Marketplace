@@ -82,9 +82,8 @@ const CharacteristicGroupUpdate: FC<ICharacteristicGroupUpdatePage> = ({ id }) =
             isSubmitting={isSubmitting}
             handleSubmit={handleSubmit}
 
-            dialogTitle="Create"
-            dialogBtnCancel="Close"
-            dialogBtnConfirm="Create"
+            dialogTitle="Update characteristic group"
+            dialogBtnConfirm="Update"
 
             dialogContent={
                 <Grid container spacing={2}>

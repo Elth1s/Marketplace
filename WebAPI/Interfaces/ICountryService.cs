@@ -1,14 +1,16 @@
-﻿using WebAPI.ViewModels.Request;
-using WebAPI.ViewModels.Response;
+﻿using WebAPI.ViewModels.Request.Countries;
+using WebAPI.ViewModels.Response.Countries;
 
 namespace WebAPI.Interfaces
 {
     public interface ICountryService
     {
-        Task<IEnumerable<UnitResponse>> GetCountriesAsync();
-        Task<UnitResponse> GetCountryByIdAsync(int countryId);
-        Task CreateCountryAsync(UnitRequest request);
-        Task UpdateCountryAsync(int countryId, UnitRequest request);
+        Task<IEnumerable<CountryResponse>> GetCountriesAsync();
+        Task<SearchCountryResponse> SearchCountriesAsync(SearchCountryRequest request);
+        Task<CountryResponse> GetCountryByIdAsync(int countryId);
+        Task CreateCountryAsync(CountryRequest request);
+        Task UpdateCountryAsync(int countryId, CountryRequest request);
         Task DeleteCountryAsync(int countryId);
+        Task DeleteCountriesAsync(IEnumerable<int> ids);
     }
 }

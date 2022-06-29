@@ -2,7 +2,7 @@ import { Box, Button, Typography, IconButton, Grid, ListItem, ListItemButton, Li
 import { ArrowBackIosNewOutlined, ArrowForwardIosOutlined, SportsEsportsOutlined } from '@mui/icons-material'
 import { useState } from 'react'
 import { Link } from 'react-router-dom';
-import { ListItemButtonStyle, ButtonNoveltyStyle } from './styled';
+import { ListItemButtonStyle, ButtonNoveltyStyle, BoxProductOfTheDayStyle } from './styled';
 import { gamepad } from '../../assets/icons';
 import { homepage } from '../../assets/backgrounds';
 
@@ -36,12 +36,12 @@ const HomePage = () => {
                     />
                 </Grid>
             </Grid>
-            <Box id="NewProducts" sx={{ marginTop: "100px", marginBottom: "190px" }}>
+            <Box id="NewProducts" sx={{ marginTop: "100px" }}>
                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                     <Typography fontSize="27px">Novelty</Typography>
                     <ButtonNoveltyStyle variant="outlined" endIcon={<ArrowForwardIosOutlined />} >All novelties</ButtonNoveltyStyle>
                 </Box>
-                <Box sx={{ width: "100%", height: "415px", marginTop: "49px", display: "flex", justifyContent: "space-between", alignContent: "center" }}>
+                <Box sx={{ width: "100%", height: "366px", marginTop: "75px", display: "flex", justifyContent: "space-between", alignContent: "center" }}>
                     <IconButton
                         sx={{ color: "#7e7e7e", borderRadius: '12px', p: 0, "&:hover": { background: "transparent" }, "&& .MuiTouchRipple-child": { backgroundColor: "transparent" } }}
                         size="large"
@@ -50,11 +50,11 @@ const HomePage = () => {
                     >
                         <ArrowBackIosNewOutlined sx={{ fontSize: "35px" }} />
                     </IconButton>
-                    <Box sx={{ width: "305px", height: "100%", backgroundColor: "#0E7C3A", borderRadius: "5px" }}></Box>
-                    <Box sx={{ width: "305px", height: "100%", backgroundColor: "#0E7C3A", borderRadius: "5px" }}></Box>
-                    <Box sx={{ width: "305px", height: "100%", backgroundColor: "#0E7C3A", borderRadius: "5px" }}></Box>
-                    <Box sx={{ width: "305px", height: "100%", backgroundColor: "#0E7C3A", borderRadius: "5px" }}></Box>
-                    <Box sx={{ width: "305px", height: "100%", backgroundColor: "#0E7C3A", borderRadius: "5px" }}></Box>
+                    <Box sx={{ width: "269px", height: "100%", backgroundColor: "#0E7C3A", borderRadius: "9px" }}></Box>
+                    <Box sx={{ width: "269px", height: "100%", backgroundColor: "#0E7C3A", borderRadius: "9px" }}></Box>
+                    <Box sx={{ width: "269px", height: "100%", backgroundColor: "#0E7C3A", borderRadius: "9px" }}></Box>
+                    <Box sx={{ width: "269px", height: "100%", backgroundColor: "#0E7C3A", borderRadius: "9px" }}></Box>
+                    <Box sx={{ width: "269px", height: "100%", backgroundColor: "#0E7C3A", borderRadius: "9px" }}></Box>
                     <IconButton
                         sx={{ color: "#7e7e7e", borderRadius: '12px', p: 0, "&:hover": { background: "transparent" }, "&& .MuiTouchRipple-child": { backgroundColor: "transparent" } }}
                         size="large"
@@ -64,6 +64,20 @@ const HomePage = () => {
                     </IconButton>
                 </Box>
             </Box>
+            <Grid container id="ProductOfTheDay" sx={{ height: "510px", marginTop: "190px", borderRadius: "9px", backgroundColor: "#0E7C3A" }}>
+                <Grid item xl={3} sx={{ height: "100%" }}>
+                    <Box sx={{ height: "100%", display: "flex", flexDirection: 'column', justifyContent: "center", alignItems: "center" }}>
+                        <Typography color="#fff" fontSize="38px" sx={{ fontWeight: "500" }}>Product of the day</Typography>
+                        <Typography color="#fff" fontSize="70px" sx={{ fontWeight: "700" }}>25.06</Typography>
+                        <Typography color="#fff" fontSize="15px" sx={{ fontWeight: "500" }}>Limited quantity. The offer is valid only today</Typography>
+                    </Box>
+                </Grid>
+                <Grid item xl={9} sx={{ display: "flex", justifyContent: "end", alignItems: "center" }}>
+                    <BoxProductOfTheDayStyle>
+
+                    </BoxProductOfTheDayStyle>
+                </Grid>
+            </Grid>
         </Box>
     )
 }

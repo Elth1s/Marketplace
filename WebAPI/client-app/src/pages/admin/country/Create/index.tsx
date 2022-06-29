@@ -6,7 +6,7 @@ import { useFormik } from "formik";
 
 import { useActions } from "../../../../hooks/useActions";
 
-import { validationFields } from "../validation";
+import { countryValidation } from "../validation";
 import { ICountry } from "../types";
 import { ServerError } from '../../../../store/types';
 
@@ -20,6 +20,7 @@ const CountryCreate = () => {
 
     const item: ICountry = {
         name: "",
+        code: ""
     };
 
     const handleClickOpen = () => {
@@ -33,7 +34,7 @@ const CountryCreate = () => {
     const onHandleSubmit = async (values: ICountry) => {
         try {
             await CreateCountry(values);
-            await GetCountries();
+            // await GetCountries();
             handleClickClose();
             resetForm();
         } catch (ex) {
@@ -52,7 +53,7 @@ const CountryCreate = () => {
     }
     const formik = useFormik({
         initialValues: item,
-        validationSchema: validationFields,
+        validationSchema: countryValidation,
         onSubmit: onHandleSubmit
     });
 
@@ -80,18 +81,26 @@ const CountryCreate = () => {
             handleSubmit={handleSubmit}
 
             dialogTitle="Create"
-            dialogBtnCancel="Close"
             dialogBtnConfirm="Create"
 
             dialogContent={
-                <Grid container spacing={2}>
-                    <Grid item xs={12}>
+                <Grid container rowSpacing={2}>
+                    <Grid item xs={12} >
                         <TextFieldComponent
                             type="text"
                             label="Name"
                             error={errors.name}
                             touched={touched.name}
                             getFieldProps={{ ...getFieldProps('name') }}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextFieldComponent
+                            type="text"
+                            label="Code"
+                            error={errors.code}
+                            touched={touched.code}
+                            getFieldProps={{ ...getFieldProps('code') }}
                         />
                     </Grid>
                 </Grid>
