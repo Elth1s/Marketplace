@@ -9,40 +9,46 @@ import { useActions } from "../../../../hooks/useActions";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 
 import { validationFields } from "../validation";
-import { ICharacteristic, ICharacteristicUpdatePage } from "../types";
+import { ICharacteristicName } from "../types";
 import { ServerError } from '../../../../store/types';
 
 import DialogComponent from '../../../../components/Dialog';
 import SelectComponent from '../../../../components/Select';
 import TextFieldComponent from '../../../../components/TextField';
 
-const CharacteristicUpdate: FC<ICharacteristicUpdatePage> = ({ id }) => {
+interface Props {
+    id: number,
+    afterUpdate: any
+}
+
+const CharacteristicUpdate: FC<Props> = ({ id, afterUpdate }) => {
     const [open, setOpen] = useState(false);
 
-    const { GetByIdCharacteristic, GetCharacteristicGroups, UpdateCharacteristic, GetCharacteristics } = useActions();
+    const { GetByIdCharacteristicName, GetCharacteristicGroups, UpdateCharacteristicName, GetCharacteristicNames } = useActions();
 
-    const { characteristicInfo } = useTypedSelector((store) => store.characteristic);
+    const { characteristicNameInfo } = useTypedSelector((store) => store.characteristicName);
     const { characteristicGroups } = useTypedSelector((store) => store.characteristicGroup);
 
-    const item: ICharacteristic = {
-        name: characteristicInfo.name,
-        characteristicGroupId: characteristicGroups.find(n => n.name === characteristicInfo.characteristicGroupName)?.id || ''
+    const item: ICharacteristicName = {
+        name: characteristicNameInfo.name,
+        characteristicGroupId: characteristicGroups.find(n => n.name === characteristicNameInfo.characteristicGroupName)?.id || '',
+        unitId:  characteristicGroups.find(n => n.name === characteristicNameInfo.unitMeasure)?.id || '',
     }
 
     const handleClickOpen = async () => {
         setOpen(true);
         await GetCharacteristicGroups();
-        await GetByIdCharacteristic(id);
+        await GetByIdCharacteristicName(id);
     };
 
     const handleClickClose = () => {
         setOpen(false);
     };
 
-    const onHandleSubmit = async (values: ICharacteristic) => {
+    const onHandleSubmit = async (values: ICharacteristicName) => {
         try {
-            await UpdateCharacteristic(characteristicInfo.id, values);
-            await GetCharacteristics();
+            await UpdateCharacteristicName(characteristicNameInfo.id, values);
+            await GetCharacteristicNames();
             handleClickClose();
             resetForm();
         }

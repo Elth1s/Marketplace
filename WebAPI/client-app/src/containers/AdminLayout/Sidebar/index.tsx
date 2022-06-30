@@ -26,7 +26,7 @@ const Sidebar: FC<IDrawer> = ({ open }) => {
     const [menuItems, setMenuItems] = useState<Array<IMenuItem>>([
         { lable: 'Category', path: '/admin/category', rotete: undefined },
         { lable: 'Characteristic Group', path: '/admin/characteristicGroup', rotete: undefined },
-        { lable: 'Characteristic', path: '/admin/characteristic', rotete: undefined },
+        { lable: 'Characteristic Name', path: '/admin/characteristicName', rotete: undefined },
         { lable: 'Country', path: '/admin/country', rotete: undefined },
         { lable: 'City', path: '/admin/city', rotete: undefined },
     ]);

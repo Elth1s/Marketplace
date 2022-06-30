@@ -8,17 +8,23 @@ import { useFormik } from "formik";
 import { useActions } from "../../../../hooks/useActions";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 
-import { validationFields } from "../validation";
-import { ICharacteristicGroup, ICharacteristicGroupUpdatePage } from "../types";
 import { ServerError } from '../../../../store/types';
 
 import DialogComponent from '../../../../components/Dialog';
 import TextFieldComponent from '../../../../components/TextField';
 
-const CharacteristicGroupUpdate: FC<ICharacteristicGroupUpdatePage> = ({ id }) => {
+import { validationFields } from "../validation";
+import { ICharacteristicGroup } from "../types";
+
+interface Props {
+    id: number,
+    afterUpdate: any
+}
+
+const CharacteristicGroupUpdate: FC<Props> = ({ id, afterUpdate }) => {
     const [open, setOpen] = useState(false);
 
-    const { GetCharacteristicGroups, GetByIdCharacteristicGroup, UpdateCharacteristicGroup } = useActions();
+    const { GetByIdCharacteristicGroup, UpdateCharacteristicGroup } = useActions();
     const { characteristicGroupInfo } = useTypedSelector((store) => store.characteristicGroup);
 
     const item: ICharacteristicGroup = {
@@ -32,14 +38,14 @@ const CharacteristicGroupUpdate: FC<ICharacteristicGroupUpdatePage> = ({ id }) =
 
     const handleClickClose = () => {
         setOpen(false);
+        resetForm();
     };
 
     const onHandleSubmit = async (values: ICharacteristicGroup) => {
         try {
             await UpdateCharacteristicGroup(characteristicGroupInfo.id, values);
-            await GetCharacteristicGroups();
+            afterUpdate();
             handleClickClose();
-            resetForm();
         }
         catch (ex) {
             const serverErrors = ex as ServerError;

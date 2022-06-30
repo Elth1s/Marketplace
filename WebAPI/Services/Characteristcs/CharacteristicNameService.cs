@@ -5,6 +5,7 @@ using WebAPI.Exceptions;
 using WebAPI.Extensions;
 using WebAPI.Interfaces.Characteristics;
 using WebAPI.Resources;
+using WebAPI.Specifications.Categories;
 using WebAPI.Specifications.Characteristics;
 using WebAPI.ViewModels.Request.Characteristics;
 using WebAPI.ViewModels.Response.Characteristics;
@@ -32,6 +33,18 @@ namespace WebAPI.Services.Characteristcs
             var characteristicNames = await _characteristicNameRepository.ListAsync(spec);
 
             return _mapper.Map<IEnumerable<CharacteristicNameResponse>>(characteristicNames);
+        }
+
+        public async Task<SearchCharacteristicNameResponse> SearchAsync(SearchCharacteristicNameRequest request)
+        {
+            var spec = new CharacteristicNameSearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
+            var countries = await _characteristicNameRepository.ListAsync(spec);
+            var mappedCountries = _mapper.Map<IEnumerable<CharacteristicNameResponse>>(countries);
+            var response = new SearchCharacteristicNameResponse() { Count = countries.Count };
+
+            response.CharacteristicNames = mappedCountries.Skip((request.Page - 1) * request.RowsPerPage).Take(request.RowsPerPage);
+
+            return response;
         }
 
         public async Task<CharacteristicNameResponse> GetByIdAsync(int id)
@@ -94,6 +107,16 @@ namespace WebAPI.Services.Characteristcs
             characteristicName.CharacteristicNameNullChecking();
 
             await _characteristicNameRepository.DeleteAsync(characteristicName);
+            await _characteristicNameRepository.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(IEnumerable<int> ids)
+        {
+            foreach (var item in ids)
+            {
+                var characteristicName = await _characteristicNameRepository.GetByIdAsync(item);
+                await _characteristicNameRepository.DeleteAsync(characteristicName);
+            }
             await _characteristicNameRepository.SaveChangesAsync();
         }
     }

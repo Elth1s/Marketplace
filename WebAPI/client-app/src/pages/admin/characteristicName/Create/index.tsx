@@ -8,7 +8,7 @@ import { useActions } from "../../../../hooks/useActions";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 
 import { validationFields } from "../validation";
-import { ICharacteristic } from "../types";
+import { ICharacteristicName } from "../types";
 import { ServerError } from '../../../../store/types';
 
 import DialogComponent from '../../../../components/Dialog';
@@ -18,13 +18,14 @@ import TextFieldComponent from "../../../../components/TextField";
 const CharacteristicCreate = () => {
     const [open, setOpen] = useState(false);
 
-    const { GetCharacteristics, CreateCharacteristic, GetCharacteristicGroups } = useActions();
+    const { GetCharacteristicNames, CreateCharacteristicName, GetCharacteristicGroups } = useActions();
 
     const { characteristicGroups } = useTypedSelector((store) => store.characteristicGroup);
 
-    const item: ICharacteristic = {
+    const item: ICharacteristicName = {
         name: '',
-        characteristicGroupId: ''
+        characteristicGroupId: '',
+        unitId: '',
     }
 
     const handleClickOpen = async () => {
@@ -37,10 +38,10 @@ const CharacteristicCreate = () => {
         setOpen(false);
     };
 
-    const onHandleSubmit = async (values: ICharacteristic) => {
+    const onHandleSubmit = async (values: ICharacteristicName) => {
         try {
-            await CreateCharacteristic(values);
-            await GetCharacteristics();
+            await CreateCharacteristicName(values);
+            await GetCharacteristicNames();
             handleClickClose();
             resetForm();
         } catch (ex) {

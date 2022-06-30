@@ -9,11 +9,18 @@ const initialState: CharacteristicGroupState = {
         id: 0,
         name: "",
     },
+    count: 0,
     characteristicGroups: []
 }
 
 export const characteristicGroupReducer = (state = initialState, action: CharacteristicGroupAction): CharacteristicGroupState => {
     switch (action.type) {
+        case CharacteristicGroupActionTypes.SEARCH_CHARACTERISTIC_GROUPS:
+            return {
+                ...state,
+                count: action.payload.count,
+                characteristicGroups: action.payload.characteristicGroups,
+            }
         case CharacteristicGroupActionTypes.GET_CHARACTERISTIC_GROUPS:
             return {
                 ...state,

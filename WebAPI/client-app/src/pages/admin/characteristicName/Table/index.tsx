@@ -1,10 +1,10 @@
 import TableRow from '@mui/material/TableRow';
 import Checkbox from '@mui/material/Checkbox';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
-import { useActions } from '../../../../hooks/useActions';
-import { useTypedSelector } from '../../../../hooks/useTypedSelector';
+import { useActions } from "../../../../hooks/useActions";
+import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 
 import EnhancedTable from '../../../../components/EnhancedTable';
 import { TableCellStyle } from '../../../../components/EnhancedTable/styled';
@@ -12,11 +12,10 @@ import { TableCellStyle } from '../../../../components/EnhancedTable/styled';
 import Create from '../Create';
 import Update from '../Update';
 
-import { ICharacteristicGroupInfo } from '../types';
-
+import { ICharacteristicNameInfo } from '../types';
 
 interface HeadCell {
-    id: keyof ICharacteristicGroupInfo;
+    id: keyof ICharacteristicNameInfo;
     numeric: boolean;
     label: string;
 }
@@ -32,19 +31,29 @@ const headCells: HeadCell[] = [
         numeric: false,
         label: 'Name',
     },
+    {
+        id: 'characteristicGroupName',
+        numeric: false,
+        label: 'Characteristic Group',
+    },
+    {
+        id: 'unitMeasure',
+        numeric: false,
+        label: 'Unit Measure',
+    },
 ];
 
-const CharacteristicGroupTable = () => {
+const CharacteristicNameTable = () => {
     const [page, setPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(8);
     const [name, setName] = useState("");
     const [isAscOrder, setIsAscOrder] = useState<boolean>(true);
-    const [orderBy, setOrderBy] = useState<keyof ICharacteristicGroupInfo>('id');
+    const [orderBy, setOrderBy] = useState<keyof ICharacteristicNameInfo>('id');
 
     const [selected, setSelected] = useState<readonly number[]>([]);
 
-    const { SearchCharacteristicGroups, DeleteCharacteristicGroups } = useActions();
-    const { characteristicGroups, count } = useTypedSelector((store) => store.characteristicGroup);
+    const { SearchCharacteristicNames, DeleteCharacteristicNames } = useActions();
+    const { characteristicNames, count } = useTypedSelector((store) => store.characteristicName);
 
     useEffect(() => {
         getData();
@@ -52,14 +61,14 @@ const CharacteristicGroupTable = () => {
 
     const getData = async () => {
         try {
-            document.title = "Characteristic Group";
-            await SearchCharacteristicGroups(page, rowsPerPage, name, isAscOrder, orderBy);
+            document.title = "Characteristic Name";
+            await SearchCharacteristicNames(page, rowsPerPage, name, isAscOrder, orderBy);
         } catch (ex) {
         }
     };
 
     const onDelete = async () => {
-        await DeleteCharacteristicGroups(selected);
+        await DeleteCharacteristicNames(selected);
         setPage(1);
         getData();
     }
@@ -86,7 +95,7 @@ const CharacteristicGroupTable = () => {
 
     const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (selected.length == 0) {
-            const newSelecteds = characteristicGroups.map((n) => n.id);
+            const newSelecteds = characteristicNames.map((n) => n.id);
             setSelected(newSelecteds);
             return;
         }
@@ -124,7 +133,7 @@ const CharacteristicGroupTable = () => {
                 onDelete={onDelete}
                 update={<Update id={selected[selected.length - 1]} afterUpdate={() => { getData() }} />}
                 tableBody={
-                    characteristicGroups.map((row, index) => {
+                    characteristicNames.map((row, index) => {
                         const isItemSelected = isSelected(row.id);
                         const labelId = `enhanced-table-checkbox-${index}`;
 
@@ -156,6 +165,8 @@ const CharacteristicGroupTable = () => {
                                     {row.id}
                                 </TableCellStyle>
                                 <TableCellStyle align="center">{row.name}</TableCellStyle>
+                                <TableCellStyle align="center">{row.characteristicGroupName}</TableCellStyle>
+                                <TableCellStyle align="center">{row.unitMeasure}</TableCellStyle>
                             </TableRow>
                         );
                     })
@@ -165,4 +176,4 @@ const CharacteristicGroupTable = () => {
     );
 }
 
-export default CharacteristicGroupTable
+export default CharacteristicNameTable;

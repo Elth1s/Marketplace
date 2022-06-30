@@ -25,7 +25,7 @@ import CategoryCreate from './pages/admin/category/Create';
 import CategoryUpdate from './pages/admin/category/Update';
 
 import CharacteristicGroupTable from './pages/admin/characteristicGroup/Table';
-import CharacteristicTable from './pages/admin/characteristic/Table';
+import CharacteristicNameTable from './pages/admin/characteristicName/Table';
 import CountryTable from './pages/admin/country/Table';
 import CityTable from './pages/admin/city/Table';
 import HomePage from './pages/HomePage';
@@ -41,6 +41,15 @@ function App() {
   }, []);
 
   const theme = createTheme({
+    breakpoints: {
+      values: {
+        xs: 0,
+        sm: 600,
+        md: 900,
+        lg: 1200,
+        xl: 1608,
+      },
+    },
     palette: {
       mode: "light",
       primary: {
@@ -114,7 +123,7 @@ function App() {
           <Route path="/admin/category/update" element={<CategoryUpdate />} />
 
           <Route path="/admin/characteristicGroup" element={<CharacteristicGroupTable />} />
-          <Route path="/admin/characteristic" element={<CharacteristicTable />} />
+          <Route path="/admin/characteristicName" element={<CharacteristicNameTable />} />
           <Route path="/admin/country" element={<CountryTable />} />
           <Route path="/admin/city" element={<CityTable />} />
         </Route>

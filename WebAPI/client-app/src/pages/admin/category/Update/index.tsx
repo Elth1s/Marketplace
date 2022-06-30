@@ -22,7 +22,7 @@ import TextFieldComponent from "../../../../components/TextField";
 import AutocompleteComponent from "../../../../components/Autocomplete";
 
 const CategoryUpdate = () => {
-    const { GetByIdCategory, GetCategoryForSelect, GetCharacteristics, UpdateCategory } = useActions();
+    const { GetByIdCategory, GetCategoryForSelect, GetCharacteristicNames, UpdateCategory } = useActions();
     const [loading, setLoading] = useState<boolean>(false);
 
     const { categoryInfo, categoriesForSelect } = useTypedSelector((store) => store.category);
@@ -49,7 +49,7 @@ const CategoryUpdate = () => {
 
             await GetByIdCategory(id);
             await GetCategoryForSelect();
-            await GetCharacteristics();
+            await GetCharacteristicNames();
 
             setLoading(false);
         } catch (ex) {

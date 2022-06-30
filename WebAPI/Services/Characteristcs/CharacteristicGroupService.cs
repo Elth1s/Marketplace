@@ -5,6 +5,7 @@ using DAL.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using WebAPI.Extensions;
 using WebAPI.Interfaces.Characteristics;
+using WebAPI.Specifications.Categories;
 using WebAPI.Specifications.Characteristics;
 using WebAPI.ViewModels.Request.Characteristics;
 using WebAPI.ViewModels.Response.Characteristics;
@@ -32,6 +33,18 @@ namespace WebAPI.Services.Characteristcs
             var spec = new CharacteristicGroupGetByUserIdSpecification(userId);
             var characteristicGroups = await _characteristicGroupRepository.ListAsync(spec);
             return _mapper.Map<IEnumerable<CharacteristicGroupResponse>>(characteristicGroups);
+        }
+
+        public async Task<SearchCharacteristicGroupResponse> SearchCharacteristicGroupsAsync(SearchCharacteristicGroupRequest request)
+        {
+            var spec = new CharacteristicGroupSearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
+            var characteristicGroups = await _characteristicGroupRepository.ListAsync(spec);
+            var mappedCountries = _mapper.Map<IEnumerable<CharacteristicGroupResponse>>(characteristicGroups);
+            var response = new SearchCharacteristicGroupResponse() { Count = characteristicGroups.Count };
+
+            response.CharacteristicGroups = mappedCountries.Skip((request.Page - 1) * request.RowsPerPage).Take(request.RowsPerPage);
+
+            return response;
         }
 
         public async Task<CharacteristicGroupResponse> GetByIdAsync(int id)
@@ -71,6 +84,16 @@ namespace WebAPI.Services.Characteristcs
             characteristicGroup.CharacteristicGroupNullChecking();
 
             await _characteristicGroupRepository.DeleteAsync(characteristicGroup);
+            await _characteristicGroupRepository.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(IEnumerable<int> ids)
+        {
+            foreach (var item in ids)
+            {
+                var country = await _characteristicGroupRepository.GetByIdAsync(item);
+                await _characteristicGroupRepository.DeleteAsync(country);
+            }
             await _characteristicGroupRepository.SaveChangesAsync();
         }
     }
