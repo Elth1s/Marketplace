@@ -11,12 +11,12 @@ import {
 } from '@mui/icons-material';
 import { Form, FormikProvider, useFormik } from "formik";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 // import { toast } from 'react-toastify';
 
 import GoogleExternalLogin from "../../../components/Google";
-
+import LinkRouter from "../../../components/LinkRouter";
 
 import { LogInSchema } from "../validation";
 import { useActions } from "../../../hooks/useActions";
@@ -24,8 +24,8 @@ import { ILoginModel } from "../types";
 import { ServerError } from "../../../store/types";
 
 import { login } from "../../../assets/backgrounds";
-import { twitter } from "../../../assets/icons";
 import FacebookExternalLogin from "../../../components/Facebook";
+import { toLowerFirstLetter } from "../../../http_comon";
 
 const SignIn = () => {
     const { LoginUser } = useActions();
@@ -62,7 +62,7 @@ const SignIn = () => {
                             value.forEach((item) => {
                                 message += `${item} `;
                             });
-                            setFieldError(key.toLowerCase(), message);
+                            setFieldError(toLowerFirstLetter(key), message);
                         }
                     });
                 let message = "Login failed! \n";
@@ -113,7 +113,7 @@ const SignIn = () => {
                     }}>
 
                     <AuthHeaderTypography sx={{ marginTop: "98px" }}>
-                        Увійдіть в акаунт
+                        Sign In
                     </AuthHeaderTypography>
                     <FormikProvider value={formik} >
                         <Form autoComplete="off" noValidate onSubmit={handleSubmit} >
@@ -150,8 +150,9 @@ const SignIn = () => {
                                         helperText={touched.password && errors.password}
                                     />
                                 </Grid>
-                                <Grid item xs={12} sx={{ marginTop: "62px" }} display="flex" justifyContent="flex-end">
-                                    <AuthSideTypography component={Link} to="/resetPasswordEmail" sx={{ cursor: "pointer", textDecoration: "none", color: "#000" }} >Забули пароль?</AuthSideTypography>
+                                <Grid item xs={12} sx={{ marginTop: "62px", width: "100%", display: "flex", justifyContent: "space-between" }} >
+                                    <AuthSideTypography component={LinkRouter} underline="none" color="unset" to="/auth/signup" sx={{ cursor: "pointer" }} >Don't have an account?</AuthSideTypography>
+                                    <AuthSideTypography component={LinkRouter} underline="none" color="unset" to="/resetPasswordEmail" sx={{ cursor: "pointer" }} >Forgot password?</AuthSideTypography>
                                 </Grid>
                                 <Grid item xs={12} sx={{ marginTop: "85px" }}>
                                     <AuthLoadingButton
@@ -160,18 +161,17 @@ const SignIn = () => {
                                         loading={isSubmitting}
                                         type="submit"
                                     >
-                                        Увійти
+                                        Sign In
                                     </AuthLoadingButton>
                                 </Grid>
                                 <Grid item xs={12} sx={{ marginTop: "60px" }} display="flex" justifyContent="center" >
                                     <Box sx={{ width: "98px", height: "17px", borderBottom: "2px solid #000" }} />
-                                    <AuthSideTypography sx={{ padding: "0 7px" }}>або</AuthSideTypography>
+                                    <AuthSideTypography sx={{ padding: "0 7px" }}>or</AuthSideTypography>
                                     <Box sx={{ width: "98px", height: "17px", borderBottom: "2px solid #000" }} />
                                 </Grid>
                                 <Grid item xs={12} sx={{ position: "relative", marginTop: "45px" }} display="flex" justifyContent="center" >
                                     <GoogleExternalLogin />
                                     <FacebookExternalLogin />
-                                    <AuthAvatar src={twitter} />
                                 </Grid>
                             </Grid>
                         </Form>

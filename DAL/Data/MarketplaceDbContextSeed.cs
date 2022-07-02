@@ -19,11 +19,11 @@ namespace DAL.Data
             await roleManager.CreateAsync(new IdentityRole(Roles.Admin));
             await roleManager.CreateAsync(new IdentityRole(Roles.Seller));
 
-            var defaultUser = new AppUser { UserName = UsersInfo.DefaultUserName, Email = UsersInfo.DefaultUserName };
+            var defaultUser = new AppUser { UserName = UsersInfo.DefaultUserName, FirstName = UsersInfo.DefaultUserName, Email = UsersInfo.DefaultEmail };
             await userManager.CreateAsync(defaultUser, UsersInfo.DefaultPassword);
             defaultUser = await userManager.FindByNameAsync(UsersInfo.DefaultUserName);
 
-            var adminUser = new AppUser { UserName = UsersInfo.AdminUserName, Email = UsersInfo.AdminUserName };
+            var adminUser = new AppUser { UserName = UsersInfo.AdminUserName, FirstName = UsersInfo.AdminUserName, Email = UsersInfo.AdminEmail };
             await userManager.CreateAsync(adminUser, UsersInfo.DefaultPassword);
             adminUser = await userManager.FindByNameAsync(UsersInfo.AdminUserName);
             await userManager.AddToRoleAsync(adminUser, Roles.Admin);

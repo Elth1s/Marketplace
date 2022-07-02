@@ -16,6 +16,7 @@ import { LoadingButton } from "@mui/lab";
 import { ResetPasswordEmailSchema } from "../../validation";
 import { AuthSideTypography } from "../../../auth/styled";
 import { ServerError } from "../../../../store/types";
+import { toLowerFirstLetter } from "../../../../http_comon";
 
 
 const SendResetPasswordEmail = () => {
@@ -43,7 +44,7 @@ const SendResetPasswordEmail = () => {
                             value.forEach((item) => {
                                 message += `${item} `;
                             });
-                            setFieldError(key.toLowerCase(), message);
+                            setFieldError(toLowerFirstLetter(key), message);
                         }
                     });
                 let message = "Sign up failed! \n";

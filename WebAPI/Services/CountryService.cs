@@ -3,6 +3,7 @@ using DAL;
 using DAL.Entities;
 using WebAPI.Extensions;
 using WebAPI.Interfaces;
+using WebAPI.Specifications.Countries;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Response;
 
@@ -22,34 +23,65 @@ namespace WebAPI.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<UnitResponse>> GetCountriesAsync()
+        public async Task<IEnumerable<CountryResponse>> GetCountriesAsync()
         {
             var countries = await _countryRepository.ListAsync();
 
-            var response = countries.Select(c => _mapper.Map<UnitResponse>(c));
+            var response = countries.Select(c => _mapper.Map<CountryResponse>(c));
             return response;
         }
-        public async Task<UnitResponse> GetCountryByIdAsync(int countryId)
+
+        public async Task<AdminSearchResponse<CountryResponse>> SearchCountriesAsync(AdminSearchRequest request)
+        {
+            var spec = new CountrySearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
+            var countries = await _countryRepository.ListAsync(spec);
+            var mappedCountries = _mapper.Map<IEnumerable<CountryResponse>>(countries);
+            var response = new AdminSearchResponse<CountryResponse>() { Count = countries.Count };
+
+            response.Values = mappedCountries.Skip((request.Page - 1) * request.RowsPerPage).Take(request.RowsPerPage);
+
+            return response;
+        }
+        public async Task<CountryResponse> GetCountryByIdAsync(int countryId)
         {
             var country = await _countryRepository.GetByIdAsync(countryId);
             country.CountryNullChecking();
 
-            var response = _mapper.Map<UnitResponse>(country);
+            var response = _mapper.Map<CountryResponse>(country);
             return response;
         }
 
-        public async Task CreateCountryAsync(UnitRequest request)
+        public async Task CreateCountryAsync(CountryRequest request)
         {
-            var country = _mapper.Map<Country>(request);
+            var specCode = new CountryGetByCodeSpecification(request.Code);
+            var countryCodeExist = await _countryRepository.GetBySpecAsync(specCode);
+            countryCodeExist.CountryCodeChecking();
 
-            await _countryRepository.AddAsync(country);
+            var specName = new CountryGetByNameSpecification(request.Name);
+            var countryNameExist = await _countryRepository.GetBySpecAsync(specName);
+            countryNameExist.CountryNameChecking();
+
+
+            var result = _mapper.Map<Country>(request);
+
+            await _countryRepository.AddAsync(result);
             await _countryRepository.SaveChangesAsync();
         }
 
-        public async Task UpdateCountryAsync(int countryId, UnitRequest request)
+        public async Task UpdateCountryAsync(int countryId, CountryRequest request)
         {
             var country = await _countryRepository.GetByIdAsync(countryId);
             country.CountryNullChecking();
+
+            var spec = new CountryGetByCodeSpecification(request.Code);
+            var countryCodeExist = await _countryRepository.GetBySpecAsync(spec);
+            if (countryCodeExist != null && countryCodeExist.Id != countryId)
+                country.CountryCodeChecking();
+
+            var specName = new CountryGetByNameSpecification(request.Name);
+            var countryNameExist = await _countryRepository.GetBySpecAsync(specName);
+            if (countryNameExist != null && countryNameExist.Id != countryId)
+                countryNameExist.CountryNameChecking();
 
             _mapper.Map(request, country);
 
@@ -63,6 +95,17 @@ namespace WebAPI.Services
             country.CountryNullChecking();
 
             await _countryRepository.DeleteAsync(country);
+            await _countryRepository.SaveChangesAsync();
+        }
+
+        public async Task DeleteCountriesAsync(IEnumerable<int> ids)
+        {
+            foreach (var item in ids)
+            {
+                var country = await _countryRepository.GetByIdAsync(item);
+                //country.CountryNullChecking();
+                await _countryRepository.DeleteAsync(country);
+            }
             await _countryRepository.SaveChangesAsync();
         }
     }

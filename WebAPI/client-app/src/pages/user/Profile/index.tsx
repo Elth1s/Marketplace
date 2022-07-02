@@ -18,13 +18,13 @@ import { ProfileSchema } from "../validation";
 import { ServerError } from "../../../store/types";
 
 import CropperDialog from "../../../components/CropperDialog";
+import { toLowerFirstLetter } from "../../../http_comon";
 
 
 const Profile = () => {
 
     const { GetProfile, UpdateProfile, SendConfirmEmail } = useActions();
     const [loading, setLoading] = useState<boolean>(false);
-
 
     const { userInfo } = useTypedSelector((store) => store.profile);
     useEffect(() => {
@@ -61,7 +61,7 @@ const Profile = () => {
                             value.forEach((item) => {
                                 message += `${item} `;
                             });
-                            setFieldError(key.toLowerCase(), message);
+                            setFieldError(toLowerFirstLetter(key), message);
                         }
                     });
                 let message = "Update failed! \n";
@@ -83,7 +83,7 @@ const Profile = () => {
     const { errors, touched, isSubmitting, handleSubmit, getFieldProps, setFieldValue } = formik;
 
     return (
-        <Box sx={{ flexGrow: 1, m: 1, mx: 3, }}>
+        <Box sx={{ flexGrow: 1 }}>
             <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ py: 1 }}>
                 <Typography variant="h4" gutterBottom sx={{ my: "auto" }}>
                     Profile info

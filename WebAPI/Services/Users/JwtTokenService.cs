@@ -9,6 +9,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using WebAPI.Constants;
 using WebAPI.Exceptions;
 using WebAPI.Interfaces.Users;
 using WebAPI.Resources;
@@ -40,6 +41,8 @@ namespace WebAPI.Services.Users
             List<Claim> claims = new()
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(ClaimTypes.Name, user.FirstName),
+                new Claim(CustomClaimTypes.Photo, !string.IsNullOrEmpty(user.Photo) ? string.Concat(ImagePath.RequestUsersImagePath, "/", user.Photo) : ""),
                 (user.Email != null ?
                 new Claim(ClaimTypes.Email, user.Email)
                 :
@@ -54,7 +57,7 @@ namespace WebAPI.Services.Users
             var jwt = new JwtSecurityToken(
                 audience: _jwtSettings.Audience,
                 issuer: _jwtSettings.Issuer,
-                expires: DateTime.UtcNow.AddHours(_jwtSettings.AccessTokenDuration),
+                expires: DateTime.UtcNow.AddDays(_jwtSettings.AccessTokenDuration),
                 signingCredentials: signinCredentials,
                 claims: claims
             );

@@ -85,12 +85,12 @@ namespace WebAPI.ViewModels.Request.Products
             //Price
             RuleFor(c => c.Price).Cascade(CascadeMode.Stop)
                 .NotEmpty().WithName("Price").WithMessage("{PropertyName} is required!")
-               .InclusiveBetween(0.1f, float.MaxValue).WithMessage("{PropertyName} should be greater than 0.1");
+               .InclusiveBetween(0.1f, 99_999_999_999_999f).WithMessage("{PropertyName} should be between 0 and  99 999 999 999 999");
 
             //Count
             RuleFor(a => a.Count).Cascade(CascadeMode.Stop)
                 .NotEmpty().WithName("Count").WithMessage("{PropertyName} is required!")
-                .InclusiveBetween(1, int.MaxValue).WithMessage("{PropertyName} should be greater than 1");
+                .InclusiveBetween(0, 999_999_999).WithMessage("{PropertyName} should be between 0 and  999 999 999");
         }
     }
 }

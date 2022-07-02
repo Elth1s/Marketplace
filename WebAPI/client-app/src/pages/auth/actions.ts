@@ -12,7 +12,7 @@ import {
 import { ServerError } from "../../store/types";
 import http, { setLocalRefreshToken, setLocalAccessToken } from "../../http_comon"
 
-import { accessToken, refreshToken, emailClaim, roleClaim, mobilePhoneClaim } from "./constants"
+import { accessToken, refreshToken, emailClaim, roleClaim, mobilePhoneClaim, usernameClaim, photoClaim, nameClaim } from "./constants"
 
 export const LoginUser = (data: ILoginModel, reCaptchaToken: string) => {
     return async (dispatch: Dispatch<AuthAction>) => {
@@ -22,7 +22,7 @@ export const LoginUser = (data: ILoginModel, reCaptchaToken: string) => {
             setLocalAccessToken(tokens.accessToken);
             setLocalRefreshToken(tokens.refreshToken);
 
-            AuthUser(tokens.accessToken);
+            AuthUser(tokens.accessToken, dispatch);
             return Promise.resolve();
         }
         catch (error) {
@@ -39,7 +39,7 @@ export const RegisterUser = (data: IRegisterModel, reCaptchaToken: string) => {
             setLocalAccessToken(tokens.accessToken);
             setLocalRefreshToken(tokens.refreshToken);
 
-            AuthUser(tokens.accessToken);
+            AuthUser(tokens.accessToken, dispatch);
             return Promise.resolve();
         }
         catch (error) {
@@ -65,7 +65,7 @@ export const GoogleExternalLogin = (data: IExternalLoginModel) => {
             setLocalAccessToken(tokens.accessToken);
             setLocalRefreshToken(tokens.refreshToken);
 
-            AuthUser(tokens.accessToken);
+            AuthUser(tokens.accessToken, dispatch);
             return Promise.resolve();
         }
         catch (error) {
@@ -83,7 +83,7 @@ export const FacebookExternalLogin = (data: IExternalLoginModel) => {
             setLocalAccessToken(tokens.accessToken);
             setLocalRefreshToken(tokens.refreshToken);
 
-            AuthUser(tokens.accessToken);
+            AuthUser(tokens.accessToken, dispatch);
             return Promise.resolve();
         }
         catch (error) {
@@ -92,12 +92,11 @@ export const FacebookExternalLogin = (data: IExternalLoginModel) => {
     }
 }
 
-export const AuthUser = (token: string) => {
-    return async (dispatch: Dispatch<AuthAction>) => {
-        const decodedToken = jwt_decode(token) as any;
-        dispatch({
-            type: AuthActionTypes.AUTH_SUCCESS,
-            payload: { emailOrPhone: decodedToken[emailClaim] ?? decodedToken[mobilePhoneClaim], role: decodedToken[roleClaim] }
-        })
-    }
+export const AuthUser = (token: string, dispatch: Dispatch<AuthAction>) => {
+    const decodedToken = jwt_decode(token) as any;
+    dispatch({
+        type: AuthActionTypes.AUTH_SUCCESS,
+        payload: { name: decodedToken[nameClaim], photo: decodedToken[photoClaim], emailOrPhone: decodedToken[emailClaim] ?? decodedToken[mobilePhoneClaim], role: decodedToken[roleClaim] }
+    })
 }
+

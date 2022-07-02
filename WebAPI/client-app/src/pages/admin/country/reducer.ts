@@ -5,10 +5,11 @@ import {
 } from "./types";
 
 const initialState: CountryState = {
-    countryInfo: {
-        id: 0,
+    selectedCountry: {
         name: "",
+        code: ""
     },
+    count: 0,
     countries: []
 }
 
@@ -19,10 +20,16 @@ export const countryReducer = (state = initialState, action: CountryAction): Cou
                 ...state,
                 countries: action.payload,
             }
+        case CountryActionTypes.SEARCH_COUNTRIES:
+            return {
+                ...state,
+                count: action.payload.count,
+                countries: action.payload.values,
+            }
         case CountryActionTypes.GET_BY_ID_COUNTRY:
             return {
                 ...state,
-                countryInfo: action.payload,
+                selectedCountry: action.payload,
             }
         case CountryActionTypes.CREATE_COUNTRY:
             return {

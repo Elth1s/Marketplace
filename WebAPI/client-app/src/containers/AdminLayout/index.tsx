@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Outlet } from "react-router-dom";
 
 import Header from './Header';
-import Sitebar from './Sitebar';
+import Sidebar from './Sidebar';
 
 const AdminLayout = () => {
     const [open, setOpen] = useState(true);
@@ -14,11 +14,11 @@ const AdminLayout = () => {
     };
 
     return (
-        <Box sx={{ display: 'flex', width: '100%', height: '100vh' }}>
-            <Sitebar open={open} />
-            <Box component="main" sx={{ width: '100%', flexGrow: 1 }}>
-                <Header handleDrawerToggle={handleDrawerToggle} />
-                <Box sx={{ p: { xs: 2, sm: 3 } }}>
+        <Box sx={{ width: '100%', height: '100vh' }}>
+            <Header handleDrawerToggle={handleDrawerToggle} />
+            <Box component="main" sx={{ width: '100%', display: "flex" }}>
+                <Sidebar open={open} />
+                <Box sx={{ p: { xs: 2, sm: 3 }, width: '100%' }}>
                     <Outlet />
                 </Box>
             </Box>

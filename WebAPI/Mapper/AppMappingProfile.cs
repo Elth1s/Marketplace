@@ -70,8 +70,8 @@ namespace WebAPI.Mapper
                 .ForMember(u => u.CharacteristicName, opt => opt.MapFrom(vm => vm.CharacteristicName.Name));
 
             //Country
-            CreateMap<UnitRequest, Country>();
-            CreateMap<Country, UnitResponse>();
+            CreateMap<CountryRequest, Country>();
+            CreateMap<Country, CountryResponse>();
 
             //City
             CreateMap<CityRequest, City>();

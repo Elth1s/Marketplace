@@ -39,7 +39,7 @@ namespace WebAPI.Services
             var spec = new ShopIncludeCityWithCountrySpecification();
             var shops = await _shopRepository.ListAsync(spec);
 
-            var response = shops.Select(s => _mapper.Map<ShopResponse>(s));
+            var response = _mapper.Map<IEnumerable<ShopResponse>>(shops);
             return response;
         }
         public async Task<ShopResponse> GetShopByIdAsync(int shopId)

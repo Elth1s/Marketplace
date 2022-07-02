@@ -18,9 +18,11 @@
         public const string FrontImagePath = "frontImages";
         public const string BackgroundImagePath = "frontImages/backgrounds";
         public const string IconsImagePath = "frontImages/icons";
+        public const string LogosImagePath = "frontImages/logos";
 
         public const string AssetsPath = "/assets";
         public const string BackgroundAssetsPath = "/assets/backgrounds";
         public const string IconsAssetsPath = "/assets/icons";
+        public const string LogosAssetsPath = "/assets/logos";
     }
 }

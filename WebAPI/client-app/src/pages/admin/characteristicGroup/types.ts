@@ -3,6 +3,7 @@ export enum CharacteristicGroupActionTypes {
     GET_BY_ID_CHARACTERISTIC_GROUP = "GET_BY_ID_CHARACTERISTIC_GROUP",
     CREATE_CHARACTERISTIC_GROUP = "CREATE_CHARACTERISTIC_GROUP",
     UPDATE_CHARACTERISTIC_GROUP = "UPDATE_CHARACTERISTIC_GROUP",
+    SEARCH_CHARACTERISTIC_GROUPS = "CHARACTERISTIC_GROUPS",
 }
 
 export interface ICharacteristicGroup {
@@ -14,16 +15,22 @@ export interface ICharacteristicGroupInfo {
     name: string
 }
 
+export interface ISearchCharacteristicGroups {
+    count: number,
+    values: Array<ICharacteristicGroupInfo>
+}
+
 export interface CharacteristicGroupState {
-    characteristicGroupInfo: ICharacteristicGroupInfo,
+    selectedCharacteristicGroup: ICharacteristicGroup,
+    count: number,
     characteristicGroups: Array<ICharacteristicGroupInfo>
 }
 
 
-export interface ICharacteristicGroupUpdatePage {
-    id: number,
+export interface SearchCharacteristicGroupsAction {
+    type: CharacteristicGroupActionTypes.SEARCH_CHARACTERISTIC_GROUPS,
+    payload: ISearchCharacteristicGroups
 }
-
 
 export interface GetCharacteristicGroupsAction {
     type: CharacteristicGroupActionTypes.GET_CHARACTERISTIC_GROUPS,
@@ -32,7 +39,7 @@ export interface GetCharacteristicGroupsAction {
 
 export interface GetByIdCharacteristicGroupAction {
     type: CharacteristicGroupActionTypes.GET_BY_ID_CHARACTERISTIC_GROUP,
-    payload: ICharacteristicGroupInfo
+    payload: ICharacteristicGroup
 }
 
 export interface CreateCharacteristicGroupAction {
@@ -46,7 +53,8 @@ export interface UpdateCharacteristicGroupAction {
 }
 
 
-export type CharacteristicGroupAction = GetCharacteristicGroupsAction |
+export type CharacteristicGroupAction = SearchCharacteristicGroupsAction |
+    GetCharacteristicGroupsAction |
     GetByIdCharacteristicGroupAction |
     CreateCharacteristicGroupAction |
     UpdateCharacteristicGroupAction;

@@ -8,6 +8,7 @@ using WebAPI.Helpers;
 using WebAPI.Interfaces;
 using WebAPI.Specifications.Categories;
 using WebAPI.ViewModels.Request;
+using WebAPI.ViewModels.Response;
 using WebAPI.ViewModels.Response.Categories;
 
 namespace WebAPI.Services
@@ -30,6 +31,18 @@ namespace WebAPI.Services
             var spec = new CategoryIncludeFullInfoSpecification();
             var categories = await _categorRepository.ListAsync(spec);
             return _mapper.Map<IEnumerable<CategoryResponse>>(categories);
+        }
+
+        public async Task<AdminSearchResponse<CategoryResponse>> SearchCategoriesAsync(AdminSearchRequest request)
+        {
+            var spec = new CategorySearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
+            var categories = await _categorRepository.ListAsync(spec);
+            var mappedCategories = _mapper.Map<IEnumerable<CategoryResponse>>(categories);
+            var response = new AdminSearchResponse<CategoryResponse>() { Count = categories.Count };
+
+            response.Values = mappedCategories.Skip((request.Page - 1) * request.RowsPerPage).Take(request.RowsPerPage);
+
+            return response;
         }
 
         public async Task<IEnumerable<CategoryForSelectResponse>> GetForSelectAsync()
@@ -135,6 +148,29 @@ namespace WebAPI.Services
             }
 
             await _categorRepository.DeleteAsync(category);
+            await _categorRepository.SaveChangesAsync();
+        }
+
+        public async Task DeleteCategoriesAsync(IEnumerable<int> ids)
+        {
+            foreach (var item in ids)
+            {
+                var category = await _categorRepository.GetByIdAsync(item);
+                //country.CountryNullChecking();
+                if (!string.IsNullOrEmpty(category.Image))
+                {
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.CategoriesImagePath, category.Image);
+
+                    if (File.Exists(filePath))
+                    {
+                        if (File.Exists(filePath))
+                        {
+                            File.Delete(filePath);
+                        }
+                    }
+                }
+                await _categorRepository.DeleteAsync(category);
+            }
             await _categorRepository.SaveChangesAsync();
         }
     }

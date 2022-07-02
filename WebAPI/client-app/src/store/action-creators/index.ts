@@ -2,17 +2,19 @@ import * as AuthActionCreators from "../../pages/auth/actions"
 import * as ProfileActionCreators from "../../pages/user/actions"
 import * as CategoryActionCreators from "../../pages/admin/category/actions"
 import * as CharacteristicGroupActionCreators from "../../pages/admin/characteristicGroup/actions"
-import * as CharacteristicActionCreators from "../../pages/admin/characteristic/actions"
+import * as CharacteristicNameActionCreators from "../../pages/admin/characteristicName/actions"
 import * as CountryActionCreators from "../../pages/admin/country/actions"
 import * as CityActionCreators from "../../pages/admin/city/actions"
+import * as UnitActionCreators from "../../pages/admin/unit/actions"
 
 const actions = {
     ...AuthActionCreators,
     ...ProfileActionCreators,
     ...CategoryActionCreators,
     ...CharacteristicGroupActionCreators,
-    ...CharacteristicActionCreators,
+    ...CharacteristicNameActionCreators,
     ...CountryActionCreators,
     ...CityActionCreators,
+    ...UnitActionCreators,
 }
 export default actions;

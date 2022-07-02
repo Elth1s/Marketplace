@@ -114,6 +114,24 @@ namespace WebAPI.Extensions
             }
         }
 
+        public static void CountryCodeChecking(this Country country)
+        {
+            if (country != null)
+            {
+                throw new AppException(
+                    ErrorMessages.CountryWithCodeExist);
+            }
+        }
+
+        public static void CountryNameChecking(this Country country)
+        {
+            if (country != null)
+            {
+                throw new AppException(
+                    ErrorMessages.CountryWithNameExist);
+            }
+        }
+
 
         public static void CharacteristicNameNullChecking(this CharacteristicName characteristicName)
         {

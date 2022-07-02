@@ -10,11 +10,12 @@ import {
 } from '@mui/icons-material';
 import { Form, FormikProvider, useFormik } from "formik";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 // import { toast } from 'react-toastify';
 
 import GoogleExternalLogin from "../../../components/Google";
+import LinkRouter from "../../../components/LinkRouter";
 
 import { SignUpSchema } from "../validation";
 import { useActions } from "../../../hooks/useActions";
@@ -24,14 +25,13 @@ import { AuthAvatar, AuthHeaderTypography, AuthLoadingButton, AuthSideTypography
 
 import { signup } from "../../../assets/backgrounds"
 import FacebookExternalLogin from "../../../components/Facebook";
-import { twitter } from "../../../assets/icons";
+import { toLowerFirstLetter } from "../../../http_comon";
 
 const SignUpPage = () => {
     const { RegisterUser } = useActions();
     const { executeRecaptcha } = useGoogleReCaptcha();
 
     const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const navigate = useNavigate();
     const registerModel: IRegisterModel = { firstName: '', secondName: '', emailOrPhone: '', password: '' };
 
@@ -62,7 +62,8 @@ const SignUpPage = () => {
                             value.forEach((item) => {
                                 message += `${item} `;
                             });
-                            setFieldError(key.toLowerCase(), message);
+                            console.log(toLowerFirstLetter(key))
+                            setFieldError(toLowerFirstLetter(key), message);
                         }
                     });
                 let message = "Sign up failed! \n";
@@ -79,9 +80,7 @@ const SignUpPage = () => {
     const handleShowPassword = () => {
         setShowPassword((show) => !show);
     };
-    const handleShowConfirmPassword = () => {
-        setShowConfirmPassword((show) => !show);
-    };
+
     return (
         <Grid container sx={{ height: "100vh" }}>
             <Grid
@@ -112,7 +111,7 @@ const SignUpPage = () => {
                         width: "500px"
                     }}>
                     <AuthHeaderTypography sx={{ marginTop: "57px" }}>
-                        Зареєструйтесь
+                        Sign Up
                     </AuthHeaderTypography>
                     <FormikProvider value={formik} >
                         <Form autoComplete="off" noValidate onSubmit={handleSubmit} >
@@ -177,7 +176,7 @@ const SignUpPage = () => {
                                     />
                                 </Grid>
                                 <Grid item xs={12} sx={{ marginTop: "20px" }} display="flex" justifyContent="flex-end">
-                                    <AuthSideTypography component={Link} to="/auth/signin" sx={{ cursor: "pointer", textDecoration: "none", color: "#000" }} >Маєте акаунт?</AuthSideTypography>
+                                    <AuthSideTypography component={LinkRouter} underline="none" color="unset" to="/auth/signin" sx={{ cursor: "pointer" }} >Have an account?</AuthSideTypography>
                                 </Grid>
                                 <Grid item xs={12} sx={{ marginTop: "62px" }}>
                                     <AuthLoadingButton
@@ -186,18 +185,17 @@ const SignUpPage = () => {
                                         loading={isSubmitting}
                                         type="submit"
                                     >
-                                        Реєстрація
+                                        Sign Up
                                     </AuthLoadingButton>
                                 </Grid>
                                 <Grid item xs={12} sx={{ marginTop: "66px" }} display="flex" justifyContent="center" >
                                     <Box sx={{ width: "98px", height: "17px", borderBottom: "2px solid #000" }} />
-                                    <AuthSideTypography sx={{ padding: "0 7px" }}>або</AuthSideTypography>
+                                    <AuthSideTypography sx={{ padding: "0 7px" }}>or</AuthSideTypography>
                                     <Box sx={{ width: "98px", height: "17px", borderBottom: "2px solid #000" }} />
                                 </Grid>
                                 <Grid item xs={12} sx={{ marginTop: "46px" }} display="flex" justifyContent="center" >
                                     <GoogleExternalLogin />
                                     <FacebookExternalLogin />
-                                    <AuthAvatar src={twitter} />
                                 </Grid>
 
                             </Grid>

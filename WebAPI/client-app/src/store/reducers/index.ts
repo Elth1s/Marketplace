@@ -4,18 +4,20 @@ import { authReducer } from "../../pages/auth/reducer";
 import { profileReducer } from "../../pages/user/reducer";
 import { categoryReducer } from "../../pages/admin/category/reducer";
 import { characteristicGroupReducer } from "../../pages/admin/characteristicGroup/reducer";
-import { characteristicReducer } from "../../pages/admin/characteristic/reducer";
+import { characteristicNameReducer } from "../../pages/admin/characteristicName/reducer";
 import { countryReducer } from "../../pages/admin/country/reducer";
 import { cityReducer } from "../../pages/admin/city/reducer";
+import { unitReducer } from "../../pages/admin/unit/reducer";
 
 export const rootReducer = combineReducers({
     auth: authReducer,
     profile: profileReducer,
     category: categoryReducer,
     characteristicGroup: characteristicGroupReducer,
-    characteristic: characteristicReducer,
+    characteristicName: characteristicNameReducer,
     country: countryReducer,
     city: cityReducer,
+    unit: unitReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

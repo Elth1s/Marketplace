@@ -21,6 +21,7 @@ import { ResetChangePasswordSchema } from "../../validation";
 import { useActions } from "../../../../hooks/useActions";
 import { LoadingButton } from "@mui/lab";
 import { ServerError } from "../../../../store/types";
+import { toLowerFirstLetter } from "../../../../http_comon";
 
 const ChangePassword = () => {
     const { ResetChangePassword } = useActions();
@@ -54,7 +55,7 @@ const ChangePassword = () => {
                             value.forEach((item) => {
                                 message += `${item} `;
                             });
-                            setFieldError(key.toLowerCase(), message);
+                            setFieldError(toLowerFirstLetter(key), message);
                         }
                     });
                 let message = "Sign up failed! \n";

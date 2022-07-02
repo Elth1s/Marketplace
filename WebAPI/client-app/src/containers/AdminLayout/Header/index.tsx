@@ -1,46 +1,58 @@
-import Box from '@mui/material/Box';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-
-import SearchIcon from '@mui/icons-material/Search';
-
+import {
+    Toolbar,
+    IconButton,
+} from '@mui/material';
+import {
+    Menu
+} from '@mui/icons-material';
 import { FC } from 'react';
-import { IHeader } from './type';
 
-import Profile from './Profile';
+import { AppBarStyle, LeftBox } from './styled';
+
+import { logo } from '../../../assets/logos';
+
+import LinkRouter from '../../../components/LinkRouter';
 import Notification from './Notification'
+import Profile from './Profile';
+
+interface IHeader {
+    handleDrawerToggle: any,
+}
 
 const Header: FC<IHeader> = ({ handleDrawerToggle }) => {
     return (
-        <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static">
-                <Toolbar>
-                    <Box sx={{ flexGrow: 1 }}>
-                        <IconButton
-                            size="large"
-                            edge="start"
-                            color="inherit"
-                            aria-label="menu"
-                            onClick={handleDrawerToggle}
-                            sx={{ mr: 2 }}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                    </Box>
+        <AppBarStyle color="transparent" sx={{ zIndex: 1 }}>
+            <Toolbar >
+                <LeftBox>
+                    <LinkRouter underline="none" color="unset" to="/" >
+                        <img
+                            style={{ cursor: "pointer", width: "80px" }}
+                            src={logo}
+                            alt="logo"
+                        />
+                    </LinkRouter>
+                    <IconButton
+                        sx={{ borderRadius: '12px' }}
+                        onClick={handleDrawerToggle}
+                        size="large"
+                        aria-label="search"
+                        color="inherit"
+                    >
+                        <Menu />
+                    </IconButton>
+                </LeftBox>
 
-                    <Box sx={{ flexShrink: 0, ml: 0.75 }}>
-                        <IconButton size="large" aria-label="search" color="inherit">
-                            <SearchIcon />
-                        </IconButton>
-                    </Box>
-                    <Notification />
-                    <Profile />
 
-                </Toolbar>
-            </AppBar>
-        </Box >
+                {/* <Box sx={{ flexShrink: 0, ml: 0.75 }}>
+                    <IconButton size="large" aria-label="search" color="inherit">
+                        <Search />
+                    </IconButton>
+                </Box>
+                <Notification />
+                <Profile /> */}
+
+            </Toolbar>
+        </AppBarStyle>
     )
 };
 

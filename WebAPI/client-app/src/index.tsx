@@ -6,10 +6,17 @@ import { StyledEngineProvider } from '@mui/material/styles';
 
 import App from './App';
 import { store } from './store'
+import { AuthUser } from './pages/auth/actions';
+import { getLocalAccessToken } from './http_comon';
 import reportWebVitals from './reportWebVitals';
 
 import './index.css';
 import "cropperjs/dist/cropper.css";
+
+let token = getLocalAccessToken();
+if (token) {
+  AuthUser(token, store.dispatch);
+}
 
 ReactDOM.render(
   <Provider store={store}>

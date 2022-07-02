@@ -6,7 +6,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Button from '@mui/material/Button';
 
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { Form, FormikProvider, useFormik } from "formik";
 
@@ -20,75 +20,67 @@ import { ServerError } from "../../../../store/types";
 import CropperDialog from "../../../../components/CropperDialog";
 import TextFieldComponent from "../../../../components/TextField";
 import AutocompleteComponent from "../../../../components/Autocomplete";
+import { Paper } from "@mui/material";
+import { toLowerFirstLetter } from "../../../../http_comon";
 
 const CategoryUpdate = () => {
-    const { GetByIdCategory, GetCategoryForSelect, GetCharacteristics, UpdateCategory } = useActions();
+    const { GetCategoryById, GetCategoryForSelect, UpdateCategory } = useActions();
+    const { selectedCategory, categoriesForSelect } = useTypedSelector((store) => store.category);
+
+    let { id } = useParams() as any;
+
+
+
+
     const [loading, setLoading] = useState<boolean>(false);
-
-    const { categoryInfo, categoriesForSelect } = useTypedSelector((store) => store.category);
-
-    const item: ICategory = {
-        name: categoryInfo.name,
-        image: categoryInfo.image,
-        parentId: categoriesForSelect.find(c => c.name === categoryInfo.parentName)?.id!,
-    }
-
     const navigator = useNavigate();
 
     useEffect(() => {
+        document.title = "Category update";
         getData();
     }, []);
 
     const getData = async () => {
         setLoading(true);
         try {
-            document.title = "Category update";
-
-            const params = new URLSearchParams(window.location.search);
-            let id = params.get("id");
-
-            await GetByIdCategory(id);
+            await GetCategoryById(id);
             await GetCategoryForSelect();
-            await GetCharacteristics();
-
             setLoading(false);
         } catch (ex) {
             setLoading(false);
         }
     }
 
-    const onHandleSubmit = async (values: ICategory) => {
-        try {
-            await UpdateCategory(categoryInfo.id, values);
-            navigator("/category");
-        }
-        catch (ex) {
-            const serverErrors = ex as ServerError;
-            if (serverErrors.errors)
-                Object.entries(serverErrors.errors).forEach(([key, value]) => {
-                    if (Array.isArray(value)) {
-                        let message = "";
-                        value.forEach((item) => {
-                            message += `${item} `;
-                        });
-                        setFieldError(key.toLowerCase(), message);
-                    }
-                });
-        }
-    }
-
     const formik = useFormik({
-        initialValues: item,
+        initialValues: selectedCategory,
         validationSchema: validationFields,
         enableReinitialize: true,
-        onSubmit: onHandleSubmit
+        onSubmit: async (values, { setFieldError }) => {
+            try {
+                await UpdateCategory(id, values);
+                navigator("/admin/category");
+            }
+            catch (ex) {
+                const serverErrors = ex as ServerError;
+                if (serverErrors.errors)
+                    Object.entries(serverErrors.errors).forEach(([key, value]) => {
+                        if (Array.isArray(value)) {
+                            let message = "";
+                            value.forEach((item) => {
+                                message += `${item} `;
+                            });
+                            setFieldError(toLowerFirstLetter(key), message);
+                        }
+                    });
+            }
+        }
     });
 
     const onSave = async (base64: string) => {
         setFieldValue("image", base64)
     };
 
-    const { errors, touched, isSubmitting, handleSubmit, setFieldValue, setFieldError, getFieldProps } = formik;
+    const { errors, touched, isSubmitting, handleSubmit, setFieldValue, getFieldProps } = formik;
 
     return (
         <Box sx={{ flexGrow: 1, m: 1, mx: 3, }}>
@@ -108,22 +100,7 @@ const CategoryUpdate = () => {
                     <FormikProvider value={formik} >
                         <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
                             <Grid container spacing={2}>
-
                                 <Grid container item xs={10}>
-                                    <Grid item xs={12}>
-                                        <AutocompleteComponent
-                                            label="Categoty parent"
-                                            name="parentId"
-                                            error={errors.name}
-                                            touched={touched.name}
-                                            options={categoriesForSelect}
-                                            getOptionLabel={(option) => option.name}
-                                            isOptionEqualToValue={(option, value) => option.id === value.id}
-                                            defaultValue={categoriesForSelect.find(value => value.id === item.parentId)}
-                                            onChange={(e, value) => { setFieldValue("parentId", value?.id || null) }}
-                                        />
-                                    </Grid>
-
                                     <Grid item xs={12}>
                                         <TextFieldComponent
                                             type="text"
@@ -133,18 +110,27 @@ const CategoryUpdate = () => {
                                             getFieldProps={{ ...getFieldProps('name') }}
                                         />
                                     </Grid>
-                                </Grid>
-
-                                <Grid container item xs={2}>
                                     <Grid item xs={12}>
-                                        <CropperDialog
-                                            imgSrc={(formik.values.image === null || formik.values.image === "") ? "https://www.phoca.cz/images/projects/phoca-download-r.png" : formik.values.image}
-                                            onDialogSave={onSave}
+                                        <AutocompleteComponent
+                                            label="Categoty parent"
+                                            name="parentId"
+                                            error={errors.parentId}
+                                            touched={touched.parentId}
+                                            options={categoriesForSelect}
+                                            getOptionLabel={(option) => option.name}
+                                            isOptionEqualToValue={(option, value) => option.id === value.id}
+                                            defaultValue={categoriesForSelect.find(value => value.id === selectedCategory.parentId)}
+                                            onChange={(e, value) => { setFieldValue("parentId", value?.id || null) }}
                                         />
                                     </Grid>
                                 </Grid>
+                                <Grid container item xs={2}>
+                                    <CropperDialog
+                                        imgSrc={(formik.values.image === null || formik.values.image === "") ? "https://www.phoca.cz/images/projects/phoca-download-r.png" : formik.values.image}
+                                        onDialogSave={onSave}
+                                    />
+                                </Grid>
                             </Grid>
-
                             <Button
                                 type="submit"
                                 variant="contained"

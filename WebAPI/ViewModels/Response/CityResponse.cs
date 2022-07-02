@@ -16,6 +16,11 @@
         /// <example>Atlanta</example>
         public string Name { get; set; }
         /// <summary>
+        /// Country id
+        /// </summary>
+        /// <example>12</example>
+        public int CountryId { get; set; }
+        /// <summary>
         /// Country name
         /// </summary>
         /// <example>USA</example>

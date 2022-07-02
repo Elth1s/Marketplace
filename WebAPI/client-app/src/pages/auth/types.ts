@@ -4,8 +4,10 @@ export enum AuthActionTypes {
 }
 
 export interface IUser {
+    name: string,
     emailOrPhone: string,
     role: string,
+    photo: string,
 }
 
 export interface IAuthResponse {
