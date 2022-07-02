@@ -33,7 +33,7 @@ const SignUpPage = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const navigate = useNavigate();
-    const registerModel: IRegisterModel = { firstName: '', secondName: '', email: '', password: '' };
+    const registerModel: IRegisterModel = { firstName: '', secondName: '', emailOrPhone: '', password: '' };
 
     useEffect(() => {
         document.title = "Sign up";
@@ -53,8 +53,8 @@ const SignUpPage = () => {
                 navigate("/");
                 // toast.success('Sign up success!');
             }
-            catch (exeption) {
-                const serverErrors = exeption as ServerError;
+            catch (exception) {
+                const serverErrors = exception as ServerError;
                 if (serverErrors.errors)
                     Object.entries(serverErrors.errors).forEach(([key, value]) => {
                         if (Array.isArray(value)) {
@@ -146,12 +146,12 @@ const SignUpPage = () => {
                                     <AuthTextField
                                         fullWidth
                                         variant="standard"
-                                        autoComplete="email"
-                                        type="email"
-                                        label="Email address"
-                                        {...getFieldProps('email')}
-                                        error={Boolean(touched.email && errors.email)}
-                                        helperText={touched.email && errors.email}
+                                        autoComplete="emailOrPhone"
+                                        type="text"
+                                        label="Email address ot phone number"
+                                        {...getFieldProps('emailOrPhone')}
+                                        error={Boolean(touched.emailOrPhone && errors.emailOrPhone)}
+                                        helperText={touched.emailOrPhone && errors.emailOrPhone}
                                     />
                                 </Grid>
 

@@ -1,17 +1,17 @@
 ﻿using AutoMapper;
 using DAL;
 using DAL.Entities;
+using DAL.Entities.Identity;
+using Microsoft.AspNetCore.Identity;
+using WebAPI.Extensions;
 using WebAPI.Interfaces;
 using WebAPI.Specifications;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Response;
-using WebAPI.Extensions;
-using Microsoft.AspNetCore.Identity;
-using DAL.Entities.Identity;
 
 namespace WebAPI.Services
 {
-    public class BasketItemService: IBasketItemService
+    public class BasketItemService : IBasketItemService
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly IRepository<BasketItem> _basketItemRepository;
@@ -20,10 +20,12 @@ namespace WebAPI.Services
 
         public BasketItemService(
          IRepository<BasketItem> basketItemRepository,
+         IRepository<Product> productRepository,
          IMapper mapper,
          UserManager<AppUser> userManager)
         {
             _basketItemRepository = basketItemRepository;
+            _productRepository = productRepository;
             _mapper = mapper;
             _userManager = userManager;
         }
@@ -35,7 +37,7 @@ namespace WebAPI.Services
             return _mapper.Map<IEnumerable<BasketResponse>>(baskets);
         }
 
-        public async Task CreateAsync(BasketCreateRequest request,string userId)
+        public async Task CreateAsync(BasketCreateRequest request, string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
             user.UserNullChecking();
@@ -60,7 +62,7 @@ namespace WebAPI.Services
         }
 
         public async Task UpdateAsync(int basketId, BasketUpdateRequest request, string userId)
-        {         
+        {
             var basket = await _basketItemRepository.GetByIdAsync(basketId);
             basket.BasketItemNullChecking();
 

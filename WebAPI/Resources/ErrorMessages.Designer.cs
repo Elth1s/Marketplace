@@ -61,11 +61,38 @@ namespace WebAPI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Adding password failed.
+        /// </summary>
+        internal static string AddPasswordFailed {
+            get {
+                return ResourceManager.GetString("AddPasswordFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your email address has already been confirmed.
         /// </summary>
         internal static string AlreadyComfirmEmail {
             get {
                 return ResourceManager.GetString("AlreadyComfirmEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your phone number has already been confirmed.
+        /// </summary>
+        internal static string AlreadyComfirmPhone {
+            get {
+                return ResourceManager.GetString("AlreadyComfirmPhone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Basket item not found.
+        /// </summary>
+        internal static string BasketItemNotFound {
+            get {
+                return ResourceManager.GetString("BasketItemNotFound", resourceCulture);
             }
         }
         
@@ -86,18 +113,7 @@ namespace WebAPI.Resources {
                 return ResourceManager.GetString("CategoryNotFound", resourceCulture);
             }
         }
-
-        /// <summary>
-        ///   Looks up a localized string similar to BasketItem was not found.
-        /// </summary>
-        internal static string BasketItemNotFound
-        {
-            get
-            {
-                return ResourceManager.GetString("CategoryNotFound", resourceCulture);
-            }
-        }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Characteristic group was not found.
         /// </summary>
@@ -270,11 +286,20 @@ namespace WebAPI.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Invalid email or password.
+        ///   Looks up a localized string similar to User with entered data not found.
         /// </summary>
-        internal static string InvalidUserEmailPassword {
+        internal static string InvalidUserData {
             get {
-                return ResourceManager.GetString("InvalidUserEmailPassword", resourceCulture);
+                return ResourceManager.GetString("InvalidUserData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password is already exist.
+        /// </summary>
+        internal static string PasswordExist {
+            get {
+                return ResourceManager.GetString("PasswordExist", resourceCulture);
             }
         }
         

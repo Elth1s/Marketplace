@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DAL.Entities;
 using DAL.Entities.Identity;
+using Google.Apis.Auth;
 using WebAPI.Constants;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Request.Characteristics;
@@ -20,11 +21,26 @@ namespace WebAPI.Mapper
         public AppMappingProfile()
         {
             //User
-            CreateMap<SignUpRequest, AppUser>()
-                .ForMember(u => u.UserName, opt => opt.MapFrom(vm => vm.Email));
+            CreateMap<SignUpRequest, AppUser>();
+
+            CreateMap<GoogleJsonWebSignature.Payload, AppUser>()
+                .ForMember(u => u.Id, opt => opt.Ignore())
+                .ForMember(u => u.FirstName, opt => opt.MapFrom(u => u.GivenName))
+                .ForMember(u => u.SecondName, opt => opt.MapFrom(u => u.FamilyName))
+                .ForMember(u => u.EmailConfirmed, opt => opt.MapFrom(u => true));
+
+            CreateMap<FacebookResponse, AppUser>()
+                .ForMember(u => u.Id, opt => opt.Ignore())
+                .ForMember(u => u.EmailConfirmed, opt => opt.MapFrom(u => !string.IsNullOrEmpty(u.Email)));
+
 
             CreateMap<AppUser, ProfileResponse>()
-                .ForMember(u => u.Photo, opt => opt.MapFrom(vm => !string.IsNullOrEmpty(vm.Photo) ? string.Concat(ImagePath.RequestUsersImagePath, "/", vm.Photo) : ""));
+                .ForMember(u => u.SecondName, opt => opt.MapFrom(vm => vm.SecondName ?? ""))
+                .ForMember(u => u.Email, opt => opt.MapFrom(vm => vm.Email ?? ""))
+                .ForMember(u => u.Phone, opt => opt.MapFrom(vm => vm.PhoneNumber ?? ""))
+                .ForMember(u => u.Photo, opt => opt.MapFrom(vm => !string.IsNullOrEmpty(vm.Photo) ? string.Concat(ImagePath.RequestUsersImagePath, "/", vm.Photo) : ""))
+                .ForMember(u => u.IsEmailConfirmed, opt => opt.MapFrom(vm => vm.EmailConfirmed))
+                .ForMember(u => u.IsPhoneConfirmed, opt => opt.MapFrom(vm => vm.PhoneNumberConfirmed));
 
             CreateMap<UpdateProfileRequest, AppUser>()
                 .ForMember(u => u.Photo, opt => opt.Ignore());

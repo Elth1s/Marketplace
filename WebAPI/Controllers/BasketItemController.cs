@@ -9,7 +9,7 @@ using WebAPI.ViewModels.Response;
 namespace WebAPI.Controllers
 {
     /// <summary>
-    /// The characteristic controller class.
+    /// The basket item controller class.
     /// </summary>
     /// <seealso cref="ControllerBase" />
     [Route("api/[controller]")]
@@ -25,17 +25,15 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        /// Returns Baskets with the user identifier
+        /// Returns baskets with the user identifier
         /// </summary>
         /// <param name="userId">User identifier</param>
         /// <response code="200">Getting basket completed successfully</response>
         /// <response code="401">You are not authorized</response>
-        /// <response code="403">You don't have permission</response>
         /// <response code="404">Basket not found</response>
         /// <response code="500">An internal error has occurred</response>
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(BasketResponse))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
-        [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize]
@@ -52,12 +50,10 @@ namespace WebAPI.Controllers
         /// <param name="request">New basket</param>
         /// <response code="200">Basket creation completed successfully</response>
         /// <response code="401">You are not authorized</response>
-        /// <response code="403">You don't have permission</response>
-        /// <response code="404">Basket NotFound</response>
+        /// <response code="404">Basket not found</response>
         /// <response code="500">An internal error has occurred</response>
         [SwaggerResponse(StatusCodes.Status200OK)]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
-        [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize]
@@ -71,17 +67,15 @@ namespace WebAPI.Controllers
 
 
         /// <summary>
-        /// Delete an existing shop
+        /// Delete an existing basket
         /// </summary>
         /// <param name="basketId">Basket identifier</param>
         /// <response code="200">Basket update completed successfully</response>
         /// <response code="401">You are not authorized</response>
-        /// <response code="403">You don't have permission</response>
         /// <response code="404">Basket not found</response>
         /// <response code="500">An internal error has occurred</response>
         [SwaggerResponse(StatusCodes.Status200OK)]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
-        [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize]
@@ -100,19 +94,17 @@ namespace WebAPI.Controllers
         /// <param name="request">Basket</param>
         /// <response code="200">Basket update completed successfully</response>
         /// <response code="401">You are not authorized</response>
-        /// <response code="403">You don't have permission</response>
         /// <response code="404">Basket not found</response>
         /// <response code="500">An internal error has occurred</response>
         [SwaggerResponse(StatusCodes.Status200OK)]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
-        [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize]
         [HttpPut("UpdateBasket/{basketId}")]
         public async Task<IActionResult> UpdateCity(int basketId, [FromBody] BasketUpdateRequest request)
         {
-            await _basketItemService.UpdateAsync(basketId,request,UserId);
+            await _basketItemService.UpdateAsync(basketId, request, UserId);
             return Ok("Basket updated successfully");
         }
 

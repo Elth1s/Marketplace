@@ -14,8 +14,8 @@ import SignIn from './pages/auth/SignIn';
 import SignUp from './pages/auth/SignUp';
 import Profile from './pages/user/Profile';
 import ConfirmEmail from './pages/user/ConfirmEmail';
-import ResetPassword from './pages/user/ForgotPassword/Reset';
 import ChangePassword from './pages/user/ForgotPassword/Change';
+import SentResetPasswordEmail from './pages/user/ForgotPassword/SendResetEmail';
 
 import CategoryTable from './pages/admin/category/Table';
 import CategoryCreate from './pages/admin/category/Create';
@@ -25,6 +25,8 @@ import CharacteristicGroupTable from './pages/admin/characteristicGroup/Table';
 import CharacteristicTable from './pages/admin/characteristic/Table';
 import CountryTable from './pages/admin/country/Table';
 import CityTable from './pages/admin/city/Table';
+import SendResetPasswordEmail from './pages/user/ForgotPassword/SendResetEmail';
+import SendResetPasswordPhone from './pages/user/ForgotPassword/SendResetPhone';
 
 function App() {
   const { isAuth } = useTypedSelector(store => store.auth);
@@ -83,7 +85,8 @@ function App() {
 
         <Route path="/profile" element={<Profile />} />
         <Route path="/confirmEmail" element={<ConfirmEmail />} />
-        <Route path="/resetPassword" element={<ResetPassword />} />
+        <Route path="/resetPasswordEmail" element={<SendResetPasswordEmail />} />
+        <Route path="/resetPasswordPhone" element={<SendResetPasswordPhone />} />
         <Route path="/resetPassword/:token" element={<ChangePassword />} />
 
 

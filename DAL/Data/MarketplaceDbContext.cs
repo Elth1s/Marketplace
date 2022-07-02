@@ -32,7 +32,7 @@ namespace DAL.Data
 
         public DbSet<Shop> Shops { get; set; }
 
-        public DbSet<BasketItem> BasketItems  { get; set; }
+        public DbSet<BasketItem> BasketItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -42,10 +42,12 @@ namespace DAL.Data
                 .HasOne(c => c.Parent)
                 .WithMany(c => c.Children);
 
-            builder.Entity<AppUser>()
-                .HasOne(ap => ap.Shop)
-                .WithOne(s => s.User);
-
+            builder.Entity<AppUser>(entity =>
+            {
+                entity.HasIndex(u => u.PhoneNumber).IsUnique();
+                entity.HasOne(ap => ap.Shop)
+                      .WithOne(s => s.User);
+            });
         }
     }
 }
