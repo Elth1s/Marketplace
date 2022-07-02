@@ -95,7 +95,7 @@ namespace WebAPI.Controllers.Users
         /// <summary>
         /// Authorization on the site with Google
         /// </summary>
-        /// <param name="request">Provider and token for Google external login</param>
+        /// <param name="request">Data for user for Google external login</param>
         /// <response code="200">Google external login completed successfully</response>
         /// <response code="400">Adding external login or creation user failed</response>
         /// <response code="500">Token validation failed or an internal error has occurred</response>
@@ -105,7 +105,25 @@ namespace WebAPI.Controllers.Users
         [HttpPost("GoogleExternalLogin")]
         public async Task<IActionResult> GoogleExternalLoginAsync([FromBody] ExternalLoginRequest request)
         {
-            var result = await _authService.ExternalLoginAsync(request, IpUtil.GetIpAddress(Request, HttpContext));
+            var result = await _authService.GoogleExternalLoginAsync(request, IpUtil.GetIpAddress(Request, HttpContext));
+            return Ok(result);
+        }
+
+
+        /// <summary>
+        /// Authorization on the site with Facebook
+        /// </summary>
+        /// <param name="request">Data for user facebook external login</param>
+        /// <response code="200">Facebook external login completed successfully</response>
+        /// <response code="400">Token validation failed or adding external login or creation user failed</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AuthResponse))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [HttpPost("FacebookExternalLogin")]
+        public async Task<IActionResult> FacebookExternalLoginAsync([FromBody] ExternalLoginRequest request)
+        {
+            var result = await _authService.FacebookExternalLoginAsync(request, IpUtil.GetIpAddress(Request, HttpContext));
             return Ok(result);
         }
     }

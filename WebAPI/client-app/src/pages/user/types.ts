@@ -14,20 +14,19 @@ export enum ResetPasswordActionTypes {
 export interface IProfile {
     firstName: string,
     secondName: string,
-    userName: string,
     photo: string,
-    isEmailConfirmed: boolean
+    isEmailConfirmed: boolean,
+    isPhoneConfirmed: boolean,
+    hasPassword: boolean
 }
 
+export interface IResetPasswordInfo {
+    userId: string,
+    token: string
+}
 
 export interface ProfileState {
-    userInfo: IProfile
-}
-
-export interface ProfileServerError {
-    title: string,
-    status: number,
-    errors: Array<any>,
+    userInfo: IProfile,
 }
 
 
@@ -35,11 +34,6 @@ export interface ProfileServerError {
 export interface IConfirmEmail {
     userId: string,
     confirmationCode: string
-}
-export interface ConfirmEmailServerError {
-    title: string,
-    status: number,
-    errors: Array<any>,
 }
 export interface ConfirmEmailAction {
     type: ConfirmEmailActionTypes.CONFIRM_EMAIL,
@@ -53,19 +47,24 @@ export interface IsEmailConfirmedAction {
 }
 
 //Reset Password
-export interface IResetPassword {
+export interface IResetPasswordEmail {
     email: string
 }
+
+export interface IResetPasswordPhone {
+    phone: string,
+    code: string
+}
+
+export interface IPhoneCodeRequest {
+    phone: string
+}
+
 export interface IResetChangePassword {
     userId: string,
     token: string,
     password: string,
     confirmPassword: string
-}
-export interface ResetPasswordServerError {
-    title: string,
-    status: number,
-    errors: Array<any>,
 }
 export interface ResetPasswordAction {
     type: ResetPasswordActionTypes.RESET_PASSWORD,

@@ -125,12 +125,10 @@ const CategoryUpdate = () => {
                                     </Grid>
                                 </Grid>
                                 <Grid container item xs={2}>
-                                    <Paper elevation={2}>
-                                        <CropperDialog
-                                            imgSrc={(formik.values.image === null || formik.values.image === "") ? "https://www.phoca.cz/images/projects/phoca-download-r.png" : formik.values.image}
-                                            onDialogSave={onSave}
-                                        />
-                                    </Paper>
+                                    <CropperDialog
+                                        imgSrc={(formik.values.image === null || formik.values.image === "") ? "https://www.phoca.cz/images/projects/phoca-download-r.png" : formik.values.image}
+                                        onDialogSave={onSave}
+                                    />
                                 </Grid>
                             </Grid>
                             <Button

@@ -66,12 +66,12 @@ const CropperDialog: React.FC<ICropperDialog> = ({ imgSrc, aspectRation = 1 / 1,
 
     return (
         <>
-            <Box>
+            <Box sx={{ width: "160px", height: "160px", boxShadow: 1, borderRadius: "12px" }}>
                 <label htmlFor="Image">
                     <img
                         src={imgSrc}
                         alt="DefaultImage"
-                        style={{ width: "160px", height: "160px", cursor: "pointer", borderRadius: 7 }} />
+                        style={{ width: "160px", height: "160px", cursor: "pointer", borderRadius: "12px" }} />
                 </label>
                 <input style={{ display: "none" }} type="file" name="Image" id="Image" onChange={handleImageChange} />
             </Box>

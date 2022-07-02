@@ -15,8 +15,8 @@ import SignIn from './pages/auth/SignIn';
 import SignUp from './pages/auth/SignUp';
 import Profile from './pages/user/Profile';
 import ConfirmEmail from './pages/user/ConfirmEmail';
-import ResetPassword from './pages/user/ForgotPassword/Reset';
 import ChangePassword from './pages/user/ForgotPassword/Change';
+import SentResetPasswordEmail from './pages/user/ForgotPassword/SendResetEmail';
 
 import Product from './pages/default/product';
 
@@ -29,6 +29,9 @@ import CharacteristicNameTable from './pages/admin/characteristicName/Table';
 import CountryTable from './pages/admin/country/Table';
 import CityTable from './pages/admin/city/Table';
 import UnitTable from './pages/admin/unit/Table';
+
+import SendResetPasswordEmail from './pages/user/ForgotPassword/SendResetEmail';
+import SendResetPasswordPhone from './pages/user/ForgotPassword/SendResetPhone';
 
 import HomePage from './pages/HomePage';
 
@@ -137,7 +140,8 @@ function App() {
         </Route>
 
         <Route path="/confirmEmail" element={<ConfirmEmail />} />
-        <Route path="/resetPassword" element={<ResetPassword />} />
+        <Route path="/resetPasswordEmail" element={<SendResetPasswordEmail />} />
+        <Route path="/resetPasswordPhone" element={<SendResetPasswordPhone />} />
         <Route path="/resetPassword/:token" element={<ChangePassword />} />
 
 

@@ -27,7 +27,7 @@ function GoogleExternalLogin() {
 
     const handleGoogleSignIn = async (res: GoogleLoginResponse | any) => {
         try {
-            await GoogleExternalLogin({ provider: "Google", token: res.tokenId });
+            await GoogleExternalLogin({ token: res.tokenId });
             navigate("/");
 
         } catch (exception) {

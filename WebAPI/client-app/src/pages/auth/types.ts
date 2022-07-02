@@ -4,10 +4,10 @@ export enum AuthActionTypes {
 }
 
 export interface IUser {
-    username: string,
-    email: string,
+    name: string,
+    emailOrPhone: string,
+    role: string,
     photo: string,
-    roles: string,
 }
 
 export interface IAuthResponse {
@@ -21,19 +21,18 @@ export interface AuthState {
 }
 
 export interface ILoginModel {
-    email: string,
+    emailOrPhone: string,
     password: string,
 }
 
 export interface IRegisterModel {
     firstName: string,
     secondName: string,
-    email: string,
+    emailOrPhone: string,
     password: string,
 };
 
 export interface IExternalLoginModel {
-    provider: string,
     token: string
 };
 

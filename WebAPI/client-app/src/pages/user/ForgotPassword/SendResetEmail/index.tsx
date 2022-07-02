@@ -1,32 +1,28 @@
 import {
     Box,
     Grid,
-    IconButton,
-    InputAdornment,
     TextField,
     Typography,
 } from "@mui/material";
-import {
-    VisibilityOutlined,
-    VisibilityOffOutlined
-} from '@mui/icons-material';
 import { Form, FormikProvider, useFormik } from "formik";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useActions } from "../../../../hooks/useActions";
 
 import { signup } from "../../../../assets/backgrounds"
 
-import { IResetPassword, ResetPasswordServerError } from "../../types";
+import { IResetPasswordEmail } from "../../types";
 import { LoadingButton } from "@mui/lab";
-import { ResetPasswordSchema } from "../../validation";
+import { ResetPasswordEmailSchema } from "../../validation";
+import { AuthSideTypography } from "../../../auth/styled";
+import { ServerError } from "../../../../store/types";
 import { toLowerFirstLetter } from "../../../../http_comon";
 
 
-const ResetPassword = () => {
-    const { ResetPassword } = useActions();
+const SendResetPasswordEmail = () => {
+    const { SendResetPasswordByEmail } = useActions();
     const navigate = useNavigate();
-    const resetPasswordModel: IResetPassword = { email: '' };
+    const resetPasswordModel: IResetPasswordEmail = { email: '' };
 
     useEffect(() => {
         document.title = "Forgot password";
@@ -34,13 +30,13 @@ const ResetPassword = () => {
 
     const formik = useFormik({
         initialValues: resetPasswordModel,
-        validationSchema: ResetPasswordSchema,
+        validationSchema: ResetPasswordEmailSchema,
         onSubmit: async (values, { setFieldError }) => {
             try {
-                await ResetPassword(values)
+                await SendResetPasswordByEmail(values)
             }
             catch (exception) {
-                const serverErrors = exception as ResetPasswordServerError;
+                const serverErrors = exception as ServerError;
                 if (serverErrors.errors)
                     Object.entries(serverErrors.errors).forEach(([key, value]) => {
                         if (Array.isArray(value)) {
@@ -90,7 +86,7 @@ const ResetPassword = () => {
                         justifyContent: 'center',
                         width: "500px"
                     }}>
-                    <Typography sx={{ marginTop: "101px" }}>
+                    <Typography sx={{ marginTop: "101px" }} variant="h3">
                         Reset your password
                     </Typography>
                     <FormikProvider value={formik} >
@@ -109,14 +105,18 @@ const ResetPassword = () => {
                                         helperText={touched.email && errors.email}
                                     />
                                 </Grid>
-                                <Grid item xs={12} sx={{ marginTop: "75px" }}>
+                                <Grid item xs={12} sx={{ marginTop: "42px" }} display="flex" justifyContent="flex-end">
+                                    <AuthSideTypography component={Link} to="/resetPasswordPhone" sx={{ cursor: "pointer", textDecoration: "none", color: "#000" }} >Reset by phone</AuthSideTypography>
+                                </Grid>
+                                <Grid item xs={12} sx={{ marginTop: "45px" }}>
                                     <LoadingButton
                                         color="secondary"
                                         variant="contained"
                                         loading={isSubmitting}
                                         type="submit"
+                                        size="large"
                                     >
-                                        Send password reset email
+                                        Send email
                                     </LoadingButton>
                                 </Grid>
                             </Grid>
@@ -129,4 +129,4 @@ const ResetPassword = () => {
     );
 }
 
-export default ResetPassword;
+export default SendResetPasswordEmail;

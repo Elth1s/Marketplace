@@ -16,10 +16,11 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 import { signup } from "../../../../assets/backgrounds"
 
-import { IResetChangePassword, ResetPasswordServerError } from "../../types";
+import { IResetChangePassword } from "../../types";
 import { ResetChangePasswordSchema } from "../../validation";
 import { useActions } from "../../../../hooks/useActions";
 import { LoadingButton } from "@mui/lab";
+import { ServerError } from "../../../../store/types";
 import { toLowerFirstLetter } from "../../../../http_comon";
 
 const ChangePassword = () => {
@@ -46,7 +47,7 @@ const ChangePassword = () => {
                 navigate("/auth/signin");
             }
             catch (exeption) {
-                const serverErrors = exeption as ResetPasswordServerError;
+                const serverErrors = exeption as ServerError;
                 if (serverErrors.errors)
                     Object.entries(serverErrors.errors).forEach(([key, value]) => {
                         if (Array.isArray(value)) {

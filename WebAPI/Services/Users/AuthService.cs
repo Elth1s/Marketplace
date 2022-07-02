@@ -3,8 +3,10 @@ using DAL.Entities;
 using DAL.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using System.Net;
+using WebAPI.Constants;
 using WebAPI.Exceptions;
 using WebAPI.Extensions;
+using WebAPI.Helpers;
 using WebAPI.Interfaces.Users;
 using WebAPI.Resources;
 using WebAPI.ViewModels.Request.Users;
@@ -18,12 +20,18 @@ namespace WebAPI.Services.Users
         private readonly IJwtTokenService _jwtTokenService;
         private readonly IRecaptchaService _recaptchaService;
         private readonly UserManager<AppUser> _userManager;
-        public AuthService(IMapper mapper, IJwtTokenService jwtTokenService, IRecaptchaService recaptchaService, UserManager<AppUser> userManager)
+        private readonly PhoneNumberManager _phoneNumberManager;
+        public AuthService(IMapper mapper,
+                           IJwtTokenService jwtTokenService,
+                           IRecaptchaService recaptchaService,
+                           UserManager<AppUser> userManager,
+                           PhoneNumberManager phoneNumberManager)
         {
             _mapper = mapper;
             _jwtTokenService = jwtTokenService;
             _recaptchaService = recaptchaService;
             _userManager = userManager;
+            _phoneNumberManager = phoneNumberManager;
         }
 
         public async Task<AuthResponse> SignInAsync(SignInRequest request, string ipAddress)
@@ -33,11 +41,15 @@ namespace WebAPI.Services.Users
                 throw new AppException(ErrorMessages.CaptchaVerificationFailed);
             }
 
-            var user = await _userManager.FindByEmailAsync(request.Email);
+            var user = await _userManager.FindByEmailAsync(request.EmailOrPhone);
+            if (user == null)
+                user = await _userManager.FindByPhoneNumberAsync(_phoneNumberManager.GetPhoneE164Format(request.EmailOrPhone));
+
+
             var resultPasswordCheck = await _userManager.CheckPasswordAsync(user, request.Password);
             if (!resultPasswordCheck)
             {
-                throw new AppException(ErrorMessages.InvalidUserEmailPassword, HttpStatusCode.Unauthorized);
+                throw new AppException(ErrorMessages.InvalidUserData, HttpStatusCode.Unauthorized);
             }
 
             var newRefreshToken = _jwtTokenService.GenerateRefreshToken(ipAddress);
@@ -60,6 +72,14 @@ namespace WebAPI.Services.Users
             }
 
             var user = _mapper.Map<AppUser>(request);
+
+            if (EmailManager.IsValidEmail(request.EmailOrPhone))
+                user.Email = request.EmailOrPhone;
+            else
+                user.PhoneNumber = _phoneNumberManager.GetPhoneE164Format(request.EmailOrPhone);
+
+
+            user.UserName = user.Id;
 
             var resultCreate = await _userManager.CreateAsync(user, request.Password);
             if (!resultCreate.Succeeded)
@@ -120,7 +140,7 @@ namespace WebAPI.Services.Users
             await _userManager.UpdateAsync(user);
         }
 
-        public async Task<AuthResponse> ExternalLoginAsync(ExternalLoginRequest request, string ipAddress)
+        public async Task<AuthResponse> GoogleExternalLoginAsync(ExternalLoginRequest request, string ipAddress)
         {
             var payload = await _jwtTokenService.VerifyGoogleToken(request);
             if (payload == null)
@@ -128,7 +148,7 @@ namespace WebAPI.Services.Users
                 throw new AppException(ErrorMessages.InvalidExternalLoginRequest);
             }
 
-            var info = new UserLoginInfo(request.Provider, payload.Subject, request.Provider);
+            var info = new UserLoginInfo(ExternalLoginProviderName.Google, payload.Subject, ExternalLoginProviderName.Google);
 
             var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
 
@@ -138,14 +158,10 @@ namespace WebAPI.Services.Users
 
                 if (user == null)
                 {
-                    user = new AppUser
-                    {
-                        Email = payload.Email,
-                        UserName = payload.Email,
-                        FirstName = payload.GivenName,
-                        SecondName = payload.FamilyName,
-                        EmailConfirmed = true
-                    };
+                    user = _mapper.Map<AppUser>(payload);
+
+                    user.UserName = user.Id;
+
                     var resultCreate = await _userManager.CreateAsync(user);
                     if (!resultCreate.Succeeded)
                     {
@@ -173,6 +189,55 @@ namespace WebAPI.Services.Users
             return response;
         }
 
+        public async Task<AuthResponse> FacebookExternalLoginAsync(ExternalLoginRequest request, string ipAddress)
+        {
+            var payload = await _jwtTokenService.VerifyFacebookToken(request);
+            if (payload == null)
+            {
+                throw new AppException(ErrorMessages.InvalidExternalLoginRequest);
+            }
+
+            var info = new UserLoginInfo(ExternalLoginProviderName.Facebook, payload.Id, ExternalLoginProviderName.Facebook);
+
+            var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
+
+            if (user == null)
+            {
+                user = await _userManager.FindByEmailAsync(payload.Email);
+
+                if (user == null)
+                {
+
+                    user = _mapper.Map<AppUser>(payload);
+
+                    user.UserName = user.Id;
+
+                    var resultCreate = await _userManager.CreateAsync(user);
+                    if (!resultCreate.Succeeded)
+                    {
+                        throw new AppException(ErrorMessages.UserCreateFail);
+                    }
+
+                }
+
+                var resultAddLogin = await _userManager.AddLoginAsync(user, info);
+                if (!resultAddLogin.Succeeded)
+                {
+                    throw new AppException(ErrorMessages.ExternalLoginAddFail);
+                }
+            }
+
+            var refreshToken = _jwtTokenService.GenerateRefreshToken(ipAddress);
+            await _jwtTokenService.SaveRefreshToken(refreshToken, user);
+
+            var response = new AuthResponse
+            {
+                AccessToken = await _jwtTokenService.GenerateJwtToken(user),
+                RefreshToken = refreshToken.Token
+            };
+
+            return response;
+        }
 
         private RefreshToken RotateRefreshToken(RefreshToken refreshToken, string ipAddress)
         {
@@ -201,5 +266,6 @@ namespace WebAPI.Services.Users
                     RevokeDescendantRefreshTokens(childToken, user, ipAddress, reason);
             }
         }
+
     }
 }

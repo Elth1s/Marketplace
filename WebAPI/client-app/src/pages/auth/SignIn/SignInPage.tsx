@@ -24,7 +24,7 @@ import { ILoginModel } from "../types";
 import { ServerError } from "../../../store/types";
 
 import { login } from "../../../assets/backgrounds";
-import { facebook } from "../../../assets/icons";
+import FacebookExternalLogin from "../../../components/Facebook";
 import { toLowerFirstLetter } from "../../../http_comon";
 
 const SignIn = () => {
@@ -33,7 +33,7 @@ const SignIn = () => {
 
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
-    const loginModel: ILoginModel = { email: '', password: '' };
+    const loginModel: ILoginModel = { emailOrPhone: '', password: '' };
 
     useEffect(() => {
         document.title = "SignIn";
@@ -123,11 +123,11 @@ const SignIn = () => {
                                     <AuthTextField
                                         fullWidth
                                         variant="standard"
-                                        type="email"
-                                        label="Email address"
-                                        {...getFieldProps('email')}
-                                        error={Boolean(touched.email && errors.email)}
-                                        helperText={touched.email && errors.email}
+                                        type="text"
+                                        label="Email address or phone"
+                                        {...getFieldProps('emailOrPhone')}
+                                        error={Boolean(touched.emailOrPhone && errors.emailOrPhone)}
+                                        helperText={touched.emailOrPhone && errors.emailOrPhone}
                                     />
                                 </Grid>
                                 <Grid item xs={12} sx={{ height: "40px", marginTop: "110px" }}>
@@ -152,7 +152,7 @@ const SignIn = () => {
                                 </Grid>
                                 <Grid item xs={12} sx={{ marginTop: "62px", width: "100%", display: "flex", justifyContent: "space-between" }} >
                                     <AuthSideTypography component={LinkRouter} underline="none" color="unset" to="/auth/signup" sx={{ cursor: "pointer" }} >Don't have an account?</AuthSideTypography>
-                                    <AuthSideTypography component={LinkRouter} underline="none" color="unset" to="/resetPassword" sx={{ cursor: "pointer" }} >Forgot password?</AuthSideTypography>
+                                    <AuthSideTypography component={LinkRouter} underline="none" color="unset" to="/resetPasswordEmail" sx={{ cursor: "pointer" }} >Forgot password?</AuthSideTypography>
                                 </Grid>
                                 <Grid item xs={12} sx={{ marginTop: "85px" }}>
                                     <AuthLoadingButton
@@ -171,7 +171,7 @@ const SignIn = () => {
                                 </Grid>
                                 <Grid item xs={12} sx={{ position: "relative", marginTop: "45px" }} display="flex" justifyContent="center" >
                                     <GoogleExternalLogin />
-                                    <AuthAvatar src={facebook} sx={{ ml: "60px" }}>F</AuthAvatar>
+                                    <FacebookExternalLogin />
                                 </Grid>
                             </Grid>
                         </Form>

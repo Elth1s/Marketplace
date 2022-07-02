@@ -6,10 +6,10 @@ import {
 
 const initialState: AuthState = {
     user: {
-        username: "",
-        photo: "",
-        email: "",
-        roles: ""
+        name: "",
+        emailOrPhone: "",
+        role: "",
+        photo: ""
     },
     isAuth: false,
 }
@@ -26,10 +26,10 @@ export const authReducer = (state = initialState, action: AuthAction): AuthState
             return {
                 ...state,
                 user: {
-                    username: "",
+                    name: "",
+                    emailOrPhone: "",
+                    role: "",
                     photo: "",
-                    email: "",
-                    roles: ""
                 },
                 isAuth: false
             }

@@ -105,15 +105,15 @@ const MainMenu = () => {
                         <LinkRouter underline="none" color="unset" to="/profile" onClick={handleClose}>
                             <Box sx={{ my: 0.5, mb: 1.5, px: 2.5 }}>
                                 <Typography variant="subtitle1" noWrap >
-                                    {user.username}
+                                    {user.name}
                                 </Typography>
                                 <Typography variant="body2" noWrap>
-                                    {user.email}
+                                    {user.emailOrPhone}
                                 </Typography>
                             </Box>
                         </LinkRouter>
                         <Divider sx={{ my: 1, background: "#45a29e" }} />
-                        {user.roles == "Admin" &&
+                        {user.role == "Admin" &&
                             <LinkRouter underline="none" color="unset" to="/admin" >
                                 <MenuItemStyle                                >
                                     <IconButton sx={{ mr: 2, width: 24, height: 24, color: "secondary" }}>

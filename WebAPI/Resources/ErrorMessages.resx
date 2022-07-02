@@ -144,8 +144,8 @@
   <data name="InvalidToken" xml:space="preserve">
     <value>Invalid refresh token</value>
   </data>
-  <data name="InvalidUserEmailPassword" xml:space="preserve">
-    <value>Invalid email or password</value>
+  <data name="InvalidUserData" xml:space="preserve">
+    <value>User with entered data not found</value>
   </data>
   <data name="ShopNotFound" xml:space="preserve">
     <value>Shop was not found</value>
@@ -221,6 +221,18 @@
   </data>
   <data name="CharacteristicValueNameNotUnique" xml:space="preserve">
     <value>Characteristic value with this characteristic name already exists</value>
+  </data>
+  <data name="AlreadyComfirmPhone" xml:space="preserve">
+    <value>Your phone number has already been confirmed</value>
+  </data>
+  <data name="BasketItemNotFound" xml:space="preserve">
+    <value>Basket item not found</value>
+  </data>
+  <data name="PasswordExist" xml:space="preserve">
+    <value>Password is already exist</value>
+  </data>
+  <data name="AddPasswordFailed" xml:space="preserve">
+    <value>Adding password failed</value>
   </data>
   <data name="CountryWithCodeExist" xml:space="preserve">
     <value>Country with this code already exist</value>

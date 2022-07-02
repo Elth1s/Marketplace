@@ -36,6 +36,15 @@ namespace WebAPI.Extensions
             }
         }
 
+        public static void UserPhoneConfirmedChecking(this AppUser user)
+        {
+            if (user.PhoneNumberConfirmed)
+            {
+                throw new AppException(
+                    ErrorMessages.AlreadyComfirmPhone, HttpStatusCode.Unauthorized);
+            }
+        }
+
         public static void RefreshTokenNotActiveChecking(this RefreshToken refreshToken)
         {
             if (!refreshToken.IsActive)
@@ -59,6 +68,17 @@ namespace WebAPI.Extensions
             {
                 throw new AppException(
                     ErrorMessages.CategoryNotFound,
+                    HttpStatusCode.NotFound);
+            }
+        }
+
+
+        public static void BasketItemNullChecking(this BasketItem basketItem)
+        {
+            if (basketItem == null)
+            {
+                throw new AppException(
+                    ErrorMessages.BasketItemNotFound,
                     HttpStatusCode.NotFound);
             }
         }

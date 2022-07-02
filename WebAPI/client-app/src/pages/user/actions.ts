@@ -1,16 +1,23 @@
 import axios, { AxiosError } from "axios"
 import { Dispatch } from "react"
 import http, { baseURL } from "../../http_comon"
+import { ServerError } from "../../store/types"
 import { AuthUser } from "../auth/actions"
 import { AuthAction } from "../auth/types"
 import {
     ConfirmEmailActionTypes,
-    ConfirmEmailServerError,
     EmailConfirmAction,
     IConfirmEmail,
-    IProfile, IResetChangePassword, IResetPassword, PasswordResetAction,
-    ProfileAction, ProfileActionTypes, ProfileServerError,
-    ResetPasswordActionTypes
+    IProfile,
+    IResetChangePassword,
+    IResetPasswordPhone,
+    IResetPasswordEmail,
+    IPhoneCodeRequest,
+    PasswordResetAction,
+    ProfileAction,
+    ProfileActionTypes,
+    IResetPasswordInfo,
+    ResetPasswordActionTypes,
 } from "./types"
 
 export const GetProfile = () => {
@@ -26,7 +33,7 @@ export const GetProfile = () => {
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
-                const serverError = error as AxiosError<ProfileServerError>;
+                const serverError = error as AxiosError<ServerError>;
                 if (serverError && serverError.response) {
                     serverError.response.data.status = serverError.response.status;
                     return Promise.reject(serverError.response.data);
@@ -48,7 +55,7 @@ export const UpdateProfile = (data: IProfile) => {
         }
         catch (ex) {
             if (axios.isAxiosError(ex)) {
-                const serverError = ex as AxiosError<ProfileServerError>;
+                const serverError = ex as AxiosError<ServerError>;
                 if (serverError && serverError.response) {
                     serverError.response.data.status = serverError.response.status;
                     return Promise.reject(serverError.response.data);
@@ -70,7 +77,7 @@ export const ConfirmEmail = (data: IConfirmEmail) => {
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
-                const serverError = error as AxiosError<ConfirmEmailServerError>;
+                const serverError = error as AxiosError<ServerError>;
                 if (serverError && serverError.response) {
                     // serverError.response.data. = serverError.response.status;
                     return Promise.reject(serverError.response.data);
@@ -92,7 +99,7 @@ export const SendConfirmEmail = () => {
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
-                const serverError = error as AxiosError<ConfirmEmailServerError>;
+                const serverError = error as AxiosError<ServerError>;
                 if (serverError && serverError.response) {
                     // serverError.response.data. = serverError.response.status;
                     return Promise.reject(serverError.response.data);
@@ -115,7 +122,7 @@ export const IsEmailConfirmed = () => {
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
-                const serverError = error as AxiosError<ConfirmEmailServerError>;
+                const serverError = error as AxiosError<ServerError>;
                 if (serverError && serverError.response) {
                     return Promise.reject(serverError.response.data);
                 }
@@ -137,7 +144,7 @@ export const ResetChangePassword = (data: IResetChangePassword) => {
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
-                const serverError = error as AxiosError<ConfirmEmailServerError>;
+                const serverError = error as AxiosError<ServerError>;
                 if (serverError && serverError.response) {
                     // serverError.response.data. = serverError.response.status;
                     return Promise.reject(serverError.response.data);
@@ -148,10 +155,10 @@ export const ResetChangePassword = (data: IResetChangePassword) => {
     }
 }
 
-export const ResetPassword = (data: IResetPassword) => {
+export const SendResetPasswordByEmail = (data: IResetPasswordEmail) => {
     return async (dispatch: Dispatch<PasswordResetAction>) => {
         try {
-            let response = await http.post(`/api/User/ResetPassword`, data)
+            let response = await http.post(`/api/User/ResetPasswordByEmail`, data)
             dispatch({
                 type: ResetPasswordActionTypes.RESET_PASSWORD,
             })
@@ -159,7 +166,7 @@ export const ResetPassword = (data: IResetPassword) => {
         }
         catch (error) {
             if (axios.isAxiosError(error)) {
-                const serverError = error as AxiosError<ConfirmEmailServerError>;
+                const serverError = error as AxiosError<ServerError>;
                 if (serverError && serverError.response) {
                     return Promise.reject(serverError.response.data);
                 }
@@ -169,3 +176,41 @@ export const ResetPassword = (data: IResetPassword) => {
     }
 }
 
+export const SendResetPasswordByPhoneCode = (data: IPhoneCodeRequest) => {
+    return async (dispatch: Dispatch<PasswordResetAction>) => {
+        try {
+            let response = await http.post(`/api/User/ResetPasswordByPhone`, data)
+            dispatch({
+                type: ResetPasswordActionTypes.RESET_PASSWORD,
+            })
+            return Promise.resolve();
+        }
+        catch (error) {
+            if (axios.isAxiosError(error)) {
+                const serverError = error as AxiosError<ServerError>;
+                if (serverError && serverError.response) {
+                    return Promise.reject(serverError.response.data);
+                }
+            }
+            return Promise.reject(error)
+        }
+    }
+}
+
+export const ValidateCodeForResetPasswordByPhone = (data: IResetPasswordPhone) => {
+    return async (dispatch: Dispatch<PasswordResetAction>) => {
+        try {
+            let response = await http.post<IResetPasswordInfo>(`/api/User/ValidateResetPasswordPhoneCode`, data)
+            return Promise.resolve(response.data);
+        }
+        catch (error) {
+            if (axios.isAxiosError(error)) {
+                const serverError = error as AxiosError<ServerError>;
+                if (serverError && serverError.response) {
+                    return Promise.reject(serverError.response.data);
+                }
+            }
+            return Promise.reject(error)
+        }
+    }
+}
