@@ -33,7 +33,7 @@ const SignIn = () => {
 
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
-    const loginModel: ILoginModel = { email: '', password: '' };
+    const loginModel: ILoginModel = { emailOrPhone: '', password: '' };
 
     useEffect(() => {
         document.title = "SignIn";
@@ -123,11 +123,11 @@ const SignIn = () => {
                                     <AuthTextField
                                         fullWidth
                                         variant="standard"
-                                        type="email"
-                                        label="Email address"
-                                        {...getFieldProps('email')}
-                                        error={Boolean(touched.email && errors.email)}
-                                        helperText={touched.email && errors.email}
+                                        type="text"
+                                        label="Email address or phone"
+                                        {...getFieldProps('emailOrPhone')}
+                                        error={Boolean(touched.emailOrPhone && errors.emailOrPhone)}
+                                        helperText={touched.emailOrPhone && errors.emailOrPhone}
                                     />
                                 </Grid>
                                 <Grid item xs={12} sx={{ height: "40px", marginTop: "110px" }}>
@@ -151,7 +151,7 @@ const SignIn = () => {
                                     />
                                 </Grid>
                                 <Grid item xs={12} sx={{ marginTop: "62px" }} display="flex" justifyContent="flex-end">
-                                    <AuthSideTypography component={Link} to="/resetPassword" sx={{ cursor: "pointer", textDecoration: "none", color: "#000" }} >Забули пароль?</AuthSideTypography>
+                                    <AuthSideTypography component={Link} to="/resetPasswordEmail" sx={{ cursor: "pointer", textDecoration: "none", color: "#000" }} >Забули пароль?</AuthSideTypography>
                                 </Grid>
                                 <Grid item xs={12} sx={{ marginTop: "85px" }}>
                                     <AuthLoadingButton

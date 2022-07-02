@@ -12,6 +12,7 @@ using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text;
 using WebAPI.Constants;
+using WebAPI.Helpers;
 using WebAPI.Interfaces;
 using WebAPI.Interfaces.Characteristics;
 using WebAPI.Interfaces.Emails;
@@ -37,6 +38,7 @@ builder.Services.Configure<GoogleAuthSettings>(builder.Configuration.GetSection(
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 builder.Services.Configure<ReCaptchaSettings>(builder.Configuration.GetSection("ReCaptcha"));
 builder.Services.Configure<ClientUrl>(builder.Configuration.GetSection("ClientServer"));
+builder.Services.Configure<TwilioSettings>(builder.Configuration.GetSection("Twilio"));
 
 // Database & Identity
 builder.Services.AddDbContext<MarketplaceDbContext>(options =>
@@ -69,6 +71,10 @@ builder.Services.AddScoped<ITemplateService, TemplateService>();
 builder.Services.AddScoped<IEmailSenderService, EmailSenderService>();
 builder.Services.AddScoped<IConfirmEmailService, ConfirmEmailService>();
 builder.Services.AddScoped<IResetPasswordService, ResetPasswordService>();
+builder.Services.AddScoped<IPhoneCodeSenderService, PhoneCodeSenderService>();
+builder.Services.AddScoped<IConfirmPhoneService, ConfirmPhoneService>();
+
+builder.Services.AddSingleton<PhoneNumberManager>();
 
 //reCaptcha
 builder.Services.AddTransient<IRecaptchaService, RecaptchaService>();

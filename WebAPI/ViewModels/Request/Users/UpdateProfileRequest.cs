@@ -18,11 +18,6 @@ namespace WebAPI.ViewModels.Request.Users
         /// <example>Smith</example>
         public string SecondName { get; set; }
         /// <summary>
-        /// User name
-        /// </summary>
-        /// <example>someUserName</example>
-        public string UserName { get; set; }
-        /// <summary>
         /// User photo
         /// </summary>
         public string Photo { get; set; }
@@ -43,11 +38,6 @@ namespace WebAPI.ViewModels.Request.Users
             //Second name
             RuleFor(x => x.SecondName).Cascade(CascadeMode.Stop)
               .NotEmpty().WithName("Second name").WithMessage("{PropertyName} is required")
-              .Length(2, 40).WithMessage("{PropertyName} should be between 2 and 40 characters");
-
-            //User name
-            RuleFor(x => x.UserName).Cascade(CascadeMode.Stop)
-              .NotEmpty().WithName("User name").WithMessage("{PropertyName} is required")
               .Length(2, 40).WithMessage("{PropertyName} should be between 2 and 40 characters");
         }
     }

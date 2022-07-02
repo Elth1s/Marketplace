@@ -22,7 +22,7 @@ import CropperDialog from "../../../components/CropperDialog";
 
 const Profile = () => {
 
-    const { GetProfile, UpdateProfile, SendConfirmEmail, IsEmailConfirmed } = useActions();
+    const { GetProfile, UpdateProfile, SendConfirmEmail } = useActions();
     const [loading, setLoading] = useState<boolean>(false);
 
 
@@ -33,7 +33,6 @@ const Profile = () => {
             try {
                 document.title = "Profile";
                 await GetProfile();
-                await IsEmailConfirmed()
                 setLoading(false);
             } catch (ex) {
                 // toast.error("Loading profile failed.");
@@ -121,39 +120,6 @@ const Profile = () => {
                                                 helperText={touched.secondName && errors.secondName}
                                             />
                                         </Grid>
-                                        <Grid item xs={12}>
-                                            <TextField
-                                                fullWidth
-                                                autoComplete="userName"
-                                                type="text"
-                                                label="Username"
-                                                {...getFieldProps('userName')}
-                                                error={Boolean(touched.userName && errors.userName)}
-                                                helperText={touched.userName && errors.userName}
-                                            />
-                                        </Grid>
-                                        {!userInfo.isEmailConfirmed &&
-                                            <>
-                                                <Grid item xs={12} md={6}>
-                                                    <TextField
-                                                        fullWidth
-                                                        autoComplete="email"
-                                                        type="text"
-                                                        label="Email"
-                                                        disabled={true}
-                                                        {...getFieldProps('email')}
-                                                    />
-                                                </Grid>
-                                                <Grid item xs={12} md={6} display="flex" justifyContent="space-between">
-                                                    <Button
-                                                        sx={{ alignSelf: "center" }}
-                                                        size="large"
-                                                        variant="contained" onClick={onClickConfirmEmailBtn}>
-                                                        Confirm email
-                                                    </Button>
-                                                </Grid>
-                                            </>
-                                        }
                                         <Grid item xs={12} mt={3} display="flex" justifyContent="space-between" >
                                             <LoadingButton
                                                 sx={{ paddingX: "35px" }}
@@ -165,6 +131,49 @@ const Profile = () => {
                                                 Update
                                             </LoadingButton>
                                         </Grid>
+                                        <>
+                                            <Grid item xs={12}>
+                                                <Typography variant="h4">Email</Typography>
+                                            </Grid>
+                                            <Grid item xs={12} md={6}>
+                                                <TextField
+                                                    fullWidth
+                                                    autoComplete="email"
+                                                    type="email"
+                                                    label="Email"
+                                                    disabled={true}
+                                                    {...getFieldProps('email')}
+                                                />
+                                            </Grid>
+
+                                            {!userInfo.isEmailConfirmed &&
+                                                <Grid item xs={12} sm={6} md={3} display="flex" justifyContent="flex-end">
+                                                    <Button
+                                                        sx={{ alignSelf: "center" }}
+                                                        size="large"
+                                                        variant="contained" onClick={onClickConfirmEmailBtn}>
+                                                        Confirm
+                                                    </Button>
+                                                </Grid>
+                                            }
+                                        </>
+
+                                        <>
+                                            <Grid item xs={12}>
+                                                <Typography variant="h4">Phone number</Typography>
+                                            </Grid>
+                                            <Grid item xs={12} md={6}>
+                                                <TextField
+                                                    fullWidth
+                                                    autoComplete="phone"
+                                                    type="tel"
+                                                    label="Phone"
+                                                    disabled={true}
+                                                    {...getFieldProps('phone')}
+                                                />
+                                            </Grid>
+                                        </>
+
                                     </Grid>
                                     <Grid container sx={{ display: 'flex', justifyContent: 'center', width: "30%" }} >
                                         <CropperDialog

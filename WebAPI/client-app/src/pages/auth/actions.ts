@@ -12,7 +12,7 @@ import {
 import { ServerError } from "../../store/types";
 import http, { setLocalRefreshToken, setLocalAccessToken } from "../../http_comon"
 
-import { accessToken, refreshToken, emailClaim, roleClaim } from "./constants"
+import { accessToken, refreshToken, emailClaim, roleClaim, mobilePhoneClaim } from "./constants"
 
 export const LoginUser = (data: ILoginModel, reCaptchaToken: string) => {
     return async (dispatch: Dispatch<AuthAction>) => {
@@ -97,7 +97,7 @@ export const AuthUser = (token: string) => {
         const decodedToken = jwt_decode(token) as any;
         dispatch({
             type: AuthActionTypes.AUTH_SUCCESS,
-            payload: { email: decodedToken[emailClaim], role: decodedToken[roleClaim] }
+            payload: { emailOrPhone: decodedToken[emailClaim] ?? decodedToken[mobilePhoneClaim], role: decodedToken[roleClaim] }
         })
     }
 }

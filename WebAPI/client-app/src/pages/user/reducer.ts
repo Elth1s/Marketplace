@@ -1,12 +1,21 @@
-import { ConfirmEmailActionTypes, EmailConfirmAction, ProfileAction, ProfileActionTypes, ProfileState } from "./types";
+import {
+    ConfirmEmailActionTypes,
+    EmailConfirmAction,
+    PasswordResetAction,
+    ProfileAction,
+    ProfileActionTypes,
+    ProfileState,
+    ResetPasswordActionTypes
+} from "./types";
 
 const initialState: ProfileState = {
     userInfo: {
         firstName: "",
         secondName: "",
-        userName: "",
         photo: "",
-        isEmailConfirmed: false
+        isEmailConfirmed: false,
+        isPhoneConfirmed: false,
+        hasPassword: false
     }
 }
 

@@ -4,12 +4,15 @@ using Microsoft.Extensions.Options;
 using System.Net;
 using WebAPI.Exceptions;
 using WebAPI.Extensions;
+using WebAPI.Helpers;
+using WebAPI.Interfaces;
 using WebAPI.Interfaces.Emails;
 using WebAPI.Interfaces.Users;
 using WebAPI.Resources;
 using WebAPI.Settings;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Request.Users;
+using WebAPI.ViewModels.Response;
 
 namespace WebAPI.Services.Users
 {
@@ -18,20 +21,26 @@ namespace WebAPI.Services.Users
         private readonly UserManager<AppUser> _userManager;
         private readonly IEmailSenderService _emailService;
         private readonly ITemplateService _templateService;
+        private readonly PhoneNumberManager _phoneNumberManager;
+        private readonly IPhoneCodeSenderService _phoneCodeSenderService;
         private readonly ClientUrl _clientUrl;
 
         public ResetPasswordService(UserManager<AppUser> userManager,
-            IEmailSenderService emailSender,
-            ITemplateService templateService,
-            IOptions<ClientUrl> clientUrl)
+                                    IEmailSenderService emailSender,
+                                    ITemplateService templateService,
+                                    PhoneNumberManager phoneNumberManager,
+                                    IPhoneCodeSenderService phoneCodeSenderService,
+                                    IOptions<ClientUrl> clientUrl)
         {
             _userManager = userManager;
             _emailService = emailSender;
             _templateService = templateService;
+            _phoneNumberManager = phoneNumberManager;
+            _phoneCodeSenderService = phoneCodeSenderService;
             _clientUrl = clientUrl.Value;
         }
 
-        public async Task SendResetPasswordAsync(EmailRequest request)
+        public async Task SendResetPasswordByEmailAsync(EmailRequest request)
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
 
@@ -51,6 +60,37 @@ namespace WebAPI.Services.Users
             });
         }
 
+        public async Task SendResetPasswordByPhoneAsync(PhoneRequest request)
+        {
+            request.Phone = _phoneNumberManager.GetPhoneE164Format(request.Phone);
+
+            var user = await _userManager.FindByPhoneNumberAsync(request.Phone);
+
+            user.UserNullChecking();
+
+            await _phoneCodeSenderService.SendCodeAsync(request);
+        }
+
+        public async Task<UserTokenResponse> ValidatePhoneCodeAsync(CodeRequest request)
+        {
+            request.Phone = _phoneNumberManager.GetPhoneE164Format(request.Phone);
+
+            var user = await _userManager.FindByPhoneNumberAsync(request.Phone);
+
+            user.UserNullChecking();
+
+            await _phoneCodeSenderService.VerifyCodeAsync(request);
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var response = new UserTokenResponse()
+            {
+                UserId = user.Id,
+                Token = WebUtility.UrlEncode(token)
+            };
+
+            return response;
+        }
+
         public async Task ResetPasswordAsync(ResetPasswordRequest request)
         {
             var user = await _userManager.FindByIdAsync(request.UserId);
@@ -64,6 +104,7 @@ namespace WebAPI.Services.Users
                 throw new AppException(ErrorMessages.InvalidResetPasswordToken);
             }
         }
+
 
     }
 }

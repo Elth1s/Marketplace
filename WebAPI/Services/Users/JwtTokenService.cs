@@ -40,7 +40,10 @@ namespace WebAPI.Services.Users
             List<Claim> claims = new()
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
+                (user.Email != null ?
                 new Claim(ClaimTypes.Email, user.Email)
+                :
+                new Claim(ClaimTypes.MobilePhone, user.PhoneNumber))
             };
 
             claims.AddRange(roles.Select(role => new Claim(ClaimsIdentity.DefaultRoleClaimType, role)));
