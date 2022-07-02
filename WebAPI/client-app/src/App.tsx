@@ -28,8 +28,11 @@ import CharacteristicGroupTable from './pages/admin/characteristicGroup/Table';
 import CharacteristicNameTable from './pages/admin/characteristicName/Table';
 import CountryTable from './pages/admin/country/Table';
 import CityTable from './pages/admin/city/Table';
-import HomePage from './pages/HomePage';
 import UnitTable from './pages/admin/unit/Table';
+
+import HomePage from './pages/HomePage';
+
+import Ordering from './pages/user/Ordering';
 
 function App() {
   const { isAuth } = useTypedSelector(store => store.auth);
@@ -110,8 +113,9 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/product" element={<Product />} />
+          
         </Route>
-
+        <Route path="/ordering" element ={<Ordering/>}/>
 
         <Route element={<AuthLayout />}>
           <Route path="/auth/signin" element={<SignIn />} />
