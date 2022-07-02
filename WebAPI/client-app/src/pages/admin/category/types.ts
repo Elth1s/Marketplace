@@ -1,5 +1,6 @@
 export enum CategoryActionTypes {
     GET_CATEGORIES = "GET_CATEGORIES",
+    SEARCH_CATEGORIES = "SEARCH_CATEGORIES",
     GET_CATEGORIES_FOR_SELECT = "GET_CATEGORIES_FOR_SELECT",
     GET_BY_ID_CATEGORY = "GET_BY_ID_CATEGORY",
     CREATE_CATEGOTY = "CREATE_CATEGOTY",
@@ -7,13 +8,14 @@ export enum CategoryActionTypes {
 }
 
 export interface ICategory {
+    id: number,
     name: string,
     image: string,
     parentId: number | null
 }
 
 export interface ICategoryInfo {
-    id: number
+    id: number,
     name: string,
     image: string,
     parentName: string
@@ -24,12 +26,17 @@ export interface ICategoryForSelect {
     name: string,
 }
 
+export interface ISearchCategories {
+    count: number,
+    values: Array<ICategoryInfo>
+}
+
 
 export interface CategoryState {
-    categoryInfo: ICategoryInfo,
+    selectedCategory: ICategory,
     categories: Array<ICategoryInfo>,
     categoriesForSelect: Array<ICategoryForSelect>,
-    last_page: number
+    count: number
 }
 
 
@@ -39,6 +46,12 @@ export interface GetCategoriesAction {
     payload: Array<ICategoryInfo>
 }
 
+export interface SearchCategoriesAction {
+    type: CategoryActionTypes.SEARCH_CATEGORIES,
+    payload: ISearchCategories
+}
+
+
 export interface GetCategoriesForSelectAction {
     type: CategoryActionTypes.GET_CATEGORIES_FOR_SELECT,
     payload: Array<ICategoryForSelect>
@@ -46,7 +59,7 @@ export interface GetCategoriesForSelectAction {
 
 export interface GetByIdCategoryAction {
     type: CategoryActionTypes.GET_BY_ID_CATEGORY,
-    payload: ICategoryInfo
+    payload: ICategory
 }
 
 export interface CreateCategoryAction {
@@ -60,4 +73,9 @@ export interface UpdateCategoryAction {
 }
 
 
-export type CategoryAction = GetCategoriesAction | GetCategoriesForSelectAction | GetByIdCategoryAction | CreateCategoryAction | UpdateCategoryAction;
+export type CategoryAction = GetCategoriesAction |
+    GetCategoriesForSelectAction |
+    SearchCategoriesAction |
+    GetByIdCategoryAction |
+    CreateCategoryAction |
+    UpdateCategoryAction;

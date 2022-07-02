@@ -3,6 +3,7 @@ using DAL;
 using DAL.Entities;
 using WebAPI.Extensions;
 using WebAPI.Interfaces;
+using WebAPI.Specifications.Units;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Response;
 
@@ -29,6 +30,19 @@ namespace WebAPI.Services
             var response = _mapper.Map<IEnumerable<UnitResponse>>(units);
             return response;
         }
+
+        public async Task<AdminSearchResponse<UnitResponse>> SearchUnitsAsync(AdminSearchRequest request)
+        {
+            var spec = new UnitSearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
+            var units = await _unitRepository.ListAsync(spec);
+            var mappedUnits = _mapper.Map<IEnumerable<UnitResponse>>(units);
+            var response = new AdminSearchResponse<UnitResponse>() { Count = units.Count };
+
+            response.Values = mappedUnits.Skip((request.Page - 1) * request.RowsPerPage).Take(request.RowsPerPage);
+
+            return response;
+        }
+
         public async Task<UnitResponse> GetByIdAsync(int id)
         {
             var unit = await _unitRepository.GetByIdAsync(id);
@@ -63,6 +77,16 @@ namespace WebAPI.Services
             unit.UnitNullChecking();
 
             await _unitRepository.DeleteAsync(unit);
+            await _unitRepository.SaveChangesAsync();
+        }
+        public async Task DeleteUnitsAsync(IEnumerable<int> ids)
+        {
+            foreach (var item in ids)
+            {
+                var unit = await _unitRepository.GetByIdAsync(item);
+                //unit.UnitNullChecking();
+                await _unitRepository.DeleteAsync(unit);
+            }
             await _unitRepository.SaveChangesAsync();
         }
     }

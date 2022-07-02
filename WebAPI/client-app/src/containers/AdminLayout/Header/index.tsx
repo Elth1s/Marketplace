@@ -1,20 +1,19 @@
 import {
-    Box,
     Toolbar,
     IconButton,
 } from '@mui/material';
 import {
-    Search,
     Menu
 } from '@mui/icons-material';
-
 import { FC } from 'react';
 
-import Profile from './Profile';
-import Notification from './Notification'
 import { AppBarStyle, LeftBox } from './styled';
-import { Link } from 'react-router-dom';
+
 import { logo } from '../../../assets/logos';
+
+import LinkRouter from '../../../components/LinkRouter';
+import Notification from './Notification'
+import Profile from './Profile';
 
 interface IHeader {
     handleDrawerToggle: any,
@@ -25,13 +24,13 @@ const Header: FC<IHeader> = ({ handleDrawerToggle }) => {
         <AppBarStyle color="transparent" sx={{ zIndex: 1 }}>
             <Toolbar >
                 <LeftBox>
-                    <Link to="/" style={{ textDecoration: 'none', color: 'unset' }}>
+                    <LinkRouter underline="none" color="unset" to="/" >
                         <img
                             style={{ cursor: "pointer", width: "80px" }}
                             src={logo}
                             alt="logo"
                         />
-                    </Link>
+                    </LinkRouter>
                     <IconButton
                         sx={{ borderRadius: '12px' }}
                         onClick={handleDrawerToggle}

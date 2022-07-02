@@ -5,11 +5,10 @@ import {
 } from "./types";
 
 const initialState: CharacteristicNameState = {
-    characteristicNameInfo: {
-        id: 0,
+    selectedCharacteristicName: {
         name: "",
-        characteristicGroupName: "",
-        unitMeasure: "",
+        characteristicGroupId: 0,
+        unitId: 0,
     },
     count: 0,
     characteristicNames: []
@@ -22,16 +21,16 @@ export const characteristicNameReducer = (state = initialState, action: Characte
                 ...state,
                 characteristicNames: action.payload,
             }
-            case CharacteristicNameActionTypes.SEARCH_CHARACTERISTIC_NAMES:
+        case CharacteristicNameActionTypes.SEARCH_CHARACTERISTIC_NAMES:
             return {
                 ...state,
                 count: action.payload.count,
-                characteristicNames: action.payload.characteristicNames,
+                characteristicNames: action.payload.values,
             }
         case CharacteristicNameActionTypes.GET_BY_ID_CHARACTERISTIC_NAME:
             return {
                 ...state,
-                characteristicNameInfo: action.payload,
+                selectedCharacteristicName: action.payload,
             }
         case CharacteristicNameActionTypes.CREATE_CHARACTERISTIC_NAME:
             return {

@@ -8,8 +8,8 @@ export enum CharacteristicNameActionTypes {
 
 export interface ICharacteristicName {
     name: string,
-    characteristicGroupId: number | string,
-    unitId: number | string,
+    characteristicGroupId: number,
+    unitId: number | null,
 }
 
 export interface ICharacteristicNameInfo {
@@ -21,11 +21,11 @@ export interface ICharacteristicNameInfo {
 
 export interface ISearchCharacteristicNames {
     count: number,
-    characteristicNames: Array<ICharacteristicNameInfo>
+    values: Array<ICharacteristicNameInfo>
 }
 
 export interface CharacteristicNameState {
-    characteristicNameInfo: ICharacteristicNameInfo,
+    selectedCharacteristicName: ICharacteristicName,
     count: number,
     characteristicNames: Array<ICharacteristicNameInfo>
 }
@@ -43,7 +43,7 @@ export interface SearchCharacteristicNamesAction {
 
 export interface GetByIdCharacteristicNameAction {
     type: CharacteristicNameActionTypes.GET_BY_ID_CHARACTERISTIC_NAME,
-    payload: ICharacteristicNameInfo
+    payload: ICharacteristicName
 }
 
 export interface CreateCharacteristicNameAction {

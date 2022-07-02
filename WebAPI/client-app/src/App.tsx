@@ -29,6 +29,7 @@ import CharacteristicNameTable from './pages/admin/characteristicName/Table';
 import CountryTable from './pages/admin/country/Table';
 import CityTable from './pages/admin/city/Table';
 import HomePage from './pages/HomePage';
+import UnitTable from './pages/admin/unit/Table';
 
 function App() {
   const { isAuth } = useTypedSelector(store => store.auth);
@@ -120,12 +121,15 @@ function App() {
         <Route path="/admin" element={<AdminLayout />}>
           <Route path="/admin/category" element={<CategoryTable />} />
           <Route path="/admin/category/create" element={<CategoryCreate />} />
-          <Route path="/admin/category/update" element={<CategoryUpdate />} />
+          <Route path="/admin/category/update/:id" element={<CategoryUpdate />} />
 
           <Route path="/admin/characteristicGroup" element={<CharacteristicGroupTable />} />
           <Route path="/admin/characteristicName" element={<CharacteristicNameTable />} />
+
           <Route path="/admin/country" element={<CountryTable />} />
           <Route path="/admin/city" element={<CityTable />} />
+
+          <Route path="/admin/unit" element={<UnitTable />} />
         </Route>
 
         <Route path="/confirmEmail" element={<ConfirmEmail />} />

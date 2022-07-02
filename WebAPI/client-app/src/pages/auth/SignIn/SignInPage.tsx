@@ -11,12 +11,12 @@ import {
 } from '@mui/icons-material';
 import { Form, FormikProvider, useFormik } from "formik";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 // import { toast } from 'react-toastify';
 
 import GoogleExternalLogin from "../../../components/Google";
-
+import LinkRouter from "../../../components/LinkRouter";
 
 import { LogInSchema } from "../validation";
 import { useActions } from "../../../hooks/useActions";
@@ -24,11 +24,11 @@ import { ILoginModel } from "../types";
 import { ServerError } from "../../../store/types";
 
 import { login } from "../../../assets/backgrounds";
-import { twitter, facebook } from "../../../assets/icons";
-import { getLocalAccessToken } from "../../../http_comon";
+import { facebook } from "../../../assets/icons";
+import { toLowerFirstLetter } from "../../../http_comon";
 
 const SignIn = () => {
-    const { LoginUser, AuthUser } = useActions();
+    const { LoginUser } = useActions();
     const { executeRecaptcha } = useGoogleReCaptcha();
 
     const [showPassword, setShowPassword] = useState(false);
@@ -62,7 +62,7 @@ const SignIn = () => {
                             value.forEach((item) => {
                                 message += `${item} `;
                             });
-                            setFieldError(key.toLowerCase(), message);
+                            setFieldError(toLowerFirstLetter(key), message);
                         }
                     });
                 let message = "Login failed! \n";
@@ -151,8 +151,8 @@ const SignIn = () => {
                                     />
                                 </Grid>
                                 <Grid item xs={12} sx={{ marginTop: "62px", width: "100%", display: "flex", justifyContent: "space-between" }} >
-                                    <AuthSideTypography component={Link} to="/auth/signup" sx={{ cursor: "pointer", textDecoration: "none", color: "#000" }} >Don't have an account?</AuthSideTypography>
-                                    <AuthSideTypography component={Link} to="/resetPassword" sx={{ cursor: "pointer", textDecoration: "none", color: "#000" }} >Forgot password?</AuthSideTypography>
+                                    <AuthSideTypography component={LinkRouter} underline="none" color="unset" to="/auth/signup" sx={{ cursor: "pointer" }} >Don't have an account?</AuthSideTypography>
+                                    <AuthSideTypography component={LinkRouter} underline="none" color="unset" to="/resetPassword" sx={{ cursor: "pointer" }} >Forgot password?</AuthSideTypography>
                                 </Grid>
                                 <Grid item xs={12} sx={{ marginTop: "85px" }}>
                                     <AuthLoadingButton

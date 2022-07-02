@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
 
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 import { Form, FormikProvider, useFormik } from "formik";
 import { LoadingButton } from "@mui/lab";
@@ -20,6 +20,7 @@ import { ServerError } from "../../../../store/types";
 import CropperDialog from "../../../../components/CropperDialog";
 import TextFieldComponent from "../../../../components/TextField";
 import AutocompleteComponent from "../../../../components/Autocomplete";
+import { toLowerFirstLetter } from "../../../../http_comon";
 
 const CategoryCreate = () => {
     const { GetCategoryForSelect, CreateCategory } = useActions();
@@ -28,6 +29,7 @@ const CategoryCreate = () => {
     const { categoriesForSelect } = useTypedSelector((store) => store.category);
 
     const item: ICategory = {
+        id: 0,
         name: "",
         image: "",
         parentId: null
@@ -36,39 +38,18 @@ const CategoryCreate = () => {
     const navigator = useNavigate();
 
     useEffect(() => {
+        document.title = "Category create";
         getData();
     }, []);
 
     const getData = async () => {
         setLoading(true);
         try {
-            document.title = "Category create";
-
             await GetCategoryForSelect();
-
             setLoading(false);
-        } catch (ex) {
-            setLoading(false);
-        }
-    }
-
-    const onHandleSubmit = async (values: ICategory) => {
-        try {
-            await CreateCategory(values);
-            navigator("/category");
         }
         catch (ex) {
-            const serverErrors = ex as ServerError;
-            if (serverErrors.errors)
-                Object.entries(serverErrors.errors).forEach(([key, value]) => {
-                    if (Array.isArray(value)) {
-                        let message = "";
-                        value.forEach((item) => {
-                            message += `${item} `;
-                        });
-                        setFieldError(key.toLowerCase(), message);
-                    }
-                });
+            setLoading(false);
         }
     }
 
@@ -76,14 +57,32 @@ const CategoryCreate = () => {
         initialValues: item,
         validationSchema: validationFields,
         enableReinitialize: true,
-        onSubmit: onHandleSubmit
+        onSubmit: async (values, { setFieldError }) => {
+            try {
+                await CreateCategory(values);
+                navigator("/admin/category");
+            }
+            catch (ex) {
+                const serverErrors = ex as ServerError;
+                if (serverErrors.errors)
+                    Object.entries(serverErrors.errors).forEach(([key, value]) => {
+                        if (Array.isArray(value)) {
+                            let message = "";
+                            value.forEach((item) => {
+                                message += `${item} `;
+                            });
+                            setFieldError(toLowerFirstLetter(key), message);
+                        }
+                    });
+            }
+        }
     });
 
     const onSave = async (base64: string) => {
         setFieldValue("image", base64)
     };
 
-    const { errors, touched, isSubmitting, handleSubmit, setFieldValue, setFieldError, getFieldProps } = formik;
+    const { errors, touched, isSubmitting, handleSubmit, setFieldValue, getFieldProps } = formik;
 
     return (
         <Box sx={{ flexGrow: 1, m: 1, mx: 3, }}>
@@ -103,22 +102,7 @@ const CategoryCreate = () => {
                     <FormikProvider value={formik} >
                         <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
                             <Grid container spacing={2}>
-
                                 <Grid container item xs={10}>
-                                    <Grid item xs={12}>
-                                        <AutocompleteComponent
-                                            label="Categoty parent"
-                                            name="parentId"
-                                            error={errors.name}
-                                            touched={touched.name}
-                                            options={categoriesForSelect}
-                                            getOptionLabel={(option) => option.name}
-                                            isOptionEqualToValue={(option, value) => option?.id === value.id}
-                                            defaultValue={undefined}
-                                            onChange={(e, value) => { setFieldValue("parentId", value?.id) }}
-                                        />
-                                    </Grid>
-
                                     <Grid item xs={12}>
                                         <TextFieldComponent
                                             type="text"
@@ -128,8 +112,20 @@ const CategoryCreate = () => {
                                             getFieldProps={{ ...getFieldProps('name') }}
                                         />
                                     </Grid>
+                                    <Grid item xs={12}>
+                                        <AutocompleteComponent
+                                            label="Categoty parent"
+                                            name="parentId"
+                                            error={errors.parentId}
+                                            touched={touched.parentId}
+                                            options={categoriesForSelect}
+                                            getOptionLabel={(option) => option.name}
+                                            isOptionEqualToValue={(option, value) => option?.id === value.id}
+                                            defaultValue={undefined}
+                                            onChange={(e, value) => { setFieldValue("parentId", value?.id) }}
+                                        />
+                                    </Grid>
                                 </Grid>
-
                                 <Grid container item xs={2}>
                                     <Grid item xs={12}>
                                         <CropperDialog
@@ -139,7 +135,6 @@ const CategoryCreate = () => {
                                     </Grid>
                                 </Grid>
                             </Grid>
-
                             <LoadingButton
                                 sx={{ paddingX: "35px" }}
                                 size="large"
@@ -149,7 +144,6 @@ const CategoryCreate = () => {
                             >
                                 Create
                             </LoadingButton>
-
                         </Form>
                     </FormikProvider>
                 </Box>

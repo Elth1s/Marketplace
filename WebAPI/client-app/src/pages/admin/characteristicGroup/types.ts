@@ -17,11 +17,11 @@ export interface ICharacteristicGroupInfo {
 
 export interface ISearchCharacteristicGroups {
     count: number,
-    characteristicGroups: Array<ICharacteristicGroupInfo>
+    values: Array<ICharacteristicGroupInfo>
 }
 
 export interface CharacteristicGroupState {
-    characteristicGroupInfo: ICharacteristicGroupInfo,
+    selectedCharacteristicGroup: ICharacteristicGroup,
     count: number,
     characteristicGroups: Array<ICharacteristicGroupInfo>
 }
@@ -39,7 +39,7 @@ export interface GetCharacteristicGroupsAction {
 
 export interface GetByIdCharacteristicGroupAction {
     type: CharacteristicGroupActionTypes.GET_BY_ID_CHARACTERISTIC_GROUP,
-    payload: ICharacteristicGroupInfo
+    payload: ICharacteristicGroup
 }
 
 export interface CreateCharacteristicGroupAction {

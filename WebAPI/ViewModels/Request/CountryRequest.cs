@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace WebAPI.ViewModels.Request.Countries
+namespace WebAPI.ViewModels.Request
 {
     /// <summary>
     /// Country class to create and update country 

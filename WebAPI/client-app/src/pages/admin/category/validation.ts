@@ -1,7 +1,6 @@
 import * as Yup from 'yup';
 
 export const validationFields = Yup.object().shape({
-    // firstName: Yup.string().label('First Name'),
-    // parentId: Yup.number().label('Second Name'),
-    // characteristicId: Yup.number().label('User Name'),
+    name: Yup.string().min(2).max(50).label('Name'),
+    parentId: Yup.number().nullable().label('Parent category'),
 });

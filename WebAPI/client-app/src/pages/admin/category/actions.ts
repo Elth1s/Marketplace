@@ -8,13 +8,44 @@ import {
     ICategoryForSelect,
     CategoryAction,
     CategoryActionTypes,
+    ISearchCategories,
 } from "./types"
 import { ServerError } from "../../../store/types"
+import qs from "qs"
 
-export const GetByIdCategory = (id: string | null) => {
+export const SearchCategories = (page: number, rowsPerPage: number, name: string, isAscOrder: boolean, orderBy: string) => {
     return async (dispatch: Dispatch<CategoryAction>) => {
         try {
-            let response = await http.get<ICategoryInfo>(`api/Category/GetById/${id}`)
+            let response = await http.get<ISearchCategories>(`api/Category/SearchCategories`, {
+                params: {
+                    page: page,
+                    rowsPerPage: rowsPerPage,
+                    name: name,
+                    isAscOrder: isAscOrder,
+                    orderBy: orderBy
+                },
+                paramsSerializer: params => {
+                    return qs.stringify({ ...params })
+                }
+            })
+
+            dispatch({
+                type: CategoryActionTypes.SEARCH_CATEGORIES,
+                payload: response.data
+            })
+
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
+        }
+    }
+}
+
+export const GetCategoryById = (id: number) => {
+    return async (dispatch: Dispatch<CategoryAction>) => {
+        try {
+            let response = await http.get<ICategory>(`api/Category/GetById/${id}`)
 
             dispatch({
                 type: CategoryActionTypes.GET_BY_ID_CATEGORY,
@@ -29,7 +60,7 @@ export const GetByIdCategory = (id: string | null) => {
     }
 }
 
-export const GetCategory = () => {
+export const GetCategories = () => {
     return async (dispatch: Dispatch<CategoryAction>) => {
         try {
             let response = await http.get<Array<ICategoryInfo>>(`api/Category/Get`)
@@ -80,7 +111,6 @@ export const CreateCategory = (data: ICategory) => {
 export const UpdateCategory = (id: number, data: ICategory) => {
     return async () => {
         try {
-            console.log("data", data);
             await http.put<ICategory>(`api/Category/Update/${id}`, data);
             return Promise.resolve();
         }
@@ -94,6 +124,25 @@ export const DeleteCategory = (id: number) => {
     return async () => {
         try {
             await http.delete(`api/Category/Delete/${id}`);
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
+        }
+    }
+}
+
+export const DeleteCategories = (ids: readonly number[]) => {
+    return async () => {
+        try {
+            await http.delete(`api/Category/DeleteCategories`, {
+                params: {
+                    ids: ids,
+                },
+                paramsSerializer: params => {
+                    return qs.stringify({ ...params })
+                }
+            })
             return Promise.resolve();
         }
         catch (error) {

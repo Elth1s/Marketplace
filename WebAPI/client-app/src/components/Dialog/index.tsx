@@ -68,8 +68,8 @@ const DialogComponent: React.FC<IDialog> = ({
                         sx={{
                             position: 'absolute',
                             my: "auto",
-                            right: 8,
-                            top: 10,
+                            right: 20,
+                            top: 15,
                             borderRadius: "12px"
                         }}
                     >

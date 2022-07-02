@@ -6,13 +6,44 @@ import {
     ICityInfo,
     CityAction,
     CityActionTypes,
+    ISearchCities,
 } from "./types"
 import { ServerError } from "../../../store/types"
+import qs from "qs"
 
-export const GetByIdCity = (id: number) => {
+export const SearchCities = (page: number, rowsPerPage: number, name: string, isAscOrder: boolean, orderBy: string) => {
     return async (dispatch: Dispatch<CityAction>) => {
         try {
-            let response = await http.get<ICityInfo>(`api/City/GetCityById/${id}`)
+            let response = await http.get<ISearchCities>(`api/City/SearchCities`, {
+                params: {
+                    page: page,
+                    rowsPerPage: rowsPerPage,
+                    name: name,
+                    isAscOrder: isAscOrder,
+                    orderBy: orderBy
+                },
+                paramsSerializer: params => {
+                    return qs.stringify({ ...params })
+                }
+            })
+
+            dispatch({
+                type: CityActionTypes.SEARCH_CITIES,
+                payload: response.data
+            })
+
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
+        }
+    }
+}
+
+export const GetCityById = (id: number) => {
+    return async (dispatch: Dispatch<CityAction>) => {
+        try {
+            let response = await http.get<ICity>(`api/City/GetCityById/${id}`)
 
             dispatch({
                 type: CityActionTypes.GET_BY_ID_CITY,
@@ -73,6 +104,25 @@ export const DeleteCity = (id: number) => {
     return async () => {
         try {
             await http.delete(`api/City/DeleteCity/${id}`);
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
+        }
+    }
+}
+
+export const DeleteCities = (ids: readonly number[]) => {
+    return async () => {
+        try {
+            await http.delete(`api/City/DeleteCities`, {
+                params: {
+                    ids: ids,
+                },
+                paramsSerializer: params => {
+                    return qs.stringify({ ...params })
+                }
+            })
             return Promise.resolve();
         }
         catch (error) {

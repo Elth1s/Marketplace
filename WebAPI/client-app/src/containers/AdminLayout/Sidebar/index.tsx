@@ -1,14 +1,13 @@
 import {
-    List,
     ListItem,
-    ListItemButton,
     ListItemText,
     ListItemIcon
 } from '@mui/material';
 
 import { FC, useEffect, useState } from 'react';
-import { useLocation, Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { BooleanSchema } from 'yup';
+import LinkRouter from '../../../components/LinkRouter';
 
 import { DrawerStyle, RotatedBox, ListItemButtonStyle } from './styled';
 
@@ -29,6 +28,7 @@ const Sidebar: FC<IDrawer> = ({ open }) => {
         { lable: 'Characteristic Name', path: '/admin/characteristicName', rotete: undefined },
         { lable: 'Country', path: '/admin/country', rotete: undefined },
         { lable: 'City', path: '/admin/city', rotete: undefined },
+        { lable: 'Unit', path: '/admin/unit', rotete: undefined },
     ]);
     const [selected, setSelected] = useState<string>("");
     const location = useLocation();
@@ -57,16 +57,18 @@ const Sidebar: FC<IDrawer> = ({ open }) => {
     }
 
     return (
-        <DrawerStyle variant="permanent" open={open} >
+        <DrawerStyle variant="permanent" open={open}>
             {menuItems.map((item, index) => (
-                <ListItem key={index} component={Link} to={item.path} disablePadding style={{ textDecoration: 'none', color: 'unset' }} >
-                    <ListItemButtonStyle onClick={() => changeSelected(index)}>
-                        <ListItemIcon sx={{ minWidth: "auto" }}>
-                            <RotatedBox rotete={item.rotete} isRoteted={selected === item.lable ? true : false} />
-                        </ListItemIcon>
-                        <ListItemText primary={item.lable} />
-                    </ListItemButtonStyle>
-                </ListItem>
+                <LinkRouter key={index} underline="none" color="unset" to={item.path}>
+                    <ListItem disablePadding>
+                        <ListItemButtonStyle onClick={() => changeSelected(index)}>
+                            <ListItemIcon sx={{ minWidth: "auto" }}>
+                                <RotatedBox rotete={item.rotete} isRoteted={selected === item.lable ? true : false} />
+                            </ListItemIcon>
+                            <ListItemText primary={item.lable} />
+                        </ListItemButtonStyle>
+                    </ListItem>
+                </LinkRouter>
             ))}
         </DrawerStyle >
     );

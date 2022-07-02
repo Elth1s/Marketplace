@@ -1,7 +1,7 @@
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 
-import { useState } from "react";
+import { FC, useState } from "react";
 import { useFormik } from "formik";
 
 import { useActions } from "../../../../hooks/useActions";
@@ -9,27 +9,27 @@ import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 
 import { validationFields } from "../validation";
 import { ICity } from "../types";
-import { ServerError } from '../../../../store/types';
+import { CreateProps, ServerError } from '../../../../store/types';
 
 import DialogComponent from '../../../../components/Dialog';
-import SelectComponent from "../../../../components/Select";
 import TextFieldComponent from "../../../../components/TextField";
+import { toLowerFirstLetter } from '../../../../http_comon';
+import AutocompleteComponent from '../../../../components/Autocomplete';
 
-const CityCreate = () => {
+const CityCreate: FC<CreateProps> = ({ afterCreate }) => {
     const [open, setOpen] = useState(false);
 
-    const { GetCities, CreateCity, GetCountries } = useActions();
+    const { CreateCity, GetCountries } = useActions();
 
     const { countries } = useTypedSelector((store) => store.country);
 
     const item: ICity = {
         name: '',
-        countryId: ''
+        countryId: 0
     }
 
     const handleClickOpen = async () => {
-        // await GetCountries();
-
+        await GetCountries();
         setOpen(true);
     };
 
@@ -37,34 +37,32 @@ const CityCreate = () => {
         setOpen(false);
     };
 
-    const onHandleSubmit = async (values: ICity) => {
-        try {
-            await CreateCity(values);
-            await GetCities();
-            handleClickClose();
-            resetForm();
-        } catch (ex) {
-            const serverErrors = ex as ServerError;
-            if (serverErrors.errors)
-                Object.entries(serverErrors.errors).forEach(([key, value]) => {
-                    if (Array.isArray(value)) {
-                        let message = "";
-                        value.forEach((item) => {
-                            message += `${item} `;
-                        });
-                        setFieldError(key.toLowerCase(), message);
-                    }
-                });
-        }
-    }
-
     const formik = useFormik({
         initialValues: item,
         validationSchema: validationFields,
-        onSubmit: onHandleSubmit
+        onSubmit: async (values: ICity, { setFieldError, resetForm }) => {
+            try {
+                await CreateCity(values);
+                afterCreate();
+                resetForm();
+                handleClickClose();
+            } catch (ex) {
+                const serverErrors = ex as ServerError;
+                if (serverErrors.errors)
+                    Object.entries(serverErrors.errors).forEach(([key, value]) => {
+                        if (Array.isArray(value)) {
+                            let message = "";
+                            value.forEach((item) => {
+                                message += `${item} `;
+                            });
+                            setFieldError(toLowerFirstLetter(key), message);
+                        }
+                    });
+            }
+        }
     });
 
-    const { errors, touched, isSubmitting, handleSubmit, setFieldError, getFieldProps, resetForm } = formik;
+    const { errors, touched, isSubmitting, handleSubmit, getFieldProps, setFieldValue } = formik;
 
     return (
         <DialogComponent
@@ -102,12 +100,17 @@ const CityCreate = () => {
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <SelectComponent
+
+                        <AutocompleteComponent
                             label="Country"
-                            items={countries}
+                            name="countryId"
                             error={errors.countryId}
                             touched={touched.countryId}
-                            getFieldProps={{ ...getFieldProps('countryId') }}
+                            options={countries}
+                            getOptionLabel={(option) => option.name}
+                            isOptionEqualToValue={(option, value) => option?.id === value.id}
+                            defaultValue={undefined}
+                            onChange={(e, value) => { setFieldValue("countryId", value?.id) }}
                         />
                     </Grid>
                 </Grid>
@@ -117,3 +120,4 @@ const CityCreate = () => {
 }
 
 export default CityCreate;
+

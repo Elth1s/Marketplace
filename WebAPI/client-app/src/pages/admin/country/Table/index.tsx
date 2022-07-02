@@ -2,23 +2,19 @@
 
 import { Checkbox, TableRow } from '@mui/material';
 import { useEffect, useState } from 'react';
-import EnhancedTable from '../../../../components/EnhancedTable';
-import { TableCellStyle } from '../../../../components/EnhancedTable/styled';
 import { useActions } from '../../../../hooks/useActions';
 import { useTypedSelector } from '../../../../hooks/useTypedSelector';
-import CountryCreate from '../Create';
+
 import { ICountryInfo } from '../types';
+import { HeadCell } from '../../../../store/types';
+
+import EnhancedTable from '../../../../components/EnhancedTable';
+import { TableCellStyle } from '../../../../components/EnhancedTable/styled';
+import Create from '../Create';
 import Update from '../Update';
-import CountryUpdate from '../Update';
 
 
-interface HeadCell {
-    id: keyof ICountryInfo;
-    numeric: boolean;
-    label: string;
-}
-
-const headCells: HeadCell[] = [
+const headCells: HeadCell<ICountryInfo>[] = [
     {
         id: 'id',
         numeric: true,
@@ -49,12 +45,12 @@ const CountryTable = () => {
     const { countries, count } = useTypedSelector((store) => store.country);
 
     useEffect(() => {
+        document.title = "Countries";
         getData();
     }, [page, rowsPerPage, name, isAscOrder, orderBy]);
 
     const getData = async () => {
         try {
-            document.title = "Countries";
             await SearchCountries(page, rowsPerPage, name, isAscOrder, orderBy);
             setSelected([]);
         } catch (ex) {
@@ -109,7 +105,7 @@ const CountryTable = () => {
 
     return (
         <>
-            <CountryCreate />
+            <Create afterCreate={() => { getData() }} />
             <EnhancedTable
                 page={page}
                 rowsPerPage={rowsPerPage}

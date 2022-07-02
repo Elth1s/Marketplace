@@ -14,7 +14,7 @@ import { ServerError } from "../../../store/types"
 export const GetByIdCharacteristicName = (id: number) => {
     return async (dispatch: Dispatch<CharacteristicNameAction>) => {
         try {
-            let response = await http.get<ICharacteristicNameInfo>(`api/CharacteristicName/${id}`)
+            let response = await http.get<ICharacteristicName>(`api/CharacteristicName/${id}`)
 
             dispatch({
                 type: CharacteristicNameActionTypes.GET_BY_ID_CHARACTERISTIC_NAME,
@@ -61,7 +61,7 @@ export const SearchCharacteristicNames = (page: number, rowsPerPage: number, nam
 export const GetCharacteristicNames = () => {
     return async (dispatch: Dispatch<CharacteristicNameAction>) => {
         try {
-            let response = await http.get<Array<ICharacteristicNameInfo>>(`api/CharacteristicName`)
+            let response = await http.get<Array<ICharacteristicNameInfo>>(`api/CharacteristicName/Get`)
 
             dispatch({
                 type: CharacteristicNameActionTypes.GET_CHARACTERISTIC_NAMES,

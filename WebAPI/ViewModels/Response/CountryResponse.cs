@@ -1,4 +1,4 @@
-﻿namespace WebAPI.ViewModels.Response.Countries
+﻿namespace WebAPI.ViewModels.Response
 {
     /// <summary>
     /// Country class returned from the controller

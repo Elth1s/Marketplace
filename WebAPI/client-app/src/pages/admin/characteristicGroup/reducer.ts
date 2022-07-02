@@ -5,8 +5,7 @@ import {
 } from "./types";
 
 const initialState: CharacteristicGroupState = {
-    characteristicGroupInfo: {
-        id: 0,
+    selectedCharacteristicGroup: {
         name: "",
     },
     count: 0,
@@ -19,7 +18,7 @@ export const characteristicGroupReducer = (state = initialState, action: Charact
             return {
                 ...state,
                 count: action.payload.count,
-                characteristicGroups: action.payload.characteristicGroups,
+                characteristicGroups: action.payload.values,
             }
         case CharacteristicGroupActionTypes.GET_CHARACTERISTIC_GROUPS:
             return {
@@ -29,7 +28,7 @@ export const characteristicGroupReducer = (state = initialState, action: Charact
         case CharacteristicGroupActionTypes.GET_BY_ID_CHARACTERISTIC_GROUP:
             return {
                 ...state,
-                characteristicGroupInfo: action.payload,
+                selectedCharacteristicGroup: action.payload,
             }
         case CharacteristicGroupActionTypes.CREATE_CHARACTERISTIC_GROUP:
             return {

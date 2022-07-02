@@ -13,8 +13,10 @@ import { ICharacteristicName } from "../types";
 import { ServerError } from '../../../../store/types';
 
 import DialogComponent from '../../../../components/Dialog';
-import SelectComponent from '../../../../components/Select';
 import TextFieldComponent from '../../../../components/TextField';
+import { toLowerFirstLetter } from '../../../../http_comon';
+import { Edit } from '@mui/icons-material';
+import AutocompleteComponent from '../../../../components/Autocomplete';
 
 interface Props {
     id: number,
@@ -24,16 +26,11 @@ interface Props {
 const CharacteristicUpdate: FC<Props> = ({ id, afterUpdate }) => {
     const [open, setOpen] = useState(false);
 
-    const { GetByIdCharacteristicName, GetCharacteristicGroups, UpdateCharacteristicName, GetCharacteristicNames } = useActions();
+    const { GetByIdCharacteristicName, GetCharacteristicGroups, UpdateCharacteristicName } = useActions();
 
-    const { characteristicNameInfo } = useTypedSelector((store) => store.characteristicName);
+    const { selectedCharacteristicName } = useTypedSelector((store) => store.characteristicName);
     const { characteristicGroups } = useTypedSelector((store) => store.characteristicGroup);
-
-    const item: ICharacteristicName = {
-        name: characteristicNameInfo.name,
-        characteristicGroupId: characteristicGroups.find(n => n.name === characteristicNameInfo.characteristicGroupName)?.id || '',
-        unitId:  characteristicGroups.find(n => n.name === characteristicNameInfo.unitMeasure)?.id || '',
-    }
+    const { units } = useTypedSelector((store) => store.unit);
 
     const handleClickOpen = async () => {
         setOpen(true);
@@ -47,10 +44,9 @@ const CharacteristicUpdate: FC<Props> = ({ id, afterUpdate }) => {
 
     const onHandleSubmit = async (values: ICharacteristicName) => {
         try {
-            await UpdateCharacteristicName(characteristicNameInfo.id, values);
-            await GetCharacteristicNames();
+            await UpdateCharacteristicName(id, values);
+            afterUpdate();
             handleClickClose();
-            resetForm();
         }
         catch (ex) {
             const serverErrors = ex as ServerError;
@@ -61,32 +57,27 @@ const CharacteristicUpdate: FC<Props> = ({ id, afterUpdate }) => {
                         value.forEach((item) => {
                             message += `${item} `;
                         });
-                        setFieldError(key.toLowerCase(), message);
+                        setFieldError(toLowerFirstLetter(key), message);
                     }
                 });
         }
     }
 
     const formik = useFormik({
-        initialValues: item,
+        initialValues: selectedCharacteristicName,
         validationSchema: validationFields,
         enableReinitialize: true,
         onSubmit: onHandleSubmit
     });
 
-    const { errors, touched, isSubmitting, handleSubmit, setFieldError, getFieldProps, resetForm } = formik;
+    const { errors, touched, isSubmitting, handleSubmit, setFieldError, getFieldProps, setFieldValue } = formik;
 
     return (
         <DialogComponent
             open={open}
             handleClickClose={handleClickClose}
             button={
-                <IconButton
-                    aria-label="edit"
-                    onClick={handleClickOpen}
-                >
-                    <EditIcon />
-                </IconButton>
+                <Edit onClick={() => handleClickOpen()} />
             }
 
             formik={formik}
@@ -108,12 +99,29 @@ const CharacteristicUpdate: FC<Props> = ({ id, afterUpdate }) => {
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <SelectComponent
+                        <AutocompleteComponent
                             label="Characteristic group"
-                            items={characteristicGroups}
+                            name="characteristicGroupId"
                             error={errors.characteristicGroupId}
                             touched={touched.characteristicGroupId}
-                            getFieldProps={{ ...getFieldProps('characteristicGroupId') }}
+                            options={characteristicGroups}
+                            getOptionLabel={(option) => option.name}
+                            isOptionEqualToValue={(option, value) => option?.id === value.id}
+                            defaultValue={characteristicGroups.find(value => value.id === selectedCharacteristicName.characteristicGroupId)}
+                            onChange={(e, value) => { setFieldValue("characteristicGroupId", value?.id) }}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <AutocompleteComponent
+                            label="Unit measure"
+                            name="unitId"
+                            error={errors.unitId}
+                            touched={touched.unitId}
+                            options={units}
+                            getOptionLabel={(option) => option.measure}
+                            isOptionEqualToValue={(option, value) => option.id === value.id}
+                            defaultValue={units.find(value => value.id === selectedCharacteristicName.unitId)}
+                            onChange={(e, value) => { setFieldValue("unitId", value?.id || null) }}
                         />
                     </Grid>
                 </Grid>

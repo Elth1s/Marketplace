@@ -5,9 +5,10 @@ using WebAPI.Exceptions;
 using WebAPI.Extensions;
 using WebAPI.Interfaces.Characteristics;
 using WebAPI.Resources;
-using WebAPI.Specifications.Categories;
 using WebAPI.Specifications.Characteristics;
+using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Request.Characteristics;
+using WebAPI.ViewModels.Response;
 using WebAPI.ViewModels.Response.Characteristics;
 
 namespace WebAPI.Services.Characteristcs
@@ -35,14 +36,14 @@ namespace WebAPI.Services.Characteristcs
             return _mapper.Map<IEnumerable<CharacteristicNameResponse>>(characteristicNames);
         }
 
-        public async Task<SearchCharacteristicNameResponse> SearchAsync(SearchCharacteristicNameRequest request)
+        public async Task<AdminSearchResponse<CharacteristicNameResponse>> SearchAsync(AdminSearchRequest request)
         {
             var spec = new CharacteristicNameSearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
             var countries = await _characteristicNameRepository.ListAsync(spec);
             var mappedCountries = _mapper.Map<IEnumerable<CharacteristicNameResponse>>(countries);
-            var response = new SearchCharacteristicNameResponse() { Count = countries.Count };
+            var response = new AdminSearchResponse<CharacteristicNameResponse>() { Count = countries.Count };
 
-            response.CharacteristicNames = mappedCountries.Skip((request.Page - 1) * request.RowsPerPage).Take(request.RowsPerPage);
+            response.Values = mappedCountries.Skip((request.Page - 1) * request.RowsPerPage).Take(request.RowsPerPage);
 
             return response;
         }

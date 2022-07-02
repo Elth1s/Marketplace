@@ -20,6 +20,7 @@ import { signup } from "../../../../assets/backgrounds"
 import { IResetPassword, ResetPasswordServerError } from "../../types";
 import { LoadingButton } from "@mui/lab";
 import { ResetPasswordSchema } from "../../validation";
+import { toLowerFirstLetter } from "../../../../http_comon";
 
 
 const ResetPassword = () => {
@@ -47,7 +48,7 @@ const ResetPassword = () => {
                             value.forEach((item) => {
                                 message += `${item} `;
                             });
-                            setFieldError(key.toLowerCase(), message);
+                            setFieldError(toLowerFirstLetter(key), message);
                         }
                     });
                 let message = "Sign up failed! \n";
