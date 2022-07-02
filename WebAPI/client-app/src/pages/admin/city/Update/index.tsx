@@ -9,79 +9,70 @@ import { useActions } from "../../../../hooks/useActions";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 
 import { validationFields } from "../validation";
-import { ICity, ICityUpdatePage } from "../types";
-import { ServerError } from '../../../../store/types';
+import { ServerError, UpdateProps } from '../../../../store/types';
 
 import DialogComponent from '../../../../components/Dialog';
-import SelectComponent from '../../../../components/Select';
 import TextFieldComponent from '../../../../components/TextField';
+import { Edit } from '@mui/icons-material';
+import { toLowerFirstLetter } from '../../../../http_comon';
+import AutocompleteComponent from '../../../../components/Autocomplete';
 
-const CityUpdate: FC<ICityUpdatePage> = ({ id }) => {
+
+
+
+const Update: FC<UpdateProps> = ({ id, afterUpdate }) => {
     const [open, setOpen] = useState(false);
 
-    const { GetByIdCity, GetCountries, UpdateCity, GetCities } = useActions();
+    const { GetCityById, GetCountries, UpdateCity } = useActions();
 
-    const { cityInfo } = useTypedSelector((store) => store.city);
+    const { selectedCity } = useTypedSelector((store) => store.city);
     const { countries } = useTypedSelector((store) => store.country);
 
-    const item: ICity = {
-        name: cityInfo.name,
-        countryId: countries.find(n => n.name === cityInfo.countryName)?.id || ''
-    }
 
     const handleClickOpen = async () => {
         setOpen(true);
-        // await GetCountries();
-        await GetByIdCity(id);
+        await GetCityById(id);
+        await GetCountries();
     };
 
     const handleClickClose = () => {
         setOpen(false);
     };
 
-    const onHandleSubmit = async (values: ICity) => {
-        console.log("data", values);
-        try {
-            await UpdateCity(cityInfo.id, values);
-            await GetCities();
-            handleClickClose();
-            resetForm();
-        }
-        catch (ex) {
-            const serverErrors = ex as ServerError;
-            if (serverErrors.errors)
-                Object.entries(serverErrors.errors).forEach(([key, value]) => {
-                    if (Array.isArray(value)) {
-                        let message = "";
-                        value.forEach((item) => {
-                            message += `${item} `;
-                        });
-                        setFieldError(key.toLowerCase(), message);
-                    }
-                });
-        }
-    }
-
     const formik = useFormik({
-        initialValues: item,
+        initialValues: selectedCity,
         validationSchema: validationFields,
         enableReinitialize: true,
-        onSubmit: onHandleSubmit
+        onSubmit: async (values, { setFieldError }) => {
+            try {
+                await UpdateCity(id, values);
+                afterUpdate()
+                handleClickClose();
+            }
+            catch (ex) {
+                const serverErrors = ex as ServerError;
+                if (serverErrors.errors)
+                    Object.entries(serverErrors.errors).forEach(([key, value]) => {
+                        if (Array.isArray(value)) {
+                            let message = "";
+                            value.forEach((item) => {
+                                message += `${item} `;
+                            });
+                            setFieldError(toLowerFirstLetter(key), message);
+                        }
+                    });
+            }
+        }
     });
 
-    const { errors, touched, isSubmitting, handleSubmit, setFieldError, getFieldProps, resetForm } = formik;
+    const { errors, touched, isSubmitting, handleSubmit, getFieldProps, setFieldValue } = formik;
 
     return (
         <DialogComponent
             open={open}
             handleClickClose={handleClickClose}
             button={
-                <IconButton
-                    aria-label="edit"
-                    onClick={handleClickOpen}
-                >
-                    <EditIcon />
-                </IconButton>
+                <Edit onClick={() => handleClickOpen()} />
             }
 
             formik={formik}
@@ -103,12 +94,16 @@ const CityUpdate: FC<ICityUpdatePage> = ({ id }) => {
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <SelectComponent
-                            label="City"
-                            items={countries}
+                        <AutocompleteComponent
+                            label="Country"
+                            name="countryId"
                             error={errors.countryId}
                             touched={touched.countryId}
-                            getFieldProps={{ ...getFieldProps('countryId') }}
+                            options={countries}
+                            getOptionLabel={(option) => option.name}
+                            isOptionEqualToValue={(option, value) => option?.id === value.id}
+                            defaultValue={countries.find(value => value.id === selectedCity.countryId)}
+                            onChange={(e, value) => { setFieldValue("countryId", value?.id) }}
                         />
                     </Grid>
                 </Grid>
@@ -117,4 +112,4 @@ const CityUpdate: FC<ICityUpdatePage> = ({ id }) => {
     )
 }
 
-export default CityUpdate;
+export default Update;

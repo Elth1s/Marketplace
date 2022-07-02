@@ -13,15 +13,9 @@ import Create from '../Create';
 import Update from '../Update';
 
 import { ICharacteristicGroupInfo } from '../types';
+import { HeadCell } from '../../../../store/types';
 
-
-interface HeadCell {
-    id: keyof ICharacteristicGroupInfo;
-    numeric: boolean;
-    label: string;
-}
-
-const headCells: HeadCell[] = [
+const headCells: HeadCell<ICharacteristicGroupInfo>[] = [
     {
         id: 'id',
         numeric: true,
@@ -47,13 +41,14 @@ const CharacteristicGroupTable = () => {
     const { characteristicGroups, count } = useTypedSelector((store) => store.characteristicGroup);
 
     useEffect(() => {
+        document.title = "Characteristic Group";
         getData();
     }, [page, rowsPerPage, name, isAscOrder, orderBy]);
 
     const getData = async () => {
         try {
-            document.title = "Characteristic Group";
             await SearchCharacteristicGroups(page, rowsPerPage, name, isAscOrder, orderBy);
+            setSelected([]);
         } catch (ex) {
         }
     };
@@ -106,7 +101,7 @@ const CharacteristicGroupTable = () => {
 
     return (
         <>
-            <Create />
+            <Create afterCreate={() => { getData() }} />
             <EnhancedTable
                 page={page}
                 rowsPerPage={rowsPerPage}

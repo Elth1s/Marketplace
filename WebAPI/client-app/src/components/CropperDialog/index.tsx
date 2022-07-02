@@ -88,10 +88,10 @@ const CropperDialog: React.FC<ICropperDialog> = ({ imgSrc, aspectRation = 1 / 1,
                             sm: "50rem"
                         }
                     },
-                    style: { borderRadius: 10 }
+                    style: { borderRadius: 12 }
                 }}
             >
-                <DialogTitle sx={{ m: 0, p: 2 }}>
+                <DialogTitle sx={{ m: 0, px: 3 }}>
                     Change photo
                     <IconButton
                         aria-label="close"
@@ -99,15 +99,16 @@ const CropperDialog: React.FC<ICropperDialog> = ({ imgSrc, aspectRation = 1 / 1,
                         sx={{
                             position: 'absolute',
                             my: "auto",
-                            right: 8,
-                            top: 10
+                            right: 20,
+                            top: 15,
+                            borderRadius: "12px"
                         }}
                     >
                         <Close />
                     </IconButton>
                 </DialogTitle>
-                <DialogContent dividers  >
-                    <Grid container rowSpacing={{ xs: 3 }} columnSpacing={{ xs: 3 }}>
+                <DialogContent sx={{ m: 0, px: 3, pt: 0 }}>
+                    <Grid container spacing={{ xs: 3 }}>
                         <Grid item lg={9} xs={12} sx={{ height: "475px" }}>
                             <Paper>
                                 <img ref={imgRef}
@@ -117,7 +118,7 @@ const CropperDialog: React.FC<ICropperDialog> = ({ imgSrc, aspectRation = 1 / 1,
                             </Paper>
                         </Grid>
                         <Grid item lg={3} xs={12}>
-                            <Paper elevation={0} >
+                            <Paper elevation={2} >
                                 <div ref={prevRef as LegacyRef<HTMLDivElement>}
                                     style={{
                                         width: "170px",
@@ -130,7 +131,7 @@ const CropperDialog: React.FC<ICropperDialog> = ({ imgSrc, aspectRation = 1 / 1,
                         </Grid>
                     </Grid>
                 </DialogContent>
-                <DialogActions>
+                <DialogActions sx={{ m: 0, p: 3, pt: 0 }}>
                     <Button autoFocus size="medium"
                         variant="contained"
                         onClick={cropperDialogSave}

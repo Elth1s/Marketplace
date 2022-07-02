@@ -10,11 +10,12 @@ import {
 } from '@mui/icons-material';
 import { Form, FormikProvider, useFormik } from "formik";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 // import { toast } from 'react-toastify';
 
 import GoogleExternalLogin from "../../../components/Google";
+import LinkRouter from "../../../components/LinkRouter";
 
 import { SignUpSchema } from "../validation";
 import { useActions } from "../../../hooks/useActions";
@@ -23,15 +24,14 @@ import { ServerError } from "../../../store/types";
 import { AuthAvatar, AuthHeaderTypography, AuthLoadingButton, AuthSideTypography, AuthTextField } from "../styled";
 
 import { signup } from "../../../assets/backgrounds"
-import { twitter, facebook } from "../../../assets/icons";
-import { getLocalAccessToken } from "../../../http_comon";
+import { facebook } from "../../../assets/icons";
+import { toLowerFirstLetter } from "../../../http_comon";
 
 const SignUpPage = () => {
-    const { RegisterUser, AuthUser } = useActions();
+    const { RegisterUser } = useActions();
     const { executeRecaptcha } = useGoogleReCaptcha();
 
     const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const navigate = useNavigate();
     const registerModel: IRegisterModel = { firstName: '', secondName: '', email: '', password: '' };
 
@@ -62,7 +62,8 @@ const SignUpPage = () => {
                             value.forEach((item) => {
                                 message += `${item} `;
                             });
-                            setFieldError(key.toLowerCase(), message);
+                            console.log(toLowerFirstLetter(key))
+                            setFieldError(toLowerFirstLetter(key), message);
                         }
                     });
                 let message = "Sign up failed! \n";
@@ -79,9 +80,7 @@ const SignUpPage = () => {
     const handleShowPassword = () => {
         setShowPassword((show) => !show);
     };
-    const handleShowConfirmPassword = () => {
-        setShowConfirmPassword((show) => !show);
-    };
+
     return (
         <Grid container sx={{ height: "100vh" }}>
             <Grid
@@ -177,7 +176,7 @@ const SignUpPage = () => {
                                     />
                                 </Grid>
                                 <Grid item xs={12} sx={{ marginTop: "20px" }} display="flex" justifyContent="flex-end">
-                                    <AuthSideTypography component={Link} to="/auth/signin" sx={{ cursor: "pointer", textDecoration: "none", color: "#000" }} >Have an account?</AuthSideTypography>
+                                    <AuthSideTypography component={LinkRouter} underline="none" color="unset" to="/auth/signin" sx={{ cursor: "pointer" }} >Have an account?</AuthSideTypography>
                                 </Grid>
                                 <Grid item xs={12} sx={{ marginTop: "62px" }}>
                                     <AuthLoadingButton

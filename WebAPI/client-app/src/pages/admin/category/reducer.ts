@@ -1,24 +1,29 @@
 import { CategoryAction, CategoryActionTypes, CategoryState } from "./types";
 
 const initialState: CategoryState = {
-    categoryInfo: {
+    selectedCategory: {
         id: 0,
         name: "",
         image: "",
-        parentName: ""
+        parentId: 0
     },
     categories: [],
     categoriesForSelect: [],
-    last_page: 0,
+    count: 0,
 }
 
 export const categoryReducer = (state = initialState, action: CategoryAction): CategoryState => {
     switch (action.type) {
-
         case CategoryActionTypes.GET_CATEGORIES:
             return {
                 ...state,
                 categories: action.payload,
+            }
+        case CategoryActionTypes.SEARCH_CATEGORIES:
+            return {
+                ...state,
+                categories: action.payload.values,
+                count: action.payload.count,
             }
         case CategoryActionTypes.GET_CATEGORIES_FOR_SELECT:
             return {
@@ -28,7 +33,7 @@ export const categoryReducer = (state = initialState, action: CategoryAction): C
         case CategoryActionTypes.GET_BY_ID_CATEGORY:
             return {
                 ...state,
-                categoryInfo: action.payload,
+                selectedCategory: action.payload,
             }
         case CategoryActionTypes.CREATE_CATEGOTY:
             return {

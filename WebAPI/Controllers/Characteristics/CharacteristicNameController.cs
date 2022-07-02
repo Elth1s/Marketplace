@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using WebAPI.Interfaces.Characteristics;
+using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Request.Characteristics;
+using WebAPI.ViewModels.Response;
 using WebAPI.ViewModels.Response.Characteristics;
 
 namespace WebAPI.Controllers.Characteristics
@@ -48,13 +50,13 @@ namespace WebAPI.Controllers.Characteristics
         /// <response code="401">You are not authorized</response>
         /// <response code="403">You don't have permission</response>
         /// <response code="500">An internal error has occurred</response>
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(SearchCharacteristicNameResponse))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AdminSearchResponse<CharacteristicNameResponse>))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
         [HttpGet("Search")]
-        public async Task<IActionResult> SearchCountries([FromQuery] SearchCharacteristicNameRequest request)
+        public async Task<IActionResult> SearchCountries([FromQuery] AdminSearchRequest request)
         {
             var result = await _characteristicNameService.SearchAsync(request);
             return Ok(result);

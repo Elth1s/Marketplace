@@ -19,11 +19,11 @@ export interface ICountryInfo {
 
 export interface ISearchCountries {
     count: number,
-    countries: Array<ICountryInfo>
+    values: Array<ICountryInfo>
 }
 
 export interface CountryState {
-    countryInfo: ICountryInfo,
+    selectedCountry: ICountry,
     count: number,
     countries: Array<ICountryInfo>
 }
@@ -41,7 +41,7 @@ export interface SearchCountriesAction {
 
 export interface GetByIdCountryAction {
     type: CountryActionTypes.GET_BY_ID_COUNTRY,
-    payload: ICountryInfo
+    payload: ICountry
 }
 
 export interface CreateCountryAction {

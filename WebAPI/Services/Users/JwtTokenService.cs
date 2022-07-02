@@ -52,7 +52,7 @@ namespace WebAPI.Services.Users
             var jwt = new JwtSecurityToken(
                 audience: _jwtSettings.Audience,
                 issuer: _jwtSettings.Issuer,
-                expires: DateTime.UtcNow.AddHours(_jwtSettings.AccessTokenDuration),
+                expires: DateTime.UtcNow.AddDays(_jwtSettings.AccessTokenDuration),
                 signingCredentials: signinCredentials,
                 claims: claims
             );

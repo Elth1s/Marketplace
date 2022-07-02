@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
 
-namespace WebAPI.ViewModels.Request.Characteristics
+namespace WebAPI.ViewModels.Request
 {
     /// <summary>
-    /// Characteristic groups class to create and update country 
+    /// Country class to create and update country 
     /// </summary>
-    public class SearchCharacteristicGroupRequest
+    public class AdminSearchRequest
     {
         /// <summary>
         /// Page
@@ -20,7 +20,7 @@ namespace WebAPI.ViewModels.Request.Characteristics
         public int RowsPerPage { get; set; }
 
         /// <summary>
-        /// Name of characteristic groups
+        /// Name of country
         /// </summary>
         /// <example>USA</example>
         public string Name { get; set; }
@@ -39,11 +39,11 @@ namespace WebAPI.ViewModels.Request.Characteristics
     }
 
     /// <summary>
-    /// Class for <seealso cref="SearchCharacteristicGroupRequest" /> validation
+    /// Class for <seealso cref="AdminSearchRequest" /> validation
     /// </summary>
-    public class SearchCharacteristicGroupRequestValidator : AbstractValidator<SearchCharacteristicGroupRequest>
+    public class AdminSearchRequestValidator : AbstractValidator<AdminSearchRequest>
     {
-        public SearchCharacteristicGroupRequestValidator()
+        public AdminSearchRequestValidator()
         {
             //Page
             RuleFor(x => x.Page).Cascade(CascadeMode.Stop)

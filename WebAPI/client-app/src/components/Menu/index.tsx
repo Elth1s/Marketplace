@@ -1,6 +1,5 @@
 import { AdminPanelSettingsOutlined, Login, Logout, NightlightOutlined, PersonOutlineOutlined } from '@mui/icons-material';
 import {
-    Button,
     Menu,
     Typography,
     Box,
@@ -10,9 +9,13 @@ import {
     Switch
 } from '@mui/material';
 import React, { useState } from 'react'
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 import { useActions } from '../../hooks/useActions';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
+
+import LinkRouter from '../LinkRouter';
+import { MenuItemStyle } from './styled';
 
 interface ISettingsMenuItem {
     label: string,
@@ -99,7 +102,7 @@ const MainMenu = () => {
             >
                 {isAuth &&
                     <Box>
-                        <Link to="/profile" style={{ textDecoration: 'none', color: 'unset' }} onClick={handleClose}>
+                        <LinkRouter underline="none" color="unset" to="/profile" onClick={handleClose}>
                             <Box sx={{ my: 0.5, mb: 1.5, px: 2.5 }}>
                                 <Typography variant="subtitle1" noWrap >
                                     {user.username}
@@ -108,31 +111,26 @@ const MainMenu = () => {
                                     {user.email}
                                 </Typography>
                             </Box>
-                        </Link>
+                        </LinkRouter>
                         <Divider sx={{ my: 1, background: "#45a29e" }} />
                         {user.roles == "Admin" &&
-                            <Link to="/admin" style={{ textDecoration: 'none', color: 'unset' }}>
-                                <MenuItem
-                                    sx={{ py: 1, px: 2.5 }}
-
-                                >
+                            <LinkRouter underline="none" color="unset" to="/admin" >
+                                <MenuItemStyle                                >
                                     <IconButton sx={{ mr: 2, width: 24, height: 24, color: "secondary" }}>
                                         <AdminPanelSettingsOutlined />
                                     </IconButton>
                                     <Typography variant="subtitle1" noWrap sx={{ color: 'secondary' }}>
                                         Admin Panel
                                     </Typography>
-                                </MenuItem>
-                            </Link>}
+                                </MenuItemStyle>
+                            </LinkRouter>}
                     </Box>
                 }
                 {/* <Divider sx={{ my: 1, background: "#45a29e" }} /> */}
                 {UISettings.map((option) => (
-                    <MenuItem
+                    <MenuItemStyle
                         key={option.label}
                         onClick={option.onClick}
-                        sx={{ py: 1, px: 2.5 }}
-                        style={{ textDecoration: 'none', color: 'unset' }}
                     >
                         <IconButton sx={{ mr: 2, width: 24, height: 24 }}>
                             {option.icon}
@@ -143,37 +141,30 @@ const MainMenu = () => {
                         {option.switchElement &&
                             <Switch checked={darkTheme} />
                         }
-                    </MenuItem>
+                    </MenuItemStyle>
                 ))}
                 <Divider sx={{ my: 1, background: "#45a29e" }} />
                 {isAuth
                     ?
-                    <MenuItem
-                        onClick={handleLogOut}
-                        sx={{ py: 1, px: 2.5 }}
-                        style={{ textDecoration: 'none', color: 'unset' }}
-                    >
+                    <MenuItemStyle onClick={handleLogOut}>
                         <IconButton sx={{ mr: 2, width: 24, height: 24 }}>
                             <Logout />
                         </IconButton>
                         <Typography variant="subtitle1" noWrap >
                             Log Out
                         </Typography>
-                    </MenuItem>
+                    </MenuItemStyle>
                     :
-                    <Link to="/auth/signin" style={{ textDecoration: 'none', color: 'unset' }}>
-                        <MenuItem
-                            sx={{ py: 1, px: 2.5 }}
-
-                        >
+                    <LinkRouter underline="none" color="unset" to="/auth/signin" >
+                        <MenuItemStyle>
                             <IconButton sx={{ mr: 2, width: 24, height: 24, color: "secondary" }}>
                                 <Login />
                             </IconButton>
                             <Typography variant="subtitle1" noWrap sx={{ color: 'secondary' }}>
                                 Sign In
                             </Typography>
-                        </MenuItem>
-                    </Link>}
+                        </MenuItemStyle>
+                    </LinkRouter>}
             </Menu>
         </>
     )

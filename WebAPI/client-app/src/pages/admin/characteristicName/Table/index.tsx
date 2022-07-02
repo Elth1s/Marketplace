@@ -13,14 +13,9 @@ import Create from '../Create';
 import Update from '../Update';
 
 import { ICharacteristicNameInfo } from '../types';
+import { HeadCell } from '../../../../store/types';
 
-interface HeadCell {
-    id: keyof ICharacteristicNameInfo;
-    numeric: boolean;
-    label: string;
-}
-
-const headCells: HeadCell[] = [
+const headCells: HeadCell<ICharacteristicNameInfo>[] = [
     {
         id: 'id',
         numeric: true,
@@ -57,12 +52,13 @@ const CharacteristicNameTable = () => {
 
     useEffect(() => {
         getData();
+        document.title = "Characteristic Name";
     }, [page, rowsPerPage, name, isAscOrder, orderBy]);
 
     const getData = async () => {
         try {
-            document.title = "Characteristic Name";
             await SearchCharacteristicNames(page, rowsPerPage, name, isAscOrder, orderBy);
+            // setSelected([]);
         } catch (ex) {
         }
     };
@@ -115,7 +111,7 @@ const CharacteristicNameTable = () => {
 
     return (
         <>
-            <Create />
+            <Create afterCreate={() => getData()} />
             <EnhancedTable
                 page={page}
                 rowsPerPage={rowsPerPage}

@@ -18,13 +18,13 @@ import { ProfileSchema } from "../validation";
 import { ServerError } from "../../../store/types";
 
 import CropperDialog from "../../../components/CropperDialog";
+import { toLowerFirstLetter } from "../../../http_comon";
 
 
 const Profile = () => {
 
     const { GetProfile, UpdateProfile, SendConfirmEmail, IsEmailConfirmed } = useActions();
     const [loading, setLoading] = useState<boolean>(false);
-
 
     const { userInfo } = useTypedSelector((store) => store.profile);
     useEffect(() => {
@@ -62,7 +62,7 @@ const Profile = () => {
                             value.forEach((item) => {
                                 message += `${item} `;
                             });
-                            setFieldError(key.toLowerCase(), message);
+                            setFieldError(toLowerFirstLetter(key), message);
                         }
                     });
                 let message = "Update failed! \n";

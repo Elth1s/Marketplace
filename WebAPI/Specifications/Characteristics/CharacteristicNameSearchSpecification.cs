@@ -11,14 +11,33 @@ namespace WebAPI.Specifications.Characteristics
             if (!string.IsNullOrEmpty(name))
                 Query.Where(item => item.Name.Contains(name));
 
-            if (isAscOrder)
-                Query.OrderBy(orderBy);
-            else
-                Query.OrderByDescending(orderBy);
-
             Query.Include(c => c.CharacteristicGroup)
                 .Include(c => c.Unit)
                 .AsSplitQuery();
+
+            if (orderBy == "characteristicGroupName")
+            {
+                if (isAscOrder)
+                    Query.OrderBy(c => c.CharacteristicGroup.Name);
+                else
+                    Query.OrderByDescending(c => c.CharacteristicGroup.Name);
+            }
+            else if (orderBy == "unitMeasure")
+            {
+                if (isAscOrder)
+                    Query.OrderBy(c => c.Unit.Measure);
+                else
+                    Query.OrderByDescending(c => c.Unit.Measure);
+            }
+            else
+            {
+                if (isAscOrder)
+                    Query.OrderBy(orderBy);
+                else
+                    Query.OrderByDescending(orderBy);
+            }
+
+
         }
     }
 }

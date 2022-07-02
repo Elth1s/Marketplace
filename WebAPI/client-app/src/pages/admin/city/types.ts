@@ -3,11 +3,12 @@ export enum CityActionTypes {
     GET_BY_ID_CITY = "GET_BY_ID_CITY",
     CREATE_CITY = "CREATE_CITY",
     UPDATE_CITY = "UPDATE_CITY",
+    SEARCH_CITIES = "SEARCH_CITIES"
 }
 
 export interface ICity {
     name: string,
-    countryId: number | string,
+    countryId: number,
 }
 
 export interface ICityInfo {
@@ -16,25 +17,32 @@ export interface ICityInfo {
     countryName: string,
 }
 
+export interface ISearchCities {
+    count: number,
+    values: Array<ICityInfo>
+}
+
 export interface CityState {
-    cityInfo: ICityInfo,
+    selectedCity: ICity,
+    count: number,
     cities: Array<ICityInfo>
 }
 
 
-export interface ICityUpdatePage {
-    id: number,
-};
 
-
-export interface GetCitysAction {
+export interface GetCitiesAction {
     type: CityActionTypes.GET_CITIES,
     payload: Array<ICityInfo>
 }
 
+export interface SearchCitiesAction {
+    type: CityActionTypes.SEARCH_CITIES,
+    payload: ISearchCities
+}
+
 export interface GetByIdCityAction {
     type: CityActionTypes.GET_BY_ID_CITY,
-    payload: ICityInfo
+    payload: ICity
 }
 
 export interface CreateCityAction {
@@ -48,7 +56,8 @@ export interface UpdateCityAction {
 }
 
 
-export type CityAction = GetCitysAction |
+export type CityAction = GetCitiesAction |
+    SearchCitiesAction |
     GetByIdCityAction |
     CreateCityAction |
     UpdateCityAction;

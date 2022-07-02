@@ -1,40 +1,24 @@
 import {
-    Box,
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
     Grid,
-    IconButton,
-    Paper,
-    Slide,
-    TableCell
 } from "@mui/material";
-import { Close, Edit } from "@mui/icons-material";
+import { Edit } from "@mui/icons-material";
 
-import { LegacyRef, forwardRef, useRef, useState, useEffect, FC } from "react";
-import Cropper from "cropperjs";
-import { Form, FormikProvider, useFormik } from "formik";
-import { ServerError } from "../../../../store/types";
+import { useState, FC } from "react";
+import { useFormik } from "formik";
+import { ServerError, UpdateProps } from "../../../../store/types";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import { useActions } from "../../../../hooks/useActions";
 import { countryValidation } from "../validation";
 import TextFieldComponent from "../../../../components/TextField";
-import { LoadingButton } from "@mui/lab";
 import DialogComponent from "../../../../components/Dialog";
+import { toLowerFirstLetter } from "../../../../http_comon";
 
 
-interface Props {
-    id: number,
-    afterUpdate: any
-}
-
-const EditCountryDialog: FC<Props> = ({ id, afterUpdate }) => {
+const Update: FC<UpdateProps> = ({ id, afterUpdate }) => {
     const [open, setOpen] = useState(false);
 
     const { GetByIdCountry, UpdateCountry } = useActions();
-    const { countryInfo } = useTypedSelector((store) => store.country);
+    const { selectedCountry } = useTypedSelector((store) => store.country);
 
     const handleClickOpen = async () => {
         setOpen(true);
@@ -46,13 +30,12 @@ const EditCountryDialog: FC<Props> = ({ id, afterUpdate }) => {
     };
 
     const formik = useFormik({
-        initialValues: countryInfo,
+        initialValues: selectedCountry,
         validationSchema: countryValidation,
         enableReinitialize: true,
         onSubmit: async (values, { setFieldError }) => {
             try {
-                await UpdateCountry(countryInfo.id, values);
-                // await GetCountries();
+                await UpdateCountry(id, values);
                 afterUpdate();
                 handleClickClose();
             }
@@ -65,14 +48,14 @@ const EditCountryDialog: FC<Props> = ({ id, afterUpdate }) => {
                             value.forEach((item) => {
                                 message += `${item} `;
                             });
-                            setFieldError(key.toLowerCase(), message);
+                            setFieldError(toLowerFirstLetter(key), message);
                         }
                     });
             }
         }
     });
 
-    const { errors, touched, isSubmitting, handleSubmit, getFieldProps, resetForm } = formik;
+    const { errors, touched, isSubmitting, handleSubmit, getFieldProps } = formik;
 
     return (
         <DialogComponent
@@ -114,4 +97,4 @@ const EditCountryDialog: FC<Props> = ({ id, afterUpdate }) => {
         />
     )
 }
-export default EditCountryDialog;
+export default Update;

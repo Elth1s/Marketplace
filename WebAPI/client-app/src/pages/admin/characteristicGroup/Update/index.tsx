@@ -1,6 +1,5 @@
 import Grid from '@mui/material/Grid';
-import IconButton from '@mui/material/IconButton';
-import EditIcon from '@mui/icons-material/Edit';
+import { Edit } from '@mui/icons-material';
 
 import { FC, useState } from "react";
 import { useFormik } from "formik";
@@ -8,28 +7,21 @@ import { useFormik } from "formik";
 import { useActions } from "../../../../hooks/useActions";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 
-import { ServerError } from '../../../../store/types';
+import { ServerError, UpdateProps } from '../../../../store/types';
 
 import DialogComponent from '../../../../components/Dialog';
 import TextFieldComponent from '../../../../components/TextField';
 
 import { validationFields } from "../validation";
-import { ICharacteristicGroup } from "../types";
+import { IconButton } from '@mui/material';
+import { toLowerFirstLetter } from '../../../../http_comon';
 
-interface Props {
-    id: number,
-    afterUpdate: any
-}
 
-const CharacteristicGroupUpdate: FC<Props> = ({ id, afterUpdate }) => {
+const CharacteristicGroupUpdate: FC<UpdateProps> = ({ id, afterUpdate }) => {
     const [open, setOpen] = useState(false);
 
     const { GetByIdCharacteristicGroup, UpdateCharacteristicGroup } = useActions();
-    const { characteristicGroupInfo } = useTypedSelector((store) => store.characteristicGroup);
-
-    const item: ICharacteristicGroup = {
-        name: characteristicGroupInfo.name,
-    }
+    const { selectedCharacteristicGroup } = useTypedSelector((store) => store.characteristicGroup);
 
     const handleClickOpen = async () => {
         setOpen(true);
@@ -41,47 +33,40 @@ const CharacteristicGroupUpdate: FC<Props> = ({ id, afterUpdate }) => {
         resetForm();
     };
 
-    const onHandleSubmit = async (values: ICharacteristicGroup) => {
-        try {
-            await UpdateCharacteristicGroup(characteristicGroupInfo.id, values);
-            afterUpdate();
-            handleClickClose();
-        }
-        catch (ex) {
-            const serverErrors = ex as ServerError;
-            if (serverErrors.errors)
-                Object.entries(serverErrors.errors).forEach(([key, value]) => {
-                    if (Array.isArray(value)) {
-                        let message = "";
-                        value.forEach((item) => {
-                            message += `${item} `;
-                        });
-                        setFieldError(key.toLowerCase(), message);
-                    }
-                });
-        }
-    }
-
     const formik = useFormik({
-        initialValues: item,
+        initialValues: selectedCharacteristicGroup,
         validationSchema: validationFields,
         enableReinitialize: true,
-        onSubmit: onHandleSubmit
+        onSubmit: async (values, { setFieldError }) => {
+            try {
+                await UpdateCharacteristicGroup(id, values);
+                afterUpdate();
+                handleClickClose();
+            }
+            catch (ex) {
+                const serverErrors = ex as ServerError;
+                if (serverErrors.errors)
+                    Object.entries(serverErrors.errors).forEach(([key, value]) => {
+                        if (Array.isArray(value)) {
+                            let message = "";
+                            value.forEach((item) => {
+                                message += `${item} `;
+                            });
+                            setFieldError(toLowerFirstLetter(key), message);
+                        }
+                    });
+            }
+        }
     });
 
-    const { errors, touched, isSubmitting, handleSubmit, setFieldError, getFieldProps, resetForm } = formik;
+    const { errors, touched, isSubmitting, handleSubmit, getFieldProps, resetForm } = formik;
 
     return (
         <DialogComponent
             open={open}
             handleClickClose={handleClickClose}
             button={
-                <IconButton
-                    aria-label="edit"
-                    onClick={handleClickOpen}
-                >
-                    <EditIcon />
-                </IconButton>
+                <Edit onClick={() => handleClickOpen()} />
             }
 
             formik={formik}

@@ -35,6 +35,19 @@ namespace WebAPI.Services
             var response = cities.Select(c => _mapper.Map<CityResponse>(c));
             return response;
         }
+
+        public async Task<AdminSearchResponse<CityResponse>> SearchCitiesAsync(AdminSearchRequest request)
+        {
+            var spec = new CitySearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
+            var cities = await _cityRepository.ListAsync(spec);
+            var mappedCities = _mapper.Map<IEnumerable<CityResponse>>(cities);
+            var response = new AdminSearchResponse<CityResponse>() { Count = cities.Count };
+
+            response.Values = mappedCities.Skip((request.Page - 1) * request.RowsPerPage).Take(request.RowsPerPage);
+
+            return response;
+        }
+
         public async Task<CityResponse> GetCityByIdAsync(int cityId)
         {
             var spec = new CityIncludeFullInfoSpecification(cityId);
@@ -84,6 +97,17 @@ namespace WebAPI.Services
             city.CityNullChecking();
 
             await _cityRepository.DeleteAsync(city);
+            await _cityRepository.SaveChangesAsync();
+        }
+
+        public async Task DeleteCitiesAsync(IEnumerable<int> ids)
+        {
+            foreach (var item in ids)
+            {
+                var city = await _cityRepository.GetByIdAsync(item);
+                //city.CityNullChecking();
+                await _cityRepository.DeleteAsync(city);
+            }
             await _cityRepository.SaveChangesAsync();
         }
     }

@@ -5,11 +5,11 @@ import {
 } from "./types";
 
 const initialState: CityState = {
-    cityInfo: {
-        id: 0,
+    selectedCity: {
         name: "",
-        countryName: "",
+        countryId: 0,
     },
+    count: 0,
     cities: []
 }
 
@@ -20,10 +20,16 @@ export const cityReducer = (state = initialState, action: CityAction): CityState
                 ...state,
                 cities: action.payload,
             }
+        case CityActionTypes.SEARCH_CITIES:
+            return {
+                ...state,
+                count: action.payload.count,
+                cities: action.payload.values,
+            }
         case CityActionTypes.GET_BY_ID_CITY:
             return {
                 ...state,
-                cityInfo: action.payload,
+                selectedCity: action.payload,
             }
         case CityActionTypes.CREATE_CITY:
             return {

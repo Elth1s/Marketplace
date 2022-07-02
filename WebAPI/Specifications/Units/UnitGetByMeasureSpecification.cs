@@ -1,7 +1,7 @@
 ﻿using Ardalis.Specification;
 using DAL.Entities;
 
-namespace WebAPI.Specifications
+namespace WebAPI.Specifications.Units
 {
     public class UnitGetByMeasureSpecification : Specification<Unit>, ISingleResultSpecification<Unit>
     {

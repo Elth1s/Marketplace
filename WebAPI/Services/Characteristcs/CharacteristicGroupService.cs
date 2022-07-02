@@ -5,9 +5,10 @@ using DAL.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using WebAPI.Extensions;
 using WebAPI.Interfaces.Characteristics;
-using WebAPI.Specifications.Categories;
 using WebAPI.Specifications.Characteristics;
+using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Request.Characteristics;
+using WebAPI.ViewModels.Response;
 using WebAPI.ViewModels.Response.Characteristics;
 
 namespace WebAPI.Services.Characteristcs
@@ -35,14 +36,14 @@ namespace WebAPI.Services.Characteristcs
             return _mapper.Map<IEnumerable<CharacteristicGroupResponse>>(characteristicGroups);
         }
 
-        public async Task<SearchCharacteristicGroupResponse> SearchCharacteristicGroupsAsync(SearchCharacteristicGroupRequest request)
+        public async Task<AdminSearchResponse<CharacteristicGroupResponse>> SearchCharacteristicGroupsAsync(AdminSearchRequest request)
         {
             var spec = new CharacteristicGroupSearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
             var characteristicGroups = await _characteristicGroupRepository.ListAsync(spec);
             var mappedCountries = _mapper.Map<IEnumerable<CharacteristicGroupResponse>>(characteristicGroups);
-            var response = new SearchCharacteristicGroupResponse() { Count = characteristicGroups.Count };
+            var response = new AdminSearchResponse<CharacteristicGroupResponse>() { Count = characteristicGroups.Count };
 
-            response.CharacteristicGroups = mappedCountries.Skip((request.Page - 1) * request.RowsPerPage).Take(request.RowsPerPage);
+            response.Values = mappedCountries.Skip((request.Page - 1) * request.RowsPerPage).Take(request.RowsPerPage);
 
             return response;
         }

@@ -1,22 +1,23 @@
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useFormik } from "formik";
 
 import { useActions } from "../../../../hooks/useActions";
 
 import { validationFields } from "../validation";
 import { ICharacteristicGroup } from "../types";
-import { ServerError } from '../../../../store/types';
+import { CreateProps, ServerError } from '../../../../store/types';
 
 import DialogComponent from '../../../../components/Dialog';
 import TextFieldComponent from "../../../../components/TextField";
+import { toLowerFirstLetter } from '../../../../http_comon';
 
-const CharacteristicGroupCreate = () => {
+const CharacteristicGroupCreate: FC<CreateProps> = ({ afterCreate }) => {
     const [open, setOpen] = useState(false);
 
-    const { CreateCharacteristicGroup, GetCharacteristicGroups } = useActions();
+    const { CreateCharacteristicGroup } = useActions();
 
     const item: ICharacteristicGroup = {
         name: "",
@@ -33,9 +34,9 @@ const CharacteristicGroupCreate = () => {
     const onHandleSubmit = async (values: ICharacteristicGroup) => {
         try {
             await CreateCharacteristicGroup(values);
-            await GetCharacteristicGroups();
-            handleClickClose();
+            afterCreate();
             resetForm();
+            handleClickClose();
         } catch (ex) {
             const serverErrors = ex as ServerError;
             if (serverErrors.errors)
@@ -45,7 +46,7 @@ const CharacteristicGroupCreate = () => {
                         value.forEach((item) => {
                             message += `${item} `;
                         });
-                        setFieldError(key.toLowerCase(), message);
+                        setFieldError(toLowerFirstLetter(key), message);
                     }
                 });
         }

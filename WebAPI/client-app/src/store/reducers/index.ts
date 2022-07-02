@@ -7,6 +7,7 @@ import { characteristicGroupReducer } from "../../pages/admin/characteristicGrou
 import { characteristicNameReducer } from "../../pages/admin/characteristicName/reducer";
 import { countryReducer } from "../../pages/admin/country/reducer";
 import { cityReducer } from "../../pages/admin/city/reducer";
+import { unitReducer } from "../../pages/admin/unit/reducer";
 
 export const rootReducer = combineReducers({
     auth: authReducer,
@@ -16,6 +17,7 @@ export const rootReducer = combineReducers({
     characteristicName: characteristicNameReducer,
     country: countryReducer,
     city: cityReducer,
+    unit: unitReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

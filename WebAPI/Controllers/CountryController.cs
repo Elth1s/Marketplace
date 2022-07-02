@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using WebAPI.Interfaces;
-using WebAPI.ViewModels.Request.Countries;
-using WebAPI.ViewModels.Response.Countries;
+using WebAPI.ViewModels.Request;
+using WebAPI.ViewModels.Response;
 
 namespace WebAPI.Controllers
 {
@@ -47,13 +47,13 @@ namespace WebAPI.Controllers
         /// <response code="401">You are not authorized</response>
         /// <response code="403">You don't have permission</response>
         /// <response code="500">An internal error has occurred</response>
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(SearchCountryResponse))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AdminSearchResponse<CountryResponse>))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
         [HttpGet("SearchCountries")]
-        public async Task<IActionResult> SearchCountries([FromQuery] SearchCountryRequest request)
+        public async Task<IActionResult> SearchCountries([FromQuery] AdminSearchRequest request)
         {
             var result = await _countryService.SearchCountriesAsync(request);
             return Ok(result);

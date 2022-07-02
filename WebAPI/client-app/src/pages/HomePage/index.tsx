@@ -1,11 +1,23 @@
-import { Box, Button, Typography, IconButton, Grid, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
-import { ArrowBackIosNewOutlined, ArrowForwardIosOutlined, SportsEsportsOutlined } from '@mui/icons-material'
+import {
+    Box,
+    Typography,
+    IconButton,
+    Grid,
+    ListItem,
+    ListItemIcon,
+} from '@mui/material'
+import {
+    ArrowBackIosNewOutlined,
+    ArrowForwardIosOutlined,
+} from '@mui/icons-material'
 import { useState } from 'react'
-import { Link } from 'react-router-dom';
+
 import { ListItemButtonStyle, ButtonNoveltyStyle, BoxProductOfTheDayStyle } from './styled';
+
 import { gamepad } from '../../assets/icons';
 import { homepage } from '../../assets/backgrounds';
 
+import LinkRouter from '../../components/LinkRouter';
 
 const HomePage = () => {
     const [sidebarItems, setSidebarItems] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
@@ -14,18 +26,20 @@ const HomePage = () => {
             <Grid container>
                 <Grid item xl={4}>
                     {sidebarItems.map((item, index) => (
-                        <ListItem key={index} component={Link} to={"/"} disablePadding style={{ height: "51px", textDecoration: 'none', color: 'unset' }} >
-                            <ListItemButtonStyle>
-                                <ListItemIcon sx={{ paddingRight: "24px" }}>
-                                    <img
-                                        style={{ width: "25px", height: "20px" }}
-                                        src={gamepad}
-                                        alt="icon"
-                                    />
-                                </ListItemIcon>
-                                <Typography color="#000" fontSize="24px" sx={{ height: "auto" }}>Ноутбуки та комп'ютери</Typography>
-                            </ListItemButtonStyle>
-                        </ListItem>
+                        <LinkRouter key={index} underline="none" color="unset" to={"/"}>
+                            <ListItem disablePadding style={{ height: "51px" }} >
+                                <ListItemButtonStyle>
+                                    <ListItemIcon sx={{ paddingRight: "24px" }}>
+                                        <img
+                                            style={{ width: "25px", height: "20px" }}
+                                            src={gamepad}
+                                            alt="icon"
+                                        />
+                                    </ListItemIcon>
+                                    <Typography color="#000" fontSize="24px" sx={{ height: "auto" }}>Ноутбуки та комп'ютери</Typography>
+                                </ListItemButtonStyle>
+                            </ListItem>
+                        </LinkRouter>
                     ))}
                 </Grid>
                 <Grid item xl={8}>

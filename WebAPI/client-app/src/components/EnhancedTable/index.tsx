@@ -117,29 +117,25 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
                     )
                 }} />
             <Box sx={{ width: "70%", display: "flex", alignItems: "center", justifyContent: "end", px: 1 }}>
-                <Tooltip title="Update">
-                    <IconButton size="medium"
-                        sx={{
-                            borderRadius: "12px",
-                            ...(numSelected != 1 && {
-                                display: "none",
-                            }),
-                        }}>
-                        {update}
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Delete">
-                    <IconButton size="medium"
-                        onClick={onDelete}
-                        sx={{
-                            borderRadius: "12px",
-                            ...(numSelected == 0 && {
-                                display: "none",
-                            }),
-                        }}>
-                        <Delete />
-                    </IconButton>
-                </Tooltip>
+                <IconButton size="medium"
+                    sx={{
+                        borderRadius: "12px",
+                        ...(numSelected != 1 && {
+                            display: "none",
+                        }),
+                    }}>
+                    {update}
+                </IconButton>
+                <IconButton size="medium"
+                    onClick={onDelete}
+                    sx={{
+                        borderRadius: "12px",
+                        ...(numSelected == 0 && {
+                            display: "none",
+                        }),
+                    }}>
+                    <Delete />
+                </IconButton>
             </Box>
 
         </Toolbar >

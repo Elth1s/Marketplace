@@ -23,6 +23,10 @@ export function setLocalRefreshToken(token) {
     window.localStorage.setItem(rt, token);
 }
 
+export function toLowerFirstLetter(string) {
+    return string.charAt(0).toLowerCase() + string.slice(1);
+}
+
 const instance = axios.create({
     baseURL: baseURL,
     headers: {

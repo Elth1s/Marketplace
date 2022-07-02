@@ -5,6 +5,7 @@ import * as CharacteristicGroupActionCreators from "../../pages/admin/characteri
 import * as CharacteristicNameActionCreators from "../../pages/admin/characteristicName/actions"
 import * as CountryActionCreators from "../../pages/admin/country/actions"
 import * as CityActionCreators from "../../pages/admin/city/actions"
+import * as UnitActionCreators from "../../pages/admin/unit/actions"
 
 const actions = {
     ...AuthActionCreators,
@@ -14,5 +15,6 @@ const actions = {
     ...CharacteristicNameActionCreators,
     ...CountryActionCreators,
     ...CityActionCreators,
+    ...UnitActionCreators,
 }
 export default actions;

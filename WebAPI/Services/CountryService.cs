@@ -4,8 +4,8 @@ using DAL.Entities;
 using WebAPI.Extensions;
 using WebAPI.Interfaces;
 using WebAPI.Specifications.Countries;
-using WebAPI.ViewModels.Request.Countries;
-using WebAPI.ViewModels.Response.Countries;
+using WebAPI.ViewModels.Request;
+using WebAPI.ViewModels.Response;
 
 namespace WebAPI.Services
 {
@@ -31,14 +31,14 @@ namespace WebAPI.Services
             return response;
         }
 
-        public async Task<SearchCountryResponse> SearchCountriesAsync(SearchCountryRequest request)
+        public async Task<AdminSearchResponse<CountryResponse>> SearchCountriesAsync(AdminSearchRequest request)
         {
             var spec = new CountrySearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
             var countries = await _countryRepository.ListAsync(spec);
             var mappedCountries = _mapper.Map<IEnumerable<CountryResponse>>(countries);
-            var response = new SearchCountryResponse() { Count = countries.Count };
+            var response = new AdminSearchResponse<CountryResponse>() { Count = countries.Count };
 
-            response.Countries = mappedCountries.Skip((request.Page - 1) * request.RowsPerPage).Take(request.RowsPerPage);
+            response.Values = mappedCountries.Skip((request.Page - 1) * request.RowsPerPage).Take(request.RowsPerPage);
 
             return response;
         }
