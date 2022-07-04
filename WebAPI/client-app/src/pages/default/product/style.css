@@ -1,0 +1,16 @@
+:root {
+    --swiper-navigation-size: 35px !important;
+    --swiper-theme-color: #7E7E7E !important;
+}
+
+.swiper-slide {
+    box-sizing: border-box;
+}
+
+.swiper-slide-visible {
+    border: 2px solid #7E7E7E;
+}
+
+.swiper-slide-thumb-active {
+    border: 2px solid #F45626;
+}
