@@ -10,37 +10,72 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import Divider from '@mui/material/Divider';
 
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import StarIcon from '@mui/icons-material/Star';
 
-import { characteristic, image, images, product, reviews } from "./data";
+import { useState } from "react";
+
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Controller, Navigation, Thumbs } from "swiper";
+
+import AddReview from "../AddReview";
+
+import {
+    CharacteristicBox,
+    CharacteristicTypography,
+    CharacteristicDivider,
+} from "../styled";
+import { characteristic, images, reviews } from "../data";
 
 const ProductMainPage = () => {
+    const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
+
     return (
         <>
             <Grid container sx={{ mb: "80px" }}>
                 <Grid item xs={4}>
-                    <Box
-                        component="img"
-                        src={image}
-                        width="520px"
-                        height="520px"
-                        alt="Paella dish" />
-                    <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                        {images.map((img, index) => (
-                            <Box
-                                key={index}
-                                component="img"
-                                src={img}
-                                alt="Paella dish"
-                                width="120px"
-                                height="120px"
-                                sx={{ mr: "10px" }}
-                            />
+                    <Swiper
+                        modules={[Controller, Navigation, Thumbs]}
+                        navigation
+                        spaceBetween={15}
+                        thumbs={{ swiper: thumbsSwiper }}
+                    >
+                        {images.map((item, index) => (
+                            <SwiperSlide key={index}>
+                                <CardMedia
+                                    component="img"
+                                    width="520px"
+                                    height="520px"
+                                    image={item}
+                                    alt="product"
+                                />
+                            </SwiperSlide>
                         ))}
-                    </Box>
+                    </Swiper>
+                    <Swiper
+                        modules={[Controller, Thumbs]}
+                        watchSlidesProgress
+                        slidesPerView={3}
+                        spaceBetween={65}
+                        onSwiper={setThumbsSwiper}
+                        style={{
+                            marginTop: "25px",
+                        }}
+                    >
+                        {images.map((item, index) => (
+                            <SwiperSlide key={index}>
+                                <CardMedia
+                                    component="img"
+                                    width="130px"
+                                    height="130px"
+                                    image={item}
+                                    alt="product"
+                                />
+                            </SwiperSlide>
+                        ))}
+                    </Swiper>
                 </Grid>
                 <Grid item xs={4}>
                     <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "flex-start", height: "100%", pl: "80px" }}>
@@ -53,9 +88,9 @@ const ProductMainPage = () => {
                                 emptyIcon={<StarIcon fontSize="inherit" />} />
                             <Typography>5(10)</Typography>
                         </Box>
-                        
-                        <Button variant="outlined" sx={{mt:"45px", mb:"35px"}}>Контакти продавця</Button>
-                        <Button variant="contained">Купити</Button>
+
+                        <Button color="secondary" variant="outlined" sx={{ fontSize: "20px", mt: "45px", mb: "35px" }}>Контакти продавця</Button>
+                        <Button color="secondary" variant="contained" startIcon={<ShoppingCartIcon />} sx={{ fontSize: "20px" }}>Купити</Button>
                     </Box>
                 </Grid>
                 <Grid item xs={4}>
@@ -110,44 +145,18 @@ const ProductMainPage = () => {
                 <Grid item xs={6}>
                     <Typography variant="h4" sx={{ mb: "40px" }}>Характеристики</Typography>
                     {characteristic.map((item, index) => (
-                        <Box
-                            key={index}
-                            sx={{
-                                position: "relative",
-                                display: "flex",
-                                justifyContent: "space-between",
-                                mb: "20px",
-                            }}>
-                            <Typography
-                                variant="h6"
-                                sx={{
-                                    background: "#FFF"
-                                }}>
-                                {item.name}
-                            </Typography>
-                            <Divider
-                                sx={{
-                                    position: "absolute",
-                                    height: "1px",
-                                    width: "100%",
-                                    bottom: "6px",
-                                    borderColor: "#000000",
-                                    borderStyle: "dotted",
-                                    borderBottomWidth: "revert",
-                                    zIndex: "-1",
-                                }}
-                            />
-                            <Typography variant="h6" sx={{ background: "#FFF" }}>
-                                {item.value}
-                            </Typography>
-                        </Box>
+                        <CharacteristicBox key={index} >
+                            <CharacteristicTypography>{item.name}</CharacteristicTypography>
+                            <CharacteristicDivider />
+                            <CharacteristicTypography>{item.value}</CharacteristicTypography>
+                        </CharacteristicBox>
                     ))}
                 </Grid>
                 <Grid item xs={6}>
                     <Box sx={{ pl: "120px" }}>
                         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: "40px" }}>
                             <Typography variant="h4">Відгук</Typography>
-                            <Button variant="contained">Додати відгук</Button>
+                            <AddReview />
                         </Box>
                         {reviews.map((item, index) => (
                             <Card key={index} sx={{ border: "1px solid #000", borderRadius: "10px", mb: "20px", p: "35px" }}>

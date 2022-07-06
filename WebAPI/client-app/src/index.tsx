@@ -12,6 +12,11 @@ import reportWebVitals from './reportWebVitals';
 
 import './index.css';
 import "cropperjs/dist/cropper.css";
+import 'swiper/css';
+import "swiper/css/navigation";
+import "swiper/css/controller";
+import "swiper/css/thumbs";
+
 
 let token = getLocalAccessToken();
 if (token) {
