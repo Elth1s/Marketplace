@@ -34,6 +34,10 @@ namespace DAL.Data
 
         public DbSet<BasketItem> BasketItems { get; set; }
 
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderStatus> OrderStatuses { get; set; }
+        public DbSet<OrderProduct> OrderProducts { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
