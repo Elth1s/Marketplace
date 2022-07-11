@@ -71,12 +71,12 @@ const AddReview = () => {
                     variant="contained"
                     sx={{
                         fontSize: "20px",
-                        my: 2,
-                        px: 4,
+                        py: "20px",
+                        px: "78px"
                     }}
                     onClick={handleClickOpen}
                 >
-                    Додати питання
+                    Додати відгук
                 </Button>
             }
 
