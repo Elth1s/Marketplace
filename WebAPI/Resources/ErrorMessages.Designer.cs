@@ -365,7 +365,18 @@ namespace WebAPI.Resources {
                 return ResourceManager.GetString("ProductStatusNotFound", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Order Status was not found.
+        /// </summary>
+        internal static string OrderStatusNotFound
+        {
+            get
+            {
+                return ResourceManager.GetString("OrderStatusNotFound", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Shop was not found.
         /// </summary>

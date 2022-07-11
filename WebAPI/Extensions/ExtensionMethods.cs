@@ -232,5 +232,15 @@ namespace WebAPI.Extensions
                     HttpStatusCode.NotFound);
             }
         }
+
+        public static void OrderStatusNullChecking(this OrderStatus orderStatus)
+        {
+            if (orderStatus == null)
+            {
+                throw new AppException(
+                    ErrorMessages.OrderStatusNotFound,
+                    HttpStatusCode.NotFound);
+            }
+        }
     }
 }
