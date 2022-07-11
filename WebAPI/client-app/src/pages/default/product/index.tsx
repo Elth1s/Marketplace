@@ -20,6 +20,7 @@ import ProductReviewsPage from "./ProductPage/ProductReviewsPage";
 import ProductCharacteristicsPage from "./ProductPage/ProductCharacteristicsPage";
 import CardProduct from "../../../components/CardProduct";
 
+import AddReview from "./AddReview";
 import { product, dataTabs } from "./data";
 import "./style.css";
 
@@ -42,19 +43,18 @@ const Product = () => {
                 </Box>
 
                 <Box sx={{ mb: "50px" }}>
-                    <Typography variant="h4" sx={{ mt: "30px", mb: "15px" }}>Намисто з коштовностями</Typography>
-                    <Box
-                        sx={{
-                            display: "flex",
-                            alignItems: "center",
-                        }}>
-                        <Typography variant="h6" sx={{ mr: "150px" }}>Продавець: GHOP</Typography>
-                        <Typography variant="h6">Рейтинг:</Typography>
+                    <Typography sx={{ fontSize: "36px", mt: "30px", mb: "15px" }}>Намисто з коштовностями</Typography>
+                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <Typography sx={{ fontSize: "20px", fontWeight: "700", mr: "150px", py: "22px" }}>Продавець: GHOP</Typography>
+                        <Typography sx={{ fontSize: "20px", fontWeight: "700" }}>Рейтинг:</Typography>
                         <Rating
+                            sx={{ mr: "30px" }}
                             value={4.5}
                             precision={0.5}
                             readOnly
-                            emptyIcon={<StarIcon fontSize="inherit" />} />
+                            emptyIcon={<StarIcon fontSize="inherit" />}
+                        />
+                        {valueTab === "1" && <AddReview />}
                     </Box>
                 </Box>
 
@@ -69,7 +69,7 @@ const Product = () => {
                 </TabPanel>
             </TabContext>
 
-            <Grid container>
+            <Grid container sx={{mb: "55px"}}>
                 <Grid item xs={12}>
                     <Typography variant="h4" sx={{ mb: "40px" }}>Схожі товари</Typography>
                 </Grid>
