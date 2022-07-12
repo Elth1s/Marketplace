@@ -10,6 +10,7 @@ import { useTypedSelector } from './hooks/useTypedSelector';
 import DefaultLayout from './containers/DefaultLayout';
 import AuthLayout from './containers/AuthLayout';
 import AdminLayout from './containers/AdminLayout';
+import ProfileLayout from './containers/ProfileLayout';
 
 import SignIn from './pages/auth/SignIn';
 import SignUp from './pages/auth/SignUp';
@@ -114,10 +115,14 @@ function App() {
 
         <Route path="/" element={<DefaultLayout />}>
           <Route index element={<HomePage />} />
-          <Route path="/profile" element={<Profile />} />
           <Route path="/product" element={<Product />} />
           
         </Route>
+
+        <Route path="/cabinet" element={<ProfileLayout />}>
+          <Route path="/cabinet/information" element={<Profile />} />
+        </Route>
+
         <Route path="/ordering" element ={<Ordering/>}/>
 
         <Route element={<AuthLayout />}>
