@@ -1,5 +1,6 @@
 ﻿using DAL.Entities;
 using DAL.Entities.Identity;
+using DAL.Entities.Order;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

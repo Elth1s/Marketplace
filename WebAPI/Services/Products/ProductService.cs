@@ -77,6 +77,7 @@ namespace WebAPI.Services.Products
                 await _filterValueProductRepository.AddAsync(
                     new FilterValueProduct()
                     {
+                        
                         FilterValueId = filterValue.Id,
                         ProductId = product.Id,
                         CustomValue = filterValue.CustomValue != null ? filterValue.CustomValue : null

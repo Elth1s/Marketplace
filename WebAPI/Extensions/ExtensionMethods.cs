@@ -1,5 +1,6 @@
 ﻿using DAL.Entities;
 using DAL.Entities.Identity;
+using DAL.Entities.Order;
 using System.Net;
 using WebAPI.Exceptions;
 using WebAPI.Resources;
@@ -209,6 +210,16 @@ namespace WebAPI.Extensions
             {
                 throw new AppException(
                     ErrorMessages.ProductNotFound,
+                    HttpStatusCode.NotFound);
+            }
+        }
+
+        public static void OrderNullChecking(this Order order)
+        {
+            if (order == null)
+            {
+                throw new AppException(
+                    ErrorMessages.OrderNotFound,
                     HttpStatusCode.NotFound);
             }
         }
