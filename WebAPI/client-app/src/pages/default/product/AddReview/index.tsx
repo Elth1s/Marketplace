@@ -7,8 +7,8 @@ import { useFormik } from "formik";
 
 import { useActions } from "../../../../hooks/useActions";
 
-import { validationFields } from "../validation";
-import { IReview } from "../types";
+import { validationFields } from "./validation";
+import { IReview } from "./types";
 import { ServerError } from '../../../../store/types';
 
 import DialogComponent from '../../../../components/Dialog';

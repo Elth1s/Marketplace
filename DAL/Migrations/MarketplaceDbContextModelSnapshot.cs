@@ -22,6 +22,21 @@ namespace DAL.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("CategoryFilterValue", b =>
+                {
+                    b.Property<int>("CategoriesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FilterValuesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CategoriesId", "FilterValuesId");
+
+                    b.HasIndex("FilterValuesId");
+
+                    b.ToTable("CategoryFilterValue");
+                });
+
             modelBuilder.Entity("CharacteristicValueProduct", b =>
                 {
                     b.Property<int>("CharacteristicValuesId")
@@ -74,6 +89,9 @@ namespace DAL.Migrations
                     b.Property<int?>("FilterNameId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Icon")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
@@ -82,6 +100,9 @@ namespace DAL.Migrations
 
                     b.Property<int?>("ParentId")
                         .HasColumnType("int");
+
+                    b.Property<string>("UrlSlug")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -250,9 +271,6 @@ namespace DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("int");
-
                     b.Property<int>("FilterNameId")
                         .HasColumnType("int");
 
@@ -266,8 +284,6 @@ namespace DAL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
 
                     b.HasIndex("FilterNameId");
 
@@ -497,6 +513,9 @@ namespace DAL.Migrations
                     b.Property<int>("StatusId")
                         .HasColumnType("int");
 
+                    b.Property<Guid>("UrlSlug")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
@@ -594,7 +613,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Unit");
+                    b.ToTable("Units");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -730,6 +749,21 @@ namespace DAL.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("CategoryFilterValue", b =>
+                {
+                    b.HasOne("DAL.Entities.Category", null)
+                        .WithMany()
+                        .HasForeignKey("CategoriesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DAL.Entities.FilterValue", null)
+                        .WithMany()
+                        .HasForeignKey("FilterValuesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("CharacteristicValueProduct", b =>
                 {
                     b.HasOne("DAL.Entities.CharacteristicValue", null)
@@ -769,7 +803,7 @@ namespace DAL.Migrations
                         .HasForeignKey("FilterNameId");
 
                     b.HasOne("DAL.Entities.Category", "Parent")
-                        .WithMany("Children")
+                        .WithMany("Childrens")
                         .HasForeignKey("ParentId");
 
                     b.Navigation("Parent");
@@ -842,10 +876,6 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.FilterValue", b =>
                 {
-                    b.HasOne("DAL.Entities.Category", null)
-                        .WithMany("FiltersValue")
-                        .HasForeignKey("CategoryId");
-
                     b.HasOne("DAL.Entities.FilterName", "FilterName")
                         .WithMany("FilterValues")
                         .HasForeignKey("FilterNameId")
@@ -1066,9 +1096,7 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.Category", b =>
                 {
-                    b.Navigation("Children");
-
-                    b.Navigation("FiltersValue");
+                    b.Navigation("Childrens");
 
                     b.Navigation("Products");
                 });

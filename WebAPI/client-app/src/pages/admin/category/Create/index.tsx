@@ -31,11 +31,13 @@ const CategoryCreate = () => {
     const item: ICategory = {
         id: 0,
         name: "",
+        urlSlug: "",
         image: "",
+        icon: "",
         parentId: null
     }
 
-    const navigator = useNavigate();
+    const navigate = useNavigate();
 
     useEffect(() => {
         document.title = "Category create";
@@ -60,7 +62,7 @@ const CategoryCreate = () => {
         onSubmit: async (values, { setFieldError }) => {
             try {
                 await CreateCategory(values);
-                navigator("/admin/category");
+                navigate("/admin/category");
             }
             catch (ex) {
                 const serverErrors = ex as ServerError;
@@ -78,8 +80,11 @@ const CategoryCreate = () => {
         }
     });
 
-    const onSave = async (base64: string) => {
+    const onSaveImage = async (base64: string) => {
         setFieldValue("image", base64)
+    };
+    const onSaveIcon = async (base64: string) => {
+        setFieldValue("icon", base64)
     };
 
     const { errors, touched, isSubmitting, handleSubmit, setFieldValue, getFieldProps } = formik;
@@ -89,7 +94,7 @@ const CategoryCreate = () => {
 
             <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ py: 1 }}>
                 <Typography variant="h4" gutterBottom sx={{ my: "auto" }}>
-                    Category Create
+                    Create Category
                 </Typography>
             </Stack>
 
@@ -113,6 +118,15 @@ const CategoryCreate = () => {
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
+                                        <TextFieldComponent
+                                            type="text"
+                                            label="Url slug"
+                                            error={errors.urlSlug}
+                                            touched={touched.urlSlug}
+                                            getFieldProps={{ ...getFieldProps('urlSlug') }}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
                                         <AutocompleteComponent
                                             label="Categoty parent"
                                             name="parentId"
@@ -126,11 +140,19 @@ const CategoryCreate = () => {
                                         />
                                     </Grid>
                                 </Grid>
-                                <Grid container item xs={2}>
+                                <Grid container item xs={2} rowSpacing={2}>
                                     <Grid item xs={12}>
                                         <CropperDialog
                                             imgSrc={(formik.values.image === null || formik.values.image === "") ? "https://www.phoca.cz/images/projects/phoca-download-r.png" : formik.values.image}
-                                            onDialogSave={onSave}
+                                            onDialogSave={onSaveImage}
+                                            labelId="Image"
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <CropperDialog
+                                            imgSrc={(formik.values.icon === null || formik.values.icon === "") ? "https://www.phoca.cz/images/projects/phoca-download-r.png" : formik.values.icon}
+                                            onDialogSave={onSaveIcon}
+                                            labelId="Icon"
                                         />
                                     </Grid>
                                 </Grid>

@@ -8,6 +8,9 @@ import { characteristicNameReducer } from "../../pages/admin/characteristicName/
 import { countryReducer } from "../../pages/admin/country/reducer";
 import { cityReducer } from "../../pages/admin/city/reducer";
 import { unitReducer } from "../../pages/admin/unit/reducer";
+import { catalogReducer } from "../../pages/default/Catalog/reducer";
+import { productReducer } from "../../pages/default/product/reducer";
+import { basketReducer } from "../../components/Basket/reducer";
 
 export const rootReducer = combineReducers({
     auth: authReducer,
@@ -18,6 +21,9 @@ export const rootReducer = combineReducers({
     country: countryReducer,
     city: cityReducer,
     unit: unitReducer,
+    catalog: catalogReducer,
+    product: productReducer,
+    basket: basketReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

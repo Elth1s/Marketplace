@@ -73,6 +73,7 @@ builder.Services.AddScoped<IConfirmEmailService, ConfirmEmailService>();
 builder.Services.AddScoped<IResetPasswordService, ResetPasswordService>();
 builder.Services.AddScoped<IPhoneCodeSenderService, PhoneCodeSenderService>();
 builder.Services.AddScoped<IConfirmPhoneService, ConfirmPhoneService>();
+builder.Services.AddScoped<IBasketItemService, BasketItemService>();
 
 builder.Services.AddSingleton<PhoneNumberManager>();
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using System.Security.Claims;
 using WebAPI.Interfaces.Products;
 using WebAPI.ViewModels.Request.Products;
 using WebAPI.ViewModels.Response.Products;
@@ -15,6 +16,9 @@ namespace WebAPI.Controllers.Products
     [ApiController]
     public class ProductController : Controller
     {
+        private string UserId => User?.FindFirstValue(ClaimTypes.NameIdentifier);
+
+
         private readonly IProductService _productService;
         public ProductController(IProductService productService)
         {
@@ -60,6 +64,24 @@ namespace WebAPI.Controllers.Products
         public async Task<IActionResult> GetById(int id)
         {
             var result = await _productService.GetByIdAsync(id);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Returns the requested product with category parents identifier
+        /// </summary>
+        /// <response code="200">Getting product completed successfully</response>
+        /// <response code="404">Product not found</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ProductWithCategoryParentsResponse))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [HttpGet("GetByUrlSlug")]
+        public async Task<IActionResult> GetByUrlSlug([FromQuery] string urlSlug)
+        {
+            var result = await _productService.GetByUrlSlugAsync(urlSlug, UserId);
             return Ok(result);
         }
 

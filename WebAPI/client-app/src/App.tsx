@@ -34,9 +34,11 @@ import UnitTable from './pages/admin/unit/Table';
 import SendResetPasswordEmail from './pages/user/ForgotPassword/SendResetEmail';
 import SendResetPasswordPhone from './pages/user/ForgotPassword/SendResetPhone';
 
-import HomePage from './pages/HomePage';
+import HomePage from './pages/default/HomePage';
 
 import Ordering from './pages/user/Ordering';
+import Catalog from './pages/default/Catalog';
+import CatalogWithProducts from './pages/default/Catalog/CatalogWithProducts';
 
 function App() {
   const { isAuth } = useTypedSelector(store => store.auth);
@@ -55,7 +57,7 @@ function App() {
         sm: 600,
         md: 900,
         lg: 1200,
-        xl: 1608,
+        xl: 1560,
       },
     },
     palette: {
@@ -77,6 +79,13 @@ function App() {
       }
     },
     components: {
+      MuiContainer: {
+        defaultProps: {
+          style: {
+            padding: 0
+          }
+        }
+      },
       MuiIconButton: {
         defaultProps: {
           color: "secondary"
@@ -101,6 +110,27 @@ function App() {
       }
     },
     typography: {
+      h1: {
+        fontSize: "36px"
+      },
+      h2: {
+        fontSize: "27px"
+      },
+      h3: {
+        fontSize: "24px"
+      },
+      h4: {
+        fontSize: "20px"
+      },
+      h5: {
+        fontSize: "18px"
+      },
+      h6: {
+        fontSize: "16px"
+      },
+      subtitle1: {
+        fontSize: "14px"
+      },
       fontFamily: [
         'Mulish',
         "sans-serif"
@@ -115,15 +145,17 @@ function App() {
 
         <Route path="/" element={<DefaultLayout />}>
           <Route index element={<HomePage />} />
-          <Route path="/product" element={<Product />} />
-          
+          <Route path="/catalog" element={<Catalog />} />
+          <Route path="/catalog/:urlSlug" element={<CatalogWithProducts />} />
+          <Route path="/product/:urlSlug" element={<Product />} />
+
         </Route>
 
-        <Route path="/cabinet" element={<ProfileLayout />}>
-          <Route path="/cabinet/information" element={<Profile />} />
+        <Route path="/profile" element={<ProfileLayout />}>
+          <Route path="/profile/information" element={<Profile />} />
         </Route>
 
-        <Route path="/ordering" element ={<Ordering/>}/>
+        <Route path="/ordering" element={<Ordering />} />
 
         <Route element={<AuthLayout />}>
           <Route path="/auth/signin" element={<SignIn />} />

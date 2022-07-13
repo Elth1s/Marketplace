@@ -25,9 +25,8 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
-        /// Returns baskets with the user identifier
+        /// Returns baskets by user identifier
         /// </summary>
-        /// <param name="userId">User identifier</param>
         /// <response code="200">Getting basket completed successfully</response>
         /// <response code="401">You are not authorized</response>
         /// <response code="404">Basket not found</response>
@@ -37,20 +36,20 @@ namespace WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize]
-        [HttpGet("GetAll/{userId}")]
-        public async Task<IActionResult> GetAll(string userId)
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAll()
         {
-            var result = await _basketItemService.GetAllAsync(userId);
+            var result = await _basketItemService.GetAllAsync(UserId);
             return Ok(result);
         }
 
         /// <summary>
         /// Create new basket item
         /// </summary>
-        /// <param name="request">New basket</param>
-        /// <response code="200">Basket creation completed successfully</response>
+        /// <param name="request">Product url slug</param>
+        /// <response code="200">Product add completed successfully</response>
         /// <response code="401">You are not authorized</response>
-        /// <response code="404">Basket not found</response>
+        /// <response code="404">User or product not found</response>
         /// <response code="500">An internal error has occurred</response>
         [SwaggerResponse(StatusCodes.Status200OK)]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
@@ -61,10 +60,8 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> Create([FromBody] BasketCreateRequest request)
         {
             await _basketItemService.CreateAsync(request, UserId);
-            return Ok("Product created successfully");
+            return Ok("Product added successfully");
         }
-
-
 
         /// <summary>
         /// Delete an existing basket

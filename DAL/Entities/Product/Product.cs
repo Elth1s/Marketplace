@@ -8,6 +8,7 @@ namespace DAL.Entities
         public string Description { get; set; }
         public float Price { get; set; }
         public int Count { get; set; }
+        public Guid UrlSlug { get; set; }
 
 
         public int ShopId { get; set; }

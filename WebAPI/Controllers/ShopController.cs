@@ -57,7 +57,7 @@ namespace WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = "Admin,Seller")]
+        [Authorize(Roles = "Admin, Seller")]
         [HttpGet("GetShopById/{shopId}")]
         public async Task<IActionResult> GetShopById(int shopId)
         {

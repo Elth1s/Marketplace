@@ -15,5 +15,7 @@ namespace DAL.Entities
         public FilterName FilterName { get; set; }
 
         public ICollection<FilterValueProduct> FilterValueProducts { get; set; }
+        public ICollection<Category> Categories { get; set; }
+
     }
 }

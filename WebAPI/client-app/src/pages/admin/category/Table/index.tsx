@@ -1,7 +1,7 @@
 
 
 import { AddBox, Create, Edit } from "@mui/icons-material";
-import { Button, Checkbox, IconButton, TableRow } from "@mui/material";
+import { Avatar, Button, Checkbox, IconButton, TableRow } from "@mui/material";
 import { useEffect, useState } from "react";
 import EnhancedTable from "../../../../components/EnhancedTable";
 import { TableCellStyle } from "../../../../components/EnhancedTable/styled";
@@ -25,9 +25,19 @@ const headCells: HeadCell<ICategoryInfo>[] = [
         label: 'Name',
     },
     {
+        id: 'urlSlug',
+        numeric: false,
+        label: 'Url slug',
+    },
+    {
         id: 'image',
         numeric: false,
         label: 'Image',
+    },
+    {
+        id: 'icon',
+        numeric: false,
+        label: 'Icon',
     },
     {
         id: 'parentName',
@@ -173,7 +183,21 @@ const CategoryTable = () => {
                                     {row.id}
                                 </TableCellStyle>
                                 <TableCellStyle align="center">{row.name}</TableCellStyle>
-                                <TableCellStyle align="center">{row.image}</TableCellStyle>
+                                <TableCellStyle align="center">{row.urlSlug}</TableCellStyle>
+                                <TableCellStyle align="center">
+                                    <Avatar
+                                        sx={{ mx: "auto" }}
+                                        src={row.image}
+                                        alt="Image"
+                                    />
+                                </TableCellStyle>
+                                <TableCellStyle align="center">
+                                    <Avatar
+                                        sx={{ mx: "auto" }}
+                                        src={row.icon}
+                                        alt="Icon"
+                                    />
+                                </TableCellStyle>
                                 <TableCellStyle align="center">{row.parentName}</TableCellStyle>
                             </TableRow>
                         );

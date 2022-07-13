@@ -4,7 +4,9 @@ const initialState: CategoryState = {
     selectedCategory: {
         id: 0,
         name: "",
+        urlSlug: "",
         image: "",
+        icon: "",
         parentId: 0
     },
     categories: [],

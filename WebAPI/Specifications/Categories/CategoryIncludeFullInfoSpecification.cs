@@ -17,5 +17,11 @@ namespace WebAPI.Specifications.Categories
                 .Include(p => p.Parent)
                 .AsSplitQuery();
         }
+        public CategoryIncludeFullInfoSpecification(string urlSlug)
+        {
+            Query.Where(o => o.UrlSlug == urlSlug)
+                .Include(p => p.Parent)
+                .AsSplitQuery();
+        }
     }
 }

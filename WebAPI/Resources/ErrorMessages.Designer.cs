@@ -106,11 +106,29 @@ namespace WebAPI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Category with this name already exist.
+        /// </summary>
+        internal static string CategoryNameNotUnique {
+            get {
+                return ResourceManager.GetString("CategoryNameNotUnique", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Category was not found.
         /// </summary>
         internal static string CategoryNotFound {
             get {
                 return ResourceManager.GetString("CategoryNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Category with this url slug already exist.
+        /// </summary>
+        internal static string CategoryUrlSlugNotUnique {
+            get {
+                return ResourceManager.GetString("CategoryUrlSlugNotUnique", resourceCulture);
             }
         }
         

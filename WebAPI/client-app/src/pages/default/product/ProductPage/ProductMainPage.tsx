@@ -15,7 +15,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import StarIcon from '@mui/icons-material/Star';
 
-import { useState } from "react";
+import { FC, useState } from "react";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Controller, Navigation, Thumbs } from "swiper";
@@ -28,9 +28,26 @@ import {
     CharacteristicDivider,
 } from "../styled";
 import { characteristic, images, reviews } from "../data";
+import { useTypedSelector } from "../../../../hooks/useTypedSelector";
+import { useActions } from "../../../../hooks/useActions";
 
-const ProductMainPage = () => {
+interface Props {
+    urlSlug: string | undefined,
+    isInBasket: boolean
+}
+
+const ProductMainPage: FC<Props> = ({ urlSlug, isInBasket }) => {
+    const { AddProductInCart, GetBasketItems } = useActions();
+    const { product } = useTypedSelector(state => state.product);
+
     const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
+
+    const addInCart = async () => {
+        if (urlSlug) {
+            await AddProductInCart(urlSlug)
+            await GetBasketItems()
+        }
+    };
 
     return (
         <>
@@ -42,14 +59,12 @@ const ProductMainPage = () => {
                         spaceBetween={15}
                         thumbs={{ swiper: thumbsSwiper }}
                     >
-                        {images.map((item, index) => (
+                        {product.images.map((item, index) => (
                             <SwiperSlide key={index}>
-                                <CardMedia
-                                    component="img"
-                                    width="520px"
-                                    height="520px"
-                                    image={item}
-                                    alt="product"
+                                <img
+                                    style={{ width: "520px", height: "520px", objectFit: "contain" }}
+                                    src={item}
+                                    alt="productImage"
                                 />
                             </SwiperSlide>
                         ))}
@@ -64,14 +79,12 @@ const ProductMainPage = () => {
                             marginTop: "25px",
                         }}
                     >
-                        {images.map((item, index) => (
+                        {product.images.map((item, index) => (
                             <SwiperSlide key={index}>
-                                <CardMedia
-                                    component="img"
-                                    width="130px"
-                                    height="130px"
-                                    image={item}
-                                    alt="product"
+                                <img
+                                    style={{ width: "130px", height: "130px", objectFit: "contain" }}
+                                    src={item}
+                                    alt="productImage"
                                 />
                             </SwiperSlide>
                         ))}
@@ -79,7 +92,7 @@ const ProductMainPage = () => {
                 </Grid>
                 <Grid item xs={4}>
                     <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "flex-start", height: "100%", pl: "80px" }}>
-                        <Typography variant="h1">230грн</Typography>
+                        <Typography variant="h1">{product.price} &#8372;</Typography>
                         <Box sx={{ display: "flex" }}>
                             <Rating
                                 value={4.5}
@@ -90,7 +103,14 @@ const ProductMainPage = () => {
                         </Box>
 
                         <Button color="secondary" variant="outlined" sx={{ fontSize: "20px", mt: "45px", mb: "35px" }}>Контакти продавця</Button>
-                        <Button color="secondary" variant="contained" startIcon={<ShoppingCartIcon />} sx={{ fontSize: "20px" }}>Купити</Button>
+                        {isInBasket
+                            ? <Button color="secondary" variant="contained" disabled startIcon={<ShoppingCartIcon />} sx={{ fontSize: "20px" }}>
+                                In basket
+                            </Button>
+                            : <Button color="secondary" variant="contained" startIcon={<ShoppingCartIcon />} sx={{ fontSize: "20px" }}
+                                onClick={addInCart} >
+                                Buy
+                            </Button>}
                     </Box>
                 </Grid>
                 <Grid item xs={4}>
@@ -144,11 +164,11 @@ const ProductMainPage = () => {
             <Grid container>
                 <Grid item xs={6}>
                     <Typography variant="h4" sx={{ mb: "40px" }}>Характеристики</Typography>
-                    {characteristic.map((item, index) => (
+                    {product.filters.map((item, index) => (
                         <CharacteristicBox key={index} >
-                            <CharacteristicTypography>{item.name}</CharacteristicTypography>
+                            <CharacteristicTypography variant="h4">{item.filterName}</CharacteristicTypography>
                             <CharacteristicDivider />
-                            <CharacteristicTypography>{item.value}</CharacteristicTypography>
+                            <CharacteristicTypography variant="h4" align="left">{item.value} {item.unitMeasure}</CharacteristicTypography>
                         </CharacteristicBox>
                     ))}
                 </Grid>

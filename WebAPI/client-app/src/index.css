@@ -7,3 +7,31 @@ body {
 .Toastify__toast-body {
   white-space: pre-line;
 }
+
+/* Swiper */
+:root {
+  --swiper-navigation-size: 25px !important;
+  --swiper-theme-color: #7E7E7E !important;
+}
+
+.swiper-slide {
+  box-sizing: border-box;
+}
+
+.swiper-button-disabled {
+  pointer-events: all !important;
+  cursor: pointer !important;
+}
+
+.swiper-slide-visible {
+  border: 2px solid #7E7E7E;
+}
+
+.swiper-slide-thumb-active {
+  border: 2px solid #F45626;
+}
+
+/* .swiper-button-prev:hover,
+.swiper-button-next:hover {
+  background-color: #F45626;
+} */

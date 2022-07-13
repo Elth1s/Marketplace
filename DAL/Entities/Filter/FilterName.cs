@@ -14,7 +14,6 @@ namespace DAL.Entities
         [ForeignKey(nameof(UnitId))]
         public Unit Unit { get; set; }
 
-        public ICollection<Category> Categories { get; set; }
         public ICollection<FilterValue> FilterValues { get; set; }
     }
 }

@@ -7,6 +7,7 @@ namespace WebAPI.Interfaces.Products
     {
         Task<IEnumerable<ProductResponse>> GetAsync();
         Task<ProductResponse> GetByIdAsync(int id);
+        Task<ProductWithCategoryParentsResponse> GetByUrlSlugAsync(string urlSlug, string userId);
         Task CreateAsync(ProductCreateRequest request);
         //Task UpdateAsync(int id, ProductUpdateRequest request);
         Task DeleteAsync(int id);

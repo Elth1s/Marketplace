@@ -9,19 +9,21 @@ import { FC } from "react";
 import { ICardProduct } from "./types";
 import { CardContentStyle, CardPriceStyle, CardStatusStyle, CardTitleStyle } from "./styled";
 
-const CardProduct:FC<ICardProduct> = ({image, title, status, price}) => {
+import { empty } from "../../assets/backgrounds";
+
+const CardProduct: FC<ICardProduct> = ({ image, name, statusName, price }) => {
     return (
         <Card sx={{ border: "1px solid #000", borderRadius: "10px", px: "20px", py: "25px" }}>
             <CardMedia
                 component="img"
                 width="260px"
                 height="220px"
-                image={image}
-                alt={title}
+                image={image != "" ? image : empty}
+                alt={name}
             />
             <CardContentStyle>
-                <CardTitleStyle>{title}</CardTitleStyle>
-                <CardStatusStyle>{status}</CardStatusStyle>
+                <CardTitleStyle>{name}</CardTitleStyle>
+                <CardStatusStyle>{statusName}</CardStatusStyle>
                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                     <CardPriceStyle>{price}</CardPriceStyle>
                     <FavoriteBorderIcon />

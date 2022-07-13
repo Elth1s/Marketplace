@@ -50,10 +50,10 @@ const Footer = () => {
                         <DescriptionStyle><ShoppingCartIcon sx={{ fontSize: "30px", mr: "10px" }} />10:00 - 21:00 (No weekends)</DescriptionStyle>
                     </Grid>
                     {footers.map((footer) => (
-                        <Grid item xs={3} key={footer.title}>
+                        <Grid item xs={3} key={`footer_${footer.title}`}>
                             <TitleStyle>{footer.title}</TitleStyle>
                             {footer.description.map((item) => (
-                                <DescriptionLinkStyle href="#">{item}</DescriptionLinkStyle>
+                                <DescriptionLinkStyle href="#" key={`footer_item_${item}`}>{item}</DescriptionLinkStyle>
                             ))}
                         </Grid>
                     ))}

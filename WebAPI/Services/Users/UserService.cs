@@ -49,9 +49,9 @@ namespace WebAPI.Services.Users
                             File.Delete(filePath);
                     }
                     var img = request.Photo.FromBase64StringToImage();
-                    string randomFilename = Path.GetRandomFileName() + ".jpg";
+                    string randomFilename = Guid.NewGuid() + ".png";
                     var dir = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.UsersImagePath, randomFilename);
-                    img.Save(dir, ImageFormat.Jpeg);
+                    img.Save(dir, ImageFormat.Png);
 
                     user.Photo = randomFilename;
                 }

@@ -1,20 +1,8 @@
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
-import Link from "@mui/material/Link";
+import { styled, TextField, Typography, Link, Box } from "@mui/material";
 
-import { styled } from "@mui/material";
-
-export const BoxContainer = styled(Box)(({ theme }) => ({
-    width: "1560px",
-    height: "100%",
-    marginLeft: "auto",
-    marginRight: "auto",
-}));
 
 export const TextFieldStyle = styled(TextField)(({ theme }) => ({
     width: "660px",
-    height: "58px",
     "& fieldset": {
         borderRadius: "9px",
         borderColor: "#7E7E7E",
@@ -23,7 +11,6 @@ export const TextFieldStyle = styled(TextField)(({ theme }) => ({
         color: "#7E7E7E"
     },
     inputProps: {
-        height: "58px",
         paddingTop: "0px",
         paddingBottom: "0px",
         fontSize: "18px"
@@ -49,7 +36,7 @@ export const DescriptionStyle = styled(Typography)(() => ({
     fontSize: "20px",
     fontWeight: "500",
     marginBottom: "35px",
-    "&:last-child":{
+    "&:last-child": {
         marginBottom: "0px"
     }
 }));
@@ -62,11 +49,14 @@ export const DescriptionLinkStyle = styled(Link)(() => ({
     textDecoration: "none",
     textDecorationColor: "trancparent",
     marginBottom: "35px",
-    "&:last-child":{
+    "&:last-child": {
         marginBottom: "0px"
     }
 }));
 
 export const BoxStyle = styled(Box)(({ theme }) => ({
-    backgroundColor: theme.palette.secondary.main
+    backgroundColor: theme.palette.secondary.main,
+    marginTop: "55px",
+    paddingTop: "40px",
+    paddingBottom: "40px"
 }));

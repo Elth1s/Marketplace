@@ -130,8 +130,7 @@ const SendResetPasswordPhone = () => {
                                         <Grid item xs={12} display="flex" justifyContent="flex-end">
                                             <AuthSideTypography component={Link} to="/resetPasswordEmail" sx={{ cursor: "pointer", textDecoration: "none", color: "#000" }} >Reset by email</AuthSideTypography>
                                         </Grid>
-                                        <Grid item xs={12} sx={{ height: "40px", marginTop: "52px" }}
-                                            visibility={isCodeSend ? "visible" : "hidden"}>
+                                        <Grid item xs={12} sx={{ height: "40px", marginTop: "52px" }}>
                                             <TextField
                                                 fullWidth
                                                 variant="standard"
@@ -143,7 +142,7 @@ const SendResetPasswordPhone = () => {
                                                 helperText={touched.code && errors.code}
                                             />
                                         </Grid>
-                                        <Grid item xs={12} sx={{ marginTop: "75px" }} visibility={isCodeSend ? "visible" : "hidden"}>
+                                        <Grid item xs={12} sx={{ marginTop: "75px" }}>
                                             <LoadingButton
                                                 color="secondary"
                                                 variant="contained"

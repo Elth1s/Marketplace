@@ -1,6 +1,4 @@
 import Grid from '@mui/material/Grid';
-import IconButton from '@mui/material/IconButton';
-import EditIcon from '@mui/icons-material/Edit';
 
 import { FC, useState } from "react";
 import { useFormik } from "formik";
@@ -27,7 +25,6 @@ const Update: FC<UpdateProps> = ({ id, afterUpdate }) => {
 
     const { selectedCity } = useTypedSelector((store) => store.city);
     const { countries } = useTypedSelector((store) => store.country);
-
 
     const handleClickOpen = async () => {
         setOpen(true);
@@ -66,7 +63,6 @@ const Update: FC<UpdateProps> = ({ id, afterUpdate }) => {
     });
 
     const { errors, touched, isSubmitting, handleSubmit, getFieldProps, setFieldValue } = formik;
-
     return (
         <DialogComponent
             open={open}

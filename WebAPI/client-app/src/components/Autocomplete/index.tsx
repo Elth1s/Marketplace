@@ -1,10 +1,9 @@
 import { AutocompleteStyle, TextFieldStyle } from "./style";
 import { IAutocomplete } from "./type";
 
-const AutocompleteComponent: React.FC<IAutocomplete> = ({options, getOptionLabel, isOptionEqualToValue, defaultValue, onChange, label, name, touched, error}) => {
+const AutocompleteComponent: React.FC<IAutocomplete> = ({ options, getOptionLabel, isOptionEqualToValue, defaultValue, onChange, label, name, touched, error }) => {
     return (
         <AutocompleteStyle
-            autoHighlight
             options={options}
             getOptionLabel={getOptionLabel}
             isOptionEqualToValue={isOptionEqualToValue}

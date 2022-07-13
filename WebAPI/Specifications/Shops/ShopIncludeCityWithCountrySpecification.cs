@@ -14,6 +14,7 @@ namespace WebAPI.Specifications.Shops
         public ShopIncludeCityWithCountrySpecification(int id)
         {
             Query.Where(a => a.Id == id)
+                .Include(u => u.User)
                 .Include(a => a.City)
                 .ThenInclude(c => c.Country)
                 .AsSplitQuery();

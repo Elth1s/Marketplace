@@ -15,13 +15,19 @@ import { Close } from "@mui/icons-material";
 import { LegacyRef, forwardRef, useRef, useState, useEffect } from "react";
 import Cropper from "cropperjs";
 
-import { ICropperDialog } from "./types";
 
 const Transition = forwardRef(function Transition(props: any, ref) {
     return <Slide direction="left" ref={ref} {...props} />;
 });
 
-const CropperDialog: React.FC<ICropperDialog> = ({ imgSrc, aspectRation = 1 / 1, onDialogSave }) => {
+export interface ICropperDialog {
+    imgSrc?: string,
+    aspectRation?: number,
+    onDialogSave: any,
+    labelId: string
+}
+
+const CropperDialog: React.FC<ICropperDialog> = ({ imgSrc, aspectRation = 1 / 1, onDialogSave, labelId }) => {
     const [cropperObj, setCropperObj] = useState<Cropper>();
     const imgRef = useRef<HTMLImageElement>(null);
     const prevRef = useRef<HTMLDivElement>();
@@ -67,13 +73,13 @@ const CropperDialog: React.FC<ICropperDialog> = ({ imgSrc, aspectRation = 1 / 1,
     return (
         <>
             <Box sx={{ width: "160px", height: "160px", boxShadow: 1, borderRadius: "12px" }}>
-                <label htmlFor="Image">
+                <label htmlFor={labelId}>
                     <img
                         src={imgSrc}
                         alt="DefaultImage"
                         style={{ width: "160px", height: "160px", cursor: "pointer", borderRadius: "12px" }} />
                 </label>
-                <input style={{ display: "none" }} type="file" name="Image" id="Image" onChange={handleImageChange} />
+                <input style={{ display: "none" }} type="file" name={labelId} id={labelId} onChange={handleImageChange} />
             </Box>
             <Dialog
                 open={isCropperDialogOpen}

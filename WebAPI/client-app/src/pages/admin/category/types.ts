@@ -10,14 +10,18 @@ export enum CategoryActionTypes {
 export interface ICategory {
     id: number,
     name: string,
+    urlSlug: string,
     image: string,
+    icon: string,
     parentId: number | null
 }
 
 export interface ICategoryInfo {
     id: number,
     name: string,
+    urlSlug: string,
     image: string,
+    icon: string,
     parentName: string
 }
 

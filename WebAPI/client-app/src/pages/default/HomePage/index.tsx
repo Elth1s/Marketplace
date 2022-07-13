@@ -14,15 +14,15 @@ import { useState } from 'react'
 
 import { ListItemButtonStyle, ButtonNoveltyStyle, BoxProductOfTheDayStyle } from './styled';
 
-import { gamepad } from '../../assets/icons';
-import { homepage } from '../../assets/backgrounds';
+import { gamepad } from '../../../assets/icons';
+import { homepage } from '../../../assets/backgrounds';
 
-import LinkRouter from '../../components/LinkRouter';
+import LinkRouter from '../../../components/LinkRouter';
 
 const HomePage = () => {
     const [sidebarItems, setSidebarItems] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
     return (
-        <Box sx={{ marginTop: "97px" }}>
+        <Box >
             <Grid container>
                 <Grid item xl={4}>
                     {sidebarItems.map((item, index) => (

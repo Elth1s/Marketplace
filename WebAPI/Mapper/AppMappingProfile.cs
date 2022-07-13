@@ -4,6 +4,7 @@ using DAL.Entities.Identity;
 using Google.Apis.Auth;
 using WebAPI.Constants;
 using WebAPI.ViewModels.Request;
+using WebAPI.ViewModels.Request.Categories;
 using WebAPI.ViewModels.Request.Characteristics;
 using WebAPI.ViewModels.Request.Filters;
 using WebAPI.ViewModels.Request.Products;
@@ -48,11 +49,15 @@ namespace WebAPI.Mapper
 
             //Category
             CreateMap<Category, CategoryResponse>()
+                .ForMember(u => u.Image, opt => opt.MapFrom(vm => !string.IsNullOrEmpty(vm.Image) ? String.Concat(ImagePath.RequestCategoriesImagePath, "/", vm.Image) : ""))
+                .ForMember(u => u.Icon, opt => opt.MapFrom(vm => !string.IsNullOrEmpty(vm.Icon) ? String.Concat(ImagePath.RequestCategoriesImagePath, "/", vm.Icon) : ""));
+            CreateMap<Category, CatalogItemResponse>()
                 .ForMember(u => u.Image, opt => opt.MapFrom(vm => !string.IsNullOrEmpty(vm.Image) ? String.Concat(ImagePath.RequestCategoriesImagePath, "/", vm.Image) : ""));
             CreateMap<Category, CategoryForSelectResponse>();
 
             CreateMap<CategoryRequest, Category>()
-                .ForMember(u => u.Image, opt => opt.Ignore());
+                .ForMember(u => u.Image, opt => opt.Ignore())
+                .ForMember(u => u.Icon, opt => opt.Ignore());
 
             //CharacteristicGroup
             CreateMap<CharacteristicGroupRequest, CharacteristicGroup>();
@@ -90,8 +95,12 @@ namespace WebAPI.Mapper
 
             //FilterValue
             CreateMap<FilterValueRequest, FilterValue>();
+            CreateMap<FilterValue, FilterValueCatalogResponse>();
             CreateMap<FilterValue, FilterValueResponse>()
                 .ForMember(u => u.FilterName, opt => opt.MapFrom(vm => vm.FilterName.Name));
+            CreateMap<FilterValue, ProductFilterValue>()
+                .ForMember(u => u.FilterName, opt => opt.MapFrom(vm => vm.FilterName.Name))
+                .ForMember(u => u.UnitMeasure, opt => opt.MapFrom(vm => vm.FilterName.Unit.Measure));
 
             //Shop
             CreateMap<Shop, ShopResponse>()
@@ -106,6 +115,16 @@ namespace WebAPI.Mapper
                 .ForMember(u => u.ShopName, opt => opt.MapFrom(vm => vm.Shop.Name))
                 .ForMember(u => u.StatusName, opt => opt.MapFrom(vm => vm.Status.Name))
                 .ForMember(u => u.CategoryName, opt => opt.MapFrom(vm => vm.Category.Name));
+            CreateMap<Product, ProductPageResponse>()
+                .ForMember(u => u.ShopName, opt => opt.MapFrom(vm => vm.Shop.Name))
+                .ForMember(u => u.ProductStatus, opt => opt.MapFrom(vm => vm.Status.Name))
+                .ForMember(u => u.Images, opt => opt.MapFrom(vm => vm.Images))
+                .ForMember(u => u.ShopName, opt => opt.MapFrom(vm => vm.Shop.Name))
+                //.ForMember(u => u.ShopRating, opt => opt.MapFrom(vm => vm.Shop.Rating))
+                ;
+            CreateMap<Product, ProductCatalogResponse>()
+                .ForMember(u => u.StatusName, opt => opt.MapFrom(vm => vm.Status.Name))
+                .ForMember(u => u.Image, opt => opt.MapFrom(vm => vm.Images.Count != 0 ? Path.Combine(ImagePath.RequestProductsImagePath, vm.Images.FirstOrDefault().Name) : ""));
             CreateMap<ProductCreateRequest, Product>()
                 .ForMember(u => u.Images, opt => opt.Ignore());
 
@@ -115,11 +134,19 @@ namespace WebAPI.Mapper
 
             //BasketItem
             CreateMap<BasketCreateRequest, BasketItem>();
-            CreateMap<BasketItem, BasketResponse>();
+            CreateMap<BasketItem, BasketResponse>()
+                .ForMember(u => u.ProductName, opt => opt.MapFrom(vm => vm.Product.Name))
+                .ForMember(u => u.ProductPrice, opt => opt.MapFrom(vm => vm.Product.Price))
+                .ForMember(u => u.ProductCount, opt => opt.MapFrom(vm => vm.Product.Count))
+                .ForMember(u => u.ProductImage, opt => opt.MapFrom(vm => vm.Product.Images.Count != 0 ? Path.Combine(ImagePath.RequestProductsImagePath, vm.Product.Images.FirstOrDefault().Name) : ""));
 
             //Unit
             CreateMap<UnitRequest, Unit>();
             CreateMap<Unit, UnitResponse>();
+
+            //ProductImage
+            CreateMap<ProductImage, string>()
+                .ConstructUsing(u => Path.Combine(ImagePath.RequestProductsImagePath, u.Name));
 
         }
     }
