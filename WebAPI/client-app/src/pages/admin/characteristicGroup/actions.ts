@@ -43,7 +43,7 @@ export const SearchCharacteristicGroups = (page: number, rowsPerPage: number, na
 export const GetByIdCharacteristicGroup = (id: number) => {
     return async (dispatch: Dispatch<CharacteristicGroupAction>) => {
         try {
-            let response = await http.get<ICharacteristicGroupInfo>(`api/CharacteristicGroup/${id}`)
+            let response = await http.get<ICharacteristicGroupInfo>(`api/CharacteristicGroup/GetById/${id}`)
 
             dispatch({
                 type: CharacteristicGroupActionTypes.GET_BY_ID_CHARACTERISTIC_GROUP,
@@ -61,7 +61,7 @@ export const GetByIdCharacteristicGroup = (id: number) => {
 export const GetCharacteristicGroups = () => {
     return async (dispatch: Dispatch<CharacteristicGroupAction>) => {
         try {
-            let response = await http.get<Array<ICharacteristicGroupInfo>>(`api/CharacteristicGroup`)
+            let response = await http.get<Array<ICharacteristicGroupInfo>>(`api/CharacteristicGroup/Get`)
 
             dispatch({
                 type: CharacteristicGroupActionTypes.GET_CHARACTERISTIC_GROUPS,
@@ -79,7 +79,7 @@ export const GetCharacteristicGroups = () => {
 export const CreateCharacteristicGroup = (data: ICharacteristicGroup) => {
     return async () => {
         try {
-            await http.post("api/CharacteristicGroup", data);
+            await http.post("api/CharacteristicGroup/Create", data);
             return Promise.resolve();
         }
         catch (error) {
@@ -91,7 +91,7 @@ export const CreateCharacteristicGroup = (data: ICharacteristicGroup) => {
 export const UpdateCharacteristicGroup = (id: number, data: ICharacteristicGroup) => {
     return async () => {
         try {
-            await http.put<ICharacteristicGroup>(`api/CharacteristicGroup/${id}`, data);
+            await http.put<ICharacteristicGroup>(`api/CharacteristicGroup/Update/${id}`, data);
             return Promise.resolve();
         }
         catch (error) {
@@ -103,7 +103,7 @@ export const UpdateCharacteristicGroup = (id: number, data: ICharacteristicGroup
 export const DeleteCharacteristicGroup = (id: number) => {
     return async () => {
         try {
-            await http.delete(`api/CharacteristicGroup/${id}`);
+            await http.delete(`api/CharacteristicGroup/Delete/${id}`);
             return Promise.resolve();
         }
         catch (error) {
@@ -115,7 +115,7 @@ export const DeleteCharacteristicGroup = (id: number) => {
 export const DeleteCharacteristicGroups = (ids: readonly number[]) => {
     return async () => {
         try {
-            await http.delete(`api/CharacteristicGroup`, {
+            await http.delete(`api/CharacteristicGroup/Delete`, {
                 params: {
                     ids: ids,
                 },

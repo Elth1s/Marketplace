@@ -36,10 +36,29 @@ namespace WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
-        [HttpGet("GetShops")]
+        [HttpGet("Get")]
         public async Task<IActionResult> GetShops()
         {
             var result = await _shopService.GetShopsAsync();
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Return of sorted shops
+        /// </summary>
+        /// <response code="200">Getting shops completed successfully</response>
+        /// <response code="401">You are not authorized</response>
+        /// <response code="403">You don't have permission</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AdminSearchResponse<ShopResponse>))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = "Admin")]
+        [HttpGet("Search")]
+        public async Task<IActionResult> SearchShops([FromQuery] AdminSearchRequest request)
+        {
+            var result = await _shopService.SearchShopsAsync(request);
             return Ok(result);
         }
 
@@ -57,8 +76,8 @@ namespace WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = "Admin, Seller")]
-        [HttpGet("GetShopById/{shopId}")]
+        [Authorize(Roles = "Admin,Seller")]
+        [HttpGet("GetById/{shopId}")]
         public async Task<IActionResult> GetShopById(int shopId)
         {
             var result = await _shopService.GetShopByIdAsync(shopId);
@@ -80,7 +99,7 @@ namespace WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize]
-        [HttpPost("CreateShop")]
+        [HttpPost("Create")]
         public async Task<IActionResult> CreateShop([FromBody] ShopRequest request)
         {
             await _shopService.CreateShopAsync(request, UserId);
@@ -103,7 +122,7 @@ namespace WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin,Seller")]
-        [HttpPut("UpdateShop/{shopId}")]
+        [HttpPut("Update/{shopId}")]
         public async Task<IActionResult> UpdateShop(int shopId, [FromBody] ShopRequest request)
         {
             await _shopService.UpdateShopAsync(shopId, request, UserId);
@@ -125,11 +144,32 @@ namespace WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin,Seller")]
-        [HttpDelete("DeleteShop/{shopId}")]
+        [HttpDelete("Delete/{shopId}")]
         public async Task<IActionResult> DeleteShop(int shopId)
         {
             await _shopService.DeleteShopAsync(shopId);
             return Ok("Shop deleted successfully");
+        }
+
+        /// <summary>
+        /// Delete an existing shops
+        /// </summary>
+        /// <response code="200">Shops deletion completed successfully</response>
+        /// <response code="401">You are not authorized</response>
+        /// <response code="403">You don't have permission</response>
+        /// <response code="404">Shop not found</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("Delete")]
+        public async Task<IActionResult> DeleteShops([FromQuery] IEnumerable<int> ids)
+        {
+            await _shopService.DeleteShopsAsync(ids);
+            return Ok("Shops deleted successfully");
         }
     }
 }

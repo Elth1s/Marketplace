@@ -22,6 +22,12 @@ namespace WebAPI.Mapper
         public AppMappingProfile()
         {
             //User
+            CreateMap<AppUser, UserResponse>()
+                .ForMember(u => u.SecondName, opt => opt.MapFrom(vm => vm.SecondName))
+                .ForMember(u => u.Email, opt => opt.MapFrom(vm => vm.Email))
+                .ForMember(u => u.Phone, opt => opt.MapFrom(vm => vm.PhoneNumber))
+                .ForMember(u => u.Photo, opt => opt.MapFrom(vm => !string.IsNullOrEmpty(vm.Photo) ? string.Concat(ImagePath.RequestUsersImagePath, "/", vm.Photo) : ""));
+
             CreateMap<SignUpRequest, AppUser>();
 
             CreateMap<GoogleJsonWebSignature.Payload, AppUser>()
@@ -106,6 +112,7 @@ namespace WebAPI.Mapper
             CreateMap<Shop, ShopResponse>()
                 .ForMember(u => u.CountryName, opt => opt.MapFrom(vm => vm.City.Country.Name))
                 .ForMember(u => u.CityName, opt => opt.MapFrom(vm => vm.City.Name))
+                .ForMember(u => u.UserFullName, opt => opt.MapFrom(vm => vm.User.FirstName + " " + vm.User.SecondName))
                 .ForMember(u => u.Photo, opt => opt.MapFrom(vm => !string.IsNullOrEmpty(vm.Photo) ? String.Concat(ImagePath.RequestShopsImagePath, "/", vm.Photo) : ""));
             CreateMap<ShopRequest, Shop>()
                 .ForMember(u => u.Photo, opt => opt.Ignore());

@@ -3,7 +3,10 @@ using DAL;
 using DAL.Entities;
 using WebAPI.Extensions;
 using WebAPI.Interfaces.Products;
+using WebAPI.Specifications.Products;
+using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Request.Products;
+using WebAPI.ViewModels.Response;
 using WebAPI.ViewModels.Response.Products;
 
 namespace WebAPI.Services.Products
@@ -59,6 +62,28 @@ namespace WebAPI.Services.Products
             productStatus.ProductStatusNullChecking();
 
             await _productStatusRepository.DeleteAsync(productStatus);
+            await _productStatusRepository.SaveChangesAsync();
+        }
+
+        public async Task<AdminSearchResponse<ProductStatusResponse>> SearchProductStatusesAsync(AdminSearchRequest request)
+        {
+            var spec = new ProductStatusSearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
+            var statuses = await _productStatusRepository.ListAsync(spec);
+            var mappedStatuses = _mapper.Map<IEnumerable<ProductStatusResponse>>(statuses);
+            var response = new AdminSearchResponse<ProductStatusResponse>() { Count = statuses.Count };
+
+            response.Values = mappedStatuses.Skip((request.Page - 1) * request.RowsPerPage).Take(request.RowsPerPage);
+
+            return response;
+        }
+
+        public async Task DeleteProductStatusesAsync(IEnumerable<int> ids)
+        {
+            foreach (var item in ids)
+            {
+                var status = await _productStatusRepository.GetByIdAsync(item);
+                await _productStatusRepository.DeleteAsync(status);
+            }
             await _productStatusRepository.SaveChangesAsync();
         }
     }

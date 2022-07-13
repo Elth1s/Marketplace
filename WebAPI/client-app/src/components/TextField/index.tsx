@@ -1,7 +1,7 @@
 import { TextFieldStyle } from "./style";
 import { ITextField } from "./type";
 
-const TextFieldComponent: React.FC<ITextField> =({ label, touched, error, type, getFieldProps }) => {
+const TextFieldComponent: React.FC<ITextField> = ({ label, touched, error, type, getFieldProps }) => {
     return (
         <TextFieldStyle
             fullWidth

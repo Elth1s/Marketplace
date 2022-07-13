@@ -40,7 +40,7 @@ namespace WebAPI.Controllers.Characteristics
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin,Seller")]
-        [HttpGet]
+        [HttpGet("Get")]
         public async Task<IActionResult> Get()
         {
             var result = await _characteristicGroupService.GetAsync(UserId);
@@ -81,7 +81,7 @@ namespace WebAPI.Controllers.Characteristics
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin,Seller")]
-        [HttpGet("{id}")]
+        [HttpGet("GetById/{id}")]
         public async Task<IActionResult> GetById(int id)
         {
             var result = await _characteristicGroupService.GetByIdAsync(id);
@@ -103,7 +103,7 @@ namespace WebAPI.Controllers.Characteristics
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin,Seller")]
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<IActionResult> Create([FromBody] CharacteristicGroupRequest request)
         {
             await _characteristicGroupService.CreateAsync(request, UserId);
@@ -126,7 +126,7 @@ namespace WebAPI.Controllers.Characteristics
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin,Seller")]
-        [HttpPut("{id}")]
+        [HttpPut("Update/{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] CharacteristicGroupRequest request)
         {
             await _characteristicGroupService.UpdateAsync(id, request);
@@ -148,7 +148,7 @@ namespace WebAPI.Controllers.Characteristics
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin,Seller")]
-        [HttpDelete("{id}")]
+        [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             await _characteristicGroupService.DeleteAsync(id);
@@ -161,7 +161,7 @@ namespace WebAPI.Controllers.Characteristics
         /// <response code="200">Characteristic groups deletion completed successfully</response>
         /// <response code="401">You are not authorized</response>
         /// <response code="403">You don't have permission</response>
-        /// <response code="404">Country not found</response>
+        /// <response code="404">Characteristic group not found</response>
         /// <response code="500">An internal error has occurred</response>
         [SwaggerResponse(StatusCodes.Status200OK)]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
@@ -169,7 +169,7 @@ namespace WebAPI.Controllers.Characteristics
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
-        [HttpDelete]
+        [HttpDelete("Delete")]
         public async Task<IActionResult> Delete([FromQuery] IEnumerable<int> ids)
         {
             await _characteristicGroupService.DeleteAsync(ids);

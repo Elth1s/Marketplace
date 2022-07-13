@@ -58,7 +58,7 @@ const CharacteristicNameTable = () => {
     const getData = async () => {
         try {
             await SearchCharacteristicNames(page, rowsPerPage, name, isAscOrder, orderBy);
-            // setSelected([]);
+            setSelected([]);
         } catch (ex) {
         }
     };

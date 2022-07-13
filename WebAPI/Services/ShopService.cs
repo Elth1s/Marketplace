@@ -57,9 +57,8 @@ namespace WebAPI.Services
             var user = await _userManager.FindByIdAsync(userId);
             user.UserNullChecking();
 
-            var roles = await _userManager.GetRolesAsync(user);
-
-            if (roles.Count == 0)
+            var resultRoles = await _userManager.GetRolesAsync(user);
+            if (resultRoles.Count == 0)
             {
                 var resultRole = await _userManager.AddToRoleAsync(user, Roles.Seller);
                 if (!resultRole.Succeeded)
@@ -146,6 +145,41 @@ namespace WebAPI.Services
             }
 
             await _shopRepository.DeleteAsync(shop);
+            await _shopRepository.SaveChangesAsync();
+        }
+
+        public async Task<AdminSearchResponse<ShopResponse>> SearchShopsAsync(AdminSearchRequest request)
+        {
+            var spec = new ShopSearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
+            var shops = await _shopRepository.ListAsync(spec);
+            var mappedShops = _mapper.Map<IEnumerable<ShopResponse>>(shops);
+            var response = new AdminSearchResponse<ShopResponse>() { Count = shops.Count };
+
+            response.Values = mappedShops.Skip((request.Page - 1) * request.RowsPerPage).Take(request.RowsPerPage);
+
+            return response;
+
+        }
+
+        public async Task DeleteShopsAsync(IEnumerable<int> ids)
+        {
+            foreach (var item in ids)
+            {
+                var shop = await _shopRepository.GetByIdAsync(item);
+                if (!string.IsNullOrEmpty(shop.Photo))
+                {
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.ShopsImagePath, shop.Photo);
+
+                    if (File.Exists(filePath))
+                    {
+                        if (File.Exists(filePath))
+                        {
+                            File.Delete(filePath);
+                        }
+                    }
+                }
+                await _shopRepository.DeleteAsync(shop);
+            }
             await _shopRepository.SaveChangesAsync();
         }
     }

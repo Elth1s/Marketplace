@@ -13,6 +13,10 @@ export interface UpdateProps {
     afterUpdate: any
 }
 
+export interface ShowProps {
+    id: number,
+}
+
 export interface HeadCell<T> {
     id: keyof T;
     numeric: boolean;

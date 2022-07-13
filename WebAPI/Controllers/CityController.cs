@@ -33,7 +33,7 @@ namespace WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
-        [HttpGet("GetCities")]
+        [HttpGet("Get")]
         public async Task<IActionResult> GetCities()
         {
             var result = await _cityService.GetCitiesAsync();
@@ -52,7 +52,7 @@ namespace WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
-        [HttpGet("SearchCities")]
+        [HttpGet("Search")]
         public async Task<IActionResult> SearchCities([FromQuery] AdminSearchRequest request)
         {
             var result = await _cityService.SearchCitiesAsync(request);
@@ -74,7 +74,7 @@ namespace WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
-        [HttpGet("GetCityById/{cityId}")]
+        [HttpGet("GetById/{cityId}")]
         public async Task<IActionResult> GetCityById(int cityId)
         {
             var result = await _cityService.GetCityByIdAsync(cityId);
@@ -96,7 +96,7 @@ namespace WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
-        [HttpPost("CreateCity")]
+        [HttpPost("Create")]
         public async Task<IActionResult> CreateCity([FromBody] CityRequest request)
         {
             await _cityService.CreateCityAsync(request);
@@ -119,7 +119,7 @@ namespace WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
-        [HttpPut("UpdateCity/{cityId}")]
+        [HttpPut("Update/{cityId}")]
         public async Task<IActionResult> UpdateCity(int cityId, [FromBody] CityRequest request)
         {
             await _cityService.UpdateCityAsync(cityId, request);
@@ -141,7 +141,7 @@ namespace WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
-        [HttpDelete("DeleteCity/{cityId}")]
+        [HttpDelete("Delete/{cityId}")]
         public async Task<IActionResult> DeleteCity(int cityId)
         {
             await _cityService.DeleteCityAsync(cityId);
@@ -162,7 +162,7 @@ namespace WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
-        [HttpDelete("DeleteCities")]
+        [HttpDelete("Delete")]
         public async Task<IActionResult> DeleteCities([FromQuery] IEnumerable<int> ids)
         {
             await _cityService.DeleteCitiesAsync(ids);

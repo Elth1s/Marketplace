@@ -45,5 +45,11 @@
         /// </summary>
         /// <example>Atlanta</example>
         public string CityName { get; set; }
+
+        /// <summary>
+        /// Seller full name
+        /// </summary>
+        /// <example>John Smith</example>
+        public string UserFullName { get; set; }
     }
 }

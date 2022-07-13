@@ -454,7 +454,7 @@ namespace DAL.Data
 /*30*/          new(){ Name = "Phones and accessories", UrlSlug = "phones-and-accessories", Image = "", ParentId = 4},
 /*31*/          new(){ Name = "Audio equipment and accessories", UrlSlug = "audio-equipment-and-accessories", Image = "", ParentId = 4},
 /*32*/          new(){ Name = "Spare parts for machinery and electronics", UrlSlug = "spare-parts-for-machinery-and-electronics", Image = "", ParentId = 4},
-/*33*/          new(){ Name = "TV and video equipment", UrlSlug = "tv-and-video-equipment", Image = "", ParentId = 1},
+/*33*/          new(){ Name = "TV and video equipment", UrlSlug = "tv-and-video-equipment", Image = "", ParentId = 4},
 /*34*/          new(){ Name = "Car electronics", UrlSlug = "car-electronics", Image = "", ParentId = 4},
 /*35*/          new(){ Name = "Photos, camcorders and accessories", UrlSlug = "photos-camcorders-and-accessories", Image = "", ParentId = 4},
 /*36*/          new(){ Name = "3d devices", UrlSlug = "3d-devices", Image = "", ParentId = 4},

@@ -8,6 +8,7 @@ using WebAPI.Extensions;
 using WebAPI.Helpers;
 using WebAPI.Interfaces.Users;
 using WebAPI.Resources;
+using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Request.Users;
 using WebAPI.ViewModels.Response;
 
@@ -137,6 +138,26 @@ namespace WebAPI.Services.Users
             var resultPasswordUpdate = await _userManager.ChangePasswordAsync(user, request.OldPassword, request.Password);
             if (!resultPasswordUpdate.Succeeded)
                 throw new AppException(ErrorMessages.PasswordUpdateFail);
+        }
+
+        public async Task<AdminSearchResponse<UserResponse>> SearchUsersAsync(AdminSearchRequest request)
+        {
+            var users = await _userManager.UserSearchAsync(request.Name, request.IsAscOrder, request.OrderBy);
+            var mappedUsers = _mapper.Map<IEnumerable<UserResponse>>(users);
+            var response = new AdminSearchResponse<UserResponse>() { Count = users.Count };
+
+            response.Values = mappedUsers.Skip((request.Page - 1) * request.RowsPerPage).Take(request.RowsPerPage);
+
+            return response;
+        }
+
+        public async Task DeleteUsersAsync(IEnumerable<string> ids)
+        {
+            foreach (var item in ids)
+            {
+                var user = await _userManager.FindByIdAsync(item);
+                await _userManager.DeleteAsync(user);
+            }
         }
     }
 }

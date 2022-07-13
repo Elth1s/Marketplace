@@ -6,7 +6,9 @@ using WebAPI.Extensions;
 using WebAPI.Interfaces.Filters;
 using WebAPI.Resources;
 using WebAPI.Specifications.Filters;
+using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Request.Filters;
+using WebAPI.ViewModels.Response;
 using WebAPI.ViewModels.Response.Filters;
 
 namespace WebAPI.Services.Filters
@@ -100,6 +102,28 @@ namespace WebAPI.Services.Filters
             filter.FilterNameNullChecking();
 
             await _filterNameRepository.DeleteAsync(filter);
+            await _filterNameRepository.SaveChangesAsync();
+        }
+
+        public async Task<AdminSearchResponse<FilterNameResponse>> SearchAsync(AdminSearchRequest request)
+        {
+            var spec = new FilterNameSearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
+            var filterNames = await _filterNameRepository.ListAsync(spec);
+            var mappedFilterNames = _mapper.Map<IEnumerable<FilterNameResponse>>(filterNames);
+            var response = new AdminSearchResponse<FilterNameResponse>() { Count = filterNames.Count };
+
+            response.Values = mappedFilterNames.Skip((request.Page - 1) * request.RowsPerPage).Take(request.RowsPerPage);
+
+            return response;
+        }
+
+        public async Task DeleteAsync(IEnumerable<int> ids)
+        {
+            foreach (var item in ids)
+            {
+                var filterName = await _filterNameRepository.GetByIdAsync(item);
+                await _filterNameRepository.DeleteAsync(filterName);
+            }
             await _filterNameRepository.SaveChangesAsync();
         }
     }

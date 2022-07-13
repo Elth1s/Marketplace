@@ -6,7 +6,9 @@ using WebAPI.Extensions;
 using WebAPI.Interfaces.Characteristics;
 using WebAPI.Resources;
 using WebAPI.Specifications.Characteristics;
+using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Request.Characteristics;
+using WebAPI.ViewModels.Response;
 using WebAPI.ViewModels.Response.Characteristics;
 
 namespace WebAPI.Services.Characteristcs
@@ -80,6 +82,28 @@ namespace WebAPI.Services.Characteristcs
             characteristicValue.CharacteristicValueNullChecking();
 
             await _characteristicValueRepository.DeleteAsync(characteristicValue);
+            await _characteristicValueRepository.SaveChangesAsync();
+        }
+
+        public async Task<AdminSearchResponse<CharacteristicValueResponse>> SearchAsync(AdminSearchRequest request)
+        {
+            var spec = new CharacteristicValueSearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
+            var characteristics = await _characteristicValueRepository.ListAsync(spec);
+            var mappedCharacteristics = _mapper.Map<IEnumerable<CharacteristicValueResponse>>(characteristics);
+            var response = new AdminSearchResponse<CharacteristicValueResponse>() { Count = characteristics.Count };
+
+            response.Values = mappedCharacteristics.Skip((request.Page - 1) * request.RowsPerPage).Take(request.RowsPerPage);
+
+            return response;
+        }
+
+        public async Task DeleteAsync(IEnumerable<int> ids)
+        {
+            foreach (var item in ids)
+            {
+                var characteristicValue = await _characteristicValueRepository.GetByIdAsync(item);
+                await _characteristicValueRepository.DeleteAsync(characteristicValue);
+            }
             await _characteristicValueRepository.SaveChangesAsync();
         }
     }

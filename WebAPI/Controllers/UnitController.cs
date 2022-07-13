@@ -33,7 +33,7 @@ namespace WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
-        [HttpGet("GetUnits")]
+        [HttpGet("Get")]
         public async Task<IActionResult> GetUnits()
         {
             var result = await _unitService.GetAllAsync();
@@ -52,7 +52,7 @@ namespace WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
-        [HttpGet("SearchUnits")]
+        [HttpGet("Search")]
         public async Task<IActionResult> SearchUnits([FromQuery] AdminSearchRequest request)
         {
             var result = await _unitService.SearchUnitsAsync(request);
@@ -159,7 +159,7 @@ namespace WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
-        [HttpDelete("DeleteUnits")]
+        [HttpDelete("Delete")]
         public async Task<IActionResult> DeleteUnits([FromQuery] IEnumerable<int> ids)
         {
             await _unitService.DeleteUnitsAsync(ids);

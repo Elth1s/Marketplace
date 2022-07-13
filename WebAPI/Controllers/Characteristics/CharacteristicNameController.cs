@@ -77,7 +77,7 @@ namespace WebAPI.Controllers.Characteristics
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin,Seller")]
-        [HttpGet("{id}")]
+        [HttpGet("GetById/{id}")]
         public async Task<IActionResult> GetById(int id)
         {
             var result = await _characteristicNameService.GetByIdAsync(id);
@@ -99,7 +99,7 @@ namespace WebAPI.Controllers.Characteristics
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin,Seller")]
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<IActionResult> Create([FromBody] CharacteristicNameRequest request)
         {
             await _characteristicNameService.CreateAsync(request);
@@ -122,7 +122,7 @@ namespace WebAPI.Controllers.Characteristics
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin,Seller")]
-        [HttpPut("{id}")]
+        [HttpPut("Update/{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] CharacteristicNameRequest request)
         {
             await _characteristicNameService.UpdateAsync(id, request);
@@ -144,7 +144,7 @@ namespace WebAPI.Controllers.Characteristics
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin,Seller")]
-        [HttpDelete("{id}")]
+        [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             await _characteristicNameService.DeleteAsync(id);
@@ -152,7 +152,7 @@ namespace WebAPI.Controllers.Characteristics
         }
 
         /// <summary>
-        /// Delete an existing characteristic nams
+        /// Delete an existing characteristic names
         /// </summary>
         /// <response code="200">Characteristic name deletion completed successfully</response>
         /// <response code="401">You are not authorized</response>
@@ -165,11 +165,11 @@ namespace WebAPI.Controllers.Characteristics
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
-        [HttpDelete]
+        [HttpDelete("Delete")]
         public async Task<IActionResult> Delete([FromQuery] IEnumerable<int> ids)
         {
             await _characteristicNameService.DeleteAsync(ids);
-            return Ok("Characteristic nams deleted successfully");
+            return Ok("Characteristic names deleted successfully");
         }
     }
 }

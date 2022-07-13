@@ -15,7 +15,7 @@ import qs from "qs"
 export const SearchCategories = (page: number, rowsPerPage: number, name: string, isAscOrder: boolean, orderBy: string) => {
     return async (dispatch: Dispatch<CategoryAction>) => {
         try {
-            let response = await http.get<ISearchCategories>(`api/Category/SearchCategories`, {
+            let response = await http.get<ISearchCategories>(`api/Category/Search`, {
                 params: {
                     page: page,
                     rowsPerPage: rowsPerPage,
@@ -134,7 +134,7 @@ export const DeleteCategory = (id: number) => {
 export const DeleteCategories = (ids: readonly number[]) => {
     return async () => {
         try {
-            await http.delete(`api/Category/DeleteCategories`, {
+            await http.delete(`api/Category/Delete`, {
                 params: {
                     ids: ids,
                 },

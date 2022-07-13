@@ -14,7 +14,7 @@ import { ServerError } from "../../../store/types"
 export const GetByIdCharacteristicName = (id: number) => {
     return async (dispatch: Dispatch<CharacteristicNameAction>) => {
         try {
-            let response = await http.get<ICharacteristicName>(`api/CharacteristicName/${id}`)
+            let response = await http.get<ICharacteristicName>(`api/CharacteristicName/GetById/${id}`)
 
             dispatch({
                 type: CharacteristicNameActionTypes.GET_BY_ID_CHARACTERISTIC_NAME,
@@ -79,7 +79,7 @@ export const GetCharacteristicNames = () => {
 export const CreateCharacteristicName = (data: ICharacteristicName) => {
     return async () => {
         try {
-            await http.post("api/CharacteristicName", data);
+            await http.post("api/CharacteristicName/Create", data);
             return Promise.resolve();
         }
         catch (error) {
@@ -91,7 +91,7 @@ export const CreateCharacteristicName = (data: ICharacteristicName) => {
 export const UpdateCharacteristicName = (id: number, data: ICharacteristicName) => {
     return async () => {
         try {
-            await http.put<ICharacteristicName>(`api/CharacteristicName/${id}`, data);
+            await http.put<ICharacteristicName>(`api/CharacteristicName/Update/${id}`, data);
             return Promise.resolve();
         }
         catch (error) {
@@ -103,7 +103,7 @@ export const UpdateCharacteristicName = (id: number, data: ICharacteristicName) 
 export const DeleteCharacteristicName = (id: number) => {
     return async () => {
         try {
-            await http.delete(`api/CharacteristicName/${id}`);
+            await http.delete(`api/CharacteristicName/Delete/${id}`);
             return Promise.resolve();
         }
         catch (error) {
@@ -115,7 +115,7 @@ export const DeleteCharacteristicName = (id: number) => {
 export const DeleteCharacteristicNames = (ids: readonly number[]) => {
     return async () => {
         try {
-            await http.delete(`api/CharacteristicName`, {
+            await http.delete(`api/CharacteristicName/Delete`, {
                 params: {
                     ids: ids,
                 },

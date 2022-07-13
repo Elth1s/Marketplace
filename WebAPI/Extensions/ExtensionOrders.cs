@@ -23,5 +23,15 @@ namespace WebAPI.Extensions
 
             return Expression.Lambda<Func<T, object>>(propAsObject, parameter);
         }
+
+        public static IOrderedQueryable<T> OrderBy<T>(this IQueryable<T> source, string propertyName)
+        {
+            return source.OrderBy(ToLambda<T>(propertyName));
+        }
+
+        public static IOrderedQueryable<T> OrderByDescending<T>(this IQueryable<T> source, string propertyName)
+        {
+            return source.OrderByDescending(ToLambda<T>(propertyName));
+        }
     }
 }
