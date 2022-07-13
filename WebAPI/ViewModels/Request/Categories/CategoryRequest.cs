@@ -1,9 +1,7 @@
-﻿using DAL;
-using DAL.Entities;
-using FluentValidation;
-using WebAPI.Specifications.Categories;
+﻿using FluentValidation;
+using System.Text.RegularExpressions;
 
-namespace WebAPI.ViewModels.Request
+namespace WebAPI.ViewModels.Request.Categories
 {
     /// <summary>
     /// Category class to create and update category
@@ -13,12 +11,21 @@ namespace WebAPI.ViewModels.Request
         /// <summary>
         /// Name of category
         /// </summary>
-        /// <example>Technology and electronics </example>
+        /// <example>Technology and electronics</example>
         public string Name { get; set; }
+        /// <summary>
+        /// Url of category
+        /// </summary>
+        /// <example>technology-and-electronics</example>
+        public string UrlSlug { get; set; }
         /// <summary>
         /// Category image
         /// </summary>
         public string Image { get; set; }
+        /// <summary>
+        /// Category icon
+        /// </summary>
+        public string Icon { get; set; }
         /// <summary>
         /// Parent Category identifier
         /// </summary>
@@ -31,23 +38,25 @@ namespace WebAPI.ViewModels.Request
     /// </summary>
     public class CategoryRequestValidation : AbstractValidator<CategoryRequest>
     {
-        private readonly IRepository<Category> _categoryRepository;
 
-        public CategoryRequestValidation(IRepository<Category> categoryRepository)
+        public CategoryRequestValidation()
         {
-            _categoryRepository = categoryRepository;
-
             //Name
             RuleFor(x => x.Name).Cascade(CascadeMode.Stop)
                    .NotEmpty().WithName("Name").WithMessage("{PropertyName} is required")
-                   .Must(IsUniqueName).WithMessage("Category with this {PropertyName} already exists")
+                   .Length(2, 50).WithMessage("{PropertyName} should be between 2 and 50 characters");
+
+            //UrlSlug
+            RuleFor(x => x.UrlSlug).Cascade(CascadeMode.Stop)
+                   .NotEmpty().WithName("Url slug").WithMessage("{PropertyName} is required")
+                   .Must(IsValidUrlSlug).WithMessage("Invalid format of {PropertyName}")
                    .Length(2, 50).WithMessage("{PropertyName} should be between 2 and 50 characters");
         }
 
-        private bool IsUniqueName(string name)
+        private bool IsValidUrlSlug(string urlSlug)
         {
-            var spec = new CategoryGetByNameSpecification(name);
-            return _categoryRepository.GetBySpecAsync(spec).Result == null;
+            return Regex.IsMatch(urlSlug, @"^[a-z0-9]+(?:-[a-z0-9]+)*$");
+
         }
     }
 }

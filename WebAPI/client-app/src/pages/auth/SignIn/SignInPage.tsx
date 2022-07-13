@@ -16,16 +16,16 @@ import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 // import { toast } from 'react-toastify';
 
 import GoogleExternalLogin from "../../../components/Google";
+import FacebookExternalLogin from "../../../components/Facebook";
 import LinkRouter from "../../../components/LinkRouter";
 
 import { LogInSchema } from "../validation";
 import { useActions } from "../../../hooks/useActions";
 import { ILoginModel } from "../types";
 import { ServerError } from "../../../store/types";
-
-import { login } from "../../../assets/backgrounds";
-import FacebookExternalLogin from "../../../components/Facebook";
 import { toLowerFirstLetter } from "../../../http_comon";
+import { login } from "../../../assets/backgrounds";
+
 
 const SignIn = () => {
     const { LoginUser } = useActions();

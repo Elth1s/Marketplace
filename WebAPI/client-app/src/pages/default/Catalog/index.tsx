@@ -1,11 +1,44 @@
-import React from 'react'
+import { Box, Typography } from '@mui/material';
+import { useEffect } from 'react'
 
-type Props = {}
+import BreadcrumbsComponent from '../../../components/BreadcrumbsComponent';
+import CatalogItem from '../../../components/CatalogItem';
 
-const Catalog = (props: Props) => {
+import { useActions } from '../../../hooks/useActions';
+import { useTypedSelector } from '../../../hooks/useTypedSelector';
+import { BoxCatalogStyle } from './styled';
+
+const Catalog = () => {
+    const { GetCatalog } = useActions();
+    const { name, catalogItems } = useTypedSelector(state => state.catalog);
+
+    useEffect(() => {
+        document.title = name;
+        getData();
+    }, [])
+
+    const getData = async () => {
+        try {
+            await GetCatalog();
+        } catch (ex) {
+        }
+    };
+
     return (
-        <div>Catalog</div>
-    )
+        <Box>
+            <BreadcrumbsComponent parents={[]} />
+            <Typography variant='h1' sx={{ marginBottom: "30px" }}>
+                Catalog
+            </Typography>
+            <BoxCatalogStyle>
+                {catalogItems.map((row, index) => {
+                    return (
+                        <CatalogItem key={index} name={row.name} image={row.image} urlSlug={row.urlSlug} />
+                    );
+                })}
+            </BoxCatalogStyle>
+        </Box>
+    );
 }
 
 export default Catalog

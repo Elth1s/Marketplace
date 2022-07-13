@@ -1,10 +1,4 @@
-﻿using DAL.Entities;
-using DAL.Entities.Identity;
-using DAL.Entities.Order;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-
-namespace DAL.Data
+﻿namespace DAL.Data
 {
     public class MarketplaceDbContext : IdentityDbContext<AppUser>
     {
@@ -39,13 +33,15 @@ namespace DAL.Data
         public DbSet<OrderStatus> OrderStatuses { get; set; }
         public DbSet<OrderProduct> OrderProducts { get; set; }
 
+        public DbSet<Unit> Units { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
             builder.Entity<Category>()
                 .HasOne(c => c.Parent)
-                .WithMany(c => c.Children);
+                .WithMany(c => c.Childrens);
 
             builder.Entity<AppUser>(entity =>
             {

@@ -46,6 +46,87 @@ namespace DAL.Data
 
                 await marketplaceDbContext.SaveChangesAsync();
             }
+
+            if (!await marketplaceDbContext.Categories.AnyAsync())
+            {
+                await marketplaceDbContext.Categories.AddRangeAsync(
+                  GetPreconfiguredMarketplaceCategories());
+
+                await marketplaceDbContext.SaveChangesAsync();
+            }
+            var WomensClothes = marketplaceDbContext.Categories.Where(c => c.Id == 21).FirstOrDefault();
+
+            if (!await marketplaceDbContext.Shops.AnyAsync())
+            {
+                await marketplaceDbContext.Shops.AddRangeAsync(
+                  GetPreconfiguredMarketplaceShops(defaultUser.Id));
+
+                await marketplaceDbContext.SaveChangesAsync();
+            }
+
+            if (!await marketplaceDbContext.ProductStatuses.AnyAsync())
+            {
+                await marketplaceDbContext.ProductStatuses.AddRangeAsync(
+                  GetPreconfiguredMarketplaceProductStatus());
+
+                await marketplaceDbContext.SaveChangesAsync();
+            }
+
+            if (!await marketplaceDbContext.Products.AnyAsync())
+            {
+                await marketplaceDbContext.Products.AddRangeAsync(
+                  GetPreconfiguredMarketplaceProducts());
+
+                await marketplaceDbContext.SaveChangesAsync();
+            }
+
+            if (!await marketplaceDbContext.ProductImages.AnyAsync())
+            {
+                await marketplaceDbContext.ProductImages.AddRangeAsync(
+                  GetPreconfiguredMarketplaceProductImages());
+
+                await marketplaceDbContext.SaveChangesAsync();
+            }
+
+            if (!await marketplaceDbContext.Units.AnyAsync())
+            {
+                await marketplaceDbContext.Units.AddRangeAsync(
+                  GetPreconfiguredMarketplaceUnits());
+
+                await marketplaceDbContext.SaveChangesAsync();
+            }
+
+            if (!await marketplaceDbContext.FilterGroups.AnyAsync())
+            {
+                await marketplaceDbContext.FilterGroups.AddRangeAsync(
+                  GetPreconfiguredMarketplaceFilterGroups());
+
+                await marketplaceDbContext.SaveChangesAsync();
+            }
+
+            if (!await marketplaceDbContext.FilterNames.AnyAsync())
+            {
+                await marketplaceDbContext.FilterNames.AddRangeAsync(
+                  GetPreconfiguredMarketplaceFilterNames());
+
+                await marketplaceDbContext.SaveChangesAsync();
+            }
+
+            if (!await marketplaceDbContext.FilterValues.AnyAsync())
+            {
+                await marketplaceDbContext.FilterValues.AddRangeAsync(
+                  GetPreconfiguredMarketplaceFilterValues(WomensClothes));
+
+                await marketplaceDbContext.SaveChangesAsync();
+            }
+
+            if (!await marketplaceDbContext.FilterValueProducts.AnyAsync())
+            {
+                await marketplaceDbContext.FilterValueProducts.AddRangeAsync(
+                  GetPreconfiguredMarketplaceFilterValueProducts());
+
+                await marketplaceDbContext.SaveChangesAsync();
+            }
         }
 
         static IEnumerable<Country> GetPreconfiguredCountries()
@@ -335,112 +416,334 @@ namespace DAL.Data
         }
 
 
-        static IEnumerable<Category> GetPreconfiguredMarketplaceCategory()
+        static IEnumerable<Category> GetPreconfiguredMarketplaceCategories()
         {
             var categories = new List<Category>
             {
-/* 1 */         new(){ Name = "Technology and electronics", ParentId = null},  
-/* 2 */         new(){ Name = "Clothes and shoes", ParentId = null},
+/*1*/           new(){ Name = "Beauty and health", UrlSlug = "beauty-and-health", Image = "BeautyAndHealth.png", ParentId = null},
+/*2*/           new(){ Name = "House and garden", UrlSlug = "house-and-garden", Image = "HouseAndGarden.png", ParentId = null},
+/*3*/           new(){ Name = "Clothes and shoes", UrlSlug = "clothes-and-shoes", Image = "ClothesAndShoes.png", ParentId = null},
+/*4*/           new(){ Name = "Technology and electronics", UrlSlug = "technology-and-electronics", Image = "TechnologyAndElectronics.png", ParentId = null},
+/*5*/           new(){ Name = "Goods for children", UrlSlug = "goods-for-children", Image = "GoodsForChildren.png", ParentId = null},
+/*6*/           new(){ Name = "Auto", UrlSlug = "auto", Image = "Auto.png", ParentId = null},
+/*7*/           new(){ Name = "Gifts, hobbies, books", UrlSlug = "gifts-hobbies-books", Image = "GiftsHobbiesBooks.png", ParentId = null},
+/*8*/           new(){ Name = "Accessories and decorations", UrlSlug = "accessories-and-decorations", Image = "AccessoriesAndDecorations.png", ParentId = null},
+/*9*/           new(){ Name = "Materials for repair", UrlSlug = "materials-for-repair", Image = "", ParentId = null},
+/*10*/          new(){ Name = "Sports and recreation", UrlSlug = "sports-and-recreation", Image = "SportsAndRecreation.png", ParentId = null},
+/*11*/          new(){ Name = "Medicines and medical products", UrlSlug = "medicines-and-medical-products", Image = "", ParentId = null},
+/*12*/          new(){ Name = "Pets and pet products", UrlSlug = "pets-and-pet-products", Image = "", ParentId = null},
+/*13*/          new(){ Name = "Stationery", UrlSlug = "stationery", Image = "Stationery.png", ParentId = null},
+/*14*/          new(){ Name = "Overalls and shoes", UrlSlug = "overalls-and-shoes", Image = "", ParentId = null},
+/*15*/          new(){ Name = "Wedding goods", UrlSlug = "wedding-goods", Image = "", ParentId = null},
+/*16*/          new(){ Name = "Food products, drinks", UrlSlug = "food-products-drinks", Image = "", ParentId = null},
+/*17*/          new(){ Name = "Tools", UrlSlug = "tools", Image = "Tools.png", ParentId = null},
+/*18*/          new(){ Name = "Antiques and collectibles", UrlSlug = "antiques-and-collectibles", Image = "", ParentId = null},
+/*19*/          new(){ Name = "Construction", UrlSlug = "сonstruction", Image = "Construction.png", ParentId = null},
 
-/* 3 */         new(){ Name = "Computer equipment and software", ParentId = 1},
-/* 4 */         new(){ Name = "Household appliances", ParentId = 1},
-/* 5 */         new(){ Name = "Phones and accessories", ParentId = 1},
-/* 6 */         new(){ Name = "Audio equipment and accessories", ParentId = 1},
-/* 7 */         new(){ Name = "Spare parts for machinery and electronics", ParentId = 1},
-/* 8 */         new(){ Name = "TV and video equipment", ParentId = 1},
-/* 9 */         new(){ Name = "Car electronics", ParentId = 1},
-/* 10 */        new(){ Name = "Photos, camcorders and accessories", ParentId = 1},
-/* 11 */        new(){ Name = "3d devices", ParentId = 1},
-/* 12 */        new(){ Name = "Equipment for satellite internet", ParentId = 1},
-                
-/* 13 */        new(){ Name = "Men's clothing", ParentId = 2},
-/* 14 */        new(){ Name = "Women's clothes", ParentId = 2},
-/* 15 */        new(){ Name = "Children's clothes, shoes, accessories", ParentId = 2},
-/* 16 */        new(){ Name = "Sportswear and footwear", ParentId = 2},
-/* 17 */        new(){ Name = "Footwear", ParentId = 2},
-/* 18 */        new(){ Name = "Overalls and shoes", ParentId = 2},
-/* 19 */        new(){ Name = "Carnival costumes", ParentId = 2},
-/* 20 */        new(){ Name = "Ethnic clothing", ParentId = 2},
+/*20*/          new(){ Name = "Men's clothing", UrlSlug = "mens-clothing", Image = "", ParentId = 3},
+/*21*/          new(){ Name = "Women's clothes", UrlSlug = "womens-clothes", Image = "", ParentId = 3},
+/*22*/          new(){ Name = "Children's clothes, shoes, accessories", UrlSlug = "Childrens-clothes-shoes-accessories", Image = "", ParentId = 3},
+/*23*/          new(){ Name = "Sportswear and footwear", UrlSlug = "sportswear-and-footwear", Image = "", ParentId = 3},
+/*24*/          new(){ Name = "Footwear", UrlSlug = "footwear", Image = "", ParentId = 3},
+/*25*/          new(){ Name = "Overalls and shoes", UrlSlug = "overalls-and-shoes", Image = "", ParentId = 3},
+/*26*/          new(){ Name = "Carnival costumes", UrlSlug = "carnival-costumes", Image = "", ParentId = 3},
+/*27*/          new(){ Name = "Ethnic clothing", UrlSlug = "ethnic-clothing", Image = "", ParentId = 3},
 
-/* 21 */        new(){ Name = "Tablet computers", ParentId = 3},
-/* 22 */        new(){ Name = "Laptops", ParentId = 3},
-/* 23 */        new(){ Name = "Monitors", ParentId = 3},
-/* 24 */        new(){ Name = "Accessories for computer equipment", ParentId = 3},
-/* 25 */        new(){ Name = "Computer accessories", ParentId = 3},
-/* 26 */        new(){ Name = "Smart watches and fitness bracelets", ParentId = 3},
-/* 27 */        new(){ Name = "Printers, scanners, MFPs and components", ParentId = 3},
-/* 28 */        new(){ Name = "Information carriers", ParentId = 3},
-/* 29 */        new(){ Name = "Game consoles and components", ParentId = 3},
-/* 30 */        new(){ Name = "Desktops", ParentId = 3},
-/* 31 */        new(){ Name = "Software", ParentId = 3},
-/* 32 */        new(){ Name = "Server equipment", ParentId = 3},
-/* 33 */        new(){ Name = "Mining equipment", ParentId = 3},
-/* 34 */        new(){ Name = "E-books", ParentId = 3},
-/* 35 */        new(){ Name = "Single board computers and nettops", ParentId = 3},
-/* 36 */        new(){ Name = "Portable electronic translators", ParentId = 3},
+/*28*/          new(){ Name = "Computer equipment and software", UrlSlug = "computer-equipment-and-software", Image = "", ParentId = 4},
+/*29*/          new(){ Name = "Household appliances", UrlSlug = "household-appliances", Image = "", ParentId = 4},
+/*30*/          new(){ Name = "Phones and accessories", UrlSlug = "phones-and-accessories", Image = "", ParentId = 4},
+/*31*/          new(){ Name = "Audio equipment and accessories", UrlSlug = "audio-equipment-and-accessories", Image = "", ParentId = 4},
+/*32*/          new(){ Name = "Spare parts for machinery and electronics", UrlSlug = "spare-parts-for-machinery-and-electronics", Image = "", ParentId = 4},
+/*33*/          new(){ Name = "TV and video equipment", UrlSlug = "tv-and-video-equipment", Image = "", ParentId = 1},
+/*34*/          new(){ Name = "Car electronics", UrlSlug = "car-electronics", Image = "", ParentId = 4},
+/*35*/          new(){ Name = "Photos, camcorders and accessories", UrlSlug = "photos-camcorders-and-accessories", Image = "", ParentId = 4},
+/*36*/          new(){ Name = "3d devices", UrlSlug = "3d-devices", Image = "", ParentId = 4},
+/*37*/          new(){ Name = "Equipment for satellite internet", UrlSlug = "equipment-for-satellite-internet", Image = "", ParentId = 4},
 
-/* 37 */        new(){ Name = "Cables for electronics", ParentId = 24},
-/* 38 */        new(){ Name = "HDD, SSD", ParentId = 24},
-/* 39 */        new(){ Name = "Batteries for laptops, tablets, e-books, translators", ParentId = 24},
-/* 40 */        new(){ Name = "Laptop chargers", ParentId = 24},
-/* 41 */        new(){ Name = "Laptop body parts", ParentId = 24},
-/* 42 */        new(){ Name = "Memory modules", ParentId = 24},
-/* 43 */        new(){ Name = "Processors", ParentId = 24},
-/* 44 */        new(){ Name = "Coolers and cooling systems", ParentId = 24},
-/* 45 */        new(){ Name = "Matrixes for laptops, tablets and monitors", ParentId = 24},
-/* 46 */        new(){ Name = "Cables and connectors for laptops, computers, tablets", ParentId = 24},
-/* 47 */        new(){ Name = "Keyboard blocks for laptops", ParentId = 24},
-/* 48 */        new(){ Name = "Touchscreen for displays", ParentId = 24},
-/* 49 */        new(){ Name = "Chips", ParentId = 24},
-/* 50 */        new(){ Name = "Spare parts for TVs and monitors", ParentId = 24},
-/* 51 */        new(){ Name = "Motherboards", ParentId = 24},
-/* 52 */        new(){ Name = "Video cards", ParentId = 24},
-/* 53 */        new(){ Name = "Enclosures for computers", ParentId = 24},
-/* 54 */        new(){ Name = "Power supplies for computers", ParentId = 24},
-/* 55 */        new(){ Name = "Patch cord", ParentId = 24},
-/* 56 */        new(){ Name = "Pockets for hard drives", ParentId = 24},
-/* 57 */        new(){ Name = "Adapters and port expansion cards", ParentId = 24},
-/* 58 */        new(){ Name = "Audio parts for laptops", ParentId = 24},
-/* 59 */        new(){ Name = "Thermal paste", ParentId = 24},
-/* 60 */        new(){ Name = "Sound cards", ParentId = 24},
-/* 61 */        new(){ Name = "Network cards", ParentId = 24},
-/* 62 */        new(){ Name = "Optical drives", ParentId = 24},
-/* 63 */        new(){ Name = "Cases for tablets", ParentId = 24},
-/* 64 */        new(){ Name = "Accessories for matrices and displays", ParentId = 24},
-/* 65 */        new(){ Name = "Cameras for laptops", ParentId = 24},
-/* 66 */        new(){ Name = "Cooling systems for laptops", ParentId = 24},
-/* 67 */        new(){ Name = "TV and FM tuners", ParentId = 24},
-/* 68 */        new(){ Name = "Postcards", ParentId = 24},
-/* 69 */        new(){ Name = "Accessories for routers", ParentId = 24},
+/*38*/          new(){ Name = "Tablet computers", UrlSlug = "tablet-computers", Image = "", ParentId = 28},
+/*39*/          new(){ Name = "Laptops", UrlSlug = "laptops", Image = "", ParentId = 28},
+/*40*/          new(){ Name = "Monitors", UrlSlug = "monitors", Image = "", ParentId = 28},
+/*41*/          new(){ Name = "Components for computer equipment", UrlSlug = "components-for-computer-equipment", Image = "", ParentId = 28},
+/*42*/          new(){ Name = "Computer accessories", UrlSlug = "computer-accessories", Image = "", ParentId = 28},
+/*43*/          new(){ Name = "Smart watches and fitness bracelets", UrlSlug = "smart-watches-and-fitness-bracelets", Image = "", ParentId = 28},
+/*44*/          new(){ Name = "Printers, scanners, MFPs and components", UrlSlug = "printers-scanners-mfps-and-components", Image = "", ParentId = 28},
+/*45*/          new(){ Name = "Information carriers", UrlSlug = "information-carriers", Image = "", ParentId = 28},
+/*46*/          new(){ Name = "Game consoles and components", UrlSlug = "game-consoles-and-components", Image = "", ParentId = 28},
+/*47*/          new(){ Name = "Desktops", UrlSlug = "desktops", Image = "", ParentId = 28},
+/*48*/          new(){ Name = "Software", UrlSlug = "software", Image = "", ParentId = 28},
+/*49*/          new(){ Name = "Server equipment", UrlSlug = "server-equipment", Image = "", ParentId = 28},
+/*50*/          new(){ Name = "Mining equipment", UrlSlug = "mining-equipment", Image = "", ParentId = 28},
+/*51*/          new(){ Name = "E-books", UrlSlug = "e-books", Image = "", ParentId = 28},
+/*52*/          new(){ Name = "Single board computers and nettops", UrlSlug = "single-board-computers-and-nettops", Image = "", ParentId = 28},
+/*53*/          new(){ Name = "Portable electronic translators", UrlSlug = "portable-electronic-translators", Image = "", ParentId = 28},
+
+                new(){ Name = "Cables for electronics", UrlSlug = "cables-for-electronics", Image = "", ParentId = 41},
+                new(){ Name = "HDD, SSD", UrlSlug = "hdd-ssd", Image = "", ParentId = 41},
+                new(){ Name = "Batteries for laptops, tablets, e-books, translators", UrlSlug = "batteries-for-laptops-tablets-e-books-translators", Image = "", ParentId = 41},
+                new(){ Name = "Laptop chargers", UrlSlug = "laptop-chargers", Image = "", ParentId = 41},
+                new(){ Name = "Laptop body parts", UrlSlug = "laptop-body-parts", Image = "", ParentId = 41},
+                new(){ Name = "Memory modules", UrlSlug = "memory-modules", Image = "", ParentId = 41},
+                new(){ Name = "Processors", UrlSlug = "processors", Image = "", ParentId = 41},
+                new(){ Name = "Coolers and cooling systems", UrlSlug = "coolers-and-cooling-systems", Image = "", ParentId = 41},
+                new(){ Name = "Matrixes for laptops, tablets and monitors", UrlSlug = "matrixes-for-laptops-tablets-and-monitors", Image = "", ParentId = 41},
+                new(){ Name = "Cables and connectors for laptops, computers, tablets", UrlSlug = "cables-and-connectors-for-laptops-computers-tablets", Image = "", ParentId = 41},
+                new(){ Name = "Keyboard blocks for laptops", UrlSlug = "keyboard-blocks-for-laptops", Image = "", ParentId = 41},
+                new(){ Name = "Touchscreen for displays", UrlSlug = "touchscreen-for-displays", Image = "", ParentId = 41},
+                new(){ Name = "Microcircuits", UrlSlug = "microcircuits", Image = "", ParentId = 41},
+                new(){ Name = "Spare parts for TVs and monitors", UrlSlug = "spare-parts-for-tvs-and-monitors", Image = "", ParentId = 41},
+                new(){ Name = "Motherboards", UrlSlug = "motherboards", Image = "", ParentId = 41},
+                new(){ Name = "Video cards", UrlSlug = "video-cards", Image = "", ParentId = 41},
+                new(){ Name = "Enclosures for computers", UrlSlug = "enclosures-for-computers", Image = "", ParentId = 41},
+                new(){ Name = "Power supplies for computers", UrlSlug = "power-supplies-for-computers", Image = "", ParentId = 41},
+                new(){ Name = "Patch cord", UrlSlug = "patch-cord", Image = "", ParentId = 41},
+                new(){ Name = "Pockets for hard drives", UrlSlug = "pockets-for-hard-drives", Image = "", ParentId = 41},
+                new(){ Name = "Adapters and port expansion cards", UrlSlug = "adapters-and-port-expansion-cards", Image = "", ParentId = 41},
+                new(){ Name = "Audio parts for laptops", UrlSlug = "audio-parts-for-laptops", Image = "", ParentId = 41},
+                new(){ Name = "Thermal paste", UrlSlug = "thermal-paste", Image = "", ParentId = 41},
+                new(){ Name = "Sound cards", UrlSlug = "sound-cards", Image = "", ParentId = 41},
+                new(){ Name = "Network cards", UrlSlug = "network-cards", Image = "", ParentId = 41},
+                new(){ Name = "Optical drives", UrlSlug = "optical-drives", Image = "", ParentId = 41},
+                new(){ Name = "Cases for tablets", UrlSlug = "cases-for-tablets", Image = "", ParentId = 41},
+                new(){ Name = "Accessories for matrices and displays", UrlSlug = "accessories-for-matrices-and-displays", Image = "", ParentId = 41},
+                new(){ Name = "Cameras for laptops", UrlSlug = "cameras-for-laptops", Image = "", ParentId = 41},
+                new(){ Name = "Cooling systems for laptops", UrlSlug = "cooling-systems-for-laptops", Image = "", ParentId = 41},
+                new(){ Name = "TV and FM tuners", UrlSlug = "tv-and-fm-tuners", Image = "", ParentId = 41},
+                new(){ Name = "Postcards", UrlSlug = "postcards", Image = "", ParentId = 41},
+                new(){ Name = "Accessories for routers", UrlSlug = "accessories-for-routers", Image = "", ParentId = 41},
 
 
             };
             return categories;
         }
 
-        static IEnumerable<FilterName> GetPreconfiguredMarketplaceFilterGroup()
+        static IEnumerable<Shop> GetPreconfiguredMarketplaceShops(string userId)
         {
-            var filterGroups = new List<FilterName>
+            var shops = new List<Shop>
             {
-/* 1 */         new(){ Name = "Сondition"},
-/* 2 */         new(){ Name = "Purpose"},
-/* 3 */         new(){ Name = "Video memory type"},
-/* 4 */         new(){ Name = "Graphics chipset"},
-/* 5 */         new(){ Name = "Memory bus width"},
-/* 6 */         new(){ Name = "Producer"},  
-/* 7 */         new(){ Name = "Connection type"},
-/* 8 */         new(){ Name = "Interfaces"},
-/* 9 */         new(){ Name = "Cooling system"},
-/* 10 */        new(){ Name = "Peculiarities"},
-/* 11 */        new(){ Name = "Producing country"},
-/* 12 */        new(){ Name = "Quality class"},
-/* 13 */        new(){ Name = "Warranty period, months"},
-/* 14 */        new(){ Name = "Processor frequency, MHz"},
-/* 15 */        new(){ Name = "Video memory frequency, MHz"},
-/* 16 */        new(){ Name = "Video memory size, MB"},
+                new(){ Name = "Mall",Description="",Photo="",Email="dg646726@gmail.com",SiteUrl="https://http://mall.novakvova.com/",CityId=1,UserId=userId},
+            };
+            return shops;
+        }
+
+        static IEnumerable<ProductStatus> GetPreconfiguredMarketplaceProductStatus()
+        {
+            var productStatuses = new List<ProductStatus>
+            {
+                new(){ Name = "In stock" },
+            };
+            return productStatuses;
+        }
+
+        static IEnumerable<Product> GetPreconfiguredMarketplaceProducts()
+        {
+            var products = new List<Product>
+            {
+                new(){ Name = "Nike Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Puma Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Zara Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "H&M Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "AAA Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Nike Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "AAA Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Puma Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "H&M Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Zara Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Zara Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "AAA Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Nike Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "H&M Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Puma Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){ Name = "Сукня святкова Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+            };
+            return products;
+        }
+        static IEnumerable<ProductImage> GetPreconfiguredMarketplaceProductImages()
+        {
+            var productImages = new List<ProductImage>
+            {
+                new(){ Name = "BlackDress.jpg",ProductId=1 },
+                new(){ Name = "BlueDress.jpg",ProductId=2 },
+                new(){ Name = "GreenDress.jpg",ProductId=3 },
+                new(){ Name = "RedDress.jpg",ProductId=4 },
+                new(){ Name = "YellowDress.jpg",ProductId=5 },
+
+                new(){ Name = "BlueDress.jpg",ProductId=6 },
+                new(){ Name = "YellowDress.jpg",ProductId=7 },
+                new(){ Name = "RedDress.jpg",ProductId=8 },
+                new(){ Name = "GreenDress.jpg",ProductId=9 },
+                new(){ Name = "BlackDress.jpg",ProductId=10 },
+
+                new(){ Name = "GreenDress.jpg",ProductId=11 },
+                new(){ Name = "YellowDress.jpg",ProductId=12 },
+                new(){ Name = "BlackDress.jpg",ProductId=13 },
+                new(){ Name = "RedDress.jpg",ProductId=14 },
+                new(){ Name = "BlueDress.jpg",ProductId=15 },
+            };
+            return productImages;
+        }
+        static IEnumerable<Unit> GetPreconfiguredMarketplaceUnits()
+        {
+            var units = new List<Unit>
+            {
+/* 1 */         new(){ Measure = "UA"},
+
+            };
+            return units;
+        }
+        static IEnumerable<FilterGroup> GetPreconfiguredMarketplaceFilterGroups()
+        {
+            var filterGroups = new List<FilterGroup>
+            {
+/* 1 */         new(){ Name = "The main"},
 
             };
             return filterGroups;
+        }
+        static IEnumerable<FilterName> GetPreconfiguredMarketplaceFilterNames()
+        {
+            var filterNames = new List<FilterName>
+            {
+/* 1 */         new(){ Name = "Сondition",FilterGroupId=1},
+/* 2 */         new(){ Name = "Purpose",FilterGroupId=1},
+/* 3 */         new(){ Name = "Video memory type",FilterGroupId=1},
+/* 4 */         new(){ Name = "Graphics chipset",FilterGroupId=1},
+/* 5 */         new(){ Name = "Memory bus width", FilterGroupId = 1},
+/* 6 */         new(){ Name = "Producer", FilterGroupId = 1},  
+/* 7 */         new(){ Name = "Connection type", FilterGroupId = 1},
+/* 8 */         new(){ Name = "Interfaces", FilterGroupId = 1},
+/* 9 */         new(){ Name = "Cooling system", FilterGroupId = 1},
+/* 10 */        new(){ Name = "Peculiarities", FilterGroupId = 1},
+/* 11 */        new(){ Name = "Producing country", FilterGroupId = 1},
+/* 12 */        new(){ Name = "Quality class", FilterGroupId = 1},
+/* 13 */        new(){ Name = "Warranty period, months", FilterGroupId = 1},
+/* 14 */        new(){ Name = "Processor frequency, MHz", FilterGroupId = 1},
+/* 15 */        new(){ Name = "Video memory frequency, MHz", FilterGroupId = 1},
+/* 16 */        new(){ Name = "Video memory size, MB", FilterGroupId = 1},
+/* 17 */        new(){ Name = "Color",FilterGroupId=1},
+/* 18 */        new(){ Name = "Women's clothing size",FilterGroupId=1,UnitId=1},
+/* 19 */        new(){ Name = "Brand",FilterGroupId=1},
+
+            };
+            return filterNames;
+        }
+
+        static IEnumerable<FilterValue> GetPreconfiguredMarketplaceFilterValues(Category category)
+        {
+            var filterValues = new List<FilterValue>
+            {
+/* 1 */         new(){ Value = "Yellow",FilterNameId=17},
+/* 2 */         new(){ Value = "Black",FilterNameId=17},
+/* 3 */         new(){ Value = "Blue",FilterNameId=17},
+/* 4 */         new(){ Value = "Red",FilterNameId=17},
+/* 5 */         new(){ Value = "Green", FilterNameId = 17},
+/* 6 */         new(){ Value = "34", FilterNameId = 18},  
+/* 7 */         new(){ Value = "36", FilterNameId = 18},
+/* 8 */         new(){ Value = "38", FilterNameId = 18},
+/* 9 */         new(){ Value = "40", FilterNameId = 18},
+/* 10 */        new(){ Value = "40/42", FilterNameId = 18},
+/* 11 */        new(){ Value = "40/44", FilterNameId = 18},
+/* 12 */        new(){ Value = "Nike", FilterNameId = 19},
+/* 13 */        new(){ Value = "Puma", FilterNameId = 19},
+/* 14 */        new(){ Value = "Zara", FilterNameId = 19},
+/* 15 */        new(){ Value = "H&M", FilterNameId = 19},
+/* 16 */        new(){ Value = "AAA", FilterNameId = 19},
+            };
+
+            var test = new List<Category>();
+            test.Add(category);
+            foreach (var item in filterValues)
+            {
+                item.Categories = test;
+            }
+            return filterValues;
+        }
+
+        static IEnumerable<FilterValueProduct> GetPreconfiguredMarketplaceFilterValueProducts()
+        {
+            var filterValueProducts = new List<FilterValueProduct>
+            {
+/* 1 */         new(){ FilterValueId = 2, ProductId=1},
+/* 2 */         new(){ FilterValueId = 12, ProductId=1},
+
+/* 3 */         new(){ FilterValueId = 3, ProductId=2},
+/* 4 */         new(){ FilterValueId = 13, ProductId=2},
+
+/* 5 */         new(){ FilterValueId = 5, ProductId=3},
+/* 6 */         new(){ FilterValueId = 14, ProductId=3},
+
+/* 7 */         new(){ FilterValueId = 4, ProductId=4},
+/* 8 */         new(){ FilterValueId = 15, ProductId=4},
+
+/* 9 */         new(){ FilterValueId = 1, ProductId=5},
+/* 10 */        new(){ FilterValueId = 16, ProductId=5},
+
+/* 11 */        new(){ FilterValueId = 3, ProductId=6},
+/* 12 */        new(){ FilterValueId = 12, ProductId=6},
+   
+/* 13 */        new(){ FilterValueId = 1, ProductId=7},
+/* 14 */        new(){ FilterValueId = 16, ProductId=7},
+   
+/* 15 */        new(){ FilterValueId = 4, ProductId=8},
+/* 16 */        new(){ FilterValueId = 13, ProductId=8},
+   
+/* 17 */        new(){ FilterValueId = 5, ProductId=9},
+/* 18 */        new(){ FilterValueId = 15, ProductId=9},
+   
+/* 19 */        new(){ FilterValueId = 2, ProductId=10},
+/* 20 */        new(){ FilterValueId = 14, ProductId=10},
+           
+/* 21 */        new(){ FilterValueId = 5, ProductId=11},
+/* 22 */        new(){ FilterValueId = 14, ProductId=11},
+           
+/* 23 */        new(){ FilterValueId = 1, ProductId=12},
+/* 24 */        new(){ FilterValueId = 16, ProductId=12},
+           
+/* 25 */        new(){ FilterValueId = 2, ProductId=13},
+/* 26 */        new(){ FilterValueId = 12, ProductId=13},
+           
+/* 27 */        new(){ FilterValueId = 4, ProductId=14},
+/* 28 */        new(){ FilterValueId = 15, ProductId=14},
+           
+/* 29 */        new(){ FilterValueId = 3, ProductId=15},
+/* 30 */        new(){ FilterValueId = 13, ProductId=15},
+
+            };
+            return filterValueProducts;
         }
 
     }

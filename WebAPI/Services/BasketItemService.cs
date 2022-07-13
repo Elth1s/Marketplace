@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using WebAPI.Extensions;
 using WebAPI.Interfaces;
 using WebAPI.Specifications;
+using WebAPI.Specifications.Products;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Response;
 
@@ -42,11 +43,11 @@ namespace WebAPI.Services
             var user = await _userManager.FindByIdAsync(userId);
             user.UserNullChecking();
 
-            var product = await _productRepository.GetByIdAsync(request.ProductId);
+            var spec = new ProductIncludeFullInfoSpecification(request.UrlSlug);
+            var product = await _productRepository.GetBySpecAsync(spec);
             product.ProductNullChecking();
 
-            var basketItem = _mapper.Map<BasketItem>(request);
-            basketItem.UserId = userId;
+            var basketItem = new BasketItem() { ProductId = product.Id, UserId = user.Id, Count = 1 };
 
             await _basketItemRepository.AddAsync(basketItem);
             await _basketItemRepository.SaveChangesAsync();

@@ -6,6 +6,9 @@ import * as CharacteristicNameActionCreators from "../../pages/admin/characteris
 import * as CountryActionCreators from "../../pages/admin/country/actions"
 import * as CityActionCreators from "../../pages/admin/city/actions"
 import * as UnitActionCreators from "../../pages/admin/unit/actions"
+import * as CatalogActionCreators from "../../pages/default/Catalog/actions"
+import * as ProductActionCreators from "../../pages/default/product/actions"
+import * as BasketActionCreators from "../../components/Basket/actions";
 
 const actions = {
     ...AuthActionCreators,
@@ -16,5 +19,8 @@ const actions = {
     ...CountryActionCreators,
     ...CityActionCreators,
     ...UnitActionCreators,
+    ...CatalogActionCreators,
+    ...ProductActionCreators,
+    ...BasketActionCreators
 }
 export default actions;

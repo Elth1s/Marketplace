@@ -21,7 +21,7 @@ import { SignUpSchema } from "../validation";
 import { useActions } from "../../../hooks/useActions";
 import { IRegisterModel } from "../types";
 import { ServerError } from "../../../store/types";
-import { AuthAvatar, AuthHeaderTypography, AuthLoadingButton, AuthSideTypography, AuthTextField } from "../styled";
+import { AuthHeaderTypography, AuthLoadingButton, AuthSideTypography, AuthTextField } from "../styled";
 
 import { signup } from "../../../assets/backgrounds"
 import FacebookExternalLogin from "../../../components/Facebook";

@@ -1,6 +1,6 @@
 export interface ICardProduct {
     image: string,
-    title: string,
-    status: string,
-    price: string,
+    name: string,
+    statusName: string,
+    price: number,
 }

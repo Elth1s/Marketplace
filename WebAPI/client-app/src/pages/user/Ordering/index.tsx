@@ -11,15 +11,15 @@ import {
   Select,
   TextField,
   Typography,
+  Container
 } from "@mui/material";
 import React from "react";
 import logo from "../../../logo.svg";
-import { BoxContainer } from "../../../containers/DefaultLayout/styled";
 import FmdGoodOutlinedIcon from "@mui/icons-material/FmdGoodOutlined";
 
 const Ordering = () => {
   return (
-    <BoxContainer>
+    <Container sx={{ maxWidth: { xl: "xl", lg: "lg", md: "md" } }}>
       <Box sx={{ mt: 2 }}>
         <img
           style={{ cursor: "pointer", width: "150px", height: "93px" }}
@@ -154,20 +154,20 @@ const Ordering = () => {
           />
           <Box sx={{ width: 550 }}>
             <Box sx={{ ml: 10 }}>
-              <Typography  sx={{ fontSize: 20 ,mt:9}}>Намисто з коштовностями</Typography>
-              <Typography  sx={{ fontSize: 20 ,mt:2}}>Срібло</Typography>
+              <Typography sx={{ fontSize: 20, mt: 9 }}>Намисто з коштовностями</Typography>
+              <Typography sx={{ fontSize: 20, mt: 2 }}>Срібло</Typography>
             </Box>
           </Box>
           <Box sx={{ width: 250 }}>
             <Box sx={{ ml: 10 }}>
-              <Typography  sx={{ fontSize: 20 ,mt:9}}>Ціна</Typography>
-              <Typography  sx={{ fontSize: 20 ,mt:2}}>293</Typography>
+              <Typography sx={{ fontSize: 20, mt: 9 }}>Ціна</Typography>
+              <Typography sx={{ fontSize: 20, mt: 2 }}>293</Typography>
             </Box>
           </Box>
           <Box sx={{ width: 200 }}>
             <Box sx={{ ml: 10 }}>
-              <Typography  sx={{ fontSize: 20 ,mt:9}}>Кількість</Typography>
-              <Typography  sx={{ fontSize: 20 ,mt:2}}>1</Typography>
+              <Typography sx={{ fontSize: 20, mt: 9 }}>Кількість</Typography>
+              <Typography sx={{ fontSize: 20, mt: 2 }}>1</Typography>
             </Box>
           </Box>
         </Box>
@@ -287,12 +287,12 @@ const Ordering = () => {
         <Box sx={{ mt: 3 }}>
           <FormControlLabel
             sx={{ fontSize: 27 }}
-            control={<Checkbox defaultChecked/>}
+            control={<Checkbox defaultChecked />}
             label="Оплата при отриманні товару"
           />
         </Box>
       </Box>
-    </BoxContainer>
+    </Container>
   );
 };
 

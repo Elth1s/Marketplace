@@ -68,13 +68,13 @@ const MainMenu = () => {
     return (
         <>
             <IconButton
-                sx={{ borderRadius: '12px', p: 0 }}
+                sx={{ borderRadius: '12px', p: 0.5 }}
                 size="large"
                 aria-label="search"
                 color="primary"
                 onClick={handleClick}
             >
-                <PersonOutlineOutlined sx={{ fontSize: "45px" }} />
+                <PersonOutlineOutlined sx={{ fontSize: "35px" }} />
             </IconButton>
             <Menu
                 anchorEl={anchorEl}
@@ -102,9 +102,9 @@ const MainMenu = () => {
             >
                 {isAuth &&
                     <Box>
-                        <LinkRouter underline="none" color="unset" to="/profile" onClick={handleClose}>
+                        <LinkRouter underline="none" color="unset" to="/profile/information" onClick={handleClose}>
                             <Box sx={{ my: 0.5, mb: 1.5, px: 2.5 }}>
-                                <Typography variant="subtitle1" noWrap >
+                                <Typography variant="h6" noWrap >
                                     {user.name}
                                 </Typography>
                                 <Typography variant="body2" noWrap>
@@ -114,12 +114,12 @@ const MainMenu = () => {
                         </LinkRouter>
                         <Divider sx={{ my: 1, background: "#45a29e" }} />
                         {user.role == "Admin" &&
-                            <LinkRouter underline="none" color="unset" to="/admin" >
+                            <LinkRouter underline="none" color="unset" to="/admin/country" >
                                 <MenuItemStyle                                >
                                     <IconButton sx={{ mr: 2, width: 24, height: 24, color: "secondary" }}>
                                         <AdminPanelSettingsOutlined />
                                     </IconButton>
-                                    <Typography variant="subtitle1" noWrap sx={{ color: 'secondary' }}>
+                                    <Typography variant="h6" noWrap sx={{ color: 'secondary' }}>
                                         Admin Panel
                                     </Typography>
                                 </MenuItemStyle>
@@ -135,7 +135,7 @@ const MainMenu = () => {
                         <IconButton sx={{ mr: 2, width: 24, height: 24 }}>
                             {option.icon}
                         </IconButton>
-                        <Typography variant="subtitle1" noWrap sx={{ color: 'secondary' }}>
+                        <Typography variant="h6" noWrap sx={{ color: 'secondary' }}>
                             {option.label}
                         </Typography>
                         {option.switchElement &&
@@ -150,7 +150,7 @@ const MainMenu = () => {
                         <IconButton sx={{ mr: 2, width: 24, height: 24 }}>
                             <Logout />
                         </IconButton>
-                        <Typography variant="subtitle1" noWrap >
+                        <Typography variant="h6" noWrap >
                             Log Out
                         </Typography>
                     </MenuItemStyle>
@@ -160,7 +160,7 @@ const MainMenu = () => {
                             <IconButton sx={{ mr: 2, width: 24, height: 24, color: "secondary" }}>
                                 <Login />
                             </IconButton>
-                            <Typography variant="subtitle1" noWrap sx={{ color: 'secondary' }}>
+                            <Typography variant="h6" noWrap sx={{ color: 'secondary' }}>
                                 Sign In
                             </Typography>
                         </MenuItemStyle>

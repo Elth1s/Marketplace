@@ -240,4 +240,10 @@
   <data name="CountryWithNameExist" xml:space="preserve">
     <value>Country with this name already exist</value>
   </data>
+  <data name="CategoryNameNotUnique" xml:space="preserve">
+    <value>Category with this name already exist</value>
+  </data>
+  <data name="CategoryUrlSlugNotUnique" xml:space="preserve">
+    <value>Category with this url slug already exist</value>
+  </data>
 </root>

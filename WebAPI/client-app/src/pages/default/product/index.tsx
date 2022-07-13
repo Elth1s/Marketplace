@@ -1,31 +1,54 @@
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import Rating from "@mui/material/Rating";
-import Typography from "@mui/material/Typography";
-import Tab from "@mui/material/Tab";
-
-import TabContext from "@mui/lab/TabContext";
-import TabList from "@mui/lab/TabList";
-import TabPanel from "@mui/lab/TabPanel";
-
-import StarIcon from '@mui/icons-material/Star';
-
-import React, { useState } from "react";
+import {
+    Box,
+    Grid,
+    Typography,
+    Tab
+} from "@mui/material";
+import { TabContext, TabList, TabPanel } from "@mui/lab";
+import { Star } from '@mui/icons-material';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from "swiper";
 
+import { products, dataTabs } from "./data";
+
+import { useActions } from "../../../hooks/useActions";
+import { useTypedSelector } from "../../../hooks/useTypedSelector";
+
+import CardProduct from "../../../components/CardProduct";
+import BreadcrumbsComponent from "../../../components/BreadcrumbsComponent";
+
 import ProductMainPage from "./ProductPage/ProductMainPage";
 import ProductReviewsPage from "./ProductPage/ProductReviewsPage";
 import ProductCharacteristicsPage from "./ProductPage/ProductCharacteristicsPage";
-import CardProduct from "../../../components/CardProduct";
-
 import AddReview from "./AddReview";
-import { product, dataTabs } from "./data";
-import "./style.css";
+
+import { RatingStyle } from "./styled";
 
 const Product = () => {
+    const { GetProductByUrlSlug } = useActions();
+    const { parents, product } = useTypedSelector(state => state.product);
+
     const [valueTab, setValueTab] = useState<string>("0");
+
+    let { urlSlug } = useParams();
+
+    useEffect(() => {
+        document.title = "Product";
+
+        getData();
+    }, [urlSlug])
+
+    const getData = async () => {
+        if (!urlSlug)
+            return;
+        try {
+            await GetProductByUrlSlug(urlSlug)
+        } catch (ex) {
+        }
+    };
 
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         setValueTab(newValue);
@@ -33,33 +56,30 @@ const Product = () => {
 
     return (
         <>
+            <BreadcrumbsComponent parents={parents} />
             <TabContext value={valueTab} >
-                <Box>
-                    <TabList onChange={handleChange} aria-label="basic tabs example" >
-                        {dataTabs.map((item, index) => (
-                            <Tab key={index} label={item.label} value={index.toString()} />
-                        ))}
-                    </TabList >
-                </Box>
+                <TabList onChange={handleChange} aria-label="basic tabs example" >
+                    {dataTabs.map((item, index) => (
+                        <Tab key={index} label={item.label} value={index.toString()} sx={{ padding: "0px", minWidth: "auto", marginRight: "50px", "&& .MuiTouchRipple-child": { backgroundColor: "transparent" } }} />
+                    ))}
+                </TabList >
 
-                <Box sx={{ mb: "50px" }}>
-                    <Typography sx={{ fontSize: "36px", mt: "30px", mb: "15px" }}>Намисто з коштовностями</Typography>
-                    <Box sx={{ display: "flex", alignItems: "center" }}>
-                        <Typography sx={{ fontSize: "20px", fontWeight: "700", mr: "150px", py: "22px" }}>Продавець: GHOP</Typography>
-                        <Typography sx={{ fontSize: "20px", fontWeight: "700" }}>Рейтинг:</Typography>
-                        <Rating
-                            sx={{ mr: "30px" }}
-                            value={4.5}
-                            precision={0.5}
-                            readOnly
-                            emptyIcon={<StarIcon fontSize="inherit" />}
-                        />
-                        {valueTab === "1" && <AddReview />}
-                    </Box>
+                <Typography variant="h1" sx={{ mt: "30px", mb: "15px" }}>{product.name}</Typography>
+                <Box sx={{ display: "flex", alignItems: "center", mb: "50px" }}>
+                    <Typography variant="h4" fontWeight="bold" display="inline" sx={{ marginRight: "70px" }}>Shop: <Typography fontWeight="normal" display="inline" sx={{ fontSize: "20px" }}>{product.shopName}</Typography></Typography>
+                    <Typography variant="h4" fontWeight="bold">Shop rating: </Typography>
+                    <RatingStyle
+                        sx={{ ml: 1, color: "primary" }}
+                        value={4.5}
+                        precision={0.5}
+                        readOnly
+                        emptyIcon={<Star fontSize="inherit" />}
+                    />
+                    {valueTab === "1" && <AddReview />}
                 </Box>
 
                 <TabPanel sx={{ p: "0px" }} value="0" >
-                    <ProductMainPage />
+                    <ProductMainPage urlSlug={urlSlug} isInBasket={product.isInBasket} />
                 </TabPanel>
                 <TabPanel sx={{ p: "0px" }} value="1">
                     <ProductReviewsPage />
@@ -69,7 +89,7 @@ const Product = () => {
                 </TabPanel>
             </TabContext>
 
-            <Grid container sx={{mb: "55px"}}>
+            <Grid container sx={{ mb: "55px" }}>
                 <Grid item xs={12}>
                     <Typography variant="h4" sx={{ mb: "40px" }}>Схожі товари</Typography>
                 </Grid>
@@ -81,13 +101,13 @@ const Product = () => {
                         slidesPerGroup={1}
                         spaceBetween={15}
                     >
-                        {product.map((item, index) => (
+                        {products.map((item, index) => (
                             <SwiperSlide key={index}>
                                 <CardProduct
                                     image={item.image}
-                                    title={item.title}
-                                    status={item.status}
-                                    price={item.price}
+                                    name={item.title}
+                                    statusName={item.status}
+                                    price={1000}
                                 />
                             </SwiperSlide>
                         ))}

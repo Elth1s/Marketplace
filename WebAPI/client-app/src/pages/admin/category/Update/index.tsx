@@ -14,26 +14,21 @@ import { useActions } from "../../../../hooks/useActions";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 
 import { validationFields } from "../validation";
-import { ICategory } from "../types";
 import { ServerError } from "../../../../store/types";
 
 import CropperDialog from "../../../../components/CropperDialog";
 import TextFieldComponent from "../../../../components/TextField";
 import AutocompleteComponent from "../../../../components/Autocomplete";
-import { Paper } from "@mui/material";
 import { toLowerFirstLetter } from "../../../../http_comon";
 
 const CategoryUpdate = () => {
     const { GetCategoryById, GetCategoryForSelect, UpdateCategory } = useActions();
     const { selectedCategory, categoriesForSelect } = useTypedSelector((store) => store.category);
 
-    let { id } = useParams() as any;
-
-
-
+    let { id } = useParams();
 
     const [loading, setLoading] = useState<boolean>(false);
-    const navigator = useNavigate();
+    const navigate = useNavigate();
 
     useEffect(() => {
         document.title = "Category update";
@@ -41,10 +36,13 @@ const CategoryUpdate = () => {
     }, []);
 
     const getData = async () => {
+        if (!id)
+            return;
+
         setLoading(true);
         try {
-            await GetCategoryById(id);
             await GetCategoryForSelect();
+            await GetCategoryById(id);
             setLoading(false);
         } catch (ex) {
             setLoading(false);
@@ -56,9 +54,11 @@ const CategoryUpdate = () => {
         validationSchema: validationFields,
         enableReinitialize: true,
         onSubmit: async (values, { setFieldError }) => {
+            if (!id)
+                return;
             try {
                 await UpdateCategory(id, values);
-                navigator("/admin/category");
+                navigate("/admin/category");
             }
             catch (ex) {
                 const serverErrors = ex as ServerError;
@@ -76,8 +76,11 @@ const CategoryUpdate = () => {
         }
     });
 
-    const onSave = async (base64: string) => {
+    const onSaveImage = async (base64: string) => {
         setFieldValue("image", base64)
+    };
+    const onSaveIcon = async (base64: string) => {
+        setFieldValue("icon", base64)
     };
 
     const { errors, touched, isSubmitting, handleSubmit, setFieldValue, getFieldProps } = formik;
@@ -111,6 +114,15 @@ const CategoryUpdate = () => {
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
+                                        <TextFieldComponent
+                                            type="text"
+                                            label="Url slug"
+                                            error={errors.urlSlug}
+                                            touched={touched.urlSlug}
+                                            getFieldProps={{ ...getFieldProps('urlSlug') }}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
                                         <AutocompleteComponent
                                             label="Categoty parent"
                                             name="parentId"
@@ -124,11 +136,21 @@ const CategoryUpdate = () => {
                                         />
                                     </Grid>
                                 </Grid>
-                                <Grid container item xs={2}>
-                                    <CropperDialog
-                                        imgSrc={(formik.values.image === null || formik.values.image === "") ? "https://www.phoca.cz/images/projects/phoca-download-r.png" : formik.values.image}
-                                        onDialogSave={onSave}
-                                    />
+                                <Grid container item xs={2} rowSpacing={2}>
+                                    <Grid item xs={12}>
+                                        <CropperDialog
+                                            imgSrc={(formik.values.image === null || formik.values.image === "") ? "https://www.phoca.cz/images/projects/phoca-download-r.png" : formik.values.image}
+                                            onDialogSave={onSaveImage}
+                                            labelId="Image"
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <CropperDialog
+                                            imgSrc={(formik.values.icon === null || formik.values.icon === "") ? "https://www.phoca.cz/images/projects/phoca-download-r.png" : formik.values.icon}
+                                            onDialogSave={onSaveIcon}
+                                            labelId="Icon"
+                                        />
+                                    </Grid>
                                 </Grid>
                             </Grid>
                             <Button

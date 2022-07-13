@@ -1,11 +1,4 @@
-﻿using DAL.Entities;
-using DAL.Entities.Identity;
-using DAL.Entities.Order;
-using System.Net;
-using WebAPI.Exceptions;
-using WebAPI.Resources;
-
-namespace WebAPI.Extensions
+﻿namespace WebAPI.Extensions
 {
     public static class ExtensionMethods
     {
@@ -241,6 +234,24 @@ namespace WebAPI.Extensions
                 throw new AppException(
                     ErrorMessages.UnitNotFound,
                     HttpStatusCode.NotFound);
+            }
+        }
+
+        public static void CategoryNameChecking(this Category category)
+        {
+            if (category != null)
+            {
+                throw new AppException(
+                    ErrorMessages.CategoryNameNotUnique);
+            }
+        }
+
+        public static void CategoryUrlSlugChecking(this Category category)
+        {
+            if (category != null)
+            {
+                throw new AppException(
+                    ErrorMessages.CategoryUrlSlugNotUnique);
             }
         }
 

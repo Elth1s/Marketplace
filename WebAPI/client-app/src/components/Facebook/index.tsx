@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
 import { ReactFacebookLoginInfo } from 'react-facebook-login';
 
@@ -14,19 +13,13 @@ function FacebookExternalLogin() {
     const { FacebookExternalLogin } = useActions();
     const navigate = useNavigate();
 
-    useEffect(() => {
-
-    }, []);
-
     const responseFacebook = async (res: ReactFacebookLoginInfo) => {
         try {
-            console.log(res.accessToken)
             await FacebookExternalLogin({ token: res.accessToken });
             navigate("/");
 
         } catch (exception) {
             const serverError = exception as ServerError;
-            console.log(serverError.title);
         }
     }
 
@@ -35,7 +28,7 @@ function FacebookExternalLogin() {
             appId={appId}
             callback={responseFacebook}
             render={renderProps => (
-                <AuthAvatar onClick={renderProps.onClick} sx={{ cursor: "pointer", marginX: "40px" }} src={facebook} ></AuthAvatar>
+                <AuthAvatar onClick={renderProps.onClick} sx={{ cursor: "pointer", marginLeft: "40px" }} src={facebook} ></AuthAvatar>
             )} />
     );
 }

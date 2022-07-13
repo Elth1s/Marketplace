@@ -11,6 +11,11 @@
         /// <example>1</example>
         public int Id { get; set; }
         /// <summary>
+        /// Product count in basket
+        /// </summary>
+        /// <example>2</example>
+        public int Count { get; set; }
+        /// <summary>
         ///  Name
         /// </summary>
         /// <example>T-shirt</example>

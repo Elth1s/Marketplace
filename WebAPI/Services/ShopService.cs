@@ -57,7 +57,9 @@ namespace WebAPI.Services
             var user = await _userManager.FindByIdAsync(userId);
             user.UserNullChecking();
 
-            if (_userManager.GetRolesAsync(user) == null)
+            var roles = await _userManager.GetRolesAsync(user);
+
+            if (roles.Count == 0)
             {
                 var resultRole = await _userManager.AddToRoleAsync(user, Roles.Seller);
                 if (!resultRole.Succeeded)
@@ -72,9 +74,9 @@ namespace WebAPI.Services
             if (!string.IsNullOrEmpty(request.Photo))
             {
                 var img = ImageWorker.FromBase64StringToImage(request.Photo);
-                string randomFilename = Path.GetRandomFileName() + ".jpg";
+                string randomFilename = Guid.NewGuid() + ".png";
                 var dir = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.ShopsImagePath, randomFilename);
-                img.Save(dir, ImageFormat.Jpeg);
+                img.Save(dir, ImageFormat.Png);
 
                 shop.Photo = randomFilename;
             }
@@ -82,7 +84,8 @@ namespace WebAPI.Services
             await _shopRepository.AddAsync(shop);
             await _shopRepository.SaveChangesAsync();
 
-
+            user.ShopId = shop.Id;
+            await _userManager.UpdateAsync(user);
         }
 
         public async Task UpdateShopAsync(int shopId, ShopRequest request, string userId)
@@ -112,9 +115,9 @@ namespace WebAPI.Services
                             File.Delete(filePath);
                     }
                     var img = ImageWorker.FromBase64StringToImage(request.Photo);
-                    string randomFilename = Path.GetRandomFileName() + ".jpg";
+                    string randomFilename = Guid.NewGuid() + ".png";
                     var dir = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.ShopsImagePath, randomFilename);
-                    img.Save(dir, ImageFormat.Jpeg);
+                    img.Save(dir, ImageFormat.Png);
 
                     shop.Photo = randomFilename;
                 }

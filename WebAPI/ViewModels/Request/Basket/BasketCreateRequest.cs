@@ -6,10 +6,10 @@
     public class BasketCreateRequest
     {
         /// <summary>
-        ///  Product identifier
+        /// Product url slug
         /// </summary>
-        /// <example>1</example>
-        public int ProductId { get; set; }
+        /// <example>qweqdqdq-qweqqdqd-qweq</example>
+        public string UrlSlug { get; set; }
 
     }
 }

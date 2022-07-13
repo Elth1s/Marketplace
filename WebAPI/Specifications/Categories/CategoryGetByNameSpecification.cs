@@ -7,7 +7,8 @@ namespace WebAPI.Specifications.Categories
     {
         public CategoryGetByNameSpecification(string name)
         {
-            Query.Where(item => name == item.Name);
+            Query.Where(item => name == item.Name)
+                .AsSplitQuery();
         }
     }
 }

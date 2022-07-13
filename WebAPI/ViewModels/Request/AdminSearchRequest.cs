@@ -14,7 +14,7 @@ namespace WebAPI.ViewModels.Request
         public int Page { get; set; }
 
         /// <summary>
-        /// Page
+        /// Row per page
         /// </summary>
         /// <example>8</example>
         public int RowsPerPage { get; set; }
