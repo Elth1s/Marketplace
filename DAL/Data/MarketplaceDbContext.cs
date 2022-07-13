@@ -1,5 +1,6 @@
 ﻿using DAL.Entities;
 using DAL.Entities.Identity;
+using DAL.Entities.Order;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,6 +34,10 @@ namespace DAL.Data
         public DbSet<Shop> Shops { get; set; }
 
         public DbSet<BasketItem> BasketItems { get; set; }
+
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderStatus> OrderStatuses { get; set; }
+        public DbSet<OrderProduct> OrderProducts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
