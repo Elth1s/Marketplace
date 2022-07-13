@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using WebAPI.Interfaces.Filters;
+using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Request.Filters;
+using WebAPI.ViewModels.Response;
 using WebAPI.ViewModels.Response.Filters;
 
 namespace WebAPI.Controllers.Filters
@@ -33,10 +35,29 @@ namespace WebAPI.Controllers.Filters
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
-        [HttpGet("GetFiltersName")]
+        [HttpGet("Get")]
         public async Task<IActionResult> GetFiltersName()
         {
             var result = await _filterNameService.GetFiltersNameAsync();
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Return of sorted filter names
+        /// </summary>
+        /// <response code="200">Getting filter names completed successfully</response>
+        /// <response code="401">You are not authorized</response>
+        /// <response code="403">You don't have permission</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AdminSearchResponse<FilterNameResponse>))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = "Admin")]
+        [HttpGet("Search")]
+        public async Task<IActionResult> SearchFilters([FromQuery] AdminSearchRequest request)
+        {
+            var result = await _filterNameService.SearchAsync(request);
             return Ok(result);
         }
 
@@ -55,7 +76,7 @@ namespace WebAPI.Controllers.Filters
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
-        [HttpGet("GetFilterNameById/{filterNameId}")]
+        [HttpGet("GetById/{filterNameId}")]
         public async Task<IActionResult> GetFilterNameById(int filterNameId)
         {
             var result = await _filterNameService.GetFilterNameByIdAsync(filterNameId);
@@ -77,7 +98,7 @@ namespace WebAPI.Controllers.Filters
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
-        [HttpPost("CreateFilterName")]
+        [HttpPost("Create")]
         public async Task<IActionResult> CreateFilterName([FromBody] FilterNameRequest request)
         {
             await _filterNameService.CreateFilterNameAsync(request);
@@ -100,7 +121,7 @@ namespace WebAPI.Controllers.Filters
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
-        [HttpPut("UpdateFilterName/{filterNameId}")]
+        [HttpPut("Update/{filterNameId}")]
         public async Task<IActionResult> UpdateFilterName(int filterNameId, [FromBody] FilterNameRequest request)
         {
             await _filterNameService.UpdateFilterNameAsync(filterNameId, request);
@@ -122,11 +143,32 @@ namespace WebAPI.Controllers.Filters
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
-        [HttpDelete("DeleteFilterName/{filterNameId}")]
+        [HttpDelete("Delete/{filterNameId}")]
         public async Task<IActionResult> DeleteFilterName(int filterNameId)
         {
             await _filterNameService.DeleteFilterNameAsync(filterNameId);
             return Ok("Filter name deleted successfully");
+        }
+
+        /// <summary>
+        /// Delete an existing filter names
+        /// </summary>
+        /// <response code="200">Filter name deletion completed successfully</response>
+        /// <response code="401">You are not authorized</response>
+        /// <response code="403">You don't have permission</response>
+        /// <response code="404">Filter name not found</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("Delete")]
+        public async Task<IActionResult> Delete([FromQuery] IEnumerable<int> ids)
+        {
+            await _filterNameService.DeleteAsync(ids);
+            return Ok("Filter names deleted successfully");
         }
     }
 }

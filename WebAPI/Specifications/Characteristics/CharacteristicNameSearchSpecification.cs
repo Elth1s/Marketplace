@@ -36,8 +36,6 @@ namespace WebAPI.Specifications.Characteristics
                 else
                     Query.OrderByDescending(orderBy);
             }
-
-
         }
     }
 }

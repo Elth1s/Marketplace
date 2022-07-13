@@ -14,7 +14,7 @@ import qs from "qs"
 export const SearchUnits = (page: number, rowsPerPage: number, name: string, isAscOrder: boolean, orderBy: string) => {
     return async (dispatch: Dispatch<UnitAction>) => {
         try {
-            let response = await http.get<ISearchUnits>(`api/Unit/SearchUnits`, {
+            let response = await http.get<ISearchUnits>(`api/Unit/Search`, {
                 params: {
                     page: page,
                     rowsPerPage: rowsPerPage,
@@ -61,7 +61,7 @@ export const GetUnitById = (id: number) => {
 export const GetUnits = () => {
     return async (dispatch: Dispatch<UnitAction>) => {
         try {
-            let response = await http.get<Array<IUnitInfo>>(`api/Unit/GetUnits`)
+            let response = await http.get<Array<IUnitInfo>>(`api/Unit/Get`)
 
             dispatch({
                 type: UnitActionTypes.GET_UNITS,
@@ -115,7 +115,7 @@ export const DeleteUnit = (id: number) => {
 export const DeleteUnits = (ids: readonly number[]) => {
     return async () => {
         try {
-            await http.delete(`api/Unit/DeleteUnits`, {
+            await http.delete(`api/Unit/Delete`, {
                 params: {
                     ids: ids,
                 },

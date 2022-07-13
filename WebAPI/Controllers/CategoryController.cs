@@ -51,7 +51,7 @@ namespace WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
-        [HttpGet("SearchCategories")]
+        [HttpGet("Search")]
         public async Task<IActionResult> SearchCategories([FromQuery] AdminSearchRequest request)
         {
             var result = await _categoryService.SearchCategoriesAsync(request);
@@ -242,7 +242,7 @@ namespace WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
-        [HttpDelete("DeleteCategories")]
+        [HttpDelete("Delete")]
         public async Task<IActionResult> DeleteCategories([FromQuery] IEnumerable<int> ids)
         {
             await _categoryService.DeleteCategoriesAsync(ids);

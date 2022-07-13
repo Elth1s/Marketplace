@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
-using WebAPI.Interfaces.Order;
+using WebAPI.Interfaces.Orders;
 using WebAPI.ViewModels.Request.Order;
-using WebAPI.ViewModels.Response.Order;
+using WebAPI.ViewModels.Response.Orders;
 
 namespace WebAPI.Controllers.Order
 {

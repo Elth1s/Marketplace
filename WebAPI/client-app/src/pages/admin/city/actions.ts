@@ -14,7 +14,7 @@ import qs from "qs"
 export const SearchCities = (page: number, rowsPerPage: number, name: string, isAscOrder: boolean, orderBy: string) => {
     return async (dispatch: Dispatch<CityAction>) => {
         try {
-            let response = await http.get<ISearchCities>(`api/City/SearchCities`, {
+            let response = await http.get<ISearchCities>(`api/City/Search`, {
                 params: {
                     page: page,
                     rowsPerPage: rowsPerPage,
@@ -43,7 +43,7 @@ export const SearchCities = (page: number, rowsPerPage: number, name: string, is
 export const GetCityById = (id: number) => {
     return async (dispatch: Dispatch<CityAction>) => {
         try {
-            let response = await http.get<ICity>(`api/City/GetCityById/${id}`)
+            let response = await http.get<ICity>(`api/City/GetById/${id}`)
 
             dispatch({
                 type: CityActionTypes.GET_BY_ID_CITY,
@@ -61,7 +61,7 @@ export const GetCityById = (id: number) => {
 export const GetCities = () => {
     return async (dispatch: Dispatch<CityAction>) => {
         try {
-            let response = await http.get<Array<ICityInfo>>(`api/City/GetCities`)
+            let response = await http.get<Array<ICityInfo>>(`api/City/Get`)
 
             dispatch({
                 type: CityActionTypes.GET_CITIES,
@@ -79,7 +79,7 @@ export const GetCities = () => {
 export const CreateCity = (data: ICity) => {
     return async () => {
         try {
-            await http.post("api/City/CreateCity", data);
+            await http.post("api/City/Create", data);
             return Promise.resolve();
         }
         catch (error) {
@@ -91,7 +91,7 @@ export const CreateCity = (data: ICity) => {
 export const UpdateCity = (id: number, data: ICity) => {
     return async () => {
         try {
-            await http.put<ICity>(`api/City/UpdateCity/${id}`, data);
+            await http.put<ICity>(`api/City/Update/${id}`, data);
             return Promise.resolve();
         }
         catch (error) {
@@ -103,7 +103,7 @@ export const UpdateCity = (id: number, data: ICity) => {
 export const DeleteCity = (id: number) => {
     return async () => {
         try {
-            await http.delete(`api/City/DeleteCity/${id}`);
+            await http.delete(`api/City/Delete/${id}`);
             return Promise.resolve();
         }
         catch (error) {
@@ -115,7 +115,7 @@ export const DeleteCity = (id: number) => {
 export const DeleteCities = (ids: readonly number[]) => {
     return async () => {
         try {
-            await http.delete(`api/City/DeleteCities`, {
+            await http.delete(`api/City/Delete`, {
                 params: {
                     ids: ids,
                 },

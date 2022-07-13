@@ -90,7 +90,7 @@ const CharacteristicCreate: FC<CreateProps> = ({ afterCreate }) => {
             isSubmitting={isSubmitting}
             handleSubmit={handleSubmit}
 
-            dialogTitle="Create characteristic"
+            dialogTitle="Create characteristic name"
             dialogBtnConfirm="Create"
 
             dialogContent={

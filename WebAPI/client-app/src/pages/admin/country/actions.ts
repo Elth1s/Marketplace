@@ -14,7 +14,7 @@ import { ServerError } from "../../../store/types"
 export const SearchCountries = (page: number, rowsPerPage: number, name: string, isAscOrder: boolean, orderBy: string) => {
     return async (dispatch: Dispatch<CountryAction>) => {
         try {
-            let response = await http.get<ISearchCountries>(`api/Country/SearchCountries`, {
+            let response = await http.get<ISearchCountries>(`api/Country/Search`, {
                 params: {
                     page: page,
                     rowsPerPage: rowsPerPage,
@@ -43,7 +43,7 @@ export const SearchCountries = (page: number, rowsPerPage: number, name: string,
 export const GetCountries = () => {
     return async (dispatch: Dispatch<CountryAction>) => {
         try {
-            let response = await http.get<Array<ICountryInfo>>(`api/Country/GetCountries`)
+            let response = await http.get<Array<ICountryInfo>>(`api/Country/Get`)
 
             dispatch({
                 type: CountryActionTypes.GET_COUNTRIES,
@@ -61,7 +61,7 @@ export const GetCountries = () => {
 export const GetByIdCountry = (id: number) => {
     return async (dispatch: Dispatch<CountryAction>) => {
         try {
-            let response = await http.get<ICountryInfo>(`api/Country/GetCountryById/${id}`)
+            let response = await http.get<ICountryInfo>(`api/Country/GetById/${id}`)
 
             dispatch({
                 type: CountryActionTypes.GET_BY_ID_COUNTRY,
@@ -79,7 +79,7 @@ export const GetByIdCountry = (id: number) => {
 export const CreateCountry = (data: ICountry) => {
     return async () => {
         try {
-            await http.post("api/Country/CreateCountry", data);
+            await http.post("api/Country/Create", data);
             return Promise.resolve();
         }
         catch (error) {
@@ -91,7 +91,7 @@ export const CreateCountry = (data: ICountry) => {
 export const UpdateCountry = (id: number, data: ICountry) => {
     return async () => {
         try {
-            await http.put<ICountry>(`api/Country/UpdateCountry/${id}`, data);
+            await http.put<ICountry>(`api/Country/Update/${id}`, data);
             return Promise.resolve();
         }
         catch (error) {
@@ -103,7 +103,7 @@ export const UpdateCountry = (id: number, data: ICountry) => {
 export const DeleteCountry = (id: number) => {
     return async () => {
         try {
-            await http.delete(`api/Country/DeleteCountry/${id}`);
+            await http.delete(`api/Country/Delete/${id}`);
             return Promise.resolve();
         }
         catch (error) {
@@ -115,7 +115,7 @@ export const DeleteCountry = (id: number) => {
 export const DeleteCountries = (ids: readonly number[]) => {
     return async () => {
         try {
-            await http.delete(`api/Country/DeleteCountries`, {
+            await http.delete(`api/Country/Delete`, {
                 params: {
                     ids: ids,
                 },

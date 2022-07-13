@@ -33,7 +33,7 @@ namespace WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
-        [HttpGet("GetCountries")]
+        [HttpGet("Get")]
         public async Task<IActionResult> GetCountries()
         {
             var result = await _countryService.GetCountriesAsync();
@@ -52,7 +52,7 @@ namespace WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
-        [HttpGet("SearchCountries")]
+        [HttpGet("Search")]
         public async Task<IActionResult> SearchCountries([FromQuery] AdminSearchRequest request)
         {
             var result = await _countryService.SearchCountriesAsync(request);
@@ -74,7 +74,7 @@ namespace WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
-        [HttpGet("GetCountryById/{countryId}")]
+        [HttpGet("GetById/{countryId}")]
         public async Task<IActionResult> GetCountryById(int countryId)
         {
             var result = await _countryService.GetCountryByIdAsync(countryId);
@@ -94,7 +94,7 @@ namespace WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
-        [HttpPost("CreateCountry")]
+        [HttpPost("Create")]
         public async Task<IActionResult> CreateCountry([FromBody] CountryRequest request)
         {
             await _countryService.CreateCountryAsync(request);
@@ -117,7 +117,7 @@ namespace WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
-        [HttpPut("UpdateCountry/{countryId}")]
+        [HttpPut("Update/{countryId}")]
         public async Task<IActionResult> UpdateCountry(int countryId, [FromBody] CountryRequest request)
         {
             await _countryService.UpdateCountryAsync(countryId, request);
@@ -138,7 +138,7 @@ namespace WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
-        [HttpDelete("DeleteCountry/{countryId}")]
+        [HttpDelete("Delete/{countryId}")]
         public async Task<IActionResult> DeleteCountry(int countryId)
         {
             await _countryService.DeleteCountryAsync(countryId);
@@ -159,7 +159,7 @@ namespace WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
-        [HttpDelete("DeleteCountries")]
+        [HttpDelete("Delete")]
         public async Task<IActionResult> DeleteCountries([FromQuery] IEnumerable<int> ids)
         {
             await _countryService.DeleteCountriesAsync(ids);

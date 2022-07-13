@@ -35,6 +35,48 @@ namespace WebAPI.Controllers.Users
         }
 
         /// <summary>
+        /// Return of sorted users
+        /// </summary>
+        /// <response code="200">Getting users completed successfully</response>
+        /// <response code="401">You are not authorized</response>
+        /// <response code="403">You don't have permission</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AdminSearchResponse<UserResponse>))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = "Admin")]
+        [HttpGet("Search")]
+        public async Task<IActionResult> SearchUsers([FromQuery] AdminSearchRequest request)
+        {
+            var result = await _userService.SearchUsersAsync(request);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Delete an existing users
+        /// </summary>
+        /// <response code="200">Users deletion completed successfully</response>
+        /// <response code="401">You are not authorized</response>
+        /// <response code="403">You don't have permission</response>
+        /// <response code="404">User not found</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("Delete")]
+        public async Task<IActionResult> DeleteUsers([FromQuery] IEnumerable<string> ids)
+        {
+            await _userService.DeleteUsersAsync(ids);
+            return Ok("Users deleted successfully");
+        }
+
+        #region Profile
+
+        /// <summary>
         /// Returns user profile
         /// </summary>
         /// <response code="200">Getting profile completed successfully</response>
@@ -74,6 +116,8 @@ namespace WebAPI.Controllers.Users
             await _userService.UpdateProfileAsync(UserId, request);
             return Ok("Profile updated successfully");
         }
+
+        #endregion
 
         #region Email
 

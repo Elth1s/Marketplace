@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using WebAPI.Interfaces.Characteristics;
+using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Request.Characteristics;
+using WebAPI.ViewModels.Response;
 using WebAPI.ViewModels.Response.Characteristics;
 
 namespace WebAPI.Controllers.Characteristics
@@ -38,6 +40,25 @@ namespace WebAPI.Controllers.Characteristics
         public async Task<IActionResult> Get()
         {
             var result = await _characteristicValueService.GetAsync();
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Return of sorted characteristic values
+        /// </summary>
+        /// <response code="200">Getting characteristic values completed successfully</response>
+        /// <response code="401">You are not authorized</response>
+        /// <response code="403">You don't have permission</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AdminSearchResponse<CharacteristicValueResponse>))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = "Admin")]
+        [HttpGet("Search")]
+        public async Task<IActionResult> SearchCharacteristicValue([FromQuery] AdminSearchRequest request)
+        {
+            var result = await _characteristicValueService.SearchAsync(request);
             return Ok(result);
         }
 
@@ -128,6 +149,27 @@ namespace WebAPI.Controllers.Characteristics
         {
             await _characteristicValueService.DeleteAsync(id);
             return Ok("Characteristic value deleted successfully");
+        }
+
+        /// <summary>
+        /// Delete an existing characteristic values
+        /// </summary>
+        /// <response code="200">Characteristic values deletion completed successfully</response>
+        /// <response code="401">You are not authorized</response>
+        /// <response code="403">You don't have permission</response>
+        /// <response code="404">Characteristic value not found</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("Delete")]
+        public async Task<IActionResult> Delete([FromQuery] IEnumerable<int> ids)
+        {
+            await _characteristicValueService.DeleteAsync(ids);
+            return Ok("Characteristic values deleted successfully");
         }
     }
 }

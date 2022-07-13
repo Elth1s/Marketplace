@@ -11,7 +11,7 @@ namespace DAL.Entities
         public int ProductId { get; set; }
 
         [ForeignKey(nameof(OrderId))]
-        public Order.Order Order { get; set; }
+        public Order Order { get; set; }
         [ForeignKey(nameof(ProductId))]
         public Product Product { get; set; }
     }

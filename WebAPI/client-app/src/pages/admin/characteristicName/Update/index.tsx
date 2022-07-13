@@ -84,7 +84,7 @@ const CharacteristicUpdate: FC<Props> = ({ id, afterUpdate }) => {
             isSubmitting={isSubmitting}
             handleSubmit={handleSubmit}
 
-            dialogTitle="Update characteristic"
+            dialogTitle="Update characteristic name"
             dialogBtnConfirm="Update"
 
             dialogContent={

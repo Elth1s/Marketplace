@@ -1,7 +1,7 @@
 ﻿using DAL;
 using DAL.Entities;
 using FluentValidation;
-using WebAPI.Specifications.Order;
+using WebAPI.Specifications.Orders;
 
 namespace WebAPI.ViewModels.Request.Order
 {

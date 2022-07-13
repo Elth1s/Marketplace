@@ -58,6 +58,7 @@ const Update: FC<UpdateProps> = ({ id, afterUpdate }) => {
     const { errors, touched, isSubmitting, handleSubmit, getFieldProps } = formik;
 
     return (
+
         <DialogComponent
             open={open}
             handleClickClose={handleClickClose}

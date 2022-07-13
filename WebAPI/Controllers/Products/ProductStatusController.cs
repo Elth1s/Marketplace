@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using WebAPI.Interfaces.Products;
+using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Request.Products;
+using WebAPI.ViewModels.Response;
 using WebAPI.ViewModels.Response.Products;
 
 namespace WebAPI.Controllers.Products
@@ -38,6 +40,25 @@ namespace WebAPI.Controllers.Products
         public async Task<IActionResult> Get()
         {
             var result = await _productStatusService.GetAsync();
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Return of sorted product statuses
+        /// </summary>
+        /// <response code="200">Getting product statuses completed successfully</response>
+        /// <response code="401">You are not authorized</response>
+        /// <response code="403">You don't have permission</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AdminSearchResponse<ProductStatusResponse>))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = "Admin")]
+        [HttpGet("Search")]
+        public async Task<IActionResult> SearchProductStatuses([FromQuery] AdminSearchRequest request)
+        {
+            var result = await _productStatusService.SearchProductStatusesAsync(request);
             return Ok(result);
         }
 
@@ -126,6 +147,27 @@ namespace WebAPI.Controllers.Products
         {
             await _productStatusService.DeleteAsync(id);
             return Ok("Product status deleted successfully");
+        }
+
+        /// <summary>
+        /// Delete an existing product statuses
+        /// </summary>
+        /// <response code="200">Product statuses deletion completed successfully</response>
+        /// <response code="401">You are not authorized</response>
+        /// <response code="403">You don't have permission</response>
+        /// <response code="404">Product status not found</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("Delete")]
+        public async Task<IActionResult> DeleteProductStatuses([FromQuery] IEnumerable<int> ids)
+        {
+            await _productStatusService.DeleteProductStatusesAsync(ids);
+            return Ok("Categories deleted successfully");
         }
     }
 }

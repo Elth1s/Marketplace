@@ -1,4 +1,10 @@
-﻿namespace WebAPI.Extensions
+﻿using DAL.Entities;
+using DAL.Entities.Identity;
+using System.Net;
+using WebAPI.Exceptions;
+using WebAPI.Resources;
+
+namespace WebAPI.Extensions
 {
     public static class ExtensionMethods
     {

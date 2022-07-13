@@ -7,10 +7,11 @@ using WebAPI.Extensions;
 using WebAPI.Interfaces.Products;
 using WebAPI.Specifications;
 using WebAPI.Specifications.Products;
+using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Request.Products;
+using WebAPI.ViewModels.Response;
 using WebAPI.ViewModels.Response.Categories;
 using WebAPI.ViewModels.Response.Products;
-
 namespace WebAPI.Services.Products
 {
     public class ProductService : IProductService
@@ -128,7 +129,7 @@ namespace WebAPI.Services.Products
                 await _filterValueProductRepository.AddAsync(
                     new FilterValueProduct()
                     {
-                        
+
                         FilterValueId = filterValue.Id,
                         ProductId = product.Id,
                         CustomValue = filterValue.CustomValue != null ? filterValue.CustomValue : null
@@ -183,6 +184,29 @@ namespace WebAPI.Services.Products
             //}
 
             await _productRepository.DeleteAsync(product);
+            await _productRepository.SaveChangesAsync();
+        }
+
+        public async Task<AdminSearchResponse<ProductResponse>> SearchProductsAsync(AdminSearchRequest request)
+        {
+            var spec = new ProductSearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
+            var products = await _productRepository.ListAsync(spec);
+            var mappedProducts = _mapper.Map<IEnumerable<ProductResponse>>(products);
+            var response = new AdminSearchResponse<ProductResponse>() { Count = products.Count };
+
+            response.Values = mappedProducts.Skip((request.Page - 1) * request.RowsPerPage).Take(request.RowsPerPage);
+
+            return response;
+        }
+
+        public async Task DeleteProductsAsync(IEnumerable<int> ids)
+        {
+            foreach (var item in ids)
+            {
+                var product = await _productRepository.GetByIdAsync(item);
+
+                await _productRepository.DeleteAsync(product);
+            }
             await _productRepository.SaveChangesAsync();
         }
     }

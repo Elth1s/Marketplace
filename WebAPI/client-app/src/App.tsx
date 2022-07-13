@@ -17,7 +17,7 @@ import SignUp from './pages/auth/SignUp';
 import Profile from './pages/user/Profile';
 import ConfirmEmail from './pages/user/ConfirmEmail';
 import ChangePassword from './pages/user/ForgotPassword/Change';
-import SentResetPasswordEmail from './pages/user/ForgotPassword/SendResetEmail';
+import Ordering from './pages/user/Ordering';
 
 import Product from './pages/default/product';
 
@@ -27,16 +27,28 @@ import CategoryUpdate from './pages/admin/category/Update';
 
 import CharacteristicGroupTable from './pages/admin/characteristicGroup/Table';
 import CharacteristicNameTable from './pages/admin/characteristicName/Table';
+import CharacteristicValueTable from './pages/admin/characteristicValue/Table';
+
+import FilterGroupTable from './pages/admin/filterGroup/Table';
+import FilterNameTable from './pages/admin/filterName/Table';
+import FilterValueTable from './pages/admin/filterValue/Table';
+
+import ProductTable from './pages/admin/product/Table';
+import ProductStatusTable from './pages/admin/productStatus/Table';
+
+import ShopTable from './pages/admin/shop/Table';
+
 import CountryTable from './pages/admin/country/Table';
 import CityTable from './pages/admin/city/Table';
 import UnitTable from './pages/admin/unit/Table';
+
+import UserTable from './pages/admin/user/Table';
 
 import SendResetPasswordEmail from './pages/user/ForgotPassword/SendResetEmail';
 import SendResetPasswordPhone from './pages/user/ForgotPassword/SendResetPhone';
 
 import HomePage from './pages/default/HomePage';
 
-import Ordering from './pages/user/Ordering';
 import Catalog from './pages/default/Catalog';
 import CatalogWithProducts from './pages/default/Catalog/CatalogWithProducts';
 
@@ -169,11 +181,23 @@ function App() {
 
           <Route path="/admin/characteristicGroup" element={<CharacteristicGroupTable />} />
           <Route path="/admin/characteristicName" element={<CharacteristicNameTable />} />
+          <Route path="/admin/characteristicValue" element={<CharacteristicValueTable />} />
+
+          <Route path="/admin/filterGroup" element={<FilterGroupTable />} />
+          <Route path="/admin/filterName" element={<FilterNameTable />} />
+          <Route path="/admin/filterValue" element={<FilterValueTable />} />
+
+          <Route path="/admin/productStatus" element={<ProductStatusTable />} />
+          <Route path="/admin/product" element={<ProductTable />} />
+
+          <Route path="/admin/shop" element={<ShopTable />} />
 
           <Route path="/admin/country" element={<CountryTable />} />
           <Route path="/admin/city" element={<CityTable />} />
 
           <Route path="/admin/unit" element={<UnitTable />} />
+
+          <Route path="/admin/user" element={<UserTable />} />
         </Route>
 
         <Route path="/confirmEmail" element={<ConfirmEmail />} />

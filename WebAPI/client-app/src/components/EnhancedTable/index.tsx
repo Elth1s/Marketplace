@@ -89,10 +89,11 @@ interface EnhancedTableToolbarProps {
     onPageChange: any;
     onDelete: any;
     update: any;
+    show: any
 }
 
 const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
-    const { numSelected, onChangeSearch, onPageChange, update, onDelete } = props;
+    const { numSelected, onChangeSearch, onPageChange, update, show, onDelete } = props;
 
     return (
         <Toolbar
@@ -117,15 +118,27 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
                     )
                 }} />
             <Box sx={{ width: "70%", display: "flex", alignItems: "center", justifyContent: "end", px: 1 }}>
-                <IconButton size="medium"
-                    sx={{
-                        borderRadius: "12px",
-                        ...(numSelected != 1 && {
-                            display: "none",
-                        }),
-                    }}>
-                    {update}
-                </IconButton>
+                {update != null &&
+                    <IconButton size="medium"
+                        sx={{
+                            borderRadius: "12px",
+                            ...(numSelected != 1 && {
+                                display: "none",
+                            }),
+                        }}>
+                        {update}
+                    </IconButton>
+                }
+                {show != null &&
+                    <IconButton size="medium"
+                        sx={{
+                            borderRadius: "12px",
+                            ...(numSelected != 1 && {
+                                display: "none",
+                            }),
+                        }}>
+                        {show}
+                    </IconButton>}
                 <IconButton size="medium"
                     onClick={onDelete}
                     sx={{
@@ -207,12 +220,13 @@ interface EnhancedTableProps {
     count: number,
 
     onDelete: any,
-    update: any,
+    update: any | null,
+    show?: any | null,
 
     tableBody: any
 }
 
-const EnhancedTable: FC<EnhancedTableProps> = ({ page, rowsPerPage, handleChangePage, handleChangeRowsPerPage, isAscOrder, setIsAscOrder, orderBy, setOrderBy, handleSelectAllClick, setName, headCells, numSelected, count, onDelete, update, tableBody }) => {
+const EnhancedTable: FC<EnhancedTableProps> = ({ page, rowsPerPage, handleChangePage, handleChangeRowsPerPage, isAscOrder, setIsAscOrder, orderBy, setOrderBy, handleSelectAllClick, setName, headCells, numSelected, count, onDelete, update, show, tableBody }) => {
 
     const handleRequestSort = (
         event: React.MouseEvent<unknown>,
@@ -231,7 +245,7 @@ const EnhancedTable: FC<EnhancedTableProps> = ({ page, rowsPerPage, handleChange
                     border: 1,
                     borderColor: (theme) => `${theme.palette.common.black}`,
                 }} >
-                <EnhancedTableToolbar numSelected={numSelected} onChangeSearch={setName} onPageChange={handleChangePage} update={update} onDelete={() => onDelete()} />
+                <EnhancedTableToolbar numSelected={numSelected} onChangeSearch={setName} onPageChange={handleChangePage} update={update} show={show} onDelete={() => onDelete()} />
                 <TableContainer>
                     <Table
                         sx={{ minWidth: 750 }}

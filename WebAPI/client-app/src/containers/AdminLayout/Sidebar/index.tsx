@@ -26,9 +26,17 @@ const Sidebar: FC<IDrawer> = ({ open }) => {
         { lable: 'Category', path: '/admin/category', rotete: undefined },
         { lable: 'Characteristic Group', path: '/admin/characteristicGroup', rotete: undefined },
         { lable: 'Characteristic Name', path: '/admin/characteristicName', rotete: undefined },
+        { lable: 'Characteristic Value', path: '/admin/characteristicValue', rotete: undefined },
+        { lable: 'Filter Group', path: '/admin/filterGroup', rotete: undefined },
+        { lable: 'Filter Name', path: '/admin/filterName', rotete: undefined },
+        { lable: 'Filter Value', path: '/admin/filterValue', rotete: undefined },
+        { lable: 'Product ', path: '/admin/product', rotete: undefined },
+        { lable: 'Product status', path: '/admin/productStatus', rotete: undefined },
+        { lable: 'Shop ', path: '/admin/shop', rotete: undefined },
         { lable: 'Country', path: '/admin/country', rotete: undefined },
         { lable: 'City', path: '/admin/city', rotete: undefined },
         { lable: 'Unit', path: '/admin/unit', rotete: undefined },
+        { lable: 'User ', path: '/admin/user', rotete: undefined },
     ]);
     const [selected, setSelected] = useState<string>("");
     const location = useLocation();
