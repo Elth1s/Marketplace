@@ -52,6 +52,8 @@ import HomePage from './pages/default/HomePage';
 import Catalog from './pages/default/Catalog';
 import CatalogWithProducts from './pages/default/Catalog/CatalogWithProducts';
 
+import NotFound from './pages/notfound';
+
 function App() {
   const { isAuth } = useTypedSelector(store => store.auth);
   const { AuthUser } = useActions();
@@ -123,25 +125,32 @@ function App() {
     },
     typography: {
       h1: {
-        fontSize: "36px"
+        fontSize: "36px",
+        lineHeight: "45px"
       },
       h2: {
-        fontSize: "27px"
+        fontSize: "27px",
+        lineHeight: "34px"
       },
       h3: {
-        fontSize: "24px"
+        fontSize: "24px",
+        lineHeight: "27px"
       },
       h4: {
-        fontSize: "20px"
+        fontSize: "20px",
+        lineHeight: "25px"
       },
       h5: {
-        fontSize: "18px"
+        fontSize: "18px",
+        lineHeight: "23px"
       },
       h6: {
-        fontSize: "16px"
+        fontSize: "16px",
+        lineHeight: "20px"
       },
       subtitle1: {
-        fontSize: "14px"
+        fontSize: "14px",
+        lineHeight: "18px"
       },
       fontFamily: [
         'Mulish',
@@ -205,9 +214,7 @@ function App() {
         <Route path="/resetPasswordPhone" element={<SendResetPasswordPhone />} />
         <Route path="/resetPassword/:token" element={<ChangePassword />} />
 
-
-
-        {/* <Route path="*" element={<NotFound />} /> */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </ThemeProvider>
   );

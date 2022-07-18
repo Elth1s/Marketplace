@@ -1,4 +1,4 @@
-import { Container, IconButton } from "@mui/material";
+import { Box, Container, IconButton } from "@mui/material";
 import { ArrowUpward } from '@mui/icons-material';
 
 import { useState, useEffect } from "react";
@@ -25,7 +25,13 @@ const DefaultLayout = () => {
         });
     };
     return (
-        <>
+        <Box
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                minHeight: '100vh',
+            }}
+        >
             <Header />
             <Container component="main" sx={{ maxWidth: { xl: "xl", lg: "lg", md: "md" } }}>
                 <Outlet />
@@ -36,7 +42,7 @@ const DefaultLayout = () => {
                 )}
             </Container>
             <Footer />
-        </>
+        </Box>
     );
 }
 
