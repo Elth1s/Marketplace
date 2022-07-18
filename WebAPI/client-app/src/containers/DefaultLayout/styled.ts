@@ -24,39 +24,27 @@ export const TextFieldStyle = styled(TextField)(({ theme }) => ({
 }));
 
 export const TitleStyle = styled(Typography)(() => ({
-    color: "#FFFFFF",
-    fontSize: "20px",
+    color: "#FFF", 
+    lineHeight: "1.25",
     fontWeight: "700",
-    marginBottom: "65px"
 }));
 
-export const DescriptionStyle = styled(Typography)(() => ({
-    display: "flex",
-    color: "#FFFFFF",
-    fontSize: "20px",
+export const BodyStyle = styled(Typography)(() => ({
+    color: "#FFF",
+    lineHeight: "1.25",
     fontWeight: "500",
-    marginBottom: "35px",
-    "&:last-child": {
-        marginBottom: "0px"
-    }
 }));
 
-export const DescriptionLinkStyle = styled(Link)(() => ({
-    display: "flex",
-    color: "#FFFFFF",
-    fontSize: "20px",
+export const LinkStyle = styled(Link)(() => ({
+    color: "#FFF",
+    lineHeight: "1.25",
     fontWeight: "500",
     textDecoration: "none",
-    textDecorationColor: "trancparent",
+}));
+
+export const ItemBoxStyled = styled(Box)(() => ({
     marginBottom: "35px",
     "&:last-child": {
         marginBottom: "0px"
     }
-}));
-
-export const BoxStyle = styled(Box)(({ theme }) => ({
-    backgroundColor: theme.palette.secondary.main,
-    marginTop: "55px",
-    paddingTop: "40px",
-    paddingBottom: "40px"
 }));

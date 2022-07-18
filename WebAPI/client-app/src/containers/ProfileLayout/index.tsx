@@ -1,3 +1,4 @@
+import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 
@@ -9,7 +10,13 @@ import Footer from "../DefaultLayout/Footer";
 
 const ProfileLayout = () => {
     return (
-        <>
+        <Box
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                minHeight: '100vh',
+            }}
+        >
             <Header />
             <Container component="main" sx={{ maxWidth: { xl: "xl", lg: "lg", md: "md" } }}>
                 <Grid container>
@@ -22,7 +29,7 @@ const ProfileLayout = () => {
                 </Grid>
             </Container>
             <Footer />
-        </>
+        </Box >
     );
 }
 
