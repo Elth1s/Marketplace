@@ -39,6 +39,7 @@ namespace DAL.Data
         public DbSet<OrderProduct> OrderProducts { get; set; }
 
         public DbSet<Unit> Units { get; set; }
+        public DbSet<Question> Questions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
