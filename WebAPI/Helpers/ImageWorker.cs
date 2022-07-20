@@ -11,15 +11,13 @@ namespace WebAPI.Helpers
             byte[] byteBuffer = Convert.FromBase64String(cleanBase64);
             try
             {
-                using (MemoryStream memoryStream = new MemoryStream(byteBuffer))
-                {
-                    memoryStream.Position = 0;
-                    Image imgReturn;
-                    imgReturn = Image.FromStream(memoryStream);
-                    memoryStream.Close();
-                    byteBuffer = null;
-                    return new Bitmap(imgReturn);
-                }
+                using MemoryStream memoryStream = new(byteBuffer);
+                memoryStream.Position = 0;
+                Image imgReturn;
+                imgReturn = Image.FromStream(memoryStream);
+                memoryStream.Close();
+                byteBuffer = null;
+                return new Bitmap(imgReturn);
             }
             catch { return null; }
         }

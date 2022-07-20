@@ -6,7 +6,7 @@ namespace WebAPI.Specifications.Characteristics
 {
     public class CharacteristicValueSearchSpecification : Specification<CharacteristicValue>
     {
-        public CharacteristicValueSearchSpecification(string name, bool isAscOrder, string orderBy)
+        public CharacteristicValueSearchSpecification(string name, bool isAscOrder, string orderBy, int? skip = null, int? take = null)
         {
             if (!string.IsNullOrEmpty(name))
                 Query.Where(item => item.Value.Contains(name));
@@ -28,6 +28,12 @@ namespace WebAPI.Specifications.Characteristics
                 else
                     Query.OrderByDescending(orderBy);
             }
+
+            if (skip.HasValue)
+                Query.Skip(skip.Value);
+
+            if (take.HasValue)
+                Query.Take(take.Value);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using WebAPI.Interfaces.Users;
 using WebAPI.Settings;
-using WebAPI.ViewModels.Response;
+using WebAPI.ViewModels.Response.Users;
 
 namespace WebAPI.Services.Users
 {

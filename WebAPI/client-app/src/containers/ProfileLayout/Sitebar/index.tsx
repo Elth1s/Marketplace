@@ -10,13 +10,46 @@ import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlin
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 
 import { Link } from "react-router-dom";
+import { black_user, black_eye, black_shopping_cart, black_heart, black_review } from '../../../assets/icons';
 
 const list = [
-    { label: 'User Name', path: '/cabinet/information', icon: <PersonOutlinedIcon/>},
-    { label: 'Coupons', path: '/cabinet/coupons', icon: <RedeemOutlinedIcon/>},
-    { label: 'My Order', path: '/cabinet/order', icon: <ShoppingCartOutlinedIcon/>},
-    { label: 'selected products', path: '/cabinet/product', icon: <FavoriteBorderOutlinedIcon/>},
-    { label: 'my reviews', path: '/cabinet/reviews', icon: <ChatBubbleOutlineIcon/>},
+    {
+        label: 'User Name', path: '/cabinet/information', icon:
+            <img
+                style={{ width: "20px", height: "20px" }}
+                src={black_user}
+                alt="icon"
+            />
+    },
+    {
+        label: 'Reviewed products', path: '/cabinet/reviewed-products', icon:
+            <img
+                style={{ width: "20px", height: "20px" }}
+                src={black_eye}
+                alt="icon"
+            />
+    },
+    {
+        label: 'My Order', path: '/cabinet/order', icon: <img
+            style={{ width: "20px", height: "20px" }}
+            src={black_shopping_cart}
+            alt="icon"
+        />
+    },
+    {
+        label: 'Selected products', path: '/cabinet/product', icon: <img
+            style={{ width: "20px", height: "20px" }}
+            src={black_heart}
+            alt="icon"
+        />
+    },
+    {
+        label: 'My reviews', path: '/cabinet/reviews', icon: <img
+            style={{ width: "20px", height: "20px" }}
+            src={black_review}
+            alt="icon"
+        />
+    },
 ]
 
 const Sitebar = () => {

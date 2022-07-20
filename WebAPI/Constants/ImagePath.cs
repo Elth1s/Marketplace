@@ -7,12 +7,14 @@
         public const string CategoriesImagePath = "uploads/categories";
         public const string ShopsImagePath = "uploads/shops";
         public const string ProductsImagePath = "uploads/products";
+        public const string ReviewsImagePath = "uploads/reviews";
 
         public const string RequestRootImagePath = "/images";
         public const string RequestUsersImagePath = "/images/users";
         public const string RequestCategoriesImagePath = "/images/categories";
         public const string RequestShopsImagePath = "/images/shops";
         public const string RequestProductsImagePath = "/images/products";
+        public const string RequestReviewsImagePath = "/images/reviews";
 
 
         public const string FrontImagePath = "frontImages";

@@ -14,7 +14,7 @@ import { useState } from 'react'
 
 import { ListItemButtonStyle, ButtonNoveltyStyle, BoxProductOfTheDayStyle } from './styled';
 
-import { gamepad } from '../../../assets/icons';
+import { gamepad, btn_arrow, arrow_right, arrow_left } from '../../../assets/icons';
 import { homepage } from '../../../assets/backgrounds';
 
 import LinkRouter from '../../../components/LinkRouter';
@@ -53,7 +53,11 @@ const HomePage = () => {
             <Box id="NewProducts" sx={{ marginTop: "100px" }}>
                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                     <Typography fontSize="27px">Novelty</Typography>
-                    <ButtonNoveltyStyle variant="outlined" endIcon={<ArrowForwardIosOutlined />} >All novelties</ButtonNoveltyStyle>
+                    <ButtonNoveltyStyle variant="outlined" endIcon={<img
+                        style={{ width: "16px", height: "16px" }}
+                        src={btn_arrow}
+                        alt="icon"
+                    />} >All novelties</ButtonNoveltyStyle>
                 </Box>
                 <Box sx={{ width: "100%", height: "366px", marginTop: "75px", display: "flex", justifyContent: "space-between", alignContent: "center" }}>
                     <IconButton
@@ -62,7 +66,11 @@ const HomePage = () => {
                         aria-label="search"
 
                     >
-                        <ArrowBackIosNewOutlined sx={{ fontSize: "35px" }} />
+                        <img
+                            style={{ width: "35px", height: "35px" }}
+                            src={arrow_left}
+                            alt="icon"
+                        />
                     </IconButton>
                     <Box sx={{ width: "269px", height: "100%", backgroundColor: "#0E7C3A", borderRadius: "9px" }}></Box>
                     <Box sx={{ width: "269px", height: "100%", backgroundColor: "#0E7C3A", borderRadius: "9px" }}></Box>
@@ -74,7 +82,11 @@ const HomePage = () => {
                         size="large"
                         aria-label="search"
                     >
-                        <ArrowForwardIosOutlined sx={{ fontSize: "35px" }} />
+                        <img
+                            style={{ width: "35px", height: "35px" }}
+                            src={arrow_right}
+                            alt="icon"
+                        />
                     </IconButton>
                 </Box>
             </Box>

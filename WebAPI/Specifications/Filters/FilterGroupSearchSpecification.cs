@@ -6,7 +6,7 @@ namespace WebAPI.Specifications.Filters
 {
     public class FilterGroupSearchSpecification : Specification<FilterGroup>
     {
-        public FilterGroupSearchSpecification(string name, bool isAscOrder, string orderBy)
+        public FilterGroupSearchSpecification(string name, bool isAscOrder, string orderBy, int? skip = null, int? take = null)
         {
             if (!string.IsNullOrEmpty(name))
                 Query.Where(item => item.Name.Contains(name));
@@ -15,6 +15,12 @@ namespace WebAPI.Specifications.Filters
                 Query.OrderBy(orderBy);
             else
                 Query.OrderByDescending(orderBy);
+
+            if (skip.HasValue)
+                Query.Skip(skip.Value);
+
+            if (take.HasValue)
+                Query.Take(take.Value);
         }
     }
 }

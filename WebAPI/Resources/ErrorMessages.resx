@@ -246,4 +246,13 @@
   <data name="CategoryUrlSlugNotUnique" xml:space="preserve">
     <value>Category with this url slug already exist</value>
   </data>
+  <data name="OrderNotFound" xml:space="preserve">
+    <value>Order not found</value>
+  </data>
+  <data name="OrderStatusNotFound" xml:space="preserve">
+    <value>Order status not found</value>
+  </data>
+  <data name="ReviewImageNotFound" xml:space="preserve">
+    <value>Review image not found</value>
+  </data>
 </root>

@@ -83,11 +83,18 @@ namespace WebAPI.Services.Filters
         public async Task<AdminSearchResponse<FilterValueResponse>> SearchAsync(AdminSearchRequest request)
         {
             var spec = new FilterValueSearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
+            var count = await _filterValueRepository.CountAsync(spec);
+
+            spec = new FilterValueSearchSpecification(
+                request.Name,
+                request.IsAscOrder,
+                request.OrderBy,
+                (request.Page - 1) * request.RowsPerPage,
+                request.RowsPerPage);
+
             var filterNames = await _filterValueRepository.ListAsync(spec);
             var mappedFilterNames = _mapper.Map<IEnumerable<FilterValueResponse>>(filterNames);
-            var response = new AdminSearchResponse<FilterValueResponse>() { Count = filterNames.Count };
-
-            response.Values = mappedFilterNames.Skip((request.Page - 1) * request.RowsPerPage).Take(request.RowsPerPage);
+            var response = new AdminSearchResponse<FilterValueResponse>() { Count = count, Values = mappedFilterNames };
 
             return response;
         }

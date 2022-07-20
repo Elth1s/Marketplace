@@ -3,7 +3,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using WebAPI.Helpers;
 using WebAPI.Interfaces.Users;
 using WebAPI.ViewModels.Request.Users;
-using WebAPI.ViewModels.Response;
+using WebAPI.ViewModels.Response.Users;
 
 namespace WebAPI.Controllers.Users
 {

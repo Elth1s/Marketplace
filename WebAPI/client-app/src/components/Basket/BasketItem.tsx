@@ -3,6 +3,7 @@ import { Box, IconButton, Typography } from "@mui/material"
 import { FC } from "react"
 
 import { empty } from "../../assets/backgrounds"
+import { basket_trash } from "../../assets/icons"
 
 interface Props {
     id: number
@@ -35,7 +36,12 @@ const BasketItem: FC<Props> = ({ image, name, price }) => {
                 aria-label="search"
                 color="inherit"
             >
-                <DeleteOutline sx={{ fontSize: "30px" }} />
+                <img
+                    style={{ width: "30px", height: "30px" }}
+                    src={basket_trash}
+                    alt="icon"
+                />
+                {/* <DeleteOutline sx={{ fontSize: "30px" }} /> */}
             </IconButton>
         </Box>
     )

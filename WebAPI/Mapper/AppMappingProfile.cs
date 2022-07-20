@@ -14,6 +14,7 @@ using WebAPI.ViewModels.Response.Categories;
 using WebAPI.ViewModels.Response.Characteristics;
 using WebAPI.ViewModels.Response.Filters;
 using WebAPI.ViewModels.Response.Products;
+using WebAPI.ViewModels.Response.Users;
 
 namespace WebAPI.Mapper
 {

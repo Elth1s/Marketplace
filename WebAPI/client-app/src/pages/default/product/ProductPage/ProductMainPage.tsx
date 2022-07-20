@@ -30,6 +30,7 @@ import {
 import { characteristic, images, reviews } from "../data";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import { useActions } from "../../../../hooks/useActions";
+import { buy_cart } from "../../../../assets/icons";
 
 interface Props {
     urlSlug: string | undefined,
@@ -104,10 +105,20 @@ const ProductMainPage: FC<Props> = ({ urlSlug, isInBasket }) => {
 
                         <Button color="secondary" variant="outlined" sx={{ fontSize: "20px", mt: "45px", mb: "35px" }}>Контакти продавця</Button>
                         {isInBasket
-                            ? <Button color="secondary" variant="contained" disabled startIcon={<ShoppingCartIcon />} sx={{ fontSize: "20px" }}>
+                            ? <Button color="secondary" variant="contained" disabled startIcon={
+                                <img
+                                    style={{ width: "40px", height: "40px" }}
+                                    src={buy_cart}
+                                    alt="icon"
+                                />} sx={{ fontSize: "20px" }}>
                                 In basket
                             </Button>
-                            : <Button color="secondary" variant="contained" startIcon={<ShoppingCartIcon />} sx={{ fontSize: "20px" }}
+                            : <Button color="secondary" variant="contained" startIcon={
+                                <img
+                                    style={{ width: "40px", height: "40px" }}
+                                    src={buy_cart}
+                                    alt="icon"
+                                />} sx={{ fontSize: "20px" }}
                                 onClick={addInCart} >
                                 Buy
                             </Button>}

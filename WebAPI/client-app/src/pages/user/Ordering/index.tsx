@@ -16,6 +16,7 @@ import {
 import React from "react";
 import logo from "../../../logo.svg";
 import FmdGoodOutlinedIcon from "@mui/icons-material/FmdGoodOutlined";
+import { black_map_pin } from "../../../assets/icons";
 
 const Ordering = () => {
   return (
@@ -77,7 +78,11 @@ const Ordering = () => {
           <Grid item xs={6} md={8}>
             <Box sx={{ display: "flex" }}>
               <Box sx={{ height: 91, width: 268, display: "flex" }}>
-                <FmdGoodOutlinedIcon sx={{ height: 30, width: 30, mt: 4 }} />
+                <img
+                  style={{ width: "30px", height: "30px", marginTop: "27px" }}
+                  src={black_map_pin}
+                  alt="icon"
+                />
                 <Box sx={{ ml: 4 }}>
                   <Typography sx={{ fontSize: 24 }}>Острог</Typography>
                   <Typography sx={{ fontSize: 24, mt: 3 }}>
