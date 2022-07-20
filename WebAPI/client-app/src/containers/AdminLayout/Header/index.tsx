@@ -14,6 +14,7 @@ import { logo } from '../../../assets/logos';
 import LinkRouter from '../../../components/LinkRouter';
 import Notification from './Notification'
 import Profile from './Profile';
+import { admin_list } from '../../../assets/icons';
 
 interface IHeader {
     handleDrawerToggle: any,
@@ -38,7 +39,11 @@ const Header: FC<IHeader> = ({ handleDrawerToggle }) => {
                         aria-label="search"
                         color="inherit"
                     >
-                        <Menu />
+                        <img
+                            style={{ width: "35px", height: "18px" }}
+                            src={admin_list}
+                            alt="icon"
+                        />
                     </IconButton>
                 </LeftBox>
 

@@ -190,11 +190,17 @@ namespace WebAPI.Services.Products
         public async Task<AdminSearchResponse<ProductResponse>> SearchProductsAsync(AdminSearchRequest request)
         {
             var spec = new ProductSearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
+            var count = await _productRepository.CountAsync(spec);
+            spec = new ProductSearchSpecification(
+                request.Name,
+                request.IsAscOrder,
+                request.OrderBy,
+                (request.Page - 1) * request.RowsPerPage,
+                request.RowsPerPage);
+
             var products = await _productRepository.ListAsync(spec);
             var mappedProducts = _mapper.Map<IEnumerable<ProductResponse>>(products);
-            var response = new AdminSearchResponse<ProductResponse>() { Count = products.Count };
-
-            response.Values = mappedProducts.Skip((request.Page - 1) * request.RowsPerPage).Take(request.RowsPerPage);
+            var response = new AdminSearchResponse<ProductResponse>() { Count = count, Values = mappedProducts };
 
             return response;
         }

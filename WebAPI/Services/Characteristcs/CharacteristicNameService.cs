@@ -39,11 +39,17 @@ namespace WebAPI.Services.Characteristcs
         public async Task<AdminSearchResponse<CharacteristicNameResponse>> SearchAsync(AdminSearchRequest request)
         {
             var spec = new CharacteristicNameSearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
-            var countries = await _characteristicNameRepository.ListAsync(spec);
-            var mappedCountries = _mapper.Map<IEnumerable<CharacteristicNameResponse>>(countries);
-            var response = new AdminSearchResponse<CharacteristicNameResponse>() { Count = countries.Count };
+            var count = await _characteristicNameRepository.CountAsync(spec);
+            spec = new CharacteristicNameSearchSpecification(
+                request.Name,
+                request.IsAscOrder,
+                request.OrderBy,
+                (request.Page - 1) * request.RowsPerPage,
+                request.RowsPerPage);
 
-            response.Values = mappedCountries.Skip((request.Page - 1) * request.RowsPerPage).Take(request.RowsPerPage);
+            var characteristicNames = await _characteristicNameRepository.ListAsync(spec);
+            var mappedCharacteristicNames = _mapper.Map<IEnumerable<CharacteristicNameResponse>>(characteristicNames);
+            var response = new AdminSearchResponse<CharacteristicNameResponse>() { Count = count, Values = mappedCharacteristicNames };
 
             return response;
         }
@@ -70,7 +76,7 @@ namespace WebAPI.Services.Characteristcs
 
             var spec = new CharacteristicNameGetByNameAndUnitIdSpecification(request.Name, request.UnitId);
             if (await _characteristicNameRepository.GetBySpecAsync(spec) != null)
-                throw new AppException(ErrorMessages.CharacteristicNameUnitNotUnique);
+                throw new AppValidationException(new ValidationError(nameof(CharacteristicName.UnitId), ErrorMessages.CharacteristicNameUnitNotUnique));
 
             var characteristicName = _mapper.Map<CharacteristicName>(request);
 
@@ -91,7 +97,7 @@ namespace WebAPI.Services.Characteristcs
 
             var spec = new CharacteristicNameGetByNameAndUnitIdSpecification(request.Name, request.UnitId);
             if (await _characteristicNameRepository.GetBySpecAsync(spec) != null)
-                throw new AppException(ErrorMessages.CharacteristicNameUnitNotUnique);
+                throw new AppValidationException(new ValidationError(nameof(CharacteristicName.UnitId), ErrorMessages.CharacteristicNameUnitNotUnique));
 
             var characteristicName = await _characteristicNameRepository.GetByIdAsync(id);
             characteristicName.CharacteristicNameNullChecking();

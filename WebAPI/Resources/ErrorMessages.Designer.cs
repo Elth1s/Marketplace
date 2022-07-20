@@ -331,6 +331,24 @@ namespace WebAPI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Order not found.
+        /// </summary>
+        internal static string OrderNotFound {
+            get {
+                return ResourceManager.GetString("OrderNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Order status not found.
+        /// </summary>
+        internal static string OrderStatusNotFound {
+            get {
+                return ResourceManager.GetString("OrderStatusNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password is already exist.
         /// </summary>
         internal static string PasswordExist {
@@ -374,18 +392,7 @@ namespace WebAPI.Resources {
                 return ResourceManager.GetString("ProductNotFound", resourceCulture);
             }
         }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Order was not found.
-        /// </summary>
-        internal static string OrderNotFound
-        {
-            get
-            {
-                return ResourceManager.GetString("OrderNotFound", resourceCulture);
-            }
-        }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Product Status was not found.
         /// </summary>
@@ -394,18 +401,16 @@ namespace WebAPI.Resources {
                 return ResourceManager.GetString("ProductStatusNotFound", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Looks up a localized string similar to Order Status was not found.
+        ///   Looks up a localized string similar to Review image not found.
         /// </summary>
-        internal static string OrderStatusNotFound
-        {
-            get
-            {
-                return ResourceManager.GetString("OrderStatusNotFound", resourceCulture);
+        internal static string ReviewImageNotFound {
+            get {
+                return ResourceManager.GetString("ReviewImageNotFound", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Shop was not found.
         /// </summary>

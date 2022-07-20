@@ -1,4 +1,4 @@
-﻿namespace WebAPI.ViewModels.Response
+﻿namespace WebAPI.ViewModels.Response.Users
 {
     /// <summary>
     /// Class returned from the controller after user authorization

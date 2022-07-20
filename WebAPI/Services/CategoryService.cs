@@ -45,11 +45,18 @@ namespace WebAPI.Services
         public async Task<AdminSearchResponse<CategoryResponse>> SearchCategoriesAsync(AdminSearchRequest request)
         {
             var spec = new CategorySearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
+            var count = await _categoryRepository.CountAsync(spec);
+            spec = new CategorySearchSpecification(
+                request.Name,
+                request.IsAscOrder,
+                request.OrderBy,
+                (request.Page - 1) * request.RowsPerPage,
+                request.RowsPerPage);
+
             var categories = await _categoryRepository.ListAsync(spec);
             var mappedCategories = _mapper.Map<IEnumerable<CategoryResponse>>(categories);
-            var response = new AdminSearchResponse<CategoryResponse>() { Count = categories.Count };
 
-            response.Values = mappedCategories.Skip((request.Page - 1) * request.RowsPerPage).Take(request.RowsPerPage);
+            var response = new AdminSearchResponse<CategoryResponse>() { Count = count, Values = mappedCategories };
 
             return response;
         }
@@ -177,7 +184,7 @@ namespace WebAPI.Services
             var urlSlugSpec = new CategoryGetByUrlSlugSpecification(request.Name);
             if (await _categoryRepository.GetBySpecAsync(urlSlugSpec) != null)
                 throw new AppException(ErrorMessages.CategoryUrlSlugNotUnique);
-
+            //
             var category = _mapper.Map<Category>(request);
 
             if (!string.IsNullOrEmpty(request.Image))

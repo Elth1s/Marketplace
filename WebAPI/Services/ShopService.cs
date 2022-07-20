@@ -151,11 +151,16 @@ namespace WebAPI.Services
         public async Task<AdminSearchResponse<ShopResponse>> SearchShopsAsync(AdminSearchRequest request)
         {
             var spec = new ShopSearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
+            var count = await _shopRepository.CountAsync(spec);
+            spec = new ShopSearchSpecification(
+                request.Name,
+                request.IsAscOrder,
+                request.OrderBy,
+                (request.Page - 1) * request.RowsPerPage,
+                request.RowsPerPage);
             var shops = await _shopRepository.ListAsync(spec);
             var mappedShops = _mapper.Map<IEnumerable<ShopResponse>>(shops);
-            var response = new AdminSearchResponse<ShopResponse>() { Count = shops.Count };
-
-            response.Values = mappedShops.Skip((request.Page - 1) * request.RowsPerPage).Take(request.RowsPerPage);
+            var response = new AdminSearchResponse<ShopResponse>() { Count = count, Values = mappedShops };
 
             return response;
 

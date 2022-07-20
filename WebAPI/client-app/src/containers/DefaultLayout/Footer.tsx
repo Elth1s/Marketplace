@@ -11,11 +11,30 @@ import TelegramIcon from '@mui/icons-material/Telegram';
 import InstagramIcon from '@mui/icons-material/Instagram';
 
 import { ItemBoxStyled, TitleStyle, BodyStyle, LinkStyle } from "./styled";
+import { white_shopping_cart, white_map_pin, phone_call, icon_facebook, icon_instagram, icon_telegram, icon_viber } from "../../assets/icons";
 
 const about = [
-    { icon: <PhoneIcon sx={{ color: "#FFF", fontSize: "30px", mr: "10px" }} />, text: "+38054 824 67 31" },
-    { icon: <LocationOnIcon sx={{ color: "#FFF", fontSize: "30px", mr: "10px" }} />, text: "Ukraine, str. Soborna 27" },
-    { icon: <ShoppingCartIcon sx={{ color: "#FFF", fontSize: "30px", mr: "10px" }} />, text: "10:00 - 21:00 (No weekends)" },
+    {
+        icon: <img
+            style={{ width: "30px", height: "30px", marginRight: "10px" }}
+            src={phone_call}
+            alt="icon"
+        />, text: "+38054 824 67 31"
+    },
+    {
+        icon: <img
+            style={{ width: "30px", height: "30px", marginRight: "10px" }}
+            src={white_map_pin}
+            alt="icon"
+        />, text: "Ukraine, str. Soborna 27"
+    },
+    {
+        icon: <img
+            style={{ width: "30px", height: "30px", marginRight: "10px" }}
+            src={white_shopping_cart}
+            alt="icon"
+        />, text: "10:00 - 21:00 (No weekends)"
+    },
 ]
 
 const links = [
@@ -38,12 +57,29 @@ const Footer = () => {
         <Box component="footer" sx={{ backgroundColor: "secondary.main", marginTop: "auto", py: "110px" }}>
             <Container sx={{ maxWidth: { xl: "xl", lg: "lg", md: "md" } }}>
                 <Grid container justifyContent="space-between">
-                    <Grid item xs="auto">
+                    <Grid item >
                         <TitleStyle variant="h4" sx={{ marginBottom: "30px" }}>About us</TitleStyle>
                         <Box sx={{ display: "flex", marginBottom: "45px" }}>
-                            <FacebookIcon sx={{ color: "#FFF", fontSize: "30px", mr: "20px" }} />
-                            <TelegramIcon sx={{ color: "#FFF", fontSize: "30px", mr: "20px" }} />
-                            <InstagramIcon sx={{ color: "#FFF", fontSize: "30px", mr: "20px" }} />
+                            <img
+                                style={{ width: "30px", height: "30px", marginRight: "20px" }}
+                                src={icon_facebook}
+                                alt="icon"
+                            />
+                            <img
+                                style={{ width: "30px", height: "30px", marginRight: "20px" }}
+                                src={icon_viber}
+                                alt="icon"
+                            />
+                            <img
+                                style={{ width: "30px", height: "30px", marginRight: "20px" }}
+                                src={icon_telegram}
+                                alt="icon"
+                            />
+                            <img
+                                style={{ width: "30px", height: "30px", marginRight: "20px" }}
+                                src={icon_instagram}
+                                alt="icon"
+                            />
                         </Box>
                         {about.map((item, index) => (
                             <ItemBoxStyled key={index} display="flex" alignItems="center">
@@ -53,7 +89,7 @@ const Footer = () => {
                         ))}
                     </Grid>
                     {links.map((link, index) => (
-                        <Grid key={index} xs="auto" >
+                        <Grid key={index} >
                             <TitleStyle variant="h4" sx={{ marginBottom: "60px" }}>{link.title}</TitleStyle>
                             {link.description.map((item, index) => (
                                 <ItemBoxStyled key={index} display="flex">

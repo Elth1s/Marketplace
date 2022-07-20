@@ -64,7 +64,7 @@ namespace WebAPI.Services.Filters
 
             var spec = new FilterNameGetByNameAndUnitIdSpecification(request.Name, request.UnitId);
             if (await _filterNameRepository.GetBySpecAsync(spec) != null)
-                throw new AppException(ErrorMessages.FilterNameUnitNotUnique);
+                throw new AppValidationException(new ValidationError(nameof(FilterName.UnitId), ErrorMessages.FilterNameUnitNotUnique));
 
             var filter = _mapper.Map<FilterName>(request);
 
@@ -85,7 +85,7 @@ namespace WebAPI.Services.Filters
 
             var spec = new FilterNameGetByNameAndUnitIdSpecification(request.Name, request.UnitId.Value);
             if (await _filterNameRepository.GetBySpecAsync(spec) != null)
-                throw new AppException(ErrorMessages.FilterNameUnitNotUnique);
+                throw new AppValidationException(new ValidationError(nameof(FilterName.UnitId), ErrorMessages.FilterNameUnitNotUnique));
 
             var filter = await _filterNameRepository.GetByIdAsync(filterNameId);
             filter.FilterNameNullChecking();
@@ -108,12 +108,18 @@ namespace WebAPI.Services.Filters
         public async Task<AdminSearchResponse<FilterNameResponse>> SearchAsync(AdminSearchRequest request)
         {
             var spec = new FilterNameSearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
+            var count = await _filterNameRepository.CountAsync(spec);
+            spec = new FilterNameSearchSpecification(
+                request.Name,
+                request.IsAscOrder,
+                request.OrderBy,
+                (request.Page - 1) * request.RowsPerPage,
+                request.RowsPerPage
+                );
+
             var filterNames = await _filterNameRepository.ListAsync(spec);
             var mappedFilterNames = _mapper.Map<IEnumerable<FilterNameResponse>>(filterNames);
-            var response = new AdminSearchResponse<FilterNameResponse>() { Count = filterNames.Count };
-
-            response.Values = mappedFilterNames.Skip((request.Page - 1) * request.RowsPerPage).Take(request.RowsPerPage);
-
+            var response = new AdminSearchResponse<FilterNameResponse>() { Count = count, Values = mappedFilterNames };
             return response;
         }
 

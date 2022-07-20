@@ -34,11 +34,16 @@ namespace WebAPI.Services
         public async Task<AdminSearchResponse<CountryResponse>> SearchCountriesAsync(AdminSearchRequest request)
         {
             var spec = new CountrySearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
+            var count = await _countryRepository.CountAsync(spec);
+            spec = new CountrySearchSpecification(
+                request.Name,
+                request.IsAscOrder,
+                request.OrderBy,
+                (request.Page - 1) * request.RowsPerPage,
+                request.RowsPerPage);
             var countries = await _countryRepository.ListAsync(spec);
             var mappedCountries = _mapper.Map<IEnumerable<CountryResponse>>(countries);
-            var response = new AdminSearchResponse<CountryResponse>() { Count = countries.Count };
-
-            response.Values = mappedCountries.Skip((request.Page - 1) * request.RowsPerPage).Take(request.RowsPerPage);
+            var response = new AdminSearchResponse<CountryResponse>() { Count = count, Values = mappedCountries };
 
             return response;
         }

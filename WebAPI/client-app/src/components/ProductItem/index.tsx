@@ -7,6 +7,8 @@ import { BoxStyle, ImageBoxStyle } from './styled'
 import { empty } from '../../assets/backgrounds'
 import { FavoriteBorder } from '@mui/icons-material'
 
+import { orange_heart } from '../../assets/icons';
+
 interface Props {
     name: string,
     image: string,
@@ -41,7 +43,11 @@ const ProductItem: FC<Props> = ({ name, image, statusName, urlSlug, price }) => 
                 </BoxStyle>
             </LinkRouter>
             <IconButton sx={{ borderRadius: "12px", position: "absolute", zIndex: 2, bottom: "5%", right: "5%" }}>
-                <FavoriteBorder color="primary" />
+                <img
+                    style={{ width: "30px", height: "30px" }}
+                    src={orange_heart}
+                    alt="icon"
+                />
             </IconButton>
         </Box>
     )

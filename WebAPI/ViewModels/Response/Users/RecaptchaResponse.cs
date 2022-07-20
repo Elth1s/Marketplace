@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace WebAPI.ViewModels.Response
+namespace WebAPI.ViewModels.Response.Users
 {
     /// <summary>
     /// ReCaptcha class returned from the reCaptcha response

@@ -18,6 +18,7 @@ using WebAPI.Interfaces.Characteristics;
 using WebAPI.Interfaces.Emails;
 using WebAPI.Interfaces.Filters;
 using WebAPI.Interfaces.Products;
+using WebAPI.Interfaces.Reviews;
 using WebAPI.Interfaces.Users;
 using WebAPI.Mapper;
 using WebAPI.Middlewares;
@@ -26,6 +27,7 @@ using WebAPI.Services.Characteristcs;
 using WebAPI.Services.Emails;
 using WebAPI.Services.Filters;
 using WebAPI.Services.Products;
+using WebAPI.Services.Reviews;
 using WebAPI.Services.Users;
 using WebAPI.Settings;
 
@@ -74,6 +76,9 @@ builder.Services.AddScoped<IResetPasswordService, ResetPasswordService>();
 builder.Services.AddScoped<IPhoneCodeSenderService, PhoneCodeSenderService>();
 builder.Services.AddScoped<IConfirmPhoneService, ConfirmPhoneService>();
 builder.Services.AddScoped<IBasketItemService, BasketItemService>();
+
+builder.Services.AddScoped<IReviewImageService, ReviewImageService>();
+
 
 builder.Services.AddSingleton<PhoneNumberManager>();
 
@@ -239,6 +244,17 @@ app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(productsImages),
     RequestPath = ImagePath.RequestProductsImagePath
+});
+
+var reviewImages = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.ReviewsImagePath);
+if (!Directory.Exists(reviewImages))
+{
+    Directory.CreateDirectory(reviewImages);
+}
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(reviewImages),
+    RequestPath = ImagePath.RequestReviewsImagePath
 });
 
 var backgroundImages = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.BackgroundImagePath);

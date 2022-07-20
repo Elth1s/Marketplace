@@ -34,11 +34,16 @@ namespace WebAPI.Services
         public async Task<AdminSearchResponse<UnitResponse>> SearchUnitsAsync(AdminSearchRequest request)
         {
             var spec = new UnitSearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
+            var count = await _unitRepository.CountAsync(spec);
+            spec = new UnitSearchSpecification(
+                request.Name,
+                request.IsAscOrder,
+                request.OrderBy,
+                (request.Page - 1) * request.RowsPerPage,
+                request.RowsPerPage);
             var units = await _unitRepository.ListAsync(spec);
             var mappedUnits = _mapper.Map<IEnumerable<UnitResponse>>(units);
-            var response = new AdminSearchResponse<UnitResponse>() { Count = units.Count };
-
-            response.Values = mappedUnits.Skip((request.Page - 1) * request.RowsPerPage).Take(request.RowsPerPage);
+            var response = new AdminSearchResponse<UnitResponse>() { Count = count, Values = mappedUnits };
 
             return response;
         }

@@ -17,6 +17,8 @@ import { useTypedSelector } from '../../hooks/useTypedSelector';
 import LinkRouter from '../LinkRouter';
 import { MenuItemStyle } from './styled';
 
+import { orange_user } from '../../assets/icons';
+
 interface ISettingsMenuItem {
     label: string,
     icon: any,
@@ -74,7 +76,11 @@ const MainMenu = () => {
                 color="primary"
                 onClick={handleClick}
             >
-                <PersonOutlineOutlined sx={{ fontSize: "35px" }} />
+                <img
+                    style={{ width: "40px", height: "40px" }}
+                    src={orange_user}
+                    alt="icon"
+                />
             </IconButton>
             <Menu
                 anchorEl={anchorEl}

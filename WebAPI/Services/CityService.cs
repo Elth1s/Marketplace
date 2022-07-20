@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DAL;
 using DAL.Entities;
+using WebAPI.Exceptions;
 using WebAPI.Extensions;
 using WebAPI.Interfaces;
 using WebAPI.Resources;
@@ -39,11 +40,16 @@ namespace WebAPI.Services
         public async Task<AdminSearchResponse<CityResponse>> SearchCitiesAsync(AdminSearchRequest request)
         {
             var spec = new CitySearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
+            var count = await _cityRepository.CountAsync(spec);
+            spec = new CitySearchSpecification(
+                request.Name,
+                request.IsAscOrder,
+                request.OrderBy,
+                (request.Page - 1) * request.RowsPerPage,
+                request.RowsPerPage);
             var cities = await _cityRepository.ListAsync(spec);
             var mappedCities = _mapper.Map<IEnumerable<CityResponse>>(cities);
-            var response = new AdminSearchResponse<CityResponse>() { Count = cities.Count };
-
-            response.Values = mappedCities.Skip((request.Page - 1) * request.RowsPerPage).Take(request.RowsPerPage);
+            var response = new AdminSearchResponse<CityResponse>() { Count = count, Values = mappedCities };
 
             return response;
         }
@@ -65,7 +71,7 @@ namespace WebAPI.Services
 
             var spec = new CityGetByNameAndCountryIdSpecification(request.Name, request.CountryId);
             if (await _cityRepository.GetBySpecAsync(spec) != null)
-                throw new ApplicationException(ErrorMessages.CityCountryNotUnique);
+                throw new AppValidationException(new ValidationError(nameof(City.CountryId), ErrorMessages.CityCountryNotUnique));
 
             var city = _mapper.Map<City>(request);
 
@@ -83,7 +89,7 @@ namespace WebAPI.Services
 
             var spec = new CityGetByNameAndCountryIdSpecification(request.Name, request.CountryId);
             if (await _cityRepository.GetBySpecAsync(spec) != null)
-                throw new ApplicationException(ErrorMessages.CityCountryNotUnique);
+                throw new AppValidationException(new ValidationError(nameof(City.CountryId), ErrorMessages.CityCountryNotUnique));
 
             _mapper.Map(request, city);
 

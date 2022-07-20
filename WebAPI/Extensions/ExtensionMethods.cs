@@ -270,5 +270,14 @@ namespace WebAPI.Extensions
                     HttpStatusCode.NotFound);
             }
         }
+        public static void ReviewImageNullChecking(this ReviewImage reviewImage)
+        {
+            if (reviewImage == null)
+            {
+                throw new AppException(
+                    ErrorMessages.ReviewImageNotFound,
+                    HttpStatusCode.NotFound);
+            }
+        }
     }
 }

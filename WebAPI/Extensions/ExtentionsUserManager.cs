@@ -11,11 +11,13 @@ namespace WebAPI.Extensions
             cancellationToken.ThrowIfCancellationRequested();
             return await userManager.Users.SingleOrDefaultAsync(u => u.PhoneNumber == PhoneNumber, cancellationToken);
         }
-        public static async Task<List<AppUser>> UserSearchAsync(
+        public static IQueryable<AppUser> UserSearch(
             this UserManager<AppUser> userManager,
             string name,
             bool isAscOrder,
             string orderBy,
+            int? skip = null,
+            int? take = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -29,7 +31,13 @@ namespace WebAPI.Extensions
             else
                 query = query.OrderByDescending(orderBy);
 
-            return await query.ToListAsync();
+            if (skip.HasValue)
+                query = query.Skip(skip.Value);
+
+            if (take.HasValue)
+                query = query.Take(take.Value);
+
+            return query;
         }
     }
 }

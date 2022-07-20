@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace WebAPI.ViewModels.Response
+namespace WebAPI.ViewModels.Response.Users
 {
     /// <summary>
     /// Facebook class returned from the facebook response
