@@ -1,4 +1,5 @@
 import Tab from "@mui/material/Tab";
+import Typography from "@mui/material/Typography";
 
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
@@ -9,7 +10,7 @@ import { useState } from "react";
 import Information from "./Information";
 import Change from "./Change";
 
-import { PaperStyled, TypographyStyled } from "../styled";
+import { PaperStyled, TabStyled } from "../styled";
 
 const tabs = ['Personal information', 'Change password and login']
 
@@ -22,10 +23,10 @@ const Profile = () => {
 
     return (
         <TabContext value={valueTab} >
-            <TypographyStyled>Settings profile</TypographyStyled>
+            <Typography variant="h1" sx={{ mb: "30px" }}>Settings profile</Typography>
             <TabList onChange={handleChange}>
                 {tabs.map((item, index) => (
-                    <Tab
+                    <TabStyled
                         key={index}
                         label={item}
                         value={index.toString()}
