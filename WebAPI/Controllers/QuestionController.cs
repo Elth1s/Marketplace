@@ -9,7 +9,7 @@ using WebAPI.ViewModels.Response;
 namespace WebAPI.Controllers
 {
     /// <summary>
-    /// The basket item controller class.
+    /// The Question controller class.
     /// </summary>
     /// <seealso cref="ControllerBase" />
     [Route("api/[controller]")]
@@ -40,6 +40,7 @@ namespace WebAPI.Controllers
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetAll()
         {
+
             var result = await _questionService.GetAllAsync();
             return Ok(result);
         }

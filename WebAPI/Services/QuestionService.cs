@@ -33,7 +33,7 @@ namespace WebAPI.Services
         public async Task<IEnumerable<QuestionResponse>> GetAllByIdAsync(string userId)
         {
             var spec = new QuestionIncludeFullInfoSpecification(userId);
-            var questions = await _questionRepository.ListAsync();
+            var questions = await _questionRepository.ListAsync(spec);
 
             return _mapper.Map<IEnumerable<QuestionResponse>>(questions);
         }

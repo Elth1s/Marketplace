@@ -21,17 +21,12 @@ namespace WebAPI.ViewModels.Request
         /// <example>Lorem Ipsum Dolor</example>
 
         public string Message { get; set; }
-        /// <summary>
-        /// UserId 
-        /// </summary>
-        /// <example></example>
-        public string UserId { get; set; }
 
         /// <summary>
-        /// Product 
+        /// Product url slug
         /// </summary>
-        /// <example>1</example>
-        public int ProductId { get; set; }
+        /// <example>qweqdqdq-qweqqdqd-qweq</example>
+        public int ProductSlug { get; set; }
 
     }
 
@@ -46,12 +41,16 @@ namespace WebAPI.ViewModels.Request
             //FullName
             RuleFor(x => x.FullName).Cascade(CascadeMode.Stop)
                .NotEmpty().WithName("FullName").WithMessage("{PropertyFullName} is required")
-               .Length(2, 30).WithMessage("{PropertyFullName} should be between 2 and 30 characters");
+               .Length(2, 80).WithMessage("{PropertyFullName} should be between 2 and 80 characters");
 
             //Message
             RuleFor(x => x.Message).Cascade(CascadeMode.Stop)
                .NotEmpty().WithName("Message").WithMessage("{PropertyMessage} is required")
-               .Length(2,int.MaxValue).WithMessage("{PropertyMessage} should be min 2 characters");
+               .Length(2,250).WithMessage("{PropertyMessage} should be between 2 and 250 characters");
+            //Email
+            RuleFor(x => x.Email).Cascade(CascadeMode.Stop)
+               .NotEmpty().WithName("Email").WithMessage("{Email} is required").EmailAddress()
+               .Length(11,1000).WithMessage("{Email} should be between 11 and 1000 characters");
         }
     }
 
