@@ -26,9 +26,9 @@
         public string UserId { get; set; }
 
         /// <summary>
-        /// Product 
+        /// Product url slug
         /// </summary>
-        /// <example>1</example>
-        public int ProductId { get; set; }
+        /// <example>qweqdqdq-qweqqdqd-qweq</example>
+        public int ProductSlug { get; set; }
     }
 }

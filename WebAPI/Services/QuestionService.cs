@@ -43,8 +43,6 @@ namespace WebAPI.Services
             var user = await _userManager.FindByIdAsync(userId);
             user.UserNullChecking();
 
-            request.UserId = userId;
-
             var question = _mapper.Map<Question>(request);
             await _questionRepository.AddAsync(question);
             await _questionRepository.SaveChangesAsync();
