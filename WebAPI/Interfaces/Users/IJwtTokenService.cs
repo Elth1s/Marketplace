@@ -2,7 +2,7 @@
 using DAL.Entities.Identity;
 using Google.Apis.Auth;
 using WebAPI.ViewModels.Request.Users;
-using WebAPI.ViewModels.Response;
+using WebAPI.ViewModels.Response.Users;
 
 namespace WebAPI.Interfaces.Users
 {

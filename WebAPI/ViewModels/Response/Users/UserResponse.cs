@@ -1,10 +1,15 @@
-﻿namespace WebAPI.ViewModels.Response
+﻿namespace WebAPI.ViewModels.Response.Users
 {
     /// <summary>
-    /// Profile class returned from the controller
+    /// User class returned from the controller
     /// </summary>
-    public class ProfileResponse
+    public class UserResponse
     {
+        /// <summary>
+        /// User identifier
+        /// </summary>
+        /// <example>94ddd073</example>
+        public string Id { get; set; }
         /// <summary>
         /// User first name
         /// </summary>
@@ -30,21 +35,6 @@
         /// </summary>
         /// <example>https://some_user_photo_example_url.com</example>
         public string Photo { get; set; }
-
-        /// <summary>
-        /// Is user email confirmed
-        /// </summary>
-        /// <example>true</example>
-        public bool IsEmailConfirmed { get; set; }
-        /// <summary>
-        /// Is user phone number confirmed
-        /// </summary>
-        /// <example>false</example>
-        public bool IsPhoneConfirmed { get; set; }
-        /// <summary>
-        /// Does user have password
-        /// </summary>
-        /// <example>true</example>
-        public bool HasPassword { get; set; }
     }
 }
+

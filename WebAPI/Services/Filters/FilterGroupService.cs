@@ -72,11 +72,18 @@ namespace WebAPI.Services.Filters
         public async Task<AdminSearchResponse<FilterGroupResponse>> SearchAsync(AdminSearchRequest request)
         {
             var spec = new FilterGroupSearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
-            var filterGroups = await _filterGroupRepository.ListAsync(spec);
-            var mappedGroups = _mapper.Map<IEnumerable<FilterGroupResponse>>(filterGroups);
-            var response = new AdminSearchResponse<FilterGroupResponse>() { Count = filterGroups.Count };
+            var count = await _filterGroupRepository.CountAsync(spec);
+            spec = new FilterGroupSearchSpecification(
+                request.Name,
+                request.IsAscOrder,
+                request.OrderBy,
+                (request.Page - 1) * request.RowsPerPage,
+                request.RowsPerPage);
 
-            response.Values = mappedGroups.Skip((request.Page - 1) * request.RowsPerPage).Take(request.RowsPerPage);
+            var filterGroups = await _filterGroupRepository.ListAsync(spec);
+
+            var mappedGroups = _mapper.Map<IEnumerable<FilterGroupResponse>>(filterGroups);
+            var response = new AdminSearchResponse<FilterGroupResponse>() { Count = count, Values = mappedGroups };
 
             return response;
         }

@@ -6,7 +6,7 @@ namespace WebAPI.Specifications.Shops
 {
     public class ShopSearchSpecification : Specification<Shop>
     {
-        public ShopSearchSpecification(string name, bool isAscOrder, string orderBy)
+        public ShopSearchSpecification(string name, bool isAscOrder, string orderBy, int? skip = null, int? take = null)
         {
             if (!string.IsNullOrEmpty(name))
                 Query.Where(item => item.Name.Contains(name));
@@ -27,6 +27,12 @@ namespace WebAPI.Specifications.Shops
                 else
                     Query.OrderByDescending(orderBy);
             }
+
+            if (skip.HasValue)
+                Query.Skip(skip.Value);
+
+            if (take.HasValue)
+                Query.Take(take.Value);
         }
     }
 }

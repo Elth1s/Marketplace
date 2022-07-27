@@ -6,6 +6,7 @@ using WebAPI.Interfaces.Users;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Request.Users;
 using WebAPI.ViewModels.Response;
+using WebAPI.ViewModels.Response.Users;
 
 namespace WebAPI.Controllers.Users
 {

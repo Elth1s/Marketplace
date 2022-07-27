@@ -7,10 +7,13 @@ namespace WebAPI.Middlewares
     {
         public string Title { get; set; }
         public int Status { get; set; }
+        public object Errors { get; set; }
         public override string ToString()
         {
-            var serializerSettings = new JsonSerializerSettings();
-            serializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            var serializerSettings = new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
             var json = JsonConvert.SerializeObject(this, serializerSettings);
             return json;
         }

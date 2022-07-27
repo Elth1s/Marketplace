@@ -21,6 +21,10 @@ namespace WebAPI.Middlewares
             {
                 await HandleExceptionAsync(httpContext, ex.StatusCode, ex.Message);
             }
+            catch (AppValidationException ex)
+            {
+                await HandleExceptionAsync(httpContext, ex.StatusCode, ex.Message, ex.ToDictionary());
+            }
             catch (Exception)
             {
 
@@ -30,13 +34,14 @@ namespace WebAPI.Middlewares
 
         private async Task HandleExceptionAsync(HttpContext context,
             HttpStatusCode statusCode = HttpStatusCode.InternalServerError,
-            string errorBody = "Unknown error has occurred")
+            string errorTitle = "Unknown error has occurred", object errors = null)
         {
 
             var result = new ErrorDetails()
             {
-                Title = errorBody,
+                Title = errorTitle,
                 Status = (int)statusCode,
+                Errors = errors
             };
 
             context.Response.ContentType = "application/json";

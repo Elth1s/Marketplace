@@ -25,6 +25,8 @@ import MainMenu from "../../components/Menu";
 import LinkRouter from "../../components/LinkRouter";
 import Basket from "../../components/Basket";
 
+import { orange_heart, list, search } from '../../assets/icons';
+
 const Header = () => {
     const { isAuth } = useTypedSelector((state) => state.auth)
 
@@ -41,7 +43,11 @@ const Header = () => {
                     </LinkRouter>
                     <LinkRouter underline="none" color="unset" to="/catalog">
                         <Button variant="contained" sx={{ width: "148px", height: "50px", fontSize: "18px", paddingLeft: "13px", paddingRight: "17px", textTransform: "none", borderRadius: "9px" }}
-                            startIcon={<FormatListBulletedOutlined />}>
+                            startIcon={<img
+                                style={{ width: "20px", height: "20px" }}
+                                src={list}
+                                alt="icon"
+                            />}>
                             Catalog
                         </Button>
                     </LinkRouter>
@@ -50,7 +56,11 @@ const Header = () => {
                             endAdornment: (
                                 <InputAdornment position="end" >
                                     <IconButton sx={{ padding: "3px", borderRadius: '12px' }} edge="start">
-                                        <Search color="primary" sx={{ fontSize: "40px" }} />
+                                        <img
+                                            style={{ width: "35px", height: "35px" }}
+                                            src={search}
+                                            alt="icon"
+                                        />
                                     </IconButton>
                                 </InputAdornment>
                             )
@@ -64,7 +74,11 @@ const Header = () => {
                                 aria-label="search"
                                 color="primary"
                             >
-                                <FavoriteBorderOutlined sx={{ fontSize: "35px" }} />
+                                <img
+                                    style={{ width: "40px", height: "40px" }}
+                                    src={orange_heart}
+                                    alt="icon"
+                                />
                             </IconButton>
                             <Basket />
                         </>}

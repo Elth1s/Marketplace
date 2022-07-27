@@ -19,6 +19,8 @@ import { getLocalAccessToken } from '../../http_comon';
 import LinkRouter from '../LinkRouter';
 import BasketItem from './BasketItem';
 
+import { orange_shopping_cart } from '../../assets/icons';
+
 const Basket = () => {
     const { GetBasketItems } = useActions();
     const { basketItems } = useTypedSelector(state => state.basket);
@@ -60,7 +62,11 @@ const Basket = () => {
                 onClick={handleClick}
             >
                 <Badge badgeContent={basketItems.length} color="secondary">
-                    <ShoppingCartOutlined sx={{ fontSize: "35px" }} />
+                    <img
+                        style={{ width: "40px", height: "40px" }}
+                        src={orange_shopping_cart}
+                        alt="icon"
+                    />
                 </Badge>
             </IconButton>
             <Menu

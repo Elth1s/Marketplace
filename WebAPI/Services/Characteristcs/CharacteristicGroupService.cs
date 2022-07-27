@@ -39,11 +39,17 @@ namespace WebAPI.Services.Characteristcs
         public async Task<AdminSearchResponse<CharacteristicGroupResponse>> SearchCharacteristicGroupsAsync(AdminSearchRequest request)
         {
             var spec = new CharacteristicGroupSearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
+            var count = await _characteristicGroupRepository.CountAsync(spec);
+
+            spec = new CharacteristicGroupSearchSpecification(request.Name,
+                request.IsAscOrder,
+                request.OrderBy,
+                (request.Page - 1) * request.RowsPerPage,
+                request.RowsPerPage);
+
             var characteristicGroups = await _characteristicGroupRepository.ListAsync(spec);
             var mappedCountries = _mapper.Map<IEnumerable<CharacteristicGroupResponse>>(characteristicGroups);
-            var response = new AdminSearchResponse<CharacteristicGroupResponse>() { Count = characteristicGroups.Count };
-
-            response.Values = mappedCountries.Skip((request.Page - 1) * request.RowsPerPage).Take(request.RowsPerPage);
+            var response = new AdminSearchResponse<CharacteristicGroupResponse>() { Count = count, Values = mappedCountries };
 
             return response;
         }

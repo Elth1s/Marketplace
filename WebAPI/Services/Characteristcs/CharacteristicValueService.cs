@@ -50,7 +50,7 @@ namespace WebAPI.Services.Characteristcs
 
             var spec = new CharacteristicValueGetByValueAndCharacteristicNameIdSpecification(request.Value, request.CharacteristicNameId);
             if (await _characteristicValueRepository.GetBySpecAsync(spec) != null)
-                throw new AppException(ErrorMessages.CharacteristicValueNameNotUnique);
+                throw new AppValidationException(new ValidationError(nameof(CharacteristicValue.CharacteristicNameId), ErrorMessages.CharacteristicValueNameNotUnique));
 
             var characteristicValue = _mapper.Map<CharacteristicValue>(request);
 
@@ -65,7 +65,7 @@ namespace WebAPI.Services.Characteristcs
 
             var spec = new CharacteristicValueGetByValueAndCharacteristicNameIdSpecification(request.Value, request.CharacteristicNameId);
             if (await _characteristicValueRepository.GetBySpecAsync(spec) != null)
-                throw new AppException(ErrorMessages.CharacteristicValueNameNotUnique);
+                throw new AppValidationException(new ValidationError(nameof(CharacteristicValue.CharacteristicNameId), ErrorMessages.CharacteristicValueNameNotUnique));
 
             var characteristicValue = await _characteristicValueRepository.GetByIdAsync(id);
             characteristicValue.CharacteristicValueNullChecking();
@@ -88,11 +88,17 @@ namespace WebAPI.Services.Characteristcs
         public async Task<AdminSearchResponse<CharacteristicValueResponse>> SearchAsync(AdminSearchRequest request)
         {
             var spec = new CharacteristicValueSearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
+            var count = await _characteristicValueRepository.CountAsync(spec);
+            spec = new CharacteristicValueSearchSpecification(
+                request.Name,
+                request.IsAscOrder,
+                request.OrderBy,
+                (request.Page - 1) * request.RowsPerPage,
+                request.RowsPerPage);
+
             var characteristics = await _characteristicValueRepository.ListAsync(spec);
             var mappedCharacteristics = _mapper.Map<IEnumerable<CharacteristicValueResponse>>(characteristics);
-            var response = new AdminSearchResponse<CharacteristicValueResponse>() { Count = characteristics.Count };
-
-            response.Values = mappedCharacteristics.Skip((request.Page - 1) * request.RowsPerPage).Take(request.RowsPerPage);
+            var response = new AdminSearchResponse<CharacteristicValueResponse>() { Count = count, Values = mappedCharacteristics };
 
             return response;
         }

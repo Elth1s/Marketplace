@@ -6,7 +6,7 @@ namespace WebAPI.Specifications.Filters
 {
     public class FilterNameSearchSpecification : Specification<FilterName>
     {
-        public FilterNameSearchSpecification(string name, bool isAscOrder, string orderBy)
+        public FilterNameSearchSpecification(string name, bool isAscOrder, string orderBy, int? skip = null, int? take = null)
         {
             if (!string.IsNullOrEmpty(name))
                 Query.Where(item => item.Name.Contains(name));
@@ -36,6 +36,12 @@ namespace WebAPI.Specifications.Filters
                 else
                     Query.OrderByDescending(orderBy);
             }
+
+            if (skip.HasValue)
+                Query.Skip(skip.Value);
+
+            if (take.HasValue)
+                Query.Take(take.Value);
         }
     }
 }

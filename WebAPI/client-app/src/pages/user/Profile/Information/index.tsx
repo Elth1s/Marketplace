@@ -15,6 +15,7 @@ import { IProfile } from "../../types";
 
 import TextFieldComponent from "../../../../components/TextField";
 import SelectComponent from "../../../../components/Select";
+import { ButtonStyled } from "../../styled";
 
 const Information = () => {
     const { GetProfile, UpdateProfile } = useActions();
@@ -83,15 +84,6 @@ const Information = () => {
                         <Grid item xs>
                             <TextFieldComponent
                                 type="text"
-                                label="Email"
-                                // error={errors.email}
-                                // touched={touched.email}
-                                getFieldProps={{ ...getFieldProps('email') }}
-                            />
-                        </Grid>
-                        <Grid item xs>
-                            <TextFieldComponent
-                                type="text"
                                 label="Gender"
                                 // error={errors.gender}
                                 // touched={touched.gender}
@@ -116,13 +108,9 @@ const Information = () => {
                                 getFieldProps={{ ...getFieldProps('languageOfCommunication') }}
                             />
                         </Grid>
-                        <Button
-                            fullWidth
-                            variant="contained"
-                            disabled={isSubmitting}
-                            sx={{ mt: "45px" }}>
-                            Save
-                        </Button>
+                        <ButtonStyled fullWidth variant="contained" color="primary" sx={{ mt: "95px" }}>
+                            Change password
+                        </ButtonStyled>
                     </Grid>
                     <Grid container item xs={6} rowSpacing={2.5} direction="column">
                         <Grid item xs>
@@ -134,6 +122,7 @@ const Information = () => {
                                 getFieldProps={{ ...getFieldProps('region') }}
                             />
                         </Grid>
+                        
                         <Grid item xs>
                             <TextFieldComponent
                                 type="text"
@@ -161,22 +150,9 @@ const Information = () => {
                                 getFieldProps={{ ...getFieldProps('postalCode') }}
                             />
                         </Grid>
-                        <Grid item xs>
-                            <TextFieldComponent
-                                type="text"
-                                label="Phone"
-                                // error={errors.phone}
-                                // touched={touched.phone}
-                                getFieldProps={{ ...getFieldProps('phone') }}
-                            />
-                        </Grid>
-                        <Button
-                            fullWidth
-                            variant="outlined"
-                            color="secondary"
-                            sx={{ mt: "115px" }}>
-                            Save
-                        </Button>
+                        <ButtonStyled fullWidth variant="outlined" color="secondary" sx={{ mt: "188px" }}>
+                            Remove profile
+                        </ButtonStyled>
                     </Grid>
                 </Grid>
             </Form>
