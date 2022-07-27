@@ -270,6 +270,17 @@ namespace WebAPI.Extensions
                     HttpStatusCode.NotFound);
             }
         }
+
+        public static void QuestionNullChecking(this Question user)
+        {
+            if (user == null)
+            {
+                throw new AppException(
+                    ErrorMessages.UserNotFound,
+                    HttpStatusCode.NotFound);
+            }
+        }
+        
         public static void ReviewImageNullChecking(this ReviewImage reviewImage)
         {
             if (reviewImage == null)

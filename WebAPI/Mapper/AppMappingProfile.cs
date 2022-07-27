@@ -156,6 +156,11 @@ namespace WebAPI.Mapper
             CreateMap<ProductImage, string>()
                 .ConstructUsing(u => Path.Combine(ImagePath.RequestProductsImagePath, u.Name));
 
+
+            //Question
+            CreateMap<QuestionRequest, Question>();
+            CreateMap<Question, QuestionResponse>();
+
         }
     }
 }

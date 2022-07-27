@@ -473,5 +473,12 @@ namespace WebAPI.Resources {
                 return ResourceManager.GetString("UserNotFound", resourceCulture);
             }
         }
+        internal static string QuestionNotFound
+        {
+            get
+            {
+                return ResourceManager.GetString("QuestionNotFound", resourceCulture);
+            }
+        }
     }
 }
