@@ -1,4 +1,3 @@
-import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 
 import TabContext from "@mui/lab/TabContext";
@@ -24,7 +23,9 @@ const Profile = () => {
     return (
         <TabContext value={valueTab} >
             <Typography variant="h1" sx={{ mb: "30px" }}>Settings profile</Typography>
-            <TabList onChange={handleChange}>
+            <TabList
+                onChange={handleChange}
+                sx={{ px: "33px" }}>
                 {tabs.map((item, index) => (
                     <TabStyled
                         key={index}
@@ -35,12 +36,12 @@ const Profile = () => {
             </TabList >
 
             <TabPanel sx={{ p: "0px" }} value="0" >
-                <PaperStyled>
+                <PaperStyled sx={{ padding: "24px 16px 46px", margin: "13px 13px 130px 15px" }}>
                     <Information />
                 </PaperStyled>
             </TabPanel>
             <TabPanel sx={{ p: "0px" }} value="1">
-                <PaperStyled>
+                <PaperStyled sx={{ padding: "24px 16px 46px", margin: "13px 13px 130px 15px" }}>
                     <Change />
                 </PaperStyled>
             </TabPanel>

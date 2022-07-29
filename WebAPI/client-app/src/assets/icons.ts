@@ -1,9 +1,13 @@
 export const google = "/assets/icons/google.png";
+export const icon_color_google = "/assets/icons/icon_color_google.png";
+
 export const facebook = "/assets/icons/facebook.png";
+export const icon_color_facebook = "/assets/icons/icon_color_facebook.png";
 
 export const close = "/assets/icons/close.png";
 export const white_close = "/assets/icons/white-close.png";
 export const success = "/assets/icons/success.png";
+export const check = "/assets/icons/check.png";
 
 export const credit_card = "/assets/icons/credit-card.png";
 export const dollar_sign = "/assets/icons/dollar-sign.png";
@@ -40,7 +44,7 @@ export const orange_user = "/assets/icons/orange-user.png";
 
 export const eye_off = "/assets/icons/eye-off.png";
 export const black_eye = "/assets/icons/black-eye.png";
-export const orange_eye = "/assets/icons/orange_eye.png";
+export const orange_eye = "/assets/icons/orange-eye.png";
 
 export const black_review = "/assets/icons/black-review.png";
 export const orange_review = "/assets/icons/orange-review.png";

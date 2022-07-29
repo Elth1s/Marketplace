@@ -10,6 +10,18 @@ const initialState: ProfileState = {
     userInfo: {
         firstName: "",
         secondName: "",
+
+        gender: "",
+        birthDate: null,
+        languageOfCommunication: 0,
+        region: 0,
+        address: "",
+        city: "",
+        postalCode: "",
+
+        email: "",
+        phone: "",
+
         photo: "",
         isEmailConfirmed: false,
         isPhoneConfirmed: false,
@@ -35,4 +47,8 @@ export const profileReducer = (state = initialState, action: ProfileAction | Ema
         default:
             return state;
     }
+}
+
+function newFunction(): Date | null {
+    return null;
 }
