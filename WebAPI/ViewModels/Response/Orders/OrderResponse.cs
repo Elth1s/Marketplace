@@ -12,30 +12,30 @@
         public int Id { get; set; }
 
         /// <summary>
-        /// ConsumerFirstName
+        /// Consumer First Name
         /// </summary>
-        /// <example>"Novak"</example>
+        /// <example>Nick</example>
         public string ConsumerFirstName { get; set; }
         /// <summary>
-        /// ConsumerSecondName
+        /// Consumer Second Name
         /// </summary>
-        /// <example>"Vova"</example>
+        /// <example>Smith</example>
         public string ConsumerSecondName { get; set; }
         /// <summary>
-        /// ConsumerPhone
+        /// Consumer Phone
         /// </summary>
-        /// <example>"+380962312161"</example>
+        /// <example>+380 50 638 8216</example>
         public string ConsumerPhone { get; set; }
         /// <summary>
-        /// ConsumerEmail
+        /// Consumer Email
         /// </summary>
-        /// <example>"novak@gmail.com"</example>
+        /// <example>email@gmail.com</example>
         public string ConsumerEmail { get; set; }
 
         /// <summary>
-        /// OrderStatusName
+        /// Order Status Name
         /// </summary>
-        /// <example>"Active"</example>
+        /// <example>"In Process</example>
         public string OrderStatusName { get; set; }
 
 
@@ -60,19 +60,25 @@
         /// Price
         /// </summary>
         /// <example>1000</example>
-        public int Price { get; set; }
-
-        /// <summary>
-        /// OrderId
-        /// </summary>
-        /// <example>1</example>
-        public int OrderId { get; set; }
+        public float Price { get; set; }
 
         /// <summary>
         /// ProductId
         /// </summary>
         /// <example>1</example>
         public int ProductId { get; set; }
+
+        /// <summary>
+        /// Product Name
+        /// </summary>
+        /// <example>T-shirt</example>
+        public string ProductName { get; set; }
+
+        /// <summary>
+        /// Product Image
+        /// </summary>
+        /// <example>https://some_product_image_example.jpg</example>
+        public string ProductImage { get; set; }
     }
 
 }

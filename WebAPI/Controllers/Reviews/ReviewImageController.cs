@@ -6,6 +6,10 @@ using WebAPI.ViewModels.Response.Reviews;
 
 namespace WebAPI.Controllers.Reviews
 {
+    /// <summary>
+    /// Review image controller class
+    /// </summary>
+    /// <seealso cref="ControllerBase" />
     [Route("api/[controller]")]
     [ApiController]
     public class ReviewImageController : ControllerBase

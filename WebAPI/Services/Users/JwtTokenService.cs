@@ -57,7 +57,7 @@ namespace WebAPI.Services.Users
             var jwt = new JwtSecurityToken(
                 audience: _jwtSettings.Audience,
                 issuer: _jwtSettings.Issuer,
-                expires: DateTime.UtcNow.AddDays(_jwtSettings.AccessTokenDuration),
+                expires: DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc).AddDays(_jwtSettings.AccessTokenDuration),
                 signingCredentials: signinCredentials,
                 claims: claims
             );
@@ -72,10 +72,10 @@ namespace WebAPI.Services.Users
                 generator.GetBytes(randomNumber);
                 return new RefreshToken
                 {
-                    Created = DateTime.UtcNow,
+                    Created = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
                     CreatedByIp = ipAddress,
                     Token = Convert.ToBase64String(randomNumber),
-                    Expires = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenDuration),
+                    Expires = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc).AddDays(_jwtSettings.RefreshTokenDuration),
                 };
             }
 
@@ -103,7 +103,7 @@ namespace WebAPI.Services.Users
         {
             var oldRefreshTokens = user.RefreshTokens
                 .Where(r => !r.IsActive &&
-                             r.Created.AddDays(_jwtSettings.RefreshTokenDuration) <= DateTime.Now)
+                             r.Created.AddDays(_jwtSettings.RefreshTokenDuration) <= DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc))
                 .ToList();
             foreach (var oldRefreshToken in oldRefreshTokens)
             {

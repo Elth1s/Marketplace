@@ -1,4 +1,4 @@
-﻿using WebAPI.ViewModels.Request.Order;
+﻿using WebAPI.ViewModels.Request.Orders;
 using WebAPI.ViewModels.Response.Orders;
 
 namespace WebAPI.Interfaces.Orders

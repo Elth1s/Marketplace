@@ -127,6 +127,16 @@ namespace DAL.Data
 
                 await marketplaceDbContext.SaveChangesAsync();
             }
+            if (!await marketplaceDbContext.OrderStatuses.AnyAsync())
+            {
+                using var transaction = marketplaceDbContext.Database.BeginTransaction();
+                await marketplaceDbContext.OrderStatuses.AddRangeAsync(
+                  GetPreconfiguredMarketplaceOrderStatuses());
+                marketplaceDbContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT OrderStatuses ON");
+                await marketplaceDbContext.SaveChangesAsync();
+                marketplaceDbContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT OrderStatuses OFF");
+                transaction.Commit();
+            }
         }
 
         static IEnumerable<Country> GetPreconfiguredCountries()
@@ -684,8 +694,10 @@ namespace DAL.Data
 /* 16 */        new(){ Value = "AAA", FilterNameId = 19},
             };
 
-            var test = new List<Category>();
-            test.Add(category);
+            var test = new List<Category>
+            {
+                category
+            };
             foreach (var item in filterValues)
             {
                 item.Categories = test;
@@ -746,5 +758,17 @@ namespace DAL.Data
             return filterValueProducts;
         }
 
+
+        static IEnumerable<OrderStatus> GetPreconfiguredMarketplaceOrderStatuses()
+        {
+            var statuses = new List<OrderStatus>
+            {
+             new(){ Id=OrderStatusId.InProcess, Name="In Process"},
+             new(){ Id=OrderStatusId.PendingPayment, Name="Pending Payment"},
+             new(){ Id=OrderStatusId.Completed, Name="Completed"},
+             new(){ Id=OrderStatusId.Canceled, Name="Canceled"},
+            };
+            return statuses;
+        }
     }
 }

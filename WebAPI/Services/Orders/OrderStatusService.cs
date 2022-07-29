@@ -3,7 +3,7 @@ using DAL;
 using DAL.Entities;
 using WebAPI.Extensions;
 using WebAPI.Interfaces.Orders;
-using WebAPI.ViewModels.Request.Order;
+using WebAPI.ViewModels.Request.Orders;
 using WebAPI.ViewModels.Response.Orders;
 
 namespace WebAPI.Services.Orders

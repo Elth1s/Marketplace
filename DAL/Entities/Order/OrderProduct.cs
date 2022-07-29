@@ -4,7 +4,7 @@ namespace DAL.Entities
     public class OrderProduct : BaseEntity, IAggregateRoot
     {
         public int Count { get; set; }
-        public int Price { get; set; }
+        public float Price { get; set; }
 
 
         public int OrderId { get; set; }

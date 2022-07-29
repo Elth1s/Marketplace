@@ -17,14 +17,16 @@ namespace DAL.Entities
         public string UserId { get; set; }
         public int ProductId { get; set; }
 
+        public int CountLikes => Votes != null ? Votes.Count(r => r.IsLike) : 0;
+        public int CountDislikes => Votes != null ? Votes.Count(r => !r.IsLike) : 0;
+
         [ForeignKey(nameof(UserId))]
         public AppUser User { get; set; }
         [ForeignKey(nameof(ProductId))]
         public Product Product { get; set; }
 
-        public ICollection<AppUser> Likes { get; set; }
-        public ICollection<AppUser> Dislikes { get; set; }
-
         public ICollection<ReviewImage> Images { get; set; }
+        public ICollection<ReviewVotes> Votes { get; set; }
+        public ICollection<ReviewReply> Replies { get; set; }
     }
 }

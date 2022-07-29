@@ -120,7 +120,7 @@ const Change = () => {
                                         <path d="M12.5 22.9167C15.1906 22.9167 17.6354 21.887 19.4839 20.2125L16.2599 17.4844C15.1789 18.3064 13.8581 18.7511 12.5 18.75C9.79062 18.75 7.4901 17.0224 6.62344 14.6115L3.22656 17.2286C4.95052 20.6021 8.45156 22.9167 12.5 22.9167Z" fill="#4CAF50" />
                                         <path d="M22.7141 10.4599H21.875V10.4166H12.5V14.5833H18.387C17.9761 15.7377 17.2361 16.7464 16.2583 17.4849L16.2599 17.4838L19.4839 20.2119C19.2557 20.4192 22.9167 17.7083 22.9167 12.5C22.9167 11.8015 22.8448 11.1198 22.7141 10.4599Z" fill="#1976D2" />
                                     </svg>
-                                    <Typography variant="subtitle1" sx={{ fontWeight: "500", marginLeft: "11px" }}>Gogle</Typography>
+                                    <Typography variant="subtitle1" sx={{ fontWeight: "500", marginLeft: "11px" }}>Google</Typography>
                                 </Box>
                                 <svg width="18" height="13" viewBox="0 0 18 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M16.8818 1L5.96305 11.9187L1 6.95566" stroke="#0E7C3A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />

@@ -6,9 +6,6 @@ namespace DAL.Entities
 
     public class Order : BaseEntity, IAggregateRoot
     {
-        /// <summary>
-        /// Контакти отримувача
-        /// </summary>
         public string ConsumerFirstName { get; set; }
         public string ConsumerSecondName { get; set; }
         public string ConsumerPhone { get; set; }

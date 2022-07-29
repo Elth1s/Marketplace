@@ -15,9 +15,11 @@ namespace WebAPI.Specifications.Orders
 
         public OrderIncludeFullInfoSpecification(int id)
         {
-            Query.Include(_ => _.Id == id)
+            Query.Where(_ => _.Id == id)
                  .Include(_ => _.OrderStatus)
                  .Include(_ => _.OrderProducts)
+                 .ThenInclude(_ => _.Product)
+                 .ThenInclude(_ => _.Images)
                  .AsSplitQuery();
         }
 

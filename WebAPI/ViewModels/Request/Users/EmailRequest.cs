@@ -23,7 +23,7 @@ namespace WebAPI.ViewModels.Request.Users
         {
             RuleFor(x => x.Email).Cascade(CascadeMode.Stop)
                 .NotEmpty().WithName("Email address").WithMessage("{PropertyName} is required")
-                .EmailAddress().WithMessage("Invalid format of {PropertyName}"); ;
+                .EmailAddress().WithMessage("Invalid format of {PropertyName}");
         }
     }
 }

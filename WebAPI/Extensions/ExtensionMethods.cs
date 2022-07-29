@@ -271,22 +271,51 @@ namespace WebAPI.Extensions
             }
         }
 
-        public static void QuestionNullChecking(this Question user)
+        public static void QuestionNullChecking(this Question question)
         {
-            if (user == null)
+            if (question == null)
             {
                 throw new AppException(
-                    ErrorMessages.UserNotFound,
+                    ErrorMessages.QuestionNotFound,
                     HttpStatusCode.NotFound);
             }
         }
-        
+        public static void QuestionImageNullChecking(this QuestionImage questionImage)
+        {
+            if (questionImage == null)
+            {
+                throw new AppException(
+                    ErrorMessages.QuestionImageNotFound,
+                    HttpStatusCode.NotFound);
+            }
+        }
+
         public static void ReviewImageNullChecking(this ReviewImage reviewImage)
         {
             if (reviewImage == null)
             {
                 throw new AppException(
                     ErrorMessages.ReviewImageNotFound,
+                    HttpStatusCode.NotFound);
+            }
+        }
+
+        public static void ReviewNullChecking(this Review review)
+        {
+            if (review == null)
+            {
+                throw new AppException(
+                    ErrorMessages.ReviewNotFound,
+                    HttpStatusCode.NotFound);
+            }
+        }
+
+        public static void ReviewReplyNullChecking(this ReviewReply reviewReply)
+        {
+            if (reviewReply == null)
+            {
+                throw new AppException(
+                    ErrorMessages.ReviewReplyNotFound,
                     HttpStatusCode.NotFound);
             }
         }
