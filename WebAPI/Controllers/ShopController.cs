@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Security.Claims;
+using WebAPI.Helpers;
 using WebAPI.Interfaces;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Response;
@@ -102,8 +103,8 @@ namespace WebAPI.Controllers
         [HttpPost("Create")]
         public async Task<IActionResult> CreateShop([FromBody] ShopRequest request)
         {
-            await _shopService.CreateShopAsync(request, UserId);
-            return Ok("Shop created successfully");
+            var response = await _shopService.CreateShopAsync(request, UserId, IpUtil.GetIpAddress(Request, HttpContext));
+            return Created("Shop created successfully", response);
         }
 
         /// <summary>

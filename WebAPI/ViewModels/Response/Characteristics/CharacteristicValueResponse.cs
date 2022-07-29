@@ -16,6 +16,11 @@
         /// <example>Package</example>
         public string Value { get; set; }
         /// <summary>
+        /// Identifier of characteristic name
+        /// </summary>
+        /// <example>1</example>
+        public string CharacteristicNameId { get; set; }
+        /// <summary>
         /// Name of characteristic name
         /// </summary>
         /// <example>Main</example>

@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider, createTheme } from '@mui/material';
 import { CssBaseline } from '@mui/material';
+import { ToastContainer } from 'react-toastify';
 
 import { getLocalAccessToken } from "./http_comon"
 import { useActions } from './hooks/useActions';
@@ -12,13 +13,17 @@ import AuthLayout from './containers/AuthLayout';
 import AdminLayout from './containers/AdminLayout';
 import ProfileLayout from './containers/ProfileLayout';
 
-import SignIn from './pages/auth/SignIn';
-import SignUp from './pages/auth/SignUp';
+import SignIn from './pages/auth/SignInDialog';
+import SignUp from './pages/auth/SignUpDialog';
+
 import Profile from './pages/user/Profile';
 import ConfirmEmail from './pages/user/ConfirmEmail';
-import ChangePassword from './pages/user/ForgotPassword/Change';
+import ChangePassword from './pages/user/ChangePassword';
 import Ordering from './pages/user/Ordering';
 
+import HomePage from './pages/default/HomePage';
+import Catalog from './pages/default/Catalog';
+import CatalogWithProducts from './pages/default/Catalog/CatalogWithProducts';
 import Product from './pages/default/product';
 
 import CategoryTable from './pages/admin/category/Table';
@@ -44,14 +49,6 @@ import UnitTable from './pages/admin/unit/Table';
 
 import UserTable from './pages/admin/user/Table';
 
-import SendResetPasswordEmail from './pages/user/ForgotPassword/SendResetEmail';
-import SendResetPasswordPhone from './pages/user/ForgotPassword/SendResetPhone';
-
-import HomePage from './pages/default/HomePage';
-
-import Catalog from './pages/default/Catalog';
-import CatalogWithProducts from './pages/default/Catalog/CatalogWithProducts';
-
 import NotFound from './pages/notfound';
 
 function App() {
@@ -70,7 +67,7 @@ function App() {
         xs: 0,
         sm: 600,
         md: 900,
-        lg: 1200,
+        lg: 1185,
         xl: 1560,
       },
     },
@@ -102,8 +99,13 @@ function App() {
       },
       MuiIconButton: {
         defaultProps: {
-          color: "secondary"
+          color: "secondary",
         },
+        styleOverrides: {
+          root: {
+            "&& .MuiTouchRipple-child": { borderRadius: "12px" }
+          }
+        }
       },
       MuiTypography: {
         defaultProps: {
@@ -160,63 +162,74 @@ function App() {
   });
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Routes>
+    <>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={false}
+        hideProgressBar={true}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light" />
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Routes>
 
-        <Route path="/" element={<DefaultLayout />}>
-          <Route index element={<HomePage />} />
-          <Route path="/catalog" element={<Catalog />} />
-          <Route path="/catalog/:urlSlug" element={<CatalogWithProducts />} />
-          <Route path="/product/:urlSlug" element={<Product />} />
+          <Route path="/" element={<DefaultLayout />}>
+            <Route index element={<HomePage />} />
+            <Route path="/catalog" element={<Catalog />} />
+            <Route path="/catalog/:urlSlug" element={<CatalogWithProducts />} />
+            <Route path="/product/:urlSlug" element={<Product />} />
 
-        </Route>
+          </Route>
 
-        <Route path="/profile" element={<ProfileLayout />}>
-          <Route path="/profile/information" element={<Profile />} />
-        </Route>
+          <Route path="/profile" element={<ProfileLayout />}>
+            <Route path="/profile/information" element={<Profile />} />
+          </Route>
 
-        <Route path="/ordering" element={<Ordering />} />
+          <Route path="/ordering" element={<Ordering />} />
 
-        <Route element={<AuthLayout />}>
-          <Route path="/auth/signin" element={<SignIn />} />
-          <Route path="/auth/signup" element={<SignUp />} />
-        </Route>
+          <Route element={<AuthLayout />}>
+            <Route path="/auth/signin" element={<SignIn />} />
+            <Route path="/auth/signup" element={<SignUp />} />
+          </Route>
 
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route path="/admin/category" element={<CategoryTable />} />
-          <Route path="/admin/category/create" element={<CategoryCreate />} />
-          <Route path="/admin/category/update/:id" element={<CategoryUpdate />} />
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route path="/admin/category" element={<CategoryTable />} />
+            <Route path="/admin/category/create" element={<CategoryCreate />} />
+            <Route path="/admin/category/update/:id" element={<CategoryUpdate />} />
 
-          <Route path="/admin/characteristicGroup" element={<CharacteristicGroupTable />} />
-          <Route path="/admin/characteristicName" element={<CharacteristicNameTable />} />
-          <Route path="/admin/characteristicValue" element={<CharacteristicValueTable />} />
+            <Route path="/admin/characteristicGroup" element={<CharacteristicGroupTable />} />
+            <Route path="/admin/characteristicName" element={<CharacteristicNameTable />} />
+            <Route path="/admin/characteristicValue" element={<CharacteristicValueTable />} />
 
-          <Route path="/admin/filterGroup" element={<FilterGroupTable />} />
-          <Route path="/admin/filterName" element={<FilterNameTable />} />
-          <Route path="/admin/filterValue" element={<FilterValueTable />} />
+            <Route path="/admin/filterGroup" element={<FilterGroupTable />} />
+            <Route path="/admin/filterName" element={<FilterNameTable />} />
+            <Route path="/admin/filterValue" element={<FilterValueTable />} />
 
-          <Route path="/admin/productStatus" element={<ProductStatusTable />} />
-          <Route path="/admin/product" element={<ProductTable />} />
+            <Route path="/admin/productStatus" element={<ProductStatusTable />} />
+            <Route path="/admin/product" element={<ProductTable />} />
 
-          <Route path="/admin/shop" element={<ShopTable />} />
+            <Route path="/admin/shop" element={<ShopTable />} />
 
-          <Route path="/admin/country" element={<CountryTable />} />
-          <Route path="/admin/city" element={<CityTable />} />
+            <Route path="/admin/country" element={<CountryTable />} />
+            <Route path="/admin/city" element={<CityTable />} />
 
-          <Route path="/admin/unit" element={<UnitTable />} />
+            <Route path="/admin/unit" element={<UnitTable />} />
 
-          <Route path="/admin/user" element={<UserTable />} />
-        </Route>
+            <Route path="/admin/user" element={<UserTable />} />
+          </Route>
 
-        <Route path="/confirmEmail" element={<ConfirmEmail />} />
-        <Route path="/resetPasswordEmail" element={<SendResetPasswordEmail />} />
-        <Route path="/resetPasswordPhone" element={<SendResetPasswordPhone />} />
-        <Route path="/resetPassword/:token" element={<ChangePassword />} />
+          <Route path="/confirmEmail" element={<ConfirmEmail />} />
+          <Route path="/resetPassword/:token" element={<ChangePassword />} />
 
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </ThemeProvider>
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </ThemeProvider>
+    </>
   );
 }
 

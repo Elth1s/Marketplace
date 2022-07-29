@@ -8,8 +8,8 @@ export enum FilterValueActionTypes {
 
 export interface IFilterValue {
     value: string,
-    min: number | undefined,
-    max: number | undefined,
+    min: number | string | null,
+    max: number | string | null,
     filterNameId: number,
 }
 
@@ -17,8 +17,8 @@ export interface IFilterValueInfo {
     id: number,
     value: string,
     filterName: string,
-    min: number | undefined,
-    max: number | undefined,
+    min: number | null,
+    max: number | null,
 }
 
 export interface ISearchFilterValues {

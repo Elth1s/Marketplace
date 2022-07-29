@@ -3,6 +3,7 @@ import {
     Grid,
     IconButton,
     InputAdornment,
+    Typography
 } from "@mui/material";
 import {
     VisibilityOutlined,
@@ -12,7 +13,7 @@ import { Form, FormikProvider, useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
-// import { toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 import GoogleExternalLogin from "../../../components/Google";
 import LinkRouter from "../../../components/LinkRouter";
@@ -21,11 +22,15 @@ import { SignUpSchema } from "../validation";
 import { useActions } from "../../../hooks/useActions";
 import { IRegisterModel } from "../types";
 import { ServerError } from "../../../store/types";
-import { AuthHeaderTypography, AuthLoadingButton, AuthSideTypography, AuthTextField } from "../styled";
 
-import { signup } from "../../../assets/backgrounds"
+import { AuthHeaderTypography } from "../styled";
+import { TextFieldFirstStyle } from "../../../components/TextField/style";
+
 import FacebookExternalLogin from "../../../components/Facebook";
 import { toLowerFirstLetter } from "../../../http_comon";
+
+import { signup } from "../../../assets/backgrounds"
+import { LoadingButtonStyle } from "../../../components/LoadingButton/styled";
 
 const SignUpPage = () => {
     const { RegisterUser } = useActions();
@@ -44,14 +49,14 @@ const SignUpPage = () => {
         validationSchema: SignUpSchema,
         onSubmit: async (values, { setFieldError }) => {
             if (!executeRecaptcha) {
-                // toast.error("Captcha validation error");
+                //toast.error("Captcha validation error");
                 return;
             }
             const reCaptchaToken = await executeRecaptcha();
             try {
                 await RegisterUser(values, reCaptchaToken);
                 navigate("/");
-                // toast.success('Sign up success!');
+                //toast.success('Sign up success!');
             }
             catch (exception) {
                 const serverErrors = exception as ServerError;
@@ -69,7 +74,7 @@ const SignUpPage = () => {
                 let message = "Sign up failed! \n";
                 if (serverErrors.status === 400)
                     message += "Validation failed.";
-                // toast.error(message, { position: "top-right" });
+                //toast.error(message, { position: "top-right" });
             }
 
         }
@@ -118,7 +123,7 @@ const SignUpPage = () => {
 
                             <Grid container >
                                 <Grid item xs={12} sx={{ height: "40px", marginTop: "76px" }}>
-                                    <AuthTextField
+                                    <TextFieldFirstStyle
                                         fullWidth
                                         variant="standard"
                                         autoComplete="firstName"
@@ -130,7 +135,7 @@ const SignUpPage = () => {
                                     />
                                 </Grid>
                                 <Grid item xs={12} sx={{ height: "40px", marginTop: "55px" }}>
-                                    <AuthTextField
+                                    <TextFieldFirstStyle
                                         fullWidth
                                         variant="standard"
                                         autoComplete="secondName"
@@ -142,7 +147,7 @@ const SignUpPage = () => {
                                     />
                                 </Grid>
                                 <Grid item xs={12} sx={{ height: "40px", marginTop: "55px" }}>
-                                    <AuthTextField
+                                    <TextFieldFirstStyle
                                         fullWidth
                                         variant="standard"
                                         autoComplete="emailOrPhone"
@@ -155,7 +160,7 @@ const SignUpPage = () => {
                                 </Grid>
 
                                 <Grid item xs={12} sx={{ height: "40px", marginTop: "55px" }}>
-                                    <AuthTextField
+                                    <TextFieldFirstStyle
                                         fullWidth
                                         variant="standard"
                                         autoComplete="password"
@@ -176,26 +181,26 @@ const SignUpPage = () => {
                                     />
                                 </Grid>
                                 <Grid item xs={12} sx={{ marginTop: "20px" }} display="flex" justifyContent="flex-end">
-                                    <AuthSideTypography component={LinkRouter} underline="none" color="unset" to="/auth/signin" sx={{ cursor: "pointer" }} >Have an account?</AuthSideTypography>
+                                    <Typography variant="h4" component={LinkRouter} underline="none" color="unset" to="/auth/signin" sx={{ cursor: "pointer" }} >Have an account?</Typography>
                                 </Grid>
                                 <Grid item xs={12} sx={{ marginTop: "62px" }}>
-                                    <AuthLoadingButton
+                                    <LoadingButtonStyle
                                         color="secondary"
                                         variant="contained"
                                         loading={isSubmitting}
                                         type="submit"
                                     >
                                         Sign Up
-                                    </AuthLoadingButton>
+                                    </LoadingButtonStyle>
                                 </Grid>
                                 <Grid item xs={12} sx={{ marginTop: "66px" }} display="flex" justifyContent="center" >
                                     <Box sx={{ width: "98px", height: "17px", borderBottom: "2px solid #000" }} />
-                                    <AuthSideTypography sx={{ padding: "0 7px" }}>or</AuthSideTypography>
+                                    <Typography variant="h4" sx={{ padding: "0 7px" }}>or</Typography>
                                     <Box sx={{ width: "98px", height: "17px", borderBottom: "2px solid #000" }} />
                                 </Grid>
                                 <Grid item xs={12} sx={{ marginTop: "46px" }} display="flex" justifyContent="center" >
-                                    <GoogleExternalLogin />
-                                    <FacebookExternalLogin />
+                                    {/* <GoogleExternalLogin /> */}
+                                    {/* <FacebookExternalLogin /> */}
                                 </Grid>
 
                             </Grid>

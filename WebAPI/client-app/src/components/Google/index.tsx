@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import { GoogleLogin, GoogleLoginResponse } from 'react-google-login';
 import { gapi } from 'gapi-script';
 import { useNavigate } from "react-router-dom";
@@ -10,7 +10,11 @@ import { google } from "../../assets/icons"
 
 const clientId = "776665906575-0a864tctbrd5t6h6m8j84oktpm75jhng.apps.googleusercontent.com";
 
-function GoogleExternalLogin() {
+interface Props {
+    dialogClose: any
+}
+
+const GoogleExternalLogin: FC<Props> = ({ dialogClose }) => {
     const { GoogleExternalLogin } = useActions();
 
     const navigate = useNavigate();
@@ -28,11 +32,11 @@ function GoogleExternalLogin() {
     const handleGoogleSignIn = async (res: GoogleLoginResponse | any) => {
         try {
             await GoogleExternalLogin({ token: res.tokenId });
+            dialogClose();
             navigate("/");
 
         } catch (exception) {
             const serverError = exception as ServerError;
-            console.log(serverError.title);
         }
     }
 

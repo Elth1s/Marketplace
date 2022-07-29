@@ -16,14 +16,24 @@
         /// <example>Package</example>
         public string Name { get; set; }
         /// <summary>
+        /// Identifier of characteristic group
+        /// </summary>
+        /// <example>1</example>
+        public string CharacteristicGroupId { get; set; }
+        /// <summary>
         /// Name of characteristic group
         /// </summary>
         /// <example>Main</example>
         public string CharacteristicGroupName { get; set; }
         /// <summary>
-        /// Measure of unit
+        /// Identifier of unit
         /// </summary>
         /// <example>Main</example>
         public string UnitMeasure { get; set; }
+        /// <summary>
+        /// Measure of unit
+        /// </summary>
+        /// <example>1</example>
+        public string UnitId { get; set; }
     }
 }

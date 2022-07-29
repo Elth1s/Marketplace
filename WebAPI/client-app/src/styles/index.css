@@ -1,0 +1,16 @@
+@import "cropperjs/dist/cropper.css";
+@import 'react-toastify/dist/ReactToastify.css';
+@import 'swiper/css';
+@import "swiper/css/navigation";
+@import "swiper/css/controller";
+@import "swiper/css/thumbs";
+
+@import "./toast.css";
+@import "./swiper.css";
+
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: overlay;
+}

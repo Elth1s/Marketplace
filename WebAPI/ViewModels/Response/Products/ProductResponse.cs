@@ -16,6 +16,11 @@
         /// <example>T-shirt</example>
         public string Name { get; set; }
         /// <summary>
+        /// Image of product
+        /// </summary>
+        /// <example>https://some_product_image_example.jpg</example>
+        public string Image { get; set; }
+        /// <summary>
         /// Product description
         /// </summary>
         /// <example>Some description for product</example>

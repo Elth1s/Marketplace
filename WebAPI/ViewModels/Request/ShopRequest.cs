@@ -16,29 +16,25 @@ namespace WebAPI.ViewModels.Request
         /// <example>Smith's Shop</example>
         public string Name { get; set; }
         /// <summary>
-        /// Shop description
+        /// Shop URL
         /// </summary>
-        /// <example>Some shop description</example>
-        public string Description { get; set; }
+        /// <example>https://some_shop_example_url.com</example>
+        public string SiteUrl { get; set; }
         /// <summary>
-        /// Shop image
+        /// Seller full name
         /// </summary>
-        public string Photo { get; set; }
+        /// <example>Admin Adminovich</example>
+        public string FullName { get; set; }
         /// <summary>
         /// Shop email address
         /// </summary>
         /// <example>shop@gmail.com</example>
         public string Email { get; set; }
         /// <summary>
-        /// Shop URL
+        /// User password
         /// </summary>
-        /// <example>https://some_shop_example_url.com</example>
-        public string SiteUrl { get; set; }
-        /// <summary>
-        /// City identifier
-        /// </summary>
-        /// <example>1</example>
-        public int CityId { get; set; }
+        /// <example>QWEqwe123_</example>
+        public string Password { get; set; }
     }
 
     /// <summary>
@@ -55,10 +51,15 @@ namespace WebAPI.ViewModels.Request
                .NotEmpty().WithName("Name").WithMessage("{PropertyName} is required")
                .Length(2, 30).WithMessage("{PropertyName} should be between 2 and 30 characters");
 
-            //Description
-            RuleFor(x => x.Description).Cascade(CascadeMode.Stop)
-              .NotEmpty().WithName("Description").WithMessage("{PropertyName} is required")
-              .Length(15, 140).WithMessage("{PropertyName} should be between 15 and 140 characters");
+            //SiteUrl
+            RuleFor(x => x.Email).Cascade(CascadeMode.Stop)
+               .NotEmpty().WithName("Site URL").WithMessage("{PropertyName} is required")
+               .Must(IsUniqueSiteUrl).WithMessage("Shop with this {PropertyName} already exists");
+
+            //FullName
+            RuleFor(x => x.FullName).Cascade(CascadeMode.Stop)
+               .NotEmpty().WithName("FullName").WithMessage("{PropertyName} is required")
+               .Length(2, 70).WithMessage("{PropertyName} should be between 2 and 70 characters");
 
             //Email
             RuleFor(x => x.Email).Cascade(CascadeMode.Stop)
@@ -66,11 +67,10 @@ namespace WebAPI.ViewModels.Request
                .EmailAddress().WithMessage("Invalid format of {PropertyName}")
                .Must(IsUniqueEmail).WithMessage("Shop with this {PropertyName} already exists");
 
-            //SiteUrl
-            RuleFor(x => x.Email).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName("Site URL").WithMessage("{PropertyName} is required")
-               .Must(IsUniqueSiteUrl).WithMessage("Shop with this {PropertyName} already exists");
-
+            //Password
+            RuleFor(x => x.Password)
+                .Cascade(CascadeMode.Stop)
+                .NotEmpty().WithName("Password").WithMessage("{PropertyName} is required");
 
         }
         private bool IsUniqueEmail(string email)

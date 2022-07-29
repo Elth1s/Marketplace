@@ -82,9 +82,9 @@ const Footer = () => {
                             />
                         </Box>
                         {about.map((item, index) => (
-                            <ItemBoxStyled key={index} display="flex" alignItems="center">
+                            <ItemBoxStyled key={index}>
                                 {item.icon}
-                                <BodyStyle variant="h4">{item.text}</BodyStyle>
+                                <BodyStyle variant="h4" >{item.text}</BodyStyle>
                             </ItemBoxStyled>
                         ))}
                     </Grid>

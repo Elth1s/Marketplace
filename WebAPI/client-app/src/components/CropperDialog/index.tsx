@@ -14,9 +14,15 @@ import { Close } from "@mui/icons-material";
 
 import { LegacyRef, forwardRef, useRef, useState, useEffect } from "react";
 import Cropper from "cropperjs";
+import { TransitionProps } from "@mui/material/transitions";
 
 
-const Transition = forwardRef(function Transition(props: any, ref) {
+const Transition = forwardRef(function Transition(
+    props: TransitionProps & {
+        children: React.ReactElement<any, any>;
+    },
+    ref: React.Ref<unknown>,
+) {
     return <Slide direction="left" ref={ref} {...props} />;
 });
 

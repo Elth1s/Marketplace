@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DAL.Entities.Identity
+namespace DAL.Entities
 {
     public class AppUser : IdentityUser
     {

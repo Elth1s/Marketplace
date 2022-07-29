@@ -1,5 +1,6 @@
 export enum ProductActionTypes {
     GET_PRODUCT_BY_URLSLUG = "GET_PRODUCT_BY_URLSLUG",
+    GET_SIMILAR_PRODUCTS = "GET_SIMILAR_PRODUCTS",
     UPDATE_SELECTED_PRODUCT = "UPDATE_SELECTED_PRODUCT",
 }
 
@@ -30,6 +31,15 @@ export interface IFilterItem {
     unitMeasure: string
 }
 
+export interface ISimilarProduct {
+    name: string,
+    image: string,
+    price: number,
+    statusName: string,
+    urlSlug: string,
+    discount: number | null
+}
+
 export interface IProductItem {
     isInBasket: boolean,
     name: string,
@@ -43,6 +53,7 @@ export interface IProductItem {
 export interface ProductState {
     parents: Array<IParentCategoryItem>,
     product: IProductItem,
+    similarProducts: Array<ISimilarProduct>
 }
 
 export interface IProductWithParents {
@@ -53,6 +64,11 @@ export interface IProductWithParents {
 export interface GetProductByUrlSlugAction {
     type: ProductActionTypes.GET_PRODUCT_BY_URLSLUG,
     payload: IProductWithParents
+}
+
+export interface GetSimilarProductsAction {
+    type: ProductActionTypes.GET_SIMILAR_PRODUCTS,
+    payload: Array<ISimilarProduct>
 }
 
 export interface UpdateSelectedProductAction {
@@ -139,4 +155,5 @@ export interface IQuestionReply {
 }
 
 export type ProductAction = GetProductByUrlSlugAction |
+    GetSimilarProductsAction |
     UpdateSelectedProductAction;

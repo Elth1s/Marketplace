@@ -15,6 +15,7 @@ import DialogComponent from '../../../../components/Dialog';
 import TextFieldComponent from "../../../../components/TextField";
 import { toLowerFirstLetter } from '../../../../http_comon';
 import AutocompleteComponent from '../../../../components/Autocomplete';
+import CropperDialog from '../../../../components/CropperDialog';
 
 const CharacteristicCreate: FC<CreateProps> = ({ afterCreate }) => {
     const [open, setOpen] = useState(false);
@@ -68,6 +69,10 @@ const CharacteristicCreate: FC<CreateProps> = ({ afterCreate }) => {
     });
 
     const { errors, touched, isSubmitting, handleSubmit, setFieldError, getFieldProps, resetForm, setFieldValue } = formik;
+
+    const onSaveImage = async (base64: string) => {
+        // setFieldValue("image", base64)
+    };
 
     return (
         <DialogComponent
@@ -128,6 +133,13 @@ const CharacteristicCreate: FC<CreateProps> = ({ afterCreate }) => {
                             isOptionEqualToValue={(option, value) => option?.id === value.id}
                             defaultValue={undefined}
                             onChange={(e, value) => { setFieldValue("unitId", value?.id) }}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <CropperDialog
+                            imgSrc={"https://www.phoca.cz/images/projects/phoca-download-r.png"}
+                            onDialogSave={onSaveImage}
+                            labelId="Image"
                         />
                     </Grid>
                 </Grid>

@@ -59,12 +59,12 @@ const rotateLeft = keyframes`
 
 
 export const RotatedBox = styled("div", {
-  shouldForwardProp: (prop) => prop !== "rotete" && prop !== "isRoteted"
-})<{ rotete?: boolean; isRoteted?: boolean; }>(({ theme, rotete, isRoteted }) => ({
-  backgroundColor: rotete ? theme.palette.primary.main : theme.palette.secondary.main,
+  shouldForwardProp: (prop) => prop !== "rotate" && prop !== "isRotated"
+})<{ rotate?: boolean; isRotated?: boolean; }>(({ theme, rotate, isRotated }) => ({
+  backgroundColor: rotate ? theme.palette.primary.main : theme.palette.secondary.main,
   width: 15,
   height: 15,
   marginRight: "10px",
-  transform: isRoteted ? "rotate(45deg)" : "",
-  ...((rotete != undefined && isRoteted == false) && { animation: rotete ? `${rotateRight} 1s forwards ease` : `${rotateLeft} 1s forwards ease` }),
+  transform: isRotated ? "rotate(45deg)" : "",
+  ...((rotate != undefined && isRotated == false) && { animation: rotate ? `${rotateRight} 1s forwards ease` : `${rotateLeft} 1s forwards ease` }),
 }));

@@ -1,6 +1,6 @@
 using DAL;
 using DAL.Data;
-using DAL.Entities.Identity;
+using DAL.Entities;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -73,6 +73,7 @@ builder.Services.AddScoped<IUnitService, UnitService>();
 builder.Services.AddScoped<IShopService, ShopService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IProductStatusService, ProductStatusService>();
+builder.Services.AddScoped<IProductImageService, ProductImageService>();
 builder.Services.AddScoped<ITemplateService, TemplateService>();
 builder.Services.AddScoped<IEmailSenderService, EmailSenderService>();
 builder.Services.AddScoped<IConfirmEmailService, ConfirmEmailService>();

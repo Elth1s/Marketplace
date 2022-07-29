@@ -33,14 +33,14 @@ const Header: FC<IHeader> = ({ handleDrawerToggle }) => {
                         />
                     </LinkRouter>
                     <IconButton
-                        sx={{ borderRadius: '12px' }}
+                        sx={{ borderRadius: '12px', "&:hover": { background: "transparent" }, "&& .MuiTouchRipple-child": { backgroundColor: "transparent" } }}
                         onClick={handleDrawerToggle}
                         size="large"
                         aria-label="search"
                         color="inherit"
                     >
                         <img
-                            style={{ width: "35px", height: "18px" }}
+                            style={{ width: "25px" }}
                             src={admin_list}
                             alt="icon"
                         />

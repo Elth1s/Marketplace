@@ -10,7 +10,7 @@ import {
     ArrowBackIosNewOutlined,
     ArrowForwardIosOutlined,
 } from '@mui/icons-material'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { ListItemButtonStyle, ButtonNoveltyStyle, BoxProductOfTheDayStyle } from './styled';
 
@@ -19,8 +19,22 @@ import { homepage } from '../../../assets/backgrounds';
 
 import LinkRouter from '../../../components/LinkRouter';
 
+import { toast } from 'react-toastify';
+
+
 const HomePage = () => {
     const [sidebarItems, setSidebarItems] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
+
+    useEffect(() => {
+        document.title = "Mall";
+        // toast.success('Test Success! \n qwe');
+        // toast.error('Test Error!');
+        // toast.warning('Test Warning!');
+        // toast.info('Test Info!');
+        // toast('Test Default!');
+
+    }, [])
+
     return (
         <Box >
             <Grid container>

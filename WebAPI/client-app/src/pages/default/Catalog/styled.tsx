@@ -1,4 +1,4 @@
-import { styled, Box } from "@mui/material";
+import { styled, Box, PaginationItem, Button } from "@mui/material";
 
 
 
@@ -11,7 +11,7 @@ export const BoxCatalogStyle = styled(Box)(({ theme }) => ({
             marginRight: "0px"
         }
     },
-    [theme.breakpoints.only('lg')]: {
+    [theme.breakpoints.only("lg")]: {
         "&>*:nth-of-type(4n)": {
             marginRight: "0px"
         }
@@ -58,4 +58,30 @@ export const BoxProductStyle = styled(Box)(({ theme }) => ({
             marginRight: "0px"
         }
     },
+}));
+
+export const PaginationItemStyle = styled(PaginationItem)(({ theme }) => ({
+    borderRadius: "12px",
+    "&.Mui-selected": {
+        color: "white",
+        backgroundColor: `${theme.palette.secondary.main}`,
+        "&:hover": {
+            backgroundColor: `${theme.palette.secondary.dark}`,
+        },
+    }
+}));
+
+export const ShowMoreButton = styled(Button)(({ theme }) => ({
+    color: "inherit",
+    fontSize: "30px",
+    textTransform: "none",
+    "&:hover": {
+        background: "transparent"
+    },
+    "&& .MuiTouchRipple-child": {
+        backgroundColor: "transparent"
+    },
+    "& .MuiButton-startIcon>*:nth-of-type(1)": {
+        fontSize: "30px"
+    }
 }));

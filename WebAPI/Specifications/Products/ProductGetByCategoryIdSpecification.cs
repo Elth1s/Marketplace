@@ -6,9 +6,12 @@ namespace WebAPI.Specifications.Products
 {
     public class ProductGetByCategoryIdSpecification : Specification<Product>
     {
-        public ProductGetByCategoryIdSpecification(int categoryId, List<FilterValue> filters, int? page, int? rowsPerPage)
+        public ProductGetByCategoryIdSpecification(int categoryId, List<FilterValue> filters, int? page, int? rowsPerPage, int? productId = null)
         {
             Query.Where(item => categoryId == item.CategoryId);
+
+            if (productId != null)
+                Query.Where(item => productId != item.Id);
 
             if (filters != null)
             {

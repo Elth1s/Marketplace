@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using DAL;
 using DAL.Entities;
-using DAL.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using WebAPI.Extensions;
 using WebAPI.Interfaces.Products;
@@ -106,6 +105,18 @@ namespace WebAPI.Services.Products
             }
 
             return response;
+        }
+
+        public async Task<IEnumerable<ProductCatalogResponse>> GetSimilarProductsAsync(string urlSlug)
+        {
+            var specGetByUrlSlug = new ProductIncludeFullInfoSpecification(urlSlug);
+            var product = await _productRepository.GetBySpecAsync(specGetByUrlSlug);
+            product.ProductNullChecking();
+
+            var spec = new ProductGetByCategoryIdSpecification(product.CategoryId, null, 1, 20, product.Id);
+            var products = await _productRepository.ListAsync(spec);
+
+            return _mapper.Map<IEnumerable<ProductCatalogResponse>>(products);
         }
 
         public async Task CreateAsync(ProductCreateRequest request)

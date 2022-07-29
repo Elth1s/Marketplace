@@ -1,30 +1,40 @@
-import { styled, TextField, Typography, Link, Box } from "@mui/material";
+import { styled, TextField, Button, Drawer, Typography, Link, Box } from "@mui/material";
 
 
 export const TextFieldStyle = styled(TextField)(({ theme }) => ({
-    width: "660px",
+    width: "678px",
+
     "& fieldset": {
-        borderRadius: "9px",
+        borderRadius: "10px",
         borderColor: "#7E7E7E",
+
     },
     InputLabelProps: {
-        color: "#7E7E7E"
+        color: "#7E7E7E",
+
     },
     inputProps: {
-        paddingTop: "0px",
-        paddingBottom: "0px",
-        fontSize: "18px"
+
     },
     "& .MuiOutlinedInput-root": {
         color: "#777777",
+
+        fontSize: "20px",
+        lineHeight: "25px",
         "& fieldset": {
             borderColor: "#7E7E7E"
-        }
+        },
+        "&:hover fieldset": {
+            borderColor: "#7E7E7E"
+        },
+        "&.Mui-focused fieldset": {
+            borderColor: "#7E7E7E"
+        },
     }
 }));
 
 export const TitleStyle = styled(Typography)(() => ({
-    color: "#FFF", 
+    color: "#FFF",
     lineHeight: "1.25",
     fontWeight: "700",
 }));
@@ -44,7 +54,24 @@ export const LinkStyle = styled(Link)(() => ({
 
 export const ItemBoxStyled = styled(Box)(() => ({
     marginBottom: "35px",
+    display: "flex",
+    alignItems: "center",
     "&:last-child": {
         marginBottom: "0px"
     }
 }));
+
+export const LanguageButtonStyle = styled(Button, {
+    shouldForwardProp: (prop) => prop !== 'selected'
+})<{ selected?: boolean; }>(({ theme, selected }) => ({
+    color: selected ? theme.palette.primary.main : theme.palette.common.black,
+    fontSize: "20px",
+    lineHeight: "25px",
+    fontWeight: "bold",
+    minWidth: "auto",
+    height: "auto",
+    padding: 0,
+    "&:hover": { background: "transparent" },
+    "&& .MuiTouchRipple-child": { backgroundColor: "transparent" }
+}),
+);

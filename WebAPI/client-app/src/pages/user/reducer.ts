@@ -1,11 +1,9 @@
 import {
     ConfirmEmailActionTypes,
     EmailConfirmAction,
-    PasswordResetAction,
     ProfileAction,
     ProfileActionTypes,
     ProfileState,
-    ResetPasswordActionTypes
 } from "./types";
 
 const initialState: ProfileState = {

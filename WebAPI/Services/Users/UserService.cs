@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using DAL.Entities.Identity;
+using DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 using System.Drawing.Imaging;
 using WebAPI.Constants;

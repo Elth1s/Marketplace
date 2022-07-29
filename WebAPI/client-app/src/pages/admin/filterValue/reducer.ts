@@ -8,8 +8,8 @@ const initialState: FilterValueState = {
     selectedFilterValue: {
         value: "",
         filterNameId: 0,
-        min: undefined,
-        max: undefined
+        min: "",
+        max: ""
     },
     count: 0,
     filterValues: []
@@ -31,7 +31,12 @@ export const filterValueReducer = (state = initialState, action: FilterValueActi
         case FilterValueActionTypes.GET_BY_ID_FILTER_VALUE:
             return {
                 ...state,
-                selectedFilterValue: action.payload,
+                selectedFilterValue: {
+                    value: action.payload.value,
+                    filterNameId: action.payload.filterNameId,
+                    min: action.payload.min == null ? "" : action.payload.min,
+                    max: action.payload.max == null ? "" : action.payload.max,
+                },
             }
         case FilterValueActionTypes.CREATE_FILTER_VALUE:
             return {

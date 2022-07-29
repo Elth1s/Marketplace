@@ -67,6 +67,13 @@ namespace WebAPI.Services
             return _mapper.Map<IEnumerable<CatalogItemResponse>>(categories);
         }
 
+        public async Task<IEnumerable<FullCatalogItemResponse>> GetFullCatalogAsync()
+        {
+            var spec = new CatalogSpecification(null);
+            var categories = await _categoryRepository.ListAsync(spec);
+            return _mapper.Map<IEnumerable<FullCatalogItemResponse>>(categories);
+        }
+
         public async Task<CatalogWithProductsResponse> GetCatalogWithProductsAsync(CatalogWithProductsRequest request)
         {
             var response = new CatalogWithProductsResponse();
@@ -94,28 +101,45 @@ namespace WebAPI.Services
                     var filterValuesSpec = new FilterValuesGetByIdsSpecification(filterPredicate);
                     filters = await _filterValueRepository.ListAsync(filterValuesSpec);
                 }
+                var productCategoryIdSpec = new ProductGetByCategoryIdSpecification(category.Id, request.Filters == null ? null : filters, null, null);
+                response.CountProducts = await _productRepository.CountAsync(productCategoryIdSpec);
 
-                var productCategoryIdSpec = new ProductGetByCategoryIdSpecification(category.Id, request.Filters == null ? null : filters, request.Page, request.RowsPerPage);
+                productCategoryIdSpec = new ProductGetByCategoryIdSpecification(category.Id, request.Filters == null ? null : filters, request.Page, request.RowsPerPage);
                 products = await _productRepository.ListAsync(productCategoryIdSpec);
-                response.CountProducts = products.Count;
 
                 response.Products = _mapper.Map<IEnumerable<ProductCatalogResponse>>(products); ;
             }
             else
             {
-                int page = 0;
-                //do
-                //{
-                //    foreach (var item in childs)
-                //    {
-                //        var productCategoryIdSpec = new ProductGetByCategoryIdSpecification(item.Id, page, 5);
-                //        products.AddRange(await _productRepository.ListAsync(productCategoryIdSpec));
-                //    }
-                //    page++;
-                //} while (products.Count < request.RowsPerPage);
+                foreach (var item in childs)
+                {
+                    var productCategoryIdSpec = new ProductGetByCategoryIdSpecification(item.Id, null, null, null);
+                    response.CountProducts += await _productRepository.CountAsync(productCategoryIdSpec);
+
+                    productCategoryIdSpec = new ProductGetByCategoryIdSpecification(item.Id, null, request.Page, 5);
+                    products.AddRange(await _productRepository.ListAsync(productCategoryIdSpec));
+                }
+                response.Products = _mapper.Map<IEnumerable<ProductCatalogResponse>>(products);
             }
 
             return response;
+        }
+
+        public async Task<IEnumerable<ProductCatalogResponse>> GetMoreProductsAsync(CatalogWithProductsRequest request)
+        {
+            var urlSlugSpec = new CategoryGetByUrlSlugSpecification(request.UrlSlug);
+            var category = await _categoryRepository.GetBySpecAsync(urlSlugSpec);
+
+            var parentIdSpec = new CategoryGetByParentIdSpecification(category.Id);
+            var childs = await _categoryRepository.ListAsync(parentIdSpec);
+
+            var products = new List<Product>();
+            foreach (var item in childs)
+            {
+                var productCategoryIdSpec = new ProductGetByCategoryIdSpecification(item.Id, null, request.Page, 5);
+                products.AddRange(await _productRepository.ListAsync(productCategoryIdSpec));
+            }
+            return _mapper.Map<IEnumerable<ProductCatalogResponse>>(products);
         }
 
         public async Task<IEnumerable<FilterNameValuesResponse>> GetFiltersByCategoryAsync(string urlSlug)

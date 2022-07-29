@@ -6,8 +6,10 @@ import { IConfirmEmail } from "../types";
 
 
 const ConfirmEmail = () => {
-    let [searchParams] = useSearchParams();
     const { ConfirmEmail } = useActions();
+
+    let [searchParams] = useSearchParams();
+
     const [loading, setLoading] = useState<boolean>(false);
     const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
@@ -15,7 +17,6 @@ const ConfirmEmail = () => {
         async function confirmEmail() {
             setLoading(true);
             try {
-                document.title = "Confirm Email";
                 const requestData: IConfirmEmail = {
                     userId: searchParams.get("userId") ?? "",
                     confirmationCode: searchParams.get("token") ?? "",
@@ -33,25 +34,17 @@ const ConfirmEmail = () => {
     }, [isSuccess])
 
     return (
-
-        <Box sx={{ flexGrow: 1, m: 1, mx: 3, }}>
-            <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ py: 1 }}>
-                <Typography variant="h4" gutterBottom sx={{ my: "auto" }}>
-                    Confirm Email
-                </Typography>
-            </Stack>
-            {loading ?
-                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <>
+            {loading
+                ? <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                     <CircularProgress sx={{ mt: 3 }} />
-                </Box> :
-
-                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                </Box>
+                : <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                     {isSuccess ? <h1>Email Confirmed</h1> :
                         <h1>Confirmation Failed</h1>}
                 </Box>
-
             }
-        </Box>
+        </>
     )
 }
 

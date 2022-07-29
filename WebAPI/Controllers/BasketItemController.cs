@@ -66,7 +66,7 @@ namespace WebAPI.Controllers
         /// <summary>
         /// Delete an existing basket
         /// </summary>
-        /// <param name="basketId">Basket identifier</param>
+        /// <param name="id">Basket identifier</param>
         /// <response code="200">Basket update completed successfully</response>
         /// <response code="401">You are not authorized</response>
         /// <response code="404">Basket not found</response>
@@ -76,10 +76,10 @@ namespace WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize]
-        [HttpDelete("DeleteBasket/{basketId}")]
-        public async Task<IActionResult> DeleteBasket(int basketId)
+        [HttpDelete("Delete/{id}")]
+        public async Task<IActionResult> DeleteBasketItem(int id)
         {
-            await _basketItemService.DeleteAsync(basketId);
+            await _basketItemService.DeleteAsync(id);
             return Ok("Basket deleted successfully");
         }
 

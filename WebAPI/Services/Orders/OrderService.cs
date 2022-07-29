@@ -2,7 +2,6 @@
 using DAL;
 using DAL.Constants;
 using DAL.Entities;
-using DAL.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using WebAPI.Extensions;
 using WebAPI.Interfaces.Orders;

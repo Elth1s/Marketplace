@@ -1,4 +1,4 @@
-﻿using DAL.Entities.Identity;
+﻿using DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

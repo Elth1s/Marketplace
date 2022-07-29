@@ -10,12 +10,8 @@ import { AuthUser } from './pages/auth/actions';
 import { getLocalAccessToken } from './http_comon';
 import reportWebVitals from './reportWebVitals';
 
-import './index.css';
-import "cropperjs/dist/cropper.css";
-import 'swiper/css';
-import "swiper/css/navigation";
-import "swiper/css/controller";
-import "swiper/css/thumbs";
+import './styles/index.css';
+
 
 
 let token = getLocalAccessToken();

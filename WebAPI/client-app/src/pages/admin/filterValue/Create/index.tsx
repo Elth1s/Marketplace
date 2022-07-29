@@ -25,8 +25,8 @@ const FilterValueCreate: FC<CreateProps> = ({ afterCreate }) => {
 
     const item: IFilterValue = {
         value: '',
-        min: undefined,
-        max: undefined,
+        min: "",
+        max: "",
         filterNameId: 0,
     }
 

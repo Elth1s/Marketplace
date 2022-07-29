@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using DAL.Entities;
-using DAL.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using System.Net;
 using WebAPI.Constants;

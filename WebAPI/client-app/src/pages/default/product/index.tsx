@@ -5,14 +5,14 @@ import {
     Tab
 } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-import { Star } from '@mui/icons-material';
+import { Star, StarRounded } from '@mui/icons-material';
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from "swiper";
 
-import { products, dataTabs } from "./data";
+import { products } from "./data";
 
 import { useActions } from "../../../hooks/useActions";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
@@ -26,10 +26,18 @@ import ProductCharacteristicsPage from "./ProductPage/ProductCharacteristicsPage
 import AddReview from "./AddReview";
 
 import { RatingStyle } from "./styled";
+import ProductItem from "../../../components/ProductItem";
+
+const dataTabs = [
+    { label: 'All about the product' },
+    { label: 'Characteristics' },
+    { label: 'Reviews' },
+    { label: 'Question' },
+]
 
 const Product = () => {
-    const { GetProductByUrlSlug } = useActions();
-    const { parents, product } = useTypedSelector(state => state.product);
+    const { GetProductByUrlSlug, GetSimilarProducts } = useActions();
+    const { parents, product, similarProducts } = useTypedSelector(state => state.product);
 
     const [valueTab, setValueTab] = useState<string>("0");
 
@@ -46,6 +54,7 @@ const Product = () => {
             return;
         try {
             await GetProductByUrlSlug(urlSlug)
+            await GetSimilarProducts(urlSlug)
         } catch (ex) {
         }
     };
@@ -60,60 +69,61 @@ const Product = () => {
             <TabContext value={valueTab} >
                 <TabList onChange={handleChange} aria-label="basic tabs example" >
                     {dataTabs.map((item, index) => (
-                        <Tab key={index} label={item.label} value={index.toString()} sx={{ padding: "0px", minWidth: "auto", marginRight: "50px", "&& .MuiTouchRipple-child": { backgroundColor: "transparent" } }} />
+                        <Tab key={index} label={item.label} value={index.toString()} sx={{ fontSize: "20px", padding: "0px", minWidth: "auto", textTransform: "none", marginRight: "90px", "&& .MuiTouchRipple-child": { backgroundColor: "transparent" } }} />
                     ))}
                 </TabList >
 
-                <Typography variant="h1" sx={{ mt: "30px", mb: "15px" }}>{product.name}</Typography>
-                <Box sx={{ display: "flex", alignItems: "center", mb: "50px" }}>
+                <Typography variant="h1" sx={{ mt: "30px", mb: "15px" }}>{valueTab === "1" && "Characteristics"} {product.name}</Typography>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
                     <Typography variant="h4" fontWeight="bold" display="inline" sx={{ marginRight: "70px" }}>Shop: <Typography fontWeight="normal" display="inline" sx={{ fontSize: "20px" }}>{product.shopName}</Typography></Typography>
                     <Typography variant="h4" fontWeight="bold">Shop rating: </Typography>
                     <RatingStyle
-                        sx={{ ml: 1, color: "primary" }}
+                        sx={{ ml: 1, fontSize: "30px" }}
                         value={4.5}
                         precision={0.5}
                         readOnly
-                        emptyIcon={<Star fontSize="inherit" />}
+                        icon={<StarRounded sx={{ fontSize: "30px" }} />}
+                        emptyIcon={<StarRounded sx={{ fontSize: "30px" }} />}
                     />
-                    {valueTab === "1" && <AddReview />}
+                    {valueTab === "2" && <AddReview />}
                 </Box>
 
                 <TabPanel sx={{ p: "0px" }} value="0" >
-                    <ProductMainPage urlSlug={urlSlug} isInBasket={product.isInBasket} />
+                    <ProductMainPage urlSlug={urlSlug} isInBasket={product.isInBasket}
+                        moveToReview={() => {
+                            window.scrollTo({
+                                top: 0,
+                                behavior: 'smooth'
+                            });
+                            setValueTab("2");
+                        }} />
                 </TabPanel>
                 <TabPanel sx={{ p: "0px" }} value="1">
-                    <ProductReviewsPage />
+                    <ProductCharacteristicsPage urlSlug={urlSlug} isInBasket={product.isInBasket} />
                 </TabPanel>
                 <TabPanel sx={{ p: "0px" }} value="2">
-                    <ProductCharacteristicsPage />
+                    <ProductReviewsPage />
                 </TabPanel>
             </TabContext>
 
-            <Grid container sx={{ mb: "55px" }}>
-                <Grid item xs={12}>
-                    <Typography variant="h4" sx={{ mb: "40px" }}>Схожі товари</Typography>
-                </Grid>
-                <Grid item xs={12}>
-                    <Swiper
-                        modules={[Navigation]}
-                        navigation={true}
-                        slidesPerView={5}
-                        slidesPerGroup={1}
-                        spaceBetween={15}
-                    >
-                        {products.map((item, index) => (
+            <Box>
+                <Typography variant="h1" sx={{ mb: "40px" }}>Similar products</Typography>
+                <Swiper
+                    modules={[Navigation]}
+                    navigation={true}
+                    slidesPerView={5}
+                    slidesPerGroup={5}
+                    spaceBetween={15}
+                >
+                    {similarProducts.map((row, index) => {
+                        return (
                             <SwiperSlide key={index}>
-                                <CardProduct
-                                    image={item.image}
-                                    name={item.title}
-                                    statusName={item.status}
-                                    price={1000}
-                                />
+                                <ProductItem name={row.name} image={row.image} statusName={row.statusName} price={row.price} urlSlug={row.urlSlug} />
                             </SwiperSlide>
-                        ))}
-                    </Swiper>
-                </Grid>
-            </Grid>
+                        );
+                    })}
+                </Swiper>
+            </Box>
         </>
     );
 }

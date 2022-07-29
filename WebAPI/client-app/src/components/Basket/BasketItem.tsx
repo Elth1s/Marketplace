@@ -2,6 +2,8 @@ import { DeleteOutline } from "@mui/icons-material"
 import { Box, IconButton, Typography } from "@mui/material"
 import { FC } from "react"
 
+import { useActions } from "../../hooks/useActions"
+
 import { empty } from "../../assets/backgrounds"
 import { basket_trash } from "../../assets/icons"
 
@@ -12,7 +14,9 @@ interface Props {
     price: number
 }
 
-const BasketItem: FC<Props> = ({ image, name, price }) => {
+const BasketItem: FC<Props> = ({ id, image, name, price }) => {
+    const { GetBasketItems, RemoveFromBasket } = useActions();
+
     return (
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <img
@@ -35,13 +39,16 @@ const BasketItem: FC<Props> = ({ image, name, price }) => {
                 size="large"
                 aria-label="search"
                 color="inherit"
+                onClick={async () => {
+                    await RemoveFromBasket(id);
+                    await GetBasketItems();
+                }}
             >
                 <img
                     style={{ width: "30px", height: "30px" }}
                     src={basket_trash}
                     alt="icon"
                 />
-                {/* <DeleteOutline sx={{ fontSize: "30px" }} /> */}
             </IconButton>
         </Box>
     )
