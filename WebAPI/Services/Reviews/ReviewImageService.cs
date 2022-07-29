@@ -39,17 +39,17 @@ namespace WebAPI.Services.Reviews
 
         public async Task DeleteAsync(int id)
         {
-            var productImage = await _reviewImageRepository.GetByIdAsync(id);
-            productImage.ReviewImageNullChecking();
+            var reviewImage = await _reviewImageRepository.GetByIdAsync(id);
+            reviewImage.ReviewImageNullChecking();
 
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.ProductsImagePath, productImage.Name);
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.ReviewsImagePath, reviewImage.Name);
 
             if (File.Exists(filePath))
             {
                 File.Delete(filePath);
             }
 
-            await _reviewImageRepository.DeleteAsync(productImage);
+            await _reviewImageRepository.DeleteAsync(reviewImage);
             await _reviewImageRepository.SaveChangesAsync();
         }
     }

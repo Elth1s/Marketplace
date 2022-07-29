@@ -17,7 +17,9 @@ using WebAPI.Interfaces;
 using WebAPI.Interfaces.Characteristics;
 using WebAPI.Interfaces.Emails;
 using WebAPI.Interfaces.Filters;
+using WebAPI.Interfaces.Orders;
 using WebAPI.Interfaces.Products;
+using WebAPI.Interfaces.Questions;
 using WebAPI.Interfaces.Reviews;
 using WebAPI.Interfaces.Users;
 using WebAPI.Mapper;
@@ -26,7 +28,9 @@ using WebAPI.Services;
 using WebAPI.Services.Characteristcs;
 using WebAPI.Services.Emails;
 using WebAPI.Services.Filters;
+using WebAPI.Services.Orders;
 using WebAPI.Services.Products;
+using WebAPI.Services.Questions;
 using WebAPI.Services.Reviews;
 using WebAPI.Services.Users;
 using WebAPI.Settings;
@@ -76,13 +80,20 @@ builder.Services.AddScoped<IResetPasswordService, ResetPasswordService>();
 builder.Services.AddScoped<IPhoneCodeSenderService, PhoneCodeSenderService>();
 builder.Services.AddScoped<IConfirmPhoneService, ConfirmPhoneService>();
 builder.Services.AddScoped<IBasketItemService, BasketItemService>();
+
 builder.Services.AddScoped<IQuestionService, QuestionService>();
+builder.Services.AddScoped<IQuestionImageService, QuestionImageService>();
+builder.Services.AddScoped<IQuestionReplyService, QuestionReplyService>();
 
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IOrderStatusService, OrderStatusService>();
 
+builder.Services.AddScoped<IReviewService, ReviewService>();
+builder.Services.AddScoped<IReviewReplyService, ReviewReplyService>();
 builder.Services.AddScoped<IReviewImageService, ReviewImageService>();
 
 
-builder.Services.AddSingleton<PhoneNumberManager>();
+builder.Services.AddScoped<PhoneNumberManager>();
 
 //reCaptcha
 builder.Services.AddTransient<IRecaptchaService, RecaptchaService>();
@@ -257,6 +268,17 @@ app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(reviewImages),
     RequestPath = ImagePath.RequestReviewsImagePath
+});
+
+var questionImages = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.QuestionsImagePath);
+if (!Directory.Exists(questionImages))
+{
+    Directory.CreateDirectory(questionImages);
+}
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(questionImages),
+    RequestPath = ImagePath.RequestQuestionsImagePath
 });
 
 var backgroundImages = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.BackgroundImagePath);

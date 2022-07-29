@@ -20,7 +20,6 @@ namespace WebAPI.Controllers.Products
     {
         private string UserId => User?.FindFirstValue(ClaimTypes.NameIdentifier);
 
-
         private readonly IProductService _productService;
         public ProductController(IProductService productService)
         {

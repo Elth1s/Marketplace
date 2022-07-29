@@ -1,4 +1,4 @@
-﻿using WebAPI.ViewModels.Request.Order;
+﻿using WebAPI.ViewModels.Request.Orders;
 using WebAPI.ViewModels.Response.Orders;
 
 namespace WebAPI.Interfaces.Orders
@@ -7,7 +7,7 @@ namespace WebAPI.Interfaces.Orders
     {
         Task<IEnumerable<OrderResponse>> GetAsync();
         Task<OrderResponse> GetByIdAsync(int id);
-        Task CreateAsync(OrderCreateRequest request);
+        Task CreateAsync(OrderCreateRequest request, string userId);
         Task DeleteAsync(int id);
 
     }

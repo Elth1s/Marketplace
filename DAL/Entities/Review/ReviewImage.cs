@@ -6,9 +6,9 @@ namespace DAL.Entities
     {
         public string Name { get; set; }
 
-        public int ReviewId { get; set; }
+        public int? ReviewId { get; set; }
 
         [ForeignKey(nameof(ReviewId))]
-        public Review Product { get; set; }
+        public Review Review { get; set; }
     }
 }

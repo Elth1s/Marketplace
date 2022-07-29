@@ -255,4 +255,22 @@
   <data name="ReviewImageNotFound" xml:space="preserve">
     <value>Review image not found</value>
   </data>
+  <data name="ReviewNotFound" xml:space="preserve">
+    <value>Review not found</value>
+  </data>
+  <data name="InvalidUserEmail" xml:space="preserve">
+    <value>Invalid email</value>
+  </data>
+  <data name="ReviewOrder" xml:space="preserve">
+    <value>You need order product to write review</value>
+  </data>
+  <data name="ReviewReplyNotFound" xml:space="preserve">
+    <value>Review reply not found</value>
+  </data>
+  <data name="QuestionNotFound" xml:space="preserve">
+    <value>Question not found</value>
+  </data>
+  <data name="QuestionImageNotFound" xml:space="preserve">
+    <value>Question image not found</value>
+  </data>
 </root>

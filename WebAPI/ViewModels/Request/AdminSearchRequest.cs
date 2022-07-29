@@ -3,7 +3,7 @@
 namespace WebAPI.ViewModels.Request
 {
     /// <summary>
-    /// Country class to create and update country 
+    /// Admin search class for searching, pagination and sorting
     /// </summary>
     public class AdminSearchRequest
     {
@@ -20,9 +20,9 @@ namespace WebAPI.ViewModels.Request
         public int RowsPerPage { get; set; }
 
         /// <summary>
-        /// Name of country
+        /// Search string
         /// </summary>
-        /// <example>USA</example>
+        /// <example>some-string</example>
         public string Name { get; set; }
 
         /// <summary>

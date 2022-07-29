@@ -13,7 +13,7 @@
         /// <summary>
         /// Order status name
         /// </summary>
-        /// <example>"Active"</example>
+        /// <example>Active</example>
         public string Name { get; set; }
 
     }

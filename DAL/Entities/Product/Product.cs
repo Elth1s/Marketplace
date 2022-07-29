@@ -28,5 +28,6 @@ namespace DAL.Entities
         public ICollection<FilterValueProduct> FilterValueProducts { get; set; }
         public ICollection<OrderProduct> OrderProducts { get; set; }
         public ICollection<Question> Questions { get; set; }
+        public ICollection<Review> Reviews { get; set; }
     }
 }

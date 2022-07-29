@@ -148,8 +148,8 @@ namespace WebAPI.Services.Users
                 request.Name,
                 request.IsAscOrder,
                 request.OrderBy,
-                (request.Page - 1) * request.RowsPerPage
-                , request.RowsPerPage).ToList();
+                (request.Page - 1) * request.RowsPerPage,
+                request.RowsPerPage).ToList();
 
             var mappedUsers = _mapper.Map<IEnumerable<UserResponse>>(users);
             var response = new AdminSearchResponse<UserResponse>() { Count = count, Values = mappedUsers };

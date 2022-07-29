@@ -6,7 +6,10 @@ namespace WebAPI.Extensions
 {
     public static class ExtentionsUserManager
     {
-        public static async Task<AppUser> FindByPhoneNumberAsync(this UserManager<AppUser> userManager, string PhoneNumber, CancellationToken cancellationToken = default(CancellationToken))
+        public static async Task<AppUser> FindByPhoneNumberAsync(
+            this UserManager<AppUser> userManager,
+            string PhoneNumber,
+            CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             return await userManager.Users.SingleOrDefaultAsync(u => u.PhoneNumber == PhoneNumber, cancellationToken);
@@ -18,7 +21,7 @@ namespace WebAPI.Extensions
             string orderBy,
             int? skip = null,
             int? take = null,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             var query = userManager.Users;
@@ -38,6 +41,24 @@ namespace WebAPI.Extensions
                 query = query.Take(take.Value);
 
             return query;
+        }
+
+        public static async Task<bool> IsOrderedByUserAsync(
+            this UserManager<AppUser> userManager,
+            string userId,
+            int productId,
+            CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            var query = await userManager.Users
+                                         .Where(u => u.Id == userId)
+                                         .Include(u => u.Orders)
+                                         .ThenInclude(o => o.OrderProducts)
+                                         .CountAsync(u => u.Orders
+                                                           .Any(o => o.OrderProducts
+                                                           .Any(op => op.ProductId == productId)),
+                                         cancellationToken);
+            return query > 0;
         }
     }
 }

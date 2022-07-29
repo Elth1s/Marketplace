@@ -249,7 +249,7 @@ namespace WebAPI.Services.Users
 
         private void RevokeRefreshToken(RefreshToken token, string ipAddress, string reason = null, string replacedByToken = null)
         {
-            token.Revoked = DateTime.UtcNow;
+            token.Revoked = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc);
             token.RevokedByIp = ipAddress;
             token.ReasonRevoked = reason;
             token.ReplacedByToken = replacedByToken;

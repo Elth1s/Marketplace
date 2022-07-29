@@ -34,7 +34,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("FilterValuesId");
 
-                    b.ToTable("CategoryFilterValue", (string)null);
+                    b.ToTable("CategoryFilterValue");
                 });
 
             modelBuilder.Entity("CharacteristicValueProduct", b =>
@@ -49,7 +49,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("ProductsId");
 
-                    b.ToTable("CharacteristicValueProduct", (string)null);
+                    b.ToTable("CharacteristicValueProduct");
                 });
 
             modelBuilder.Entity("DAL.Entities.BasketItem", b =>
@@ -75,7 +75,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("BasketItems", (string)null);
+                    b.ToTable("BasketItems");
                 });
 
             modelBuilder.Entity("DAL.Entities.Category", b =>
@@ -105,7 +105,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("DAL.Entities.CharacteristicGroup", b =>
@@ -126,7 +126,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("CharacteristicGroups", (string)null);
+                    b.ToTable("CharacteristicGroups");
                 });
 
             modelBuilder.Entity("DAL.Entities.CharacteristicName", b =>
@@ -152,7 +152,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("UnitId");
 
-                    b.ToTable("CharacteristicNames", (string)null);
+                    b.ToTable("CharacteristicNames");
                 });
 
             modelBuilder.Entity("DAL.Entities.CharacteristicValue", b =>
@@ -173,7 +173,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("CharacteristicNameId");
 
-                    b.ToTable("CharacteristicValues", (string)null);
+                    b.ToTable("CharacteristicValues");
                 });
 
             modelBuilder.Entity("DAL.Entities.City", b =>
@@ -194,7 +194,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("Cities", (string)null);
+                    b.ToTable("Cities");
                 });
 
             modelBuilder.Entity("DAL.Entities.Country", b =>
@@ -213,7 +213,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries", (string)null);
+                    b.ToTable("Countries");
                 });
 
             modelBuilder.Entity("DAL.Entities.FilterGroup", b =>
@@ -229,7 +229,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FilterGroups", (string)null);
+                    b.ToTable("FilterGroups");
                 });
 
             modelBuilder.Entity("DAL.Entities.FilterName", b =>
@@ -255,7 +255,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("UnitId");
 
-                    b.ToTable("FilterNames", (string)null);
+                    b.ToTable("FilterNames");
                 });
 
             modelBuilder.Entity("DAL.Entities.FilterValue", b =>
@@ -282,7 +282,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("FilterNameId");
 
-                    b.ToTable("FilterValues", (string)null);
+                    b.ToTable("FilterValues");
                 });
 
             modelBuilder.Entity("DAL.Entities.FilterValueProduct", b =>
@@ -308,7 +308,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("FilterValueProducts", (string)null);
+                    b.ToTable("FilterValueProducts");
                 });
 
             modelBuilder.Entity("DAL.Entities.Identity.AppUser", b =>
@@ -361,12 +361,6 @@ namespace DAL.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int?>("ReviewId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ReviewId1")
-                        .HasColumnType("int");
-
                     b.Property<string>("SecondName")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -398,15 +392,91 @@ namespace DAL.Migrations
                         .IsUnique()
                         .HasFilter("[PhoneNumber] IS NOT NULL");
 
-                    b.HasIndex("ReviewId");
-
-                    b.HasIndex("ReviewId1");
-
                     b.HasIndex("ShopId")
                         .IsUnique()
                         .HasFilter("[ShopId] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("DAL.Entities.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ConsumerEmail")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ConsumerFirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ConsumerPhone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ConsumerSecondName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OrderStatusId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderStatusId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("DAL.Entities.OrderProduct", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderProducts");
+                });
+
+            modelBuilder.Entity("DAL.Entities.OrderStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OrderStatuses");
                 });
 
             modelBuilder.Entity("DAL.Entities.Product", b =>
@@ -449,7 +519,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("StatusId");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("DAL.Entities.ProductImage", b =>
@@ -470,7 +540,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductImages", (string)null);
+                    b.ToTable("ProductImages");
                 });
 
             modelBuilder.Entity("DAL.Entities.ProductStatus", b =>
@@ -486,7 +556,127 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductStatuses", (string)null);
+                    b.ToTable("ProductStatuses");
+                });
+
+            modelBuilder.Entity("DAL.Entities.Question", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FullName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Message")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Questions");
+                });
+
+            modelBuilder.Entity("DAL.Entities.QuestionImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("QuestionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuestionId");
+
+                    b.ToTable("QuestionImages");
+                });
+
+            modelBuilder.Entity("DAL.Entities.QuestionReply", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FullName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsSeller")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("QuestionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuestionId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("QuestionReplies");
+                });
+
+            modelBuilder.Entity("DAL.Entities.QuestionVotes", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("IsLike")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("QuestionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("QuestionId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("QuestionVotes");
                 });
 
             modelBuilder.Entity("DAL.Entities.Review", b =>
@@ -547,7 +737,7 @@ namespace DAL.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ReviewId")
+                    b.Property<int?>("ReviewId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -555,6 +745,70 @@ namespace DAL.Migrations
                     b.HasIndex("ReviewId");
 
                     b.ToTable("ReviewImages");
+                });
+
+            modelBuilder.Entity("DAL.Entities.ReviewReply", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FullName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsSeller")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ReviewId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReviewId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ReviewReplies");
+                });
+
+            modelBuilder.Entity("DAL.Entities.ReviewVotes", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("IsLike")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ReviewId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReviewId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ReviewVotes");
                 });
 
             modelBuilder.Entity("DAL.Entities.Shop", b =>
@@ -590,7 +844,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("CityId");
 
-                    b.ToTable("Shops", (string)null);
+                    b.ToTable("Shops");
                 });
 
             modelBuilder.Entity("DAL.Entities.Unit", b =>
@@ -606,7 +860,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Units", (string)null);
+                    b.ToTable("Units");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -895,19 +1149,11 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.Identity.AppUser", b =>
                 {
-                    b.HasOne("DAL.Entities.Review", null)
-                        .WithMany("Dislikes")
-                        .HasForeignKey("ReviewId");
-
-                    b.HasOne("DAL.Entities.Review", null)
-                        .WithMany("Likes")
-                        .HasForeignKey("ReviewId1");
-
                     b.HasOne("DAL.Entities.Shop", "Shop")
                         .WithOne("User")
                         .HasForeignKey("DAL.Entities.Identity.AppUser", "ShopId");
 
-                    b.OwnsMany("DAL.Entities.Identity.AppUser.RefreshTokens#DAL.Entities.RefreshToken", "RefreshTokens", b1 =>
+                    b.OwnsMany("DAL.Entities.RefreshToken", "RefreshTokens", b1 =>
                         {
                             b1.Property<string>("AppUserId")
                                 .HasColumnType("nvarchar(450)");
@@ -944,7 +1190,7 @@ namespace DAL.Migrations
 
                             b1.HasKey("AppUserId", "Id");
 
-                            b1.ToTable("RefreshToken", (string)null);
+                            b1.ToTable("RefreshToken");
 
                             b1.WithOwner()
                                 .HasForeignKey("AppUserId");
@@ -953,6 +1199,42 @@ namespace DAL.Migrations
                     b.Navigation("RefreshTokens");
 
                     b.Navigation("Shop");
+                });
+
+            modelBuilder.Entity("DAL.Entities.Order", b =>
+                {
+                    b.HasOne("DAL.Entities.OrderStatus", "OrderStatus")
+                        .WithMany("Orders")
+                        .HasForeignKey("OrderStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DAL.Entities.Identity.AppUser", "User")
+                        .WithMany("Orders")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("OrderStatus");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DAL.Entities.OrderProduct", b =>
+                {
+                    b.HasOne("DAL.Entities.Order", "Order")
+                        .WithMany("OrderProducts")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DAL.Entities.Product", "Product")
+                        .WithMany("OrderProducts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("DAL.Entities.Product", b =>
@@ -993,16 +1275,76 @@ namespace DAL.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("DAL.Entities.Review", b =>
+            modelBuilder.Entity("DAL.Entities.Question", b =>
                 {
                     b.HasOne("DAL.Entities.Product", "Product")
-                        .WithMany()
+                        .WithMany("Questions")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("DAL.Entities.Identity.AppUser", "User")
-                        .WithMany()
+                        .WithMany("Questions")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DAL.Entities.QuestionImage", b =>
+                {
+                    b.HasOne("DAL.Entities.Question", "Question")
+                        .WithMany("Images")
+                        .HasForeignKey("QuestionId");
+
+                    b.Navigation("Question");
+                });
+
+            modelBuilder.Entity("DAL.Entities.QuestionReply", b =>
+                {
+                    b.HasOne("DAL.Entities.Question", "Question")
+                        .WithMany("Replies")
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DAL.Entities.Identity.AppUser", "User")
+                        .WithMany("QuestionReplies")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Question");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DAL.Entities.QuestionVotes", b =>
+                {
+                    b.HasOne("DAL.Entities.Question", "Question")
+                        .WithMany("Votes")
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DAL.Entities.Identity.AppUser", "User")
+                        .WithMany("QuestionVotes")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Question");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DAL.Entities.Review", b =>
+                {
+                    b.HasOne("DAL.Entities.Product", "Product")
+                        .WithMany("Reviews")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DAL.Entities.Identity.AppUser", "User")
+                        .WithMany("Reviews")
                         .HasForeignKey("UserId");
 
                     b.Navigation("Product");
@@ -1012,13 +1354,45 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.ReviewImage", b =>
                 {
-                    b.HasOne("DAL.Entities.Review", "Product")
+                    b.HasOne("DAL.Entities.Review", "Review")
                         .WithMany("Images")
+                        .HasForeignKey("ReviewId");
+
+                    b.Navigation("Review");
+                });
+
+            modelBuilder.Entity("DAL.Entities.ReviewReply", b =>
+                {
+                    b.HasOne("DAL.Entities.Review", "Review")
+                        .WithMany("Replies")
                         .HasForeignKey("ReviewId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Product");
+                    b.HasOne("DAL.Entities.Identity.AppUser", "User")
+                        .WithMany("ReviewReplies")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Review");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DAL.Entities.ReviewVotes", b =>
+                {
+                    b.HasOne("DAL.Entities.Review", "Review")
+                        .WithMany("Votes")
+                        .HasForeignKey("ReviewId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DAL.Entities.Identity.AppUser", "User")
+                        .WithMany("ReviewVotes")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Review");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("DAL.Entities.Shop", b =>
@@ -1130,6 +1504,30 @@ namespace DAL.Migrations
                     b.Navigation("BasketItems");
 
                     b.Navigation("CharacteristicGroups");
+
+                    b.Navigation("Orders");
+
+                    b.Navigation("QuestionReplies");
+
+                    b.Navigation("QuestionVotes");
+
+                    b.Navigation("Questions");
+
+                    b.Navigation("ReviewReplies");
+
+                    b.Navigation("ReviewVotes");
+
+                    b.Navigation("Reviews");
+                });
+
+            modelBuilder.Entity("DAL.Entities.Order", b =>
+                {
+                    b.Navigation("OrderProducts");
+                });
+
+            modelBuilder.Entity("DAL.Entities.OrderStatus", b =>
+                {
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("DAL.Entities.Product", b =>
@@ -1139,15 +1537,30 @@ namespace DAL.Migrations
                     b.Navigation("FilterValueProducts");
 
                     b.Navigation("Images");
+
+                    b.Navigation("OrderProducts");
+
+                    b.Navigation("Questions");
+
+                    b.Navigation("Reviews");
+                });
+
+            modelBuilder.Entity("DAL.Entities.Question", b =>
+                {
+                    b.Navigation("Images");
+
+                    b.Navigation("Replies");
+
+                    b.Navigation("Votes");
                 });
 
             modelBuilder.Entity("DAL.Entities.Review", b =>
                 {
-                    b.Navigation("Dislikes");
-
                     b.Navigation("Images");
 
-                    b.Navigation("Likes");
+                    b.Navigation("Replies");
+
+                    b.Navigation("Votes");
                 });
 
             modelBuilder.Entity("DAL.Entities.Shop", b =>

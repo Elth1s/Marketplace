@@ -13,7 +13,7 @@
         /// <summary>
         /// Photo of product
         /// </summary>
-        /// <example>https://some_shop_image_example.jpg</example>
+        /// <example>https://some_product_image_example.jpg</example>
         public string Image { get; set; }
         /// <summary>
         /// Product status

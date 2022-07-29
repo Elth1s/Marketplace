@@ -13,7 +13,7 @@ namespace DAL.Entities
         public string RevokedByIp { get; set; }
         public string ReplacedByToken { get; set; }
         public string ReasonRevoked { get; set; }
-        public bool IsExpired => DateTime.Now >= Expires;
+        public bool IsExpired => DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc) >= Expires;
         public bool IsRevoked => Revoked != null;
         public bool IsActive => !IsRevoked && !IsExpired;
     }

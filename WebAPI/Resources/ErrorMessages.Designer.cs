@@ -331,6 +331,15 @@ namespace WebAPI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid email.
+        /// </summary>
+        internal static string InvalidUserEmail {
+            get {
+                return ResourceManager.GetString("InvalidUserEmail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Order not found.
         /// </summary>
         internal static string OrderNotFound {
@@ -403,11 +412,56 @@ namespace WebAPI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Question image not found.
+        /// </summary>
+        internal static string QuestionImageNotFound {
+            get {
+                return ResourceManager.GetString("QuestionImageNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Question not found.
+        /// </summary>
+        internal static string QuestionNotFound {
+            get {
+                return ResourceManager.GetString("QuestionNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Review image not found.
         /// </summary>
         internal static string ReviewImageNotFound {
             get {
                 return ResourceManager.GetString("ReviewImageNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Review not found.
+        /// </summary>
+        internal static string ReviewNotFound {
+            get {
+                return ResourceManager.GetString("ReviewNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to You need order product to write review.
+        /// </summary>
+        internal static string ReviewOrder {
+            get {
+                return ResourceManager.GetString("ReviewOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Review reply not found.
+        /// </summary>
+        internal static string ReviewReplyNotFound {
+            get {
+                return ResourceManager.GetString("ReviewReplyNotFound", resourceCulture);
             }
         }
         
@@ -471,13 +525,6 @@ namespace WebAPI.Resources {
         internal static string UserNotFound {
             get {
                 return ResourceManager.GetString("UserNotFound", resourceCulture);
-            }
-        }
-        internal static string QuestionNotFound
-        {
-            get
-            {
-                return ResourceManager.GetString("QuestionNotFound", resourceCulture);
             }
         }
     }

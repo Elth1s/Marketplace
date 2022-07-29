@@ -20,7 +20,14 @@ namespace DAL.Entities.Identity
         public ICollection<CharacteristicGroup> CharacteristicGroups { get; set; }
         public ICollection<RefreshToken> RefreshTokens { get; set; }
         public ICollection<BasketItem> BasketItems { get; set; }
-        public ICollection<Question> Questions { get; set; }
+        public ICollection<Order> Orders { get; set; }
 
+        public ICollection<Question> Questions { get; set; }
+        public ICollection<QuestionVotes> QuestionVotes { get; set; }
+        public ICollection<QuestionReply> QuestionReplies { get; set; }
+
+        public ICollection<Review> Reviews { get; set; }
+        public ICollection<ReviewVotes> ReviewVotes { get; set; }
+        public ICollection<ReviewReply> ReviewReplies { get; set; }
     }
 }

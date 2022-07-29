@@ -7,13 +7,19 @@ using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Request.Categories;
 using WebAPI.ViewModels.Request.Characteristics;
 using WebAPI.ViewModels.Request.Filters;
+using WebAPI.ViewModels.Request.Orders;
 using WebAPI.ViewModels.Request.Products;
+using WebAPI.ViewModels.Request.Questions;
+using WebAPI.ViewModels.Request.Reviews;
 using WebAPI.ViewModels.Request.Users;
 using WebAPI.ViewModels.Response;
 using WebAPI.ViewModels.Response.Categories;
 using WebAPI.ViewModels.Response.Characteristics;
 using WebAPI.ViewModels.Response.Filters;
+using WebAPI.ViewModels.Response.Orders;
 using WebAPI.ViewModels.Response.Products;
+using WebAPI.ViewModels.Response.Questions;
+using WebAPI.ViewModels.Response.Reviews;
 using WebAPI.ViewModels.Response.Users;
 
 namespace WebAPI.Mapper
@@ -22,6 +28,7 @@ namespace WebAPI.Mapper
     {
         public AppMappingProfile()
         {
+            #region User
             //User
             CreateMap<AppUser, UserResponse>()
                 .ForMember(u => u.SecondName, opt => opt.MapFrom(vm => vm.SecondName))
@@ -52,8 +59,9 @@ namespace WebAPI.Mapper
 
             CreateMap<UpdateProfileRequest, AppUser>()
                 .ForMember(u => u.Photo, opt => opt.Ignore());
+            #endregion
 
-
+            #region Category
             //Category
             CreateMap<Category, CategoryResponse>()
                 .ForMember(u => u.Image, opt => opt.MapFrom(vm => !string.IsNullOrEmpty(vm.Image) ? String.Concat(ImagePath.RequestCategoriesImagePath, "/", vm.Image) : ""))
@@ -65,7 +73,9 @@ namespace WebAPI.Mapper
             CreateMap<CategoryRequest, Category>()
                 .ForMember(u => u.Image, opt => opt.Ignore())
                 .ForMember(u => u.Icon, opt => opt.Ignore());
+            #endregion
 
+            #region Characteristic
             //CharacteristicGroup
             CreateMap<CharacteristicGroupRequest, CharacteristicGroup>();
             CreateMap<CharacteristicGroup, CharacteristicGroupResponse>();
@@ -80,7 +90,9 @@ namespace WebAPI.Mapper
             CreateMap<CharacteristicValueRequest, CharacteristicValue>();
             CreateMap<CharacteristicValue, CharacteristicValueResponse>()
                 .ForMember(u => u.CharacteristicName, opt => opt.MapFrom(vm => vm.CharacteristicName.Name));
+            #endregion
 
+            #region Country
             //Country
             CreateMap<CountryRequest, Country>();
             CreateMap<Country, CountryResponse>();
@@ -89,7 +101,9 @@ namespace WebAPI.Mapper
             CreateMap<CityRequest, City>();
             CreateMap<City, CityResponse>()
                 .ForMember(u => u.CountryName, opt => opt.MapFrom(vm => vm.Country.Name));
+            #endregion
 
+            #region Filter
             //FilterGroup
             CreateMap<FilterGroupRequest, FilterGroup>();
             CreateMap<FilterGroup, FilterGroupResponse>();
@@ -108,7 +122,9 @@ namespace WebAPI.Mapper
             CreateMap<FilterValue, ProductFilterValue>()
                 .ForMember(u => u.FilterName, opt => opt.MapFrom(vm => vm.FilterName.Name))
                 .ForMember(u => u.UnitMeasure, opt => opt.MapFrom(vm => vm.FilterName.Unit.Measure));
+            #endregion
 
+            #region Shop
             //Shop
             CreateMap<Shop, ShopResponse>()
                 .ForMember(u => u.CountryName, opt => opt.MapFrom(vm => vm.City.Country.Name))
@@ -117,7 +133,9 @@ namespace WebAPI.Mapper
                 .ForMember(u => u.Photo, opt => opt.MapFrom(vm => !string.IsNullOrEmpty(vm.Photo) ? String.Concat(ImagePath.RequestShopsImagePath, "/", vm.Photo) : ""));
             CreateMap<ShopRequest, Shop>()
                 .ForMember(u => u.Photo, opt => opt.Ignore());
+            #endregion
 
+            #region Product
             //Product
             CreateMap<Product, ProductResponse>()
                 .ForMember(u => u.ShopName, opt => opt.MapFrom(vm => vm.Shop.Name))
@@ -140,6 +158,12 @@ namespace WebAPI.Mapper
             CreateMap<ProductStatusRequest, ProductStatus>();
             CreateMap<ProductStatus, ProductStatusResponse>();
 
+            //ProductImage
+            CreateMap<ProductImage, string>()
+                .ConstructUsing(u => Path.Combine(ImagePath.RequestProductsImagePath, u.Name));
+            #endregion
+
+            #region Basket
             //BasketItem
             CreateMap<BasketCreateRequest, BasketItem>();
             CreateMap<BasketItem, BasketResponse>()
@@ -147,20 +171,80 @@ namespace WebAPI.Mapper
                 .ForMember(u => u.ProductPrice, opt => opt.MapFrom(vm => vm.Product.Price))
                 .ForMember(u => u.ProductCount, opt => opt.MapFrom(vm => vm.Product.Count))
                 .ForMember(u => u.ProductImage, opt => opt.MapFrom(vm => vm.Product.Images.Count != 0 ? Path.Combine(ImagePath.RequestProductsImagePath, vm.Product.Images.FirstOrDefault().Name) : ""));
+            #endregion
 
+            #region Unit
             //Unit
             CreateMap<UnitRequest, Unit>();
             CreateMap<Unit, UnitResponse>();
+            #endregion
 
-            //ProductImage
-            CreateMap<ProductImage, string>()
-                .ConstructUsing(u => Path.Combine(ImagePath.RequestProductsImagePath, u.Name));
+            #region Order
+            //Order status
+            CreateMap<OrderStatusRequest, OrderStatus>();
+            CreateMap<OrderStatus, OrderStatusResponse>();
+
+            //Order
+            CreateMap<OrderCreateRequest, Order>()
+                .ForMember(o => o.OrderProducts, opt => opt.Ignore());
+            CreateMap<OrderProductCreate, OrderProduct>();
+
+            CreateMap<Order, OrderResponse>();
+            CreateMap<OrderProduct, OrderProductResponse>()
+                .ForMember(r => r.ProductName, opt => opt.MapFrom(o => o.Product.Name))
+                .ForMember(r => r.ProductImage, opt => opt.MapFrom(vm => vm.Product.Images.Count != 0 ? Path.Combine(ImagePath.RequestProductsImagePath, vm.Product.Images.FirstOrDefault().Name) : ""));
+            #endregion
+
+            #region Review
+            //Review
+            CreateMap<ReviewRequest, Review>()
+                 .ForMember(r => r.Images, opt => opt.Ignore())
+                 .ForMember(r => r.Date, opt => opt.MapFrom(o => DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc)));
+
+            CreateMap<Review, ReviewResponse>()
+                 .ForMember(r => r.Dislikes, opt => opt.MapFrom(vm => vm.CountDislikes))
+                 .ForMember(r => r.Likes, opt => opt.MapFrom(vm => vm.CountLikes))
+                 .ForMember(r => r.Replies, opt => opt.MapFrom(vm => vm.Replies.Count))
+                 .ForMember(q => q.Date, opt => opt.MapFrom(vm => vm.Date.ToString("d"))); ;
+
+            //ReviewReply
+            CreateMap<ReviewReplyRequest, ReviewReply>()
+                .ForMember(r => r.Date, opt => opt.MapFrom(o => DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc)));
+            CreateMap<ReviewReply, ReviewReplyResponse>()
+                .ForMember(q => q.Date, opt => opt.MapFrom(vm => vm.Date.ToString("d")));
 
 
+            //Review Image
+            CreateMap<ReviewImage, string>()
+                    .ConstructUsing(r => Path.Combine(ImagePath.RequestReviewsImagePath, r.Name));
+            CreateMap<ReviewImage, ReviewImageResponse>()
+                    .ForMember(r => r.Name, opt => opt.MapFrom(vm => Path.Combine(ImagePath.RequestReviewsImagePath, vm.Name)));
+            #endregion
+
+            #region Question
             //Question
-            CreateMap<QuestionRequest, Question>();
-            CreateMap<Question, QuestionResponse>();
+            CreateMap<QuestionRequest, Question>()
+                .ForMember(r => r.Images, opt => opt.Ignore())
+                .ForMember(r => r.Date, opt => opt.MapFrom(o => DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc)));
 
+            CreateMap<Question, QuestionResponse>()
+                .ForMember(r => r.Dislikes, opt => opt.MapFrom(vm => vm.CountDislikes))
+                .ForMember(r => r.Likes, opt => opt.MapFrom(vm => vm.CountLikes))
+                .ForMember(r => r.Replies, opt => opt.MapFrom(vm => vm.Replies.Count))
+                .ForMember(q => q.Date, opt => opt.MapFrom(vm => vm.Date.ToString("d")));
+
+            //QuestionReply
+            CreateMap<QuestionReplyRequest, QuestionReply>()
+                .ForMember(r => r.Date, opt => opt.MapFrom(o => DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc)));
+            CreateMap<QuestionReply, QuestionReplyResponse>()
+                .ForMember(q => q.Date, opt => opt.MapFrom(vm => vm.Date.ToString("d")));
+
+            //Question Image
+            CreateMap<QuestionImage, string>()
+                    .ConstructUsing(r => Path.Combine(ImagePath.RequestQuestionsImagePath, r.Name));
+            CreateMap<QuestionImage, QuestionImageResponse>()
+                    .ForMember(r => r.Name, opt => opt.MapFrom(vm => Path.Combine(ImagePath.RequestQuestionsImagePath, vm.Name)));
+            #endregion
         }
     }
 }

@@ -34,14 +34,20 @@ namespace DAL.Data
 
         public DbSet<BasketItem> BasketItems { get; set; }
 
-        public DbSet<Order> Orders { get; set; }
         public DbSet<OrderStatus> OrderStatuses { get; set; }
+        public DbSet<Order> Orders { get; set; }
         public DbSet<OrderProduct> OrderProducts { get; set; }
 
         public DbSet<Unit> Units { get; set; }
+
         public DbSet<Question> Questions { get; set; }
+        public DbSet<QuestionVotes> QuestionVotes { get; set; }
+        public DbSet<QuestionReply> QuestionReplies { get; set; }
+        public DbSet<QuestionImage> QuestionImages { get; set; }
 
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<ReviewVotes> ReviewVotes { get; set; }
+        public DbSet<ReviewReply> ReviewReplies { get; set; }
         public DbSet<ReviewImage> ReviewImages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
