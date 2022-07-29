@@ -2,34 +2,37 @@
 using DAL;
 using DAL.Constants;
 using DAL.Entities;
-using DAL.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
-using System.Drawing.Imaging;
+using System.Net;
 using WebAPI.Constants;
 using WebAPI.Exceptions;
 using WebAPI.Extensions;
-using WebAPI.Helpers;
 using WebAPI.Interfaces;
+using WebAPI.Interfaces.Users;
 using WebAPI.Resources;
 using WebAPI.Specifications.Shops;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Response;
+using WebAPI.ViewModels.Response.Users;
 
 namespace WebAPI.Services
 {
     public class ShopService : IShopService
     {
         private readonly IRepository<Shop> _shopRepository;
+        private readonly IJwtTokenService _jwtTokenService;
         private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
 
         public ShopService(
             IMapper mapper,
             IRepository<Shop> shopRepository,
+            IJwtTokenService jwtTokenService,
             UserManager<AppUser> userManager
             )
         {
             _shopRepository = shopRepository;
+            _jwtTokenService = jwtTokenService;
             _userManager = userManager;
             _mapper = mapper;
         }
@@ -52,10 +55,16 @@ namespace WebAPI.Services
             return response;
         }
 
-        public async Task CreateShopAsync(ShopRequest request, string userId)
+        public async Task<AuthResponse> CreateShopAsync(ShopRequest request, string userId, string ipAddress)
         {
             var user = await _userManager.FindByIdAsync(userId);
             user.UserNullChecking();
+
+            var resultPasswordCheck = await _userManager.CheckPasswordAsync(user, request.Password);
+            if (!resultPasswordCheck)
+            {
+                throw new AppException(ErrorMessages.InvalidUserData, HttpStatusCode.Unauthorized);
+            }
 
             var resultRoles = await _userManager.GetRolesAsync(user);
             if (resultRoles.Count == 0)
@@ -70,21 +79,23 @@ namespace WebAPI.Services
             var shop = _mapper.Map<Shop>(request);
             shop.UserId = userId;
 
-            if (!string.IsNullOrEmpty(request.Photo))
-            {
-                var img = ImageWorker.FromBase64StringToImage(request.Photo);
-                string randomFilename = Guid.NewGuid() + ".png";
-                var dir = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.ShopsImagePath, randomFilename);
-                img.Save(dir, ImageFormat.Png);
-
-                shop.Photo = randomFilename;
-            }
-
             await _shopRepository.AddAsync(shop);
             await _shopRepository.SaveChangesAsync();
 
             user.ShopId = shop.Id;
             await _userManager.UpdateAsync(user);
+
+            var newRefreshToken = _jwtTokenService.GenerateRefreshToken(ipAddress);
+            await _jwtTokenService.SaveRefreshToken(newRefreshToken, user);
+
+            await _jwtTokenService.RemoveOldRefreshTokens(user);
+
+            var response = new AuthResponse
+            {
+                AccessToken = await _jwtTokenService.GenerateJwtToken(user),
+                RefreshToken = newRefreshToken.Token
+            };
+            return response;
         }
 
         public async Task UpdateShopAsync(int shopId, ShopRequest request, string userId)
@@ -95,32 +106,32 @@ namespace WebAPI.Services
             var shop = await _shopRepository.GetByIdAsync(shopId);
             shop.ShopNullChecking();
 
-            if (!string.IsNullOrEmpty(request.Photo))
-            {
-                var filePath = Path.Combine(
-                    Directory.GetCurrentDirectory(),
-                    request.Photo.Replace(ImagePath.RequestShopsImagePath,
-                    ImagePath.ShopsImagePath));
-                if (!File.Exists(filePath))
-                {
-                    if (!string.IsNullOrEmpty(shop.Photo))
-                    {
-                        filePath = Path.Combine(
-                           Directory.GetCurrentDirectory(),
-                           ImagePath.ShopsImagePath,
-                           shop.Photo);
+            //if (!string.IsNullOrEmpty(request.Photo))
+            //{
+            //    var filePath = Path.Combine(
+            //        Directory.GetCurrentDirectory(),
+            //        request.Photo.Replace(ImagePath.RequestShopsImagePath,
+            //        ImagePath.ShopsImagePath));
+            //    if (!File.Exists(filePath))
+            //    {
+            //        if (!string.IsNullOrEmpty(shop.Photo))
+            //        {
+            //            filePath = Path.Combine(
+            //               Directory.GetCurrentDirectory(),
+            //               ImagePath.ShopsImagePath,
+            //               shop.Photo);
 
-                        if (File.Exists(filePath))
-                            File.Delete(filePath);
-                    }
-                    var img = ImageWorker.FromBase64StringToImage(request.Photo);
-                    string randomFilename = Guid.NewGuid() + ".png";
-                    var dir = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.ShopsImagePath, randomFilename);
-                    img.Save(dir, ImageFormat.Png);
+            //            if (File.Exists(filePath))
+            //                File.Delete(filePath);
+            //        }
+            //        var img = ImageWorker.FromBase64StringToImage(request.Photo);
+            //        string randomFilename = Guid.NewGuid() + ".png";
+            //        var dir = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.ShopsImagePath, randomFilename);
+            //        img.Save(dir, ImageFormat.Png);
 
-                    shop.Photo = randomFilename;
-                }
-            }
+            //        shop.Photo = randomFilename;
+            //    }
+            //}
 
             _mapper.Map(request, shop);
 

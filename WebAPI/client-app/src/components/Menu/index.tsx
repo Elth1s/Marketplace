@@ -1,4 +1,4 @@
-import { AdminPanelSettingsOutlined, Login, Logout, NightlightOutlined, PersonOutlineOutlined } from '@mui/icons-material';
+import { AdminPanelSettingsOutlined, Login, Logout, NightlightOutlined, PersonOutlineOutlined, Store } from '@mui/icons-material';
 import {
     Menu,
     Typography,
@@ -14,10 +14,14 @@ import { useNavigate } from "react-router-dom";
 import { useActions } from '../../hooks/useActions';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 
+import AuthDialog from '../../pages/auth';
+
 import LinkRouter from '../LinkRouter';
+
 import { MenuItemStyle } from './styled';
 
 import { orange_user } from '../../assets/icons';
+import CreateShopDialog from '../../pages/seller/CreateShopDialog';
 
 interface ISettingsMenuItem {
     label: string,
@@ -27,13 +31,15 @@ interface ISettingsMenuItem {
 }
 
 const MainMenu = () => {
-
     const { /*SetTheme,*/ LogoutUser } = useActions();
     // const { darkTheme } = useTypedSelector((state) => state.ui);
     const [darkTheme, setDarkTheme] = useState<boolean>(false);
     const { user, isAuth } = useTypedSelector((state) => state.auth)
     const [anchorEl, setAnchorEl] = React.useState(null);
+
     const open = Boolean(anchorEl);
+    const [authDialogOpen, setAuthDialogOpen] = useState<boolean>(false);
+    const [shopDialogOpen, setShopDialogOpen] = useState<boolean>(false);
 
     const navigate = useNavigate();
 
@@ -53,6 +59,14 @@ const MainMenu = () => {
 
     const handleClose = () => {
         setAnchorEl(null);
+    };
+
+    const authDialogClose = () => {
+        setAuthDialogOpen(false);
+    };
+
+    const shopDialogClose = () => {
+        setShopDialogOpen(false);
     };
 
     const handleThemeChange = () => {
@@ -133,6 +147,29 @@ const MainMenu = () => {
                     </Box>
                 }
                 {/* <Divider sx={{ my: 1, background: "#45a29e" }} /> */}
+                {isAuth && <Box>
+                    {
+                        user.role == "Admin" || user.role == "Seller"
+                            ? <LinkRouter underline="none" color="unset" to="/seler" >
+                                <MenuItemStyle                                >
+                                    <IconButton sx={{ mr: 2, width: 24, height: 24, color: "secondary" }}>
+                                        <Store />
+                                    </IconButton>
+                                    <Typography variant="h6" noWrap sx={{ color: 'secondary' }}>
+                                        Seller Panel
+                                    </Typography>
+                                </MenuItemStyle>
+                            </LinkRouter>
+                            : <MenuItemStyle onClick={() => { handleClose(); setShopDialogOpen(true); }}>
+                                <IconButton sx={{ mr: 2, width: 24, height: 24, color: "secondary" }}>
+                                    <Store />
+                                </IconButton>
+                                <Typography variant="h6" noWrap sx={{ color: 'secondary' }}>
+                                    Create shop
+                                </Typography>
+                            </MenuItemStyle>
+                    }
+                </Box>}
                 {UISettings.map((option) => (
                     <MenuItemStyle
                         key={option.label}
@@ -151,8 +188,7 @@ const MainMenu = () => {
                 ))}
                 <Divider sx={{ my: 1, background: "#45a29e" }} />
                 {isAuth
-                    ?
-                    <MenuItemStyle onClick={handleLogOut}>
+                    ? <MenuItemStyle onClick={handleLogOut}>
                         <IconButton sx={{ mr: 2, width: 24, height: 24 }}>
                             <Logout />
                         </IconButton>
@@ -160,18 +196,18 @@ const MainMenu = () => {
                             Log Out
                         </Typography>
                     </MenuItemStyle>
-                    :
-                    <LinkRouter underline="none" color="unset" to="/auth/signin" >
-                        <MenuItemStyle>
-                            <IconButton sx={{ mr: 2, width: 24, height: 24, color: "secondary" }}>
-                                <Login />
-                            </IconButton>
-                            <Typography variant="h6" noWrap sx={{ color: 'secondary' }}>
-                                Sign In
-                            </Typography>
-                        </MenuItemStyle>
-                    </LinkRouter>}
+                    : <MenuItemStyle onClick={() => { handleClose(); setAuthDialogOpen(true); }}>
+                        <IconButton sx={{ mr: 2, width: 24, height: 24, color: "secondary" }}>
+                            <Login />
+                        </IconButton>
+                        <Typography variant="h6" noWrap sx={{ color: 'secondary' }}>
+                            Sign In
+                        </Typography>
+                    </MenuItemStyle>
+                }
             </Menu>
+            <CreateShopDialog dialogOpen={shopDialogOpen} dialogClose={shopDialogClose} />
+            <AuthDialog dialogOpen={authDialogOpen} dialogClose={authDialogClose} />
         </>
     )
 }

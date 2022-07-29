@@ -1,6 +1,15 @@
 export const google = "/assets/icons/google.png";
 export const facebook = "/assets/icons/facebook.png";
-export const twitter = "/assets/icons/twitter.png";
+
+export const close = "/assets/icons/close.png";
+export const white_close = "/assets/icons/white-close.png";
+export const success = "/assets/icons/success.png";
+
+export const credit_card = "/assets/icons/credit-card.png";
+export const dollar_sign = "/assets/icons/dollar-sign.png";
+
+export const package_delivery = "/assets/icons/package.png";
+export const truck_delivery = "/assets/icons/truck.png";
 
 export const gamepad = "/assets/icons/gamepad.png";
 

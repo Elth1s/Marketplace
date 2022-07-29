@@ -7,6 +7,7 @@ using WebAPI.ViewModels.Request.Categories;
 using WebAPI.ViewModels.Response;
 using WebAPI.ViewModels.Response.Categories;
 using WebAPI.ViewModels.Response.Filters;
+using WebAPI.ViewModels.Response.Products;
 
 namespace WebAPI.Controllers
 {
@@ -76,6 +77,23 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
+        /// Return more products
+        /// </summary>
+        /// <response code="200">Getting products completed successfully</response>
+        /// <response code="401">You are not authorized</response>
+        /// <response code="403">You don't have permission</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<ProductCatalogResponse>))]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [HttpGet("GetMoreProducts")]
+        public async Task<IActionResult> GetMoreProducts([FromQuery] CatalogWithProductsRequest request)
+        {
+            var result = await _categoryService.GetMoreProductsAsync(request);
+            return Ok(result);
+        }
+
+        /// <summary>
         /// Return of catalog
         /// </summary>
         /// <response code="200">Getting catalog completed successfully</response>
@@ -89,6 +107,23 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetCatalog()
         {
             var result = await _categoryService.GetCatalogAsync();
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Return of full catalog
+        /// </summary>
+        /// <response code="200">Getting full catalog completed successfully</response>
+        /// <response code="401">You are not authorized</response>
+        /// <response code="403">You don't have permission</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<FullCatalogItemResponse>))]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [HttpGet("GetFullCatalog")]
+        public async Task<IActionResult> GetFullCatalog()
+        {
+            var result = await _categoryService.GetFullCatalogAsync();
             return Ok(result);
         }
 

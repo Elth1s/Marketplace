@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using DAL;
 using DAL.Entities;
-using DAL.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using WebAPI.Exceptions;
 using WebAPI.Extensions;

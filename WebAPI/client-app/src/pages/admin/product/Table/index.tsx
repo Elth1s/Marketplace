@@ -22,9 +22,9 @@ const headCells: HeadCell<IProductInfo>[] = [
         label: 'Name',
     },
     {
-        id: 'photo',
+        id: 'image',
         numeric: false,
-        label: 'Photo',
+        label: 'Image',
     },
     {
         id: 'price',
@@ -173,9 +173,9 @@ const ProductTable = () => {
                             <TableCellStyle align="center">
                                 <Avatar
                                     sx={{ mx: "auto" }}
-                                    src={row.photo}
-                                    alt="Photo"
-                                /></TableCellStyle>
+                                    src={row.image}
+                                />
+                            </TableCellStyle>
                             <TableCellStyle align="center">{row.price}</TableCellStyle>
                             <TableCellStyle align="center">{row.count}</TableCellStyle>
                             <TableCellStyle align="center">{row.statusName}</TableCellStyle>

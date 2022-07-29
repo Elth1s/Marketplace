@@ -26,9 +26,14 @@
         /// <example>1000</example>
         public int? Max { get; set; }
         /// <summary>
-        /// Name of Filter name 
+        /// Identifier of Filter name 
         /// </summary>
         /// <example>1</example>
+        public string FilterNameId { get; set; }
+        /// <summary>
+        /// Name of Filter name 
+        /// </summary>
+        /// <example>Brand</example>
         public string FilterName { get; set; }
     }
 }

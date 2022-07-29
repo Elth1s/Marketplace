@@ -20,7 +20,13 @@ interface Props {
 const ProductItem: FC<Props> = ({ name, image, statusName, urlSlug, price }) => {
     return (
         <Box sx={{ height: "415px", marginRight: "15px", marginBottom: "15px", position: "relative" }}>
-            <LinkRouter underline="none" color="unset" to={`/product/${urlSlug}`}>
+            <LinkRouter underline="none" color="unset" to={`/product/${urlSlug}`}
+                onClick={() => {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                }}>
                 <BoxStyle>
                     <ImageBoxStyle>
                         <img
@@ -42,7 +48,7 @@ const ProductItem: FC<Props> = ({ name, image, statusName, urlSlug, price }) => 
                     </Typography>
                 </BoxStyle>
             </LinkRouter>
-            <IconButton sx={{ borderRadius: "12px", position: "absolute", zIndex: 2, bottom: "5%", right: "5%" }}>
+            <IconButton color="primary" sx={{ borderRadius: "12px", position: "absolute", zIndex: 2, bottom: "5%", right: "5%" }}>
                 <img
                     style={{ width: "30px", height: "30px" }}
                     src={orange_heart}

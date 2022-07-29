@@ -111,14 +111,14 @@ const Basket = () => {
                 <Paper elevation={0} sx={{ maxHeight: "330px", overflow: 'auto', '&::-webkit-scrollbar': { display: "none" } }} >
                     {basketItems.map((row, index) => {
                         return (
-                            <>
+                            <Box key={`$basket_{row.id}`}>
                                 <Divider sx={{ my: 1, background: "#77777" }} />
                                 <BasketItem id={row.id} image={row.productImage} name={row.productName} price={row.productPrice} />
-                            </>
+                            </Box>
                         );
                     })}
                 </Paper>
-                <LinkRouter underline="none" color="common.black" to="/ordering">
+                <LinkRouter underline="none" to="/ordering">
                     <Button color="secondary" variant="contained" sx={{ width: "100%", my: 1, mt: 2 }} >
                         Order
                     </Button>

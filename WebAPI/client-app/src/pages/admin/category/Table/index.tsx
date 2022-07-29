@@ -119,7 +119,7 @@ const CategoryTable = () => {
 
     return (
         <>
-            <LinkRouter underline="none" color="unset" to="/admin/category/create" >
+            <LinkRouter underline="none" to="/admin/category/create" >
                 <Button
                     variant="contained"
                     sx={{

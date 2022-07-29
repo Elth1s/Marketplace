@@ -1,5 +1,4 @@
 ﻿using DAL.Entities;
-using DAL.Entities.Identity;
 using Google.Apis.Auth;
 using WebAPI.ViewModels.Request.Users;
 using WebAPI.ViewModels.Response.Users;

@@ -25,7 +25,7 @@ const Catalog = () => {
     };
 
     return (
-        <Box>
+        <>
             <BreadcrumbsComponent parents={[]} />
             <Typography variant='h1' sx={{ marginBottom: "30px" }}>
                 Catalog
@@ -37,7 +37,7 @@ const Catalog = () => {
                     );
                 })}
             </BoxCatalogStyle>
-        </Box>
+        </>
     );
 }
 

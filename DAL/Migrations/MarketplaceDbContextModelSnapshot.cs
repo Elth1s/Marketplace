@@ -52,6 +52,94 @@ namespace DAL.Migrations
                     b.ToTable("CharacteristicValueProduct");
                 });
 
+            modelBuilder.Entity("DAL.Entities.AppUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("FirstName")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Photo")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("SecondName")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ShopId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("PhoneNumber")
+                        .IsUnique()
+                        .HasFilter("[PhoneNumber] IS NOT NULL");
+
+                    b.HasIndex("ShopId")
+                        .IsUnique()
+                        .HasFilter("[ShopId] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", (string)null);
+                });
+
             modelBuilder.Entity("DAL.Entities.BasketItem", b =>
                 {
                     b.Property<int>("Id")
@@ -311,94 +399,6 @@ namespace DAL.Migrations
                     b.ToTable("FilterValueProducts");
                 });
 
-            modelBuilder.Entity("DAL.Entities.Identity.AppUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("FirstName")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Photo")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("SecondName")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ShopId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.HasIndex("PhoneNumber")
-                        .IsUnique()
-                        .HasFilter("[PhoneNumber] IS NOT NULL");
-
-                    b.HasIndex("ShopId")
-                        .IsUnique()
-                        .HasFilter("[ShopId] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers", (string)null);
-                });
-
             modelBuilder.Entity("DAL.Entities.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -533,7 +533,10 @@ namespace DAL.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int>("Priority")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -819,13 +822,16 @@ namespace DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("CityId")
+                    b.Property<int?>("CityId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FullName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -845,6 +851,27 @@ namespace DAL.Migrations
                     b.HasIndex("CityId");
 
                     b.ToTable("Shops");
+                });
+
+            modelBuilder.Entity("DAL.Entities.ShopPhone", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ShopId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ShopId");
+
+                    b.ToTable("ShopPhone");
                 });
 
             modelBuilder.Entity("DAL.Entities.Unit", b =>
@@ -1026,6 +1053,60 @@ namespace DAL.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("DAL.Entities.AppUser", b =>
+                {
+                    b.HasOne("DAL.Entities.Shop", "Shop")
+                        .WithOne("User")
+                        .HasForeignKey("DAL.Entities.AppUser", "ShopId");
+
+                    b.OwnsMany("DAL.Entities.RefreshToken", "RefreshTokens", b1 =>
+                        {
+                            b1.Property<string>("AppUserId")
+                                .HasColumnType("nvarchar(450)");
+
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int");
+
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"), 1L, 1);
+
+                            b1.Property<DateTime>("Created")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<string>("CreatedByIp")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<DateTime>("Expires")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<string>("ReasonRevoked")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("ReplacedByToken")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<DateTime?>("Revoked")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<string>("RevokedByIp")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Token")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("AppUserId", "Id");
+
+                            b1.ToTable("RefreshToken");
+
+                            b1.WithOwner()
+                                .HasForeignKey("AppUserId");
+                        });
+
+                    b.Navigation("RefreshTokens");
+
+                    b.Navigation("Shop");
+                });
+
             modelBuilder.Entity("DAL.Entities.BasketItem", b =>
                 {
                     b.HasOne("DAL.Entities.Product", "Product")
@@ -1034,7 +1115,7 @@ namespace DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DAL.Entities.Identity.AppUser", "User")
+                    b.HasOne("DAL.Entities.AppUser", "User")
                         .WithMany("BasketItems")
                         .HasForeignKey("UserId");
 
@@ -1054,7 +1135,7 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.CharacteristicGroup", b =>
                 {
-                    b.HasOne("DAL.Entities.Identity.AppUser", "User")
+                    b.HasOne("DAL.Entities.AppUser", "User")
                         .WithMany("CharacteristicGroups")
                         .HasForeignKey("UserId");
 
@@ -1147,60 +1228,6 @@ namespace DAL.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("DAL.Entities.Identity.AppUser", b =>
-                {
-                    b.HasOne("DAL.Entities.Shop", "Shop")
-                        .WithOne("User")
-                        .HasForeignKey("DAL.Entities.Identity.AppUser", "ShopId");
-
-                    b.OwnsMany("DAL.Entities.RefreshToken", "RefreshTokens", b1 =>
-                        {
-                            b1.Property<string>("AppUserId")
-                                .HasColumnType("nvarchar(450)");
-
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int");
-
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"), 1L, 1);
-
-                            b1.Property<DateTime>("Created")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<string>("CreatedByIp")
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<DateTime>("Expires")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<string>("ReasonRevoked")
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<string>("ReplacedByToken")
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<DateTime?>("Revoked")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<string>("RevokedByIp")
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<string>("Token")
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.HasKey("AppUserId", "Id");
-
-                            b1.ToTable("RefreshToken");
-
-                            b1.WithOwner()
-                                .HasForeignKey("AppUserId");
-                        });
-
-                    b.Navigation("RefreshTokens");
-
-                    b.Navigation("Shop");
-                });
-
             modelBuilder.Entity("DAL.Entities.Order", b =>
                 {
                     b.HasOne("DAL.Entities.OrderStatus", "OrderStatus")
@@ -1209,7 +1236,7 @@ namespace DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DAL.Entities.Identity.AppUser", "User")
+                    b.HasOne("DAL.Entities.AppUser", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId");
 
@@ -1268,9 +1295,7 @@ namespace DAL.Migrations
                 {
                     b.HasOne("DAL.Entities.Product", "Product")
                         .WithMany("Images")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProductId");
 
                     b.Navigation("Product");
                 });
@@ -1283,7 +1308,7 @@ namespace DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DAL.Entities.Identity.AppUser", "User")
+                    b.HasOne("DAL.Entities.AppUser", "User")
                         .WithMany("Questions")
                         .HasForeignKey("UserId");
 
@@ -1309,7 +1334,7 @@ namespace DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DAL.Entities.Identity.AppUser", "User")
+                    b.HasOne("DAL.Entities.AppUser", "User")
                         .WithMany("QuestionReplies")
                         .HasForeignKey("UserId");
 
@@ -1326,7 +1351,7 @@ namespace DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DAL.Entities.Identity.AppUser", "User")
+                    b.HasOne("DAL.Entities.AppUser", "User")
                         .WithMany("QuestionVotes")
                         .HasForeignKey("UserId");
 
@@ -1343,7 +1368,7 @@ namespace DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DAL.Entities.Identity.AppUser", "User")
+                    b.HasOne("DAL.Entities.AppUser", "User")
                         .WithMany("Reviews")
                         .HasForeignKey("UserId");
 
@@ -1369,7 +1394,7 @@ namespace DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DAL.Entities.Identity.AppUser", "User")
+                    b.HasOne("DAL.Entities.AppUser", "User")
                         .WithMany("ReviewReplies")
                         .HasForeignKey("UserId");
 
@@ -1386,7 +1411,7 @@ namespace DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DAL.Entities.Identity.AppUser", "User")
+                    b.HasOne("DAL.Entities.AppUser", "User")
                         .WithMany("ReviewVotes")
                         .HasForeignKey("UserId");
 
@@ -1399,11 +1424,20 @@ namespace DAL.Migrations
                 {
                     b.HasOne("DAL.Entities.City", "City")
                         .WithMany("Shops")
-                        .HasForeignKey("CityId")
+                        .HasForeignKey("CityId");
+
+                    b.Navigation("City");
+                });
+
+            modelBuilder.Entity("DAL.Entities.ShopPhone", b =>
+                {
+                    b.HasOne("DAL.Entities.Shop", "Shop")
+                        .WithMany("Phones")
+                        .HasForeignKey("ShopId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("City");
+                    b.Navigation("Shop");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -1417,7 +1451,7 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("DAL.Entities.Identity.AppUser", null)
+                    b.HasOne("DAL.Entities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1426,7 +1460,7 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("DAL.Entities.Identity.AppUser", null)
+                    b.HasOne("DAL.Entities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1441,7 +1475,7 @@ namespace DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DAL.Entities.Identity.AppUser", null)
+                    b.HasOne("DAL.Entities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1450,11 +1484,32 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("DAL.Entities.Identity.AppUser", null)
+                    b.HasOne("DAL.Entities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("DAL.Entities.AppUser", b =>
+                {
+                    b.Navigation("BasketItems");
+
+                    b.Navigation("CharacteristicGroups");
+
+                    b.Navigation("Orders");
+
+                    b.Navigation("QuestionReplies");
+
+                    b.Navigation("QuestionVotes");
+
+                    b.Navigation("Questions");
+
+                    b.Navigation("ReviewReplies");
+
+                    b.Navigation("ReviewVotes");
+
+                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("DAL.Entities.Category", b =>
@@ -1497,27 +1552,6 @@ namespace DAL.Migrations
             modelBuilder.Entity("DAL.Entities.FilterValue", b =>
                 {
                     b.Navigation("FilterValueProducts");
-                });
-
-            modelBuilder.Entity("DAL.Entities.Identity.AppUser", b =>
-                {
-                    b.Navigation("BasketItems");
-
-                    b.Navigation("CharacteristicGroups");
-
-                    b.Navigation("Orders");
-
-                    b.Navigation("QuestionReplies");
-
-                    b.Navigation("QuestionVotes");
-
-                    b.Navigation("Questions");
-
-                    b.Navigation("ReviewReplies");
-
-                    b.Navigation("ReviewVotes");
-
-                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("DAL.Entities.Order", b =>
@@ -1565,6 +1599,8 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.Shop", b =>
                 {
+                    b.Navigation("Phones");
+
                     b.Navigation("Products");
 
                     b.Navigation("User");

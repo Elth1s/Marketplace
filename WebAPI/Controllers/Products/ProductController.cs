@@ -94,14 +94,28 @@ namespace WebAPI.Controllers.Products
         /// <response code="404">Product not found</response>
         /// <response code="500">An internal error has occurred</response>
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ProductWithCategoryParentsResponse))]
-        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
-        [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [HttpGet("GetByUrlSlug")]
         public async Task<IActionResult> GetByUrlSlug([FromQuery] string urlSlug)
         {
             var result = await _productService.GetByUrlSlugAsync(urlSlug, UserId);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Returns the similar products 
+        /// </summary>
+        /// <response code="200">Getting similar product completed successfully</response>
+        /// <response code="404">Product not found</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<ProductCatalogResponse>))]
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [HttpGet("GetSimilarProducts")]
+        public async Task<IActionResult> GetSimilarProducts([FromQuery] string urlSlug)
+        {
+            var result = await _productService.GetSimilarProductsAsync(urlSlug);
             return Ok(result);
         }
 

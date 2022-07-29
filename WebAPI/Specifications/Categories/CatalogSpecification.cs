@@ -10,5 +10,13 @@ namespace WebAPI.Specifications.Categories
             Query.Where(c => c.ParentId == null)
                 .AsSplitQuery();
         }
+
+        public CatalogSpecification(int? parentId)
+        {
+            Query.Where(c => c.ParentId == parentId)
+                .Include(c => c.Childrens)
+                .ThenInclude(c => c.Childrens)
+                .AsSplitQuery();
+        }
     }
 }

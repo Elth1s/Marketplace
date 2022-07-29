@@ -3,8 +3,8 @@ import {
     Grid,
     IconButton,
     InputAdornment,
+    Typography,
 } from "@mui/material";
-import { AuthLoadingButton, AuthHeaderTypography, AuthSideTypography, AuthAvatar, AuthTextField } from "../styled";
 import {
     VisibilityOutlined,
     VisibilityOffOutlined
@@ -13,7 +13,7 @@ import { Form, FormikProvider, useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
-// import { toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 import GoogleExternalLogin from "../../../components/Google";
 import FacebookExternalLogin from "../../../components/Facebook";
@@ -25,6 +25,10 @@ import { ILoginModel } from "../types";
 import { ServerError } from "../../../store/types";
 import { toLowerFirstLetter } from "../../../http_comon";
 import { login } from "../../../assets/backgrounds";
+
+import { AuthHeaderTypography } from "../styled";
+import { TextFieldFirstStyle } from "../../../components/TextField/style";
+import { LoadingButtonStyle } from '../../../components/LoadingButton/styled';
 
 
 const SignIn = () => {
@@ -44,14 +48,14 @@ const SignIn = () => {
         validationSchema: LogInSchema,
         onSubmit: async (values, { setFieldError }) => {
             if (!executeRecaptcha) {
-                // toast.error("Captcha validation error");
+                //toast.error("Captcha validation error");
                 return;
             }
             const reCaptchaToken = await executeRecaptcha();
             try {
                 await LoginUser(values, reCaptchaToken);
                 navigate("/");
-                // toast.success('Login Success!');
+                //toast.success('Login Success!');
             }
             catch (exeption) {
                 const serverErrors = exeption as ServerError;
@@ -70,7 +74,7 @@ const SignIn = () => {
                     message += "Validation failed.";
                 if (serverErrors.status === 401)
                     message += "The user with the entered data does not exist.";
-                // toast.error(message, { position: "top-right" });
+                //toast.error(message, { position: "top-right" });
             }
 
         }
@@ -120,7 +124,7 @@ const SignIn = () => {
 
                             <Grid container>
                                 <Grid item xs={12} sx={{ height: "40px", marginTop: "92px" }}>
-                                    <AuthTextField
+                                    <TextFieldFirstStyle
                                         fullWidth
                                         variant="standard"
                                         type="text"
@@ -131,7 +135,7 @@ const SignIn = () => {
                                     />
                                 </Grid>
                                 <Grid item xs={12} sx={{ height: "40px", marginTop: "110px" }}>
-                                    <AuthTextField
+                                    <TextFieldFirstStyle
                                         fullWidth
                                         variant="standard"
                                         type={showPassword ? 'text' : 'password'}
@@ -151,27 +155,27 @@ const SignIn = () => {
                                     />
                                 </Grid>
                                 <Grid item xs={12} sx={{ marginTop: "62px", width: "100%", display: "flex", justifyContent: "space-between" }} >
-                                    <AuthSideTypography component={LinkRouter} underline="none" color="unset" to="/auth/signup" sx={{ cursor: "pointer" }} >Don't have an account?</AuthSideTypography>
-                                    <AuthSideTypography component={LinkRouter} underline="none" color="unset" to="/resetPasswordEmail" sx={{ cursor: "pointer" }} >Forgot password?</AuthSideTypography>
+                                    <Typography variant="h4" component={LinkRouter} underline="none" color="unset" to="/auth/signup" sx={{ cursor: "pointer" }} >Don't have an account?</Typography>
+                                    <Typography variant="h4" component={LinkRouter} underline="none" color="unset" to="/resetPasswordEmail" sx={{ cursor: "pointer" }} >Forgot password?</Typography>
                                 </Grid>
                                 <Grid item xs={12} sx={{ marginTop: "85px" }}>
-                                    <AuthLoadingButton
+                                    <LoadingButtonStyle
                                         color="primary"
                                         variant="contained"
                                         loading={isSubmitting}
                                         type="submit"
                                     >
                                         Sign In
-                                    </AuthLoadingButton>
+                                    </LoadingButtonStyle>
                                 </Grid>
                                 <Grid item xs={12} sx={{ marginTop: "60px" }} display="flex" justifyContent="center" >
                                     <Box sx={{ width: "98px", height: "17px", borderBottom: "2px solid #000" }} />
-                                    <AuthSideTypography sx={{ padding: "0 7px" }}>or</AuthSideTypography>
+                                    <Typography variant="h4" sx={{ padding: "0 7px" }}>or</Typography>
                                     <Box sx={{ width: "98px", height: "17px", borderBottom: "2px solid #000" }} />
                                 </Grid>
                                 <Grid item xs={12} sx={{ position: "relative", marginTop: "45px" }} display="flex" justifyContent="center" >
-                                    <GoogleExternalLogin />
-                                    <FacebookExternalLogin />
+                                    {/* <GoogleExternalLogin /> */}
+                                    {/* <FacebookExternalLogin /> */}
                                 </Grid>
                             </Grid>
                         </Form>

@@ -1,5 +1,4 @@
-﻿using DAL.Entities.Identity;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DAL.Entities
 {

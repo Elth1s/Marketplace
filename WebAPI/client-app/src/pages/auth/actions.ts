@@ -61,7 +61,6 @@ export const GoogleExternalLogin = (data: IExternalLoginModel) => {
         try {
             let response = await http.post<IAuthResponse>('api/Auth/GoogleExternalLogin', data)
             const tokens = response.data;
-            console.log(tokens)
             setLocalAccessToken(tokens.accessToken);
             setLocalRefreshToken(tokens.refreshToken);
 
@@ -79,7 +78,6 @@ export const FacebookExternalLogin = (data: IExternalLoginModel) => {
         try {
             let response = await http.post<IAuthResponse>('api/Auth/FacebookExternalLogin', data)
             const tokens = response.data;
-            console.log(tokens)
             setLocalAccessToken(tokens.accessToken);
             setLocalRefreshToken(tokens.refreshToken);
 

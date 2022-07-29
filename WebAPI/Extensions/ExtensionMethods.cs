@@ -1,5 +1,4 @@
 ﻿using DAL.Entities;
-using DAL.Entities.Identity;
 using System.Net;
 using WebAPI.Exceptions;
 using WebAPI.Resources;

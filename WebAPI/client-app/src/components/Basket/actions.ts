@@ -24,3 +24,16 @@ export const GetBasketItems = () => {
         }
     }
 }
+
+export const RemoveFromBasket = (id: number) => {
+    return async (dispatch: Dispatch<BasketAction>) => {
+        try {
+            let response = await http.delete(`api/BasketItem/Delete/${id}`)
+
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
+        }
+    }
+}

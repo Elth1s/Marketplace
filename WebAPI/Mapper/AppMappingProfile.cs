@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using DAL.Entities;
-using DAL.Entities.Identity;
 using Google.Apis.Auth;
 using WebAPI.Constants;
 using WebAPI.ViewModels.Request;
@@ -68,6 +67,8 @@ namespace WebAPI.Mapper
                 .ForMember(u => u.Icon, opt => opt.MapFrom(vm => !string.IsNullOrEmpty(vm.Icon) ? String.Concat(ImagePath.RequestCategoriesImagePath, "/", vm.Icon) : ""));
             CreateMap<Category, CatalogItemResponse>()
                 .ForMember(u => u.Image, opt => opt.MapFrom(vm => !string.IsNullOrEmpty(vm.Image) ? String.Concat(ImagePath.RequestCategoriesImagePath, "/", vm.Image) : ""));
+            CreateMap<Category, FullCatalogItemResponse>()
+                .ForMember(u => u.Icon, opt => opt.MapFrom(vm => !string.IsNullOrEmpty(vm.Icon) ? String.Concat(ImagePath.RequestCategoriesImagePath, "/", vm.Icon) : ""));
             CreateMap<Category, CategoryForSelectResponse>();
 
             CreateMap<CategoryRequest, Category>()
@@ -131,13 +132,13 @@ namespace WebAPI.Mapper
                 .ForMember(u => u.CityName, opt => opt.MapFrom(vm => vm.City.Name))
                 .ForMember(u => u.UserFullName, opt => opt.MapFrom(vm => vm.User.FirstName + " " + vm.User.SecondName))
                 .ForMember(u => u.Photo, opt => opt.MapFrom(vm => !string.IsNullOrEmpty(vm.Photo) ? String.Concat(ImagePath.RequestShopsImagePath, "/", vm.Photo) : ""));
-            CreateMap<ShopRequest, Shop>()
-                .ForMember(u => u.Photo, opt => opt.Ignore());
+            CreateMap<ShopRequest, Shop>();
             #endregion
 
             #region Product
             //Product
             CreateMap<Product, ProductResponse>()
+                .ForMember(u => u.Image, opt => opt.MapFrom(vm => vm.Images.Count != 0 ? Path.Combine(ImagePath.RequestProductsImagePath, vm.Images.FirstOrDefault().Name) : ""))
                 .ForMember(u => u.ShopName, opt => opt.MapFrom(vm => vm.Shop.Name))
                 .ForMember(u => u.StatusName, opt => opt.MapFrom(vm => vm.Status.Name))
                 .ForMember(u => u.CategoryName, opt => opt.MapFrom(vm => vm.Category.Name));
@@ -159,8 +160,8 @@ namespace WebAPI.Mapper
             CreateMap<ProductStatus, ProductStatusResponse>();
 
             //ProductImage
-            CreateMap<ProductImage, string>()
-                .ConstructUsing(u => Path.Combine(ImagePath.RequestProductsImagePath, u.Name));
+            CreateMap<ProductImage, ProductImageResponse>()
+                .ForMember(u => u.Name, opt => opt.MapFrom(vm => Path.Combine(ImagePath.RequestProductsImagePath, vm.Name)));
             #endregion
 
             #region Basket

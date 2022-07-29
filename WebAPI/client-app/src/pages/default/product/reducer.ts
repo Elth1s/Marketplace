@@ -11,6 +11,7 @@ const initialState: ProductState = {
         price: 0,
         filters: []
     },
+    similarProducts: []
 }
 
 export const productReducer = (state = initialState, action: ProductAction): ProductState => {
@@ -20,6 +21,11 @@ export const productReducer = (state = initialState, action: ProductAction): Pro
                 ...state,
                 parents: action.payload.parents,
                 product: action.payload.product,
+            }
+        case ProductActionTypes.GET_SIMILAR_PRODUCTS:
+            return {
+                ...state,
+                similarProducts: action.payload,
             }
         case ProductActionTypes.UPDATE_SELECTED_PRODUCT:
             return {

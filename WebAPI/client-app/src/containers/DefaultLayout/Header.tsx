@@ -5,7 +5,8 @@ import {
     InputAdornment,
     Button,
     Box,
-    Container
+    Container,
+    Divider
 } from "@mui/material";
 import {
     Search,
@@ -19,38 +20,33 @@ import { useTypedSelector } from "../../hooks/useTypedSelector";
 
 import { logo } from "../../assets/logos"
 
-import { TextFieldStyle } from "./styled";
+import { LanguageButtonStyle, TextFieldStyle } from "./styled";
 
 import MainMenu from "../../components/Menu";
 import LinkRouter from "../../components/LinkRouter";
 import Basket from "../../components/Basket";
 
 import { orange_heart, list, search } from '../../assets/icons';
+import { useState } from "react";
+import CatalogMenu from "../../components/CatalogMenu";
 
 const Header = () => {
     const { isAuth } = useTypedSelector((state) => state.auth)
 
+    const [isUaLanguage, setIsUaLanguage] = useState<boolean>(false);
+
     return (
-        <AppBar component="header" sx={{ height: "88px", marginBottom: "30px" }} elevation={0} position="static" >
+        <AppBar component="header" sx={{ height: "110px", mb: "30px", mt: "15px" }} elevation={0} position="static" >
             <Container sx={{ height: "100%", maxWidth: { xl: "xl", lg: "lg", md: "md" } }}>
                 <Toolbar disableGutters={true} sx={{ height: "100%", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <LinkRouter underline="none" color="unset" to="/">
                         <img
-                            style={{ height: "66px" }}
+                            style={{ height: "82px" }}
                             src={logo}
                             alt="logo"
                         />
                     </LinkRouter>
-                    <LinkRouter underline="none" color="unset" to="/catalog">
-                        <Button variant="contained" sx={{ width: "148px", height: "50px", fontSize: "18px", paddingLeft: "13px", paddingRight: "17px", textTransform: "none", borderRadius: "9px" }}
-                            startIcon={<img
-                                style={{ width: "20px", height: "20px" }}
-                                src={list}
-                                alt="icon"
-                            />}>
-                            Catalog
-                        </Button>
-                    </LinkRouter>
+                    <CatalogMenu />
                     <TextFieldStyle placeholder="Search products..."
                         InputProps={{
                             endAdornment: (
@@ -65,7 +61,11 @@ const Header = () => {
                                 </InputAdornment>
                             )
                         }} />
-                    <Box sx={{ flexGrow: 0.55 }} />
+                    <Box sx={{ display: "flex" }}>
+                        <LanguageButtonStyle selected={!isUaLanguage} onClick={() => { setIsUaLanguage(false); }}>EN</LanguageButtonStyle>
+                        <Divider sx={{ borderColor: "black", borderRightWidth: "3px", mx: "1px" }} orientation="vertical" flexItem />
+                        <LanguageButtonStyle selected={isUaLanguage} onClick={() => { setIsUaLanguage(true); }}>UA</LanguageButtonStyle>
+                    </Box>
                     {isAuth &&
                         <>
                             <IconButton
@@ -80,12 +80,12 @@ const Header = () => {
                                     alt="icon"
                                 />
                             </IconButton>
-                            <Basket />
                         </>}
+                    <Basket />
                     <MainMenu />
                 </Toolbar>
             </Container>
-        </AppBar>
+        </AppBar >
     );
 };
 

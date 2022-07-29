@@ -4,8 +4,9 @@ const initialState: CatalogState = {
     parents: [],
     name: "Catalog",
     catalogItems: [],
+    fullCatalogItems: [],
     products: [],
-    count: 0,
+    countProducts: 0,
     filterNames: []
 }
 
@@ -15,6 +16,11 @@ export const catalogReducer = (state = initialState, action: CatalogAction): Cat
             return {
                 ...state,
                 catalogItems: action.payload,
+            }
+        case CatalogActionTypes.GET_FULL_CATALOG:
+            return {
+                ...state,
+                fullCatalogItems: action.payload,
             }
         case CatalogActionTypes.GET_FILTERS_BY_CATEGORY:
             return {
@@ -27,7 +33,12 @@ export const catalogReducer = (state = initialState, action: CatalogAction): Cat
                 name: action.payload.name,
                 catalogItems: action.payload.catalogItems,
                 products: action.payload.products,
-                count: action.payload.count,
+                countProducts: action.payload.countProducts,
+            }
+        case CatalogActionTypes.GET_MORE_PRODUCTS:
+            return {
+                ...state,
+                products: [...state.products, ...action.payload]
             }
         case CatalogActionTypes.GET_PARENTS:
             return {

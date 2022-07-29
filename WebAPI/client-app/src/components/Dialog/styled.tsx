@@ -1,10 +1,17 @@
 import { LoadingButton } from "@mui/lab";
-import { styled } from "@mui/material";
+import { Dialog, styled } from "@mui/material";
 
 
-export const LoadingButtonStyled = styled(LoadingButton)(({ theme }) => ({
+export const LoadingButtonStyle = styled(LoadingButton)(({ theme }) => ({
     backgroundColor: `${theme.palette.secondary.main}`,
     "&:hover": {
         backgroundColor: `${theme.palette.secondary.dark}`,
+    },
+}));
+
+export const DialogStyle = styled(Dialog)(({ theme }) => ({
+    "& .MuiDialog-paper": {
+        width: "600px",
+        borderRadius: "10px"
     },
 }));

@@ -15,7 +15,6 @@ export const GetByIdFilterValue = (id: number) => {
     return async (dispatch: Dispatch<FilterValueAction>) => {
         try {
             let response = await http.get<IFilterValue>(`api/FilterValue/GetById/${id}`)
-
             dispatch({
                 type: FilterValueActionTypes.GET_BY_ID_FILTER_VALUE,
                 payload: response.data
@@ -79,7 +78,7 @@ export const GetFilterValues = () => {
 export const CreateFilterValue = (data: IFilterValue) => {
     return async () => {
         try {
-            await http.post("api/FilterValue/Create", data);
+            await http.post("api/FilterValue/Create", { value: data.value, min: data.min == "" ? null : data.min, max: data.max == "" ? null : data.max, filterNameId: data.filterNameId });
             return Promise.resolve();
         }
         catch (error) {
@@ -91,7 +90,7 @@ export const CreateFilterValue = (data: IFilterValue) => {
 export const UpdateFilterValue = (id: number, data: IFilterValue) => {
     return async () => {
         try {
-            await http.put<IFilterValue>(`api/FilterValue/Update/${id}`, data);
+            await http.put<IFilterValue>(`api/FilterValue/Update/${id}`, { value: data.value, min: data.min == "" ? null : data.min, max: data.max == "" ? null : data.max, filterNameId: data.filterNameId });
             return Promise.resolve();
         }
         catch (error) {

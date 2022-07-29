@@ -5,6 +5,7 @@ import {
     Divider,
     Grid, IconButton, Slide, Typography,
 } from "@mui/material";
+import { TransitionProps } from "@mui/material/transitions";
 import { Close, Visibility } from "@mui/icons-material";
 
 import { useState, FC, forwardRef } from "react";
@@ -12,16 +13,20 @@ import { ShowProps } from "../../../../store/types";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import { useActions } from "../../../../hooks/useActions";
 
+const Transition = forwardRef(function Transition(
+    props: TransitionProps & {
+        children: React.ReactElement<any, any>;
+    },
+    ref: React.Ref<unknown>,
+) {
+    return <Slide direction="left" ref={ref} {...props} />;
+});
 
 const ShowShop: FC<ShowProps> = ({ id }) => {
     const [open, setOpen] = useState(false);
 
     const { GetByIdShop } = useActions();
     const { selectedShop } = useTypedSelector((store) => store.shop);
-
-    const Transition = forwardRef(function Transition(props: any, ref) {
-        return <Slide direction="left" ref={ref} {...props} />;
-    });
 
     const handleClickOpen = async () => {
         await GetByIdShop(id);

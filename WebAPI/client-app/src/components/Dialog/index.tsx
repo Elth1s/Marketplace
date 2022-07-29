@@ -2,12 +2,13 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import { TransitionProps } from '@mui/material/transitions';
 
 import { Form, FormikProvider } from "formik";
 
 import { IconButton, Slide } from '@mui/material';
 import { Close } from '@mui/icons-material';
-import { LoadingButtonStyled } from './styled';
+import { LoadingButtonStyle } from './styled';
 import { forwardRef } from 'react';
 
 export interface IDialog {
@@ -25,7 +26,12 @@ export interface IDialog {
     dialogContent: any,
 };
 
-const Transition = forwardRef(function Transition(props: any, ref) {
+const Transition = forwardRef(function Transition(
+    props: TransitionProps & {
+        children: React.ReactElement<any, any>;
+    },
+    ref: React.Ref<unknown>,
+) {
     return <Slide direction="left" ref={ref} {...props} />;
 });
 
@@ -82,14 +88,14 @@ const DialogComponent: React.FC<IDialog> = ({
                             {dialogContent}
                         </DialogContent>
                         <DialogActions sx={{ m: 0, p: 3, pt: 0 }}>
-                            <LoadingButtonStyled
+                            <LoadingButtonStyle
                                 type="submit"
                                 loading={isSubmitting}
                                 size="large"
                                 variant="contained"
                             >
                                 {dialogBtnConfirm}
-                            </LoadingButtonStyled>
+                            </LoadingButtonStyle>
                         </DialogActions>
                     </Form>
                 </FormikProvider>

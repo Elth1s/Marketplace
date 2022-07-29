@@ -6,10 +6,7 @@ export enum ConfirmEmailActionTypes {
     SEND_CONFIRM_EMAIL = "SEND_CONFIRM_EMAIL",
     IS_EMAIL_CONFIRMED = "IS_EMAIL_CONFIRMED"
 }
-export enum ResetPasswordActionTypes {
-    RESET_PASSWORD = "RESET_PASSWORD",
-    RESET_CHANGE_PASSWORD = "RESET_CHANGE_PASSWORD"
-}
+
 
 export interface IProfile {
     firstName: string,
@@ -20,10 +17,6 @@ export interface IProfile {
     hasPassword: boolean
 }
 
-export interface IResetPasswordInfo {
-    userId: string,
-    token: string
-}
 
 export interface ProfileState {
     userInfo: IProfile,
@@ -46,32 +39,6 @@ export interface IsEmailConfirmedAction {
     payload: boolean
 }
 
-//Reset Password
-export interface IResetPasswordEmail {
-    email: string
-}
-
-export interface IResetPasswordPhone {
-    phone: string,
-    code: string
-}
-
-export interface IPhoneCodeRequest {
-    phone: string
-}
-
-export interface IResetChangePassword {
-    userId: string,
-    token: string,
-    password: string,
-    confirmPassword: string
-}
-export interface ResetPasswordAction {
-    type: ResetPasswordActionTypes.RESET_PASSWORD,
-}
-export interface ResetChangePasswordAction {
-    type: ResetPasswordActionTypes.RESET_CHANGE_PASSWORD,
-}
 
 export interface GetProfileAction {
     type: ProfileActionTypes.GET_PROFILE,
@@ -81,4 +48,3 @@ export interface GetProfileAction {
 
 export type ProfileAction = GetProfileAction;
 export type EmailConfirmAction = ConfirmEmailAction | SendConfirmEmailAction | IsEmailConfirmedAction;
-export type PasswordResetAction = ResetPasswordAction | ResetChangePasswordAction;

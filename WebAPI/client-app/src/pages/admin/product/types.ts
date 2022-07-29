@@ -6,7 +6,7 @@ export enum ProductActionTypes {
 export interface IProductInfo {
     id: number,
     name: string,
-    photo: string,
+    image: string,
     price: number,
     count: number,
     statusName: string,

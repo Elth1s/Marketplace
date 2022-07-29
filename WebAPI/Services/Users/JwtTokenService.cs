@@ -1,5 +1,4 @@
 ﻿using DAL.Entities;
-using DAL.Entities.Identity;
 using Google.Apis.Auth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
