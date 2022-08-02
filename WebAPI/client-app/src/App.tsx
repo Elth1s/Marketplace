@@ -17,6 +17,8 @@ import SignIn from './pages/auth/SignInDialog';
 import SignUp from './pages/auth/SignUpDialog';
 
 import Profile from './pages/user/Profile';
+import Reviewed from './pages/user/Reviewed';
+import Order from './pages/user/Order'
 import ConfirmEmail from './pages/user/ConfirmEmail';
 import ChangePassword from './pages/user/ChangePassword';
 import Ordering from './pages/user/Ordering';
@@ -186,9 +188,11 @@ function App() {
 
           </Route>
 
-          <Route path="/profile" element={<ProfileLayout />}>
-            <Route path="/profile/information" element={<Profile />} />
-          </Route>
+        <Route path="/profile" element={<ProfileLayout />}>
+          <Route path="/profile/information" element={<Profile />} />
+          <Route path="/profile/reviewed-products" element={<Reviewed />} />
+          <Route path="/profile/order" element={<Order />} />
+        </Route>
 
           <Route path="/ordering" element={<Ordering />} />
 

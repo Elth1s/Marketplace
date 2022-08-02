@@ -11,6 +11,18 @@ export enum ConfirmEmailActionTypes {
 export interface IProfile {
     firstName: string,
     secondName: string,
+
+    gender: string,
+    birthDate: Date | null,
+    languageOfCommunication: number,
+    region: number,
+    address: string,
+    city: string,
+    postalCode: string,
+
+    email: string,
+    phone: string,
+
     photo: string,
     isEmailConfirmed: boolean,
     isPhoneConfirmed: boolean,

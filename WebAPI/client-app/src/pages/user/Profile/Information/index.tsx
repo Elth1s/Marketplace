@@ -1,5 +1,4 @@
 import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
 
 import { useEffect } from "react";
 
@@ -15,6 +14,8 @@ import { IProfile } from "../../types";
 
 import TextFieldComponent from "../../../../components/TextField";
 import SelectComponent from "../../../../components/Select";
+import DatePickerComponent from "../../../../components/DatePicker";
+
 import { ButtonStyled } from "../../styled";
 
 const Information = () => {
@@ -56,7 +57,7 @@ const Information = () => {
         onSubmit: onHandleSubmit
     });
 
-    const { errors, touched, isSubmitting, handleSubmit, setFieldError, getFieldProps } = formik;
+    const { errors, touched, isSubmitting, handleSubmit, setFieldError, getFieldProps, setFieldValue } = formik;
 
     return (
         <FormikProvider value={formik} >
@@ -85,26 +86,26 @@ const Information = () => {
                             <TextFieldComponent
                                 type="text"
                                 label="Gender"
-                                // error={errors.gender}
-                                // touched={touched.gender}
+                                error={errors.gender}
+                                touched={touched.gender}
                                 getFieldProps={{ ...getFieldProps('gender') }}
                             />
                         </Grid>
                         <Grid item xs>
-                            <TextFieldComponent
-                                type="text"
-                                label="Birth date"
-                                // error={errors.gender}
-                                // touched={touched.gender}
-                                getFieldProps={{ ...getFieldProps('birthDate') }}
+                            <DatePickerComponent
+                                label={"birthDate"}
+                                value={userInfo.birthDate}
+                                error={errors.birthDate}
+                                touched={touched.birthDate}
+                                onChange={(value) => { setFieldValue('birthDate', value) }}
                             />
                         </Grid>
                         <Grid item xs>
                             <SelectComponent
                                 label="Language of communication"
                                 items={[{ id: 1, name: "test1" }, { id: 2, name: "test2" }]}
-                                // error={errors.gender}
-                                // touched={touched.gender}
+                                error={errors.languageOfCommunication}
+                                touched={touched.languageOfCommunication}
                                 getFieldProps={{ ...getFieldProps('languageOfCommunication') }}
                             />
                         </Grid>
@@ -117,18 +118,17 @@ const Information = () => {
                             <SelectComponent
                                 label="Region"
                                 items={[{ id: 1, name: "test1" }, { id: 2, name: "test2" }]}
-                                // error={errors.region}
-                                // touched={touched.region}
+                                error={errors.region}
+                                touched={touched.region}
                                 getFieldProps={{ ...getFieldProps('region') }}
                             />
                         </Grid>
-                        
                         <Grid item xs>
                             <TextFieldComponent
                                 type="text"
                                 label="Address"
-                                // error={errors.address}
-                                // touched={touched.address}
+                                error={errors.address}
+                                touched={touched.address}
                                 getFieldProps={{ ...getFieldProps('address') }}
                             />
                         </Grid>
@@ -136,8 +136,8 @@ const Information = () => {
                             <TextFieldComponent
                                 type="text"
                                 label="City"
-                                // error={errors.city}
-                                // touched={touched.city}
+                                error={errors.city}
+                                touched={touched.city}
                                 getFieldProps={{ ...getFieldProps('city') }}
                             />
                         </Grid>
@@ -145,8 +145,8 @@ const Information = () => {
                             <TextFieldComponent
                                 type="text"
                                 label="Postal Code"
-                                // error={errors.postalСode}
-                                // touched={touched.postalСode}
+                                error={errors.postalCode}
+                                touched={touched.postalCode}
                                 getFieldProps={{ ...getFieldProps('postalCode') }}
                             />
                         </Grid>

@@ -5,11 +5,16 @@ import Button from "@mui/material/Button";
 import { styled } from "@mui/material";
 
 export const PaperStyled = styled(Paper)(() => ({
-    margin: "13px 0 130px",
-    padding: "24px 16px 46px",
     boxShadow: "0px 5px 15px rgba(0, 0, 0, 0.25)",
     borderRadius: "10px"
 }));
+
+export const Img = styled('img')({
+    margin: 'auto',
+    display: 'block',
+    maxWidth: '100%',
+    maxHeight: '100%',
+});
 
 export const TabStyled = styled(Tab)(({ theme }) => ({
     maxWidth: "none",
@@ -37,12 +42,12 @@ export const ButtonStyled = styled(Button)(() => ({
 }));
 
 export const ChangeButton = styled(Button)(() => ({
+    width: "155px",
+    height: "28px",
     fontSize: "14px",
     lineHeight: "18px",
     fontWeight: "500",
     borderRadius: "10px",
-    marginLeft: "33px",
-    padding: "10px 33px 11px",
     textTransform: "none",
 }));
 
