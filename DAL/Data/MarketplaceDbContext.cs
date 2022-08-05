@@ -55,7 +55,7 @@ namespace DAL.Data
 
             builder.Entity<Category>()
                 .HasOne(c => c.Parent)
-                .WithMany(c => c.Childrens);
+                .WithMany(c => c.Children);
 
             builder.Entity<AppUser>(entity =>
             {

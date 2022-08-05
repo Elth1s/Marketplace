@@ -12,6 +12,7 @@ export const DrawerStyle = styled(Drawer, { shouldForwardProp: (prop) => prop !=
       position: 'relative',
       whiteSpace: 'nowrap',
       width: 278,
+      '&::-webkit-scrollbar': { display: "none" },
       transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen,

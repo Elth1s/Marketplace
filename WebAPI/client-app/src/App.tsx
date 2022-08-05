@@ -32,15 +32,21 @@ import CategoryTable from './pages/admin/category/Table';
 import CategoryCreate from './pages/admin/category/Create';
 import CategoryUpdate from './pages/admin/category/Update';
 
-import CharacteristicGroupTable from './pages/admin/characteristicGroup/Table';
-import CharacteristicNameTable from './pages/admin/characteristicName/Table';
-import CharacteristicValueTable from './pages/admin/characteristicValue/Table';
+import AdminCharacteristicGroupTable from './pages/admin/characteristicGroup/Table';
+import AdminCharacteristicNameTable from './pages/admin/characteristicName/Table';
+import AdminCharacteristicValueTable from './pages/admin/characteristicValue/Table';
+
+import CharacteristicGroupTable from './pages/seller/characteristicGroup/Table';
+import CharacteristicNameTable from './pages/seller/characteristicName/Table';
+import CharacteristicValueTable from './pages/seller/characteristicValue/Table';
+
+import ProductTable from './pages/seller/product/Table';
 
 import FilterGroupTable from './pages/admin/filterGroup/Table';
 import FilterNameTable from './pages/admin/filterName/Table';
 import FilterValueTable from './pages/admin/filterValue/Table';
 
-import ProductTable from './pages/admin/product/Table';
+import AdminProductTable from './pages/admin/product/Table';
 import ProductStatusTable from './pages/admin/productStatus/Table';
 
 import ShopTable from './pages/admin/shop/Table';
@@ -52,6 +58,8 @@ import UnitTable from './pages/admin/unit/Table';
 import UserTable from './pages/admin/user/Table';
 
 import NotFound from './pages/notfound';
+import SellerLayout from './containers/SellerLayout';
+import ProductCreate from './pages/seller/product/Create';
 
 function App() {
   const { isAuth } = useTypedSelector(store => store.auth);
@@ -165,19 +173,19 @@ function App() {
 
   return (
     <>
-      <ToastContainer
-        position="bottom-right"
-        autoClose={false}
-        hideProgressBar={true}
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light" />
       <ThemeProvider theme={theme}>
         <CssBaseline />
+        <ToastContainer
+          position="bottom-right"
+          autoClose={5000}
+          hideProgressBar={true}
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light" />
         <Routes>
 
           <Route path="/" element={<DefaultLayout />}>
@@ -188,11 +196,11 @@ function App() {
 
           </Route>
 
-        <Route path="/profile" element={<ProfileLayout />}>
-          <Route path="/profile/information" element={<Profile />} />
-          <Route path="/profile/reviewed-products" element={<Reviewed />} />
-          <Route path="/profile/order" element={<Order />} />
-        </Route>
+          <Route path="/profile" element={<ProfileLayout />}>
+            <Route path="/profile/information" element={<Profile />} />
+            <Route path="/profile/reviewed-products" element={<Reviewed />} />
+            <Route path="/profile/order" element={<Order />} />
+          </Route>
 
           <Route path="/ordering" element={<Ordering />} />
 
@@ -201,21 +209,29 @@ function App() {
             <Route path="/auth/signup" element={<SignUp />} />
           </Route>
 
+          <Route path="/seller" element={<SellerLayout />}>
+            <Route path="/seller/characteristicGroup" element={<CharacteristicGroupTable />} />
+            <Route path="/seller/characteristicName" element={<CharacteristicNameTable />} />
+            <Route path="/seller/characteristicValue" element={<CharacteristicValueTable />} />
+            <Route path="/seller/product" element={<ProductTable />} />
+            <Route path="/seller/product/create" element={<ProductCreate />} />
+          </Route>
+
           <Route path="/admin" element={<AdminLayout />}>
             <Route path="/admin/category" element={<CategoryTable />} />
             <Route path="/admin/category/create" element={<CategoryCreate />} />
             <Route path="/admin/category/update/:id" element={<CategoryUpdate />} />
 
-            <Route path="/admin/characteristicGroup" element={<CharacteristicGroupTable />} />
-            <Route path="/admin/characteristicName" element={<CharacteristicNameTable />} />
-            <Route path="/admin/characteristicValue" element={<CharacteristicValueTable />} />
+            <Route path="/admin/characteristicGroup" element={<AdminCharacteristicGroupTable />} />
+            <Route path="/admin/characteristicName" element={<AdminCharacteristicNameTable />} />
+            <Route path="/admin/characteristicValue" element={<AdminCharacteristicValueTable />} />
 
             <Route path="/admin/filterGroup" element={<FilterGroupTable />} />
             <Route path="/admin/filterName" element={<FilterNameTable />} />
             <Route path="/admin/filterValue" element={<FilterValueTable />} />
 
             <Route path="/admin/productStatus" element={<ProductStatusTable />} />
-            <Route path="/admin/product" element={<ProductTable />} />
+            <Route path="/admin/product" element={<AdminProductTable />} />
 
             <Route path="/admin/shop" element={<ShopTable />} />
 

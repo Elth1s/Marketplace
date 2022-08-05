@@ -1,53 +1,23 @@
-:root {
-    --toastify-text-color-light: #000;
+.Toastify__toast-container {
+    right: 1.5rem;
 }
 
 .Toastify__toast {
     padding: 0;
+    height: 70px;
 }
 
 .Toastify__toast-body {
-    white-space: pre-line;
     padding: 0;
     margin: 0;
-}
-
-.Toastify__toast-icon {
-    width: 60px;
+    display: block;
 }
 
 .Toastify__toast-body>div:last-child {
-    background: #fff;
     height: 100%;
 }
 
-.Toastify__toast>button>svg {
+.Toastify__toast-icon,
+.Toastify__close-button {
     display: none;
-}
-
-.Toastify__toast-theme--light {
-    color: "#000";
-}
-
-/* SUCCESS */
-.Toastify__toast--success {
-    border-radius: 5px;
-    background: rgba(48, 170, 97, 0.3);
-}
-
-.Toastify__toast--success::before {
-    position: relative;
-    z-index: 100000;
-    left: 12px;
-    top: 6px;
-}
-
-.Toastify__toast--success::after {
-    /* content: url("/assets/icons/close.png"); */
-    position: absolute;
-    color: #333333;
-    font-size: 15px;
-    font-weight: 700;
-    left: 265px;
-    padding-top: 14px;
 }

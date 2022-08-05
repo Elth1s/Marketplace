@@ -4,7 +4,7 @@ import { Form, FormikProvider, useFormik } from "formik";
 import { FC, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LoadingButtonStyle } from "../../../components/LoadingButton/styled";
-import { TextFieldFirstStyle } from "../../../components/TextField/style";
+import { TextFieldFirstStyle } from "../../../components/TextField/styled";
 import { useActions } from "../../../hooks/useActions";
 import { ServerError } from "../../../store/types";
 import { IResetPasswordInfo, IResetPasswordPhone } from "./types";
@@ -28,7 +28,7 @@ const EmailDialog: FC<Props> = ({ dialogClose, changeDialog }) => {
         validationSchema: ResetPasswordPhoneSchema,
         onSubmit: async (values, { setFieldError }) => {
             try {
-                var res = await ValidateCodeForResetPasswordByPhone(values) as unknown as IResetPasswordInfo
+                let res = await ValidateCodeForResetPasswordByPhone(values) as unknown as IResetPasswordInfo;
                 navigate(`/resetPassword/${res.token}?userId=${res.userId}`);
             }
             catch (exception) {

@@ -1,13 +1,13 @@
-import { Avatar, Checkbox, TableRow } from '@mui/material';
+import { Avatar, Checkbox, TableRow, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useActions } from '../../../../hooks/useActions';
 import { useTypedSelector } from '../../../../hooks/useTypedSelector';
 
-import { IProductInfo } from '../types';
 import { HeadCell } from '../../../../store/types';
 
 import EnhancedTable from '../../../../components/EnhancedTable';
 import { TableCellStyle } from '../../../../components/EnhancedTable/styled';
+import { IProductInfo } from '../../../seller/product/types';
 
 
 const headCells: HeadCell<IProductInfo>[] = [
@@ -48,7 +48,7 @@ const headCells: HeadCell<IProductInfo>[] = [
     }
 ];
 
-const ProductTable = () => {
+const AdminProductTable = () => {
     const [page, setPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(8);
     const [name, setName] = useState("");
@@ -58,7 +58,7 @@ const ProductTable = () => {
     const [selected, setSelected] = useState<readonly number[]>([]);
 
     const { SearchProducts, DeleteProducts } = useActions();
-    const { products, count } = useTypedSelector((store) => store.productAdmin);
+    const { products, count } = useTypedSelector((store) => store.productSeller);
 
     useEffect(() => {
         document.title = "Products";
@@ -76,7 +76,6 @@ const ProductTable = () => {
     const onDelete = async () => {
         await DeleteProducts(selected);
         setPage(1);
-        getData();
     }
 
     const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
@@ -121,7 +120,7 @@ const ProductTable = () => {
 
     return (
         <>
-
+            <Typography variant="h1" sx={{ my: "30px", py: "4.5px" }}>Products</Typography>
             <EnhancedTable
                 page={page}
                 rowsPerPage={rowsPerPage}
@@ -187,4 +186,4 @@ const ProductTable = () => {
     );
 }
 
-export default ProductTable
+export default AdminProductTable

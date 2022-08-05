@@ -1,5 +1,4 @@
-import TableRow from '@mui/material/TableRow';
-import Checkbox from '@mui/material/Checkbox';
+import { Box, Typography, TableRow, Checkbox } from '@mui/material';
 
 import { useEffect, useState } from "react";
 
@@ -66,7 +65,6 @@ const FilterNameTable = () => {
     const onDelete = async () => {
         await DeleteFilterNames(selected);
         setPage(1);
-        getData();
     }
 
     const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
@@ -111,7 +109,10 @@ const FilterNameTable = () => {
 
     return (
         <>
-            <Create afterCreate={() => getData()} />
+            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", my: "30px" }}>
+                <Typography variant="h1">Filter names</Typography>
+                <Create afterCreate={() => { getData() }} />
+            </Box>
             <EnhancedTable
                 page={page}
                 rowsPerPage={rowsPerPage}

@@ -21,18 +21,17 @@ import LinkRouter from '../../../components/LinkRouter';
 
 import { toast } from 'react-toastify';
 
+import { ToastSuccess, ToastError, ToastWarning, ToastInfo } from '../../../components/ToastComponent';
 
 const HomePage = () => {
     const [sidebarItems, setSidebarItems] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
 
     useEffect(() => {
         document.title = "Mall";
-        // toast.success('Test Success! \n qwe');
-        // toast.error('Test Error!');
-        // toast.warning('Test Warning!');
-        // toast.info('Test Info!');
-        // toast('Test Default!');
-
+        // toast.success(<ToastSuccess title="Success" message="Create complete" />);
+        // toast.error(<ToastError title="Error" message="Somethings went wrong" />);
+        // toast.warning(<ToastWarning title="Warning" message="Select category" />);
+        // toast.info(<ToastInfo title="Info" message="Auth complele" />);
     }, [])
 
     return (

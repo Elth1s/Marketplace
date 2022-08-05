@@ -2,8 +2,11 @@
 using DAL;
 using DAL.Entities;
 using Microsoft.AspNetCore.Identity;
+using System.Net;
+using WebAPI.Exceptions;
 using WebAPI.Extensions;
 using WebAPI.Interfaces.Characteristics;
+using WebAPI.Resources;
 using WebAPI.Specifications.Characteristics;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Request.Characteristics;
@@ -35,14 +38,19 @@ namespace WebAPI.Services.Characteristcs
             return _mapper.Map<IEnumerable<CharacteristicGroupResponse>>(characteristicGroups);
         }
 
-        public async Task<AdminSearchResponse<CharacteristicGroupResponse>> SearchCharacteristicGroupsAsync(AdminSearchRequest request)
+        public async Task<AdminSearchResponse<CharacteristicGroupResponse>> SearchCharacteristicGroupsAsync(SellerSearchRequest request, string userId)
         {
-            var spec = new CharacteristicGroupSearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
+            var user = await _userManager.FindByIdAsync(userId);
+            user.UserNullChecking();
+
+            var spec = new CharacteristicGroupSearchSpecification(request.Name, request.IsAscOrder, request.OrderBy, request.IsSeller, userId);
             var count = await _characteristicGroupRepository.CountAsync(spec);
 
             spec = new CharacteristicGroupSearchSpecification(request.Name,
                 request.IsAscOrder,
                 request.OrderBy,
+                request.IsSeller,
+                userId,
                 (request.Page - 1) * request.RowsPerPage,
                 request.RowsPerPage);
 
@@ -63,6 +71,11 @@ namespace WebAPI.Services.Characteristcs
 
         public async Task CreateAsync(CharacteristicGroupRequest request, string userId)
         {
+            var spec = new CharacteristicGroupGetByNameSpecification(request.Name, userId);
+            var characteristicGroupExist = await _characteristicGroupRepository.GetBySpecAsync(spec);
+            if (characteristicGroupExist != null)
+                throw new AppValidationException(new ValidationError(nameof(CharacteristicGroup.Name), ErrorMessages.CharacteristicGroupExist));
+
             var characteristicGroup = _mapper.Map<CharacteristicGroup>(request);
 
             var user = await _userManager.FindByIdAsync(userId);
@@ -73,10 +86,21 @@ namespace WebAPI.Services.Characteristcs
             await _characteristicGroupRepository.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(int id, CharacteristicGroupRequest request)
+        public async Task UpdateAsync(int id, CharacteristicGroupRequest request, string userId)
         {
+            var spec = new CharacteristicGroupGetByNameSpecification(request.Name, userId);
+            var characteristicGroupExist = await _characteristicGroupRepository.GetBySpecAsync(spec);
+            if (characteristicGroupExist != null && id != characteristicGroupExist.Id)
+                throw new AppValidationException(new ValidationError(nameof(CharacteristicGroup.Name), ErrorMessages.CharacteristicGroupExist));
+
+            var user = await _userManager.FindByIdAsync(userId);
+            user.UserNullChecking();
+
             var characteristicGroup = await _characteristicGroupRepository.GetByIdAsync(id);
             characteristicGroup.CharacteristicGroupNullChecking();
+
+            if (user.Id != characteristicGroup.UserId)
+                throw new AppException(ErrorMessages.DontHavePermition, HttpStatusCode.Forbidden);
 
             _mapper.Map(request, characteristicGroup);
 

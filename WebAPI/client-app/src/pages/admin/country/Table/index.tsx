@@ -1,6 +1,6 @@
 
 
-import { Checkbox, TableRow } from '@mui/material';
+import { Box, Checkbox, TableRow, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useActions } from '../../../../hooks/useActions';
 import { useTypedSelector } from '../../../../hooks/useTypedSelector';
@@ -60,7 +60,6 @@ const CountryTable = () => {
     const onDelete = async () => {
         await DeleteCountries(selected);
         setPage(1);
-        getData();
     }
 
     const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
@@ -105,7 +104,10 @@ const CountryTable = () => {
 
     return (
         <>
-            <Create afterCreate={() => { getData() }} />
+            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", my: "30px" }}>
+                <Typography variant="h1">Countries</Typography>
+                <Create afterCreate={() => { getData() }} />
+            </Box>
             <EnhancedTable
                 page={page}
                 rowsPerPage={rowsPerPage}

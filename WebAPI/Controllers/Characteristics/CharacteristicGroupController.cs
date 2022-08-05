@@ -58,11 +58,11 @@ namespace WebAPI.Controllers.Characteristics
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Seller")]
         [HttpGet("Search")]
-        public async Task<IActionResult> SearchCharacteristicGroups([FromQuery] AdminSearchRequest request)
+        public async Task<IActionResult> SearchCharacteristicGroups([FromQuery] SellerSearchRequest request)
         {
-            var result = await _characteristicGroupService.SearchCharacteristicGroupsAsync(request);
+            var result = await _characteristicGroupService.SearchCharacteristicGroupsAsync(request, UserId);
             return Ok(result);
         }
 
@@ -129,7 +129,7 @@ namespace WebAPI.Controllers.Characteristics
         [HttpPut("Update/{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] CharacteristicGroupRequest request)
         {
-            await _characteristicGroupService.UpdateAsync(id, request);
+            await _characteristicGroupService.UpdateAsync(id, request, UserId);
             return Ok("Characteristic group updated successfully");
         }
 

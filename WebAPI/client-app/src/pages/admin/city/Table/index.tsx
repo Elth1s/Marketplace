@@ -11,7 +11,7 @@ import { ICityInfo } from '../types';
 import Create from '../Create';
 import Update from '../Update';
 import EnhancedTable from '../../../../components/EnhancedTable';
-import { Checkbox, TableRow } from '@mui/material';
+import { Box, Checkbox, TableRow, Typography } from '@mui/material';
 import { TableCellStyle } from '../../../../components/EnhancedTable/styled';
 
 
@@ -61,7 +61,6 @@ const CityTable = () => {
     const onDelete = async () => {
         await DeleteCities(selected);
         setPage(1);
-        getData();
     }
 
     const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
@@ -106,7 +105,10 @@ const CityTable = () => {
 
     return (
         <>
-            <Create afterCreate={() => { getData() }} />
+            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", my: "30px" }}>
+                <Typography variant="h1">Cities</Typography>
+                <Create afterCreate={() => { getData() }} />
+            </Box>
             <EnhancedTable
                 page={page}
                 rowsPerPage={rowsPerPage}

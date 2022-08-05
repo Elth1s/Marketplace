@@ -40,12 +40,18 @@ export interface ISimilarProduct {
     discount: number | null
 }
 
+export interface IProductImage {
+    id: number,
+    name: string,
+    rating: number
+}
+
 export interface IProductItem {
     isInBasket: boolean,
     name: string,
     shopName: string,
     productStatus: string,
-    images: Array<string>,
+    images: Array<IProductImage>,
     price: number,
     filters: Array<IFilterItem>
 }

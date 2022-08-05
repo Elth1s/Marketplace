@@ -59,9 +59,9 @@ namespace WebAPI.Controllers.Products
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
         [HttpGet("Search")]
-        public async Task<IActionResult> SearchProducts([FromQuery] AdminSearchRequest request)
+        public async Task<IActionResult> SearchProducts([FromQuery] SellerSearchRequest request)
         {
-            var result = await _productService.SearchProductsAsync(request);
+            var result = await _productService.SearchProductsAsync(request, UserId);
             return Ok(result);
         }
 

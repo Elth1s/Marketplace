@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using System.Security.Claims;
 using WebAPI.Interfaces.Characteristics;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Request.Characteristics;
@@ -17,6 +18,9 @@ namespace WebAPI.Controllers.Characteristics
     [ApiController]
     public class CharacteristicNameController : Controller
     {
+        private string UserId => User?.FindFirstValue(ClaimTypes.NameIdentifier);
+
+
         private readonly ICharacteristicNameService _characteristicNameService;
 
         public CharacteristicNameController(ICharacteristicNameService characteristicService)
@@ -39,7 +43,7 @@ namespace WebAPI.Controllers.Characteristics
         [HttpGet("Get")]
         public async Task<IActionResult> Get()
         {
-            var result = await _characteristicNameService.GetAsync();
+            var result = await _characteristicNameService.GetAsync(UserId);
             return Ok(result);
         }
 
@@ -54,11 +58,11 @@ namespace WebAPI.Controllers.Characteristics
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Seller")]
         [HttpGet("Search")]
-        public async Task<IActionResult> SearchCountries([FromQuery] AdminSearchRequest request)
+        public async Task<IActionResult> SearchCharacteristicNames([FromQuery] SellerSearchRequest request)
         {
-            var result = await _characteristicNameService.SearchAsync(request);
+            var result = await _characteristicNameService.SearchAsync(request, UserId);
             return Ok(result);
         }
 
@@ -102,7 +106,7 @@ namespace WebAPI.Controllers.Characteristics
         [HttpPost("Create")]
         public async Task<IActionResult> Create([FromBody] CharacteristicNameRequest request)
         {
-            await _characteristicNameService.CreateAsync(request);
+            await _characteristicNameService.CreateAsync(request, UserId);
             return Ok("Characteristic name updated successfully");
         }
 
@@ -125,7 +129,7 @@ namespace WebAPI.Controllers.Characteristics
         [HttpPut("Update/{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] CharacteristicNameRequest request)
         {
-            await _characteristicNameService.UpdateAsync(id, request);
+            await _characteristicNameService.UpdateAsync(id, request, UserId);
             return Ok("Characteristic name updated successfully");
         }
 

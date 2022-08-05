@@ -131,7 +131,6 @@ namespace WebAPI.Controllers
         /// Return filters of category
         /// </summary>
         /// <response code="200">Getting filters of category completed successfully</response>
-        /// <response code="401">You are not authorized</response>
         /// <response code="403">You don't have permission</response>
         /// <response code="500">An internal error has occurred</response>
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<FilterNameValuesResponse>))]
@@ -141,6 +140,26 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetFiltersByCategory([FromQuery] string urlSlug)
         {
             var result = await _categoryService.GetFiltersByCategoryAsync(urlSlug);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Return filters of category id
+        /// </summary>
+        /// <param name="id">Category identifier</param>
+        /// <response code="200">Getting filters of category id completed successfully</response>
+        /// <response code="401">You are not authorized</response>
+        /// <response code="403">You don't have permission</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<FilterNameValuesResponse>))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = "Admin,Seller")]
+        [HttpGet("GetFiltersByCategoryId/{id}")]
+        public async Task<IActionResult> GetFiltersByCategory(int id)
+        {
+            var result = await _categoryService.GetFiltersByCategoryIdAsync(id);
             return Ok(result);
         }
 
@@ -176,6 +195,25 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetForSelectCategory()
         {
             var result = await _categoryService.GetForSelectAsync();
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Returns categories without children for select
+        /// </summary>
+        /// <response code="200">Getting categories without children for select completed successfully</response>
+        /// <response code="401">You are not authorized</response>
+        /// <response code="403">You don't have permission</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<CategoryForSelectResponse>))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = "Admin,Seller")]
+        [HttpGet("GetWithoutChildren")]
+        public async Task<IActionResult> GetCategoriesWithoutChildren()
+        {
+            var result = await _categoryService.GetCategoriesWithoutChildrenAsync();
             return Ok(result);
         }
 

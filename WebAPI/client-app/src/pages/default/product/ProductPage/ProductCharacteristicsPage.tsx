@@ -57,7 +57,7 @@ const ProductCharacteristicsPage: FC<Props> = ({ urlSlug, isInBasket }) => {
                 <Box sx={{ width: "420px", ml: "auto" }}>
                     {product.images?.length > 0 && <img
                         style={{ width: "420px", height: "420px", objectFit: "contain" }}
-                        src={product.images[0]}
+                        src={product.images[0].name}
                         alt="productImage"
                     />}
                     <PriceBox>

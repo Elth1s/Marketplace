@@ -1,8 +1,9 @@
 
 
 import { AddBox, Create, Edit } from "@mui/icons-material";
-import { Avatar, Button, Checkbox, IconButton, TableRow } from "@mui/material";
+import { Avatar, Box, Button, Checkbox, IconButton, TableRow, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+import { white_plus } from "../../../../assets/icons";
 import EnhancedTable from "../../../../components/EnhancedTable";
 import { TableCellStyle } from "../../../../components/EnhancedTable/styled";
 import LinkRouter from "../../../../components/LinkRouter";
@@ -73,8 +74,7 @@ const CategoryTable = () => {
 
     const onDelete = async () => {
         await DeleteCategories(selected);
-        setPage(1);
-        getData();
+        await setPage(1);
     }
 
     const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
@@ -119,17 +119,22 @@ const CategoryTable = () => {
 
     return (
         <>
-            <LinkRouter underline="none" to="/admin/category/create" >
-                <Button
-                    variant="contained"
-                    sx={{
-                        my: 2,
-                        px: 4,
-                    }}
-                >
-                    Create
-                </Button>
-            </LinkRouter>
+            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", my: "30px" }}>
+                <Typography variant="h1">Categories</Typography>
+                <LinkRouter underline="none" to="/admin/category/create" >
+                    <IconButton
+                        sx={{ borderRadius: '12px', background: "#F45626", "&:hover": { background: "#CB2525" }, "&& .MuiTouchRipple-child": { backgroundColor: "transparent" } }}
+                        size="large"
+                        color="inherit"
+                    >
+                        <img
+                            style={{ width: "30px" }}
+                            src={white_plus}
+                            alt="icon"
+                        />
+                    </IconButton>
+                </LinkRouter>
+            </Box>
             <EnhancedTable
                 page={page}
                 rowsPerPage={rowsPerPage}

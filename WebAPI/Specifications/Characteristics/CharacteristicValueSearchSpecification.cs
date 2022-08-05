@@ -6,10 +6,13 @@ namespace WebAPI.Specifications.Characteristics
 {
     public class CharacteristicValueSearchSpecification : Specification<CharacteristicValue>
     {
-        public CharacteristicValueSearchSpecification(string name, bool isAscOrder, string orderBy, int? skip = null, int? take = null)
+        public CharacteristicValueSearchSpecification(string name, bool isAscOrder, string orderBy, bool isSeller, string userId, int? skip = null, int? take = null)
         {
             if (!string.IsNullOrEmpty(name))
                 Query.Where(item => item.Value.Contains(name));
+
+            if (isSeller)
+                Query.Where(item => item.UserId == userId);
 
             Query.Include(c => c.CharacteristicName)
                 .AsSplitQuery();

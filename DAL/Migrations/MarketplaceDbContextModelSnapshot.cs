@@ -234,11 +234,16 @@ namespace DAL.Migrations
                     b.Property<int?>("UnitId")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CharacteristicGroupId");
 
                     b.HasIndex("UnitId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("CharacteristicNames");
                 });
@@ -254,12 +259,17 @@ namespace DAL.Migrations
                     b.Property<int>("CharacteristicNameId")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CharacteristicNameId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("CharacteristicValues");
                 });
@@ -1154,9 +1164,15 @@ namespace DAL.Migrations
                         .WithMany("CharacteristicNames")
                         .HasForeignKey("UnitId");
 
+                    b.HasOne("DAL.Entities.AppUser", "User")
+                        .WithMany("CharacteristicNames")
+                        .HasForeignKey("UserId");
+
                     b.Navigation("CharacteristicGroup");
 
                     b.Navigation("Unit");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("DAL.Entities.CharacteristicValue", b =>
@@ -1167,7 +1183,13 @@ namespace DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("DAL.Entities.AppUser", "User")
+                        .WithMany("CharacteristicValues")
+                        .HasForeignKey("UserId");
+
                     b.Navigation("CharacteristicName");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("DAL.Entities.City", b =>
@@ -1496,6 +1518,10 @@ namespace DAL.Migrations
                     b.Navigation("BasketItems");
 
                     b.Navigation("CharacteristicGroups");
+
+                    b.Navigation("CharacteristicNames");
+
+                    b.Navigation("CharacteristicValues");
 
                     b.Navigation("Orders");
 

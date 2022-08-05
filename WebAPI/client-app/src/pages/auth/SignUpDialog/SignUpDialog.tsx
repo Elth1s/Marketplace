@@ -26,7 +26,7 @@ import { ServerError } from '../../../store/types';
 import { IRegisterModel } from '../types';
 import { SignUpSchema } from '../validation';
 
-import { TextFieldFirstStyle } from '../../../components/TextField/style';
+import { TextFieldFirstStyle } from '../../../components/TextField/styled';
 
 import GoogleExternalLogin from '../../../components/Google';
 import FacebookExternalLogin from '../../../components/Facebook';

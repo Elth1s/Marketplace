@@ -161,6 +161,32 @@ namespace WebAPI.Services
             return response;
         }
 
+        public async Task<IEnumerable<FilterGroupSellerResponse>> GetFiltersByCategoryIdAsync(int id)
+        {
+            var spec = new CategoryGetWithFilterValues(id);
+            var category = await _categoryRepository.GetBySpecAsync(spec);
+            category.CategoryNullChecking();
+
+            var filters = category.FilterValues;
+            var gropedFilterNames = filters.GroupBy(f => f.FilterName);
+            var gropedFilterGroups = gropedFilterNames.GroupBy(f => f.Key.FilterGroup);
+            var response = gropedFilterGroups.Select(g => new FilterGroupSellerResponse()
+            {
+                Id = g.Key.Id,
+                Name = g.Key.Name,
+                FilterNames = g.Key.FiltersName.Select(n => new FilterNameSellerResponse()
+                {
+                    Id = n.Id,
+                    Name = n.Name,
+                    UnitMeasure = n.Unit?.Measure,
+                    FilterValues = _mapper.Map<IEnumerable<FilterValueSellerResponse>>(n.FilterValues)
+                })
+            });
+
+
+            return response;
+        }
+
         public async Task<IEnumerable<CatalogItemResponse>> GetParentsAsync(string urlSlug)
         {
             var spec = new CategoryIncludeFullInfoSpecification(urlSlug);
@@ -182,6 +208,13 @@ namespace WebAPI.Services
         public async Task<IEnumerable<CategoryForSelectResponse>> GetForSelectAsync()
         {
             var categories = await _categoryRepository.ListAsync();
+            return _mapper.Map<IEnumerable<CategoryForSelectResponse>>(categories);
+        }
+
+        public async Task<IEnumerable<CategoryForSelectResponse>> GetCategoriesWithoutChildrenAsync()
+        {
+            var spec = new CategoryGetWithoutChildrenSpecification();
+            var categories = await _categoryRepository.ListAsync(spec);
             return _mapper.Map<IEnumerable<CategoryForSelectResponse>>(categories);
         }
 

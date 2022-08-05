@@ -13,6 +13,7 @@ import { IFilterValueInfo } from '../types';
 import { HeadCell } from '../../../../store/types';
 import Create from '../Create';
 import Update from '../Update';
+import { Box, Typography } from '@mui/material';
 
 const headCells: HeadCell<IFilterValueInfo>[] = [
     {
@@ -70,7 +71,6 @@ const FilterValueTable = () => {
     const onDelete = async () => {
         await DeleteFilterValues(selected);
         setPage(1);
-        getData();
     }
 
     const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
@@ -115,7 +115,10 @@ const FilterValueTable = () => {
 
     return (
         <>
-            <Create afterCreate={() => getData()} />
+            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", my: "30px" }}>
+                <Typography variant="h1">Filter values</Typography>
+                <Create afterCreate={() => { getData() }} />
+            </Box>
             <EnhancedTable
                 page={page}
                 rowsPerPage={rowsPerPage}

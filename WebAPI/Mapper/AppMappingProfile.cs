@@ -111,6 +111,7 @@ namespace WebAPI.Mapper
 
             //FilterName
             CreateMap<FilterNameRequest, FilterName>();
+            CreateMap<FilterName, FilterNameSellerResponse>();
             CreateMap<FilterName, FilterNameResponse>()
                 .ForMember(u => u.FilterGroupName, opt => opt.MapFrom(vm => vm.FilterGroup.Name))
                 .ForMember(u => u.UnitMeasure, opt => opt.MapFrom(vm => vm.Unit.Measure));
@@ -118,6 +119,7 @@ namespace WebAPI.Mapper
             //FilterValue
             CreateMap<FilterValueRequest, FilterValue>();
             CreateMap<FilterValue, FilterValueCatalogResponse>();
+            CreateMap<FilterValue, FilterValueSellerResponse>();
             CreateMap<FilterValue, FilterValueResponse>()
                 .ForMember(u => u.FilterName, opt => opt.MapFrom(vm => vm.FilterName.Name));
             CreateMap<FilterValue, ProductFilterValue>()

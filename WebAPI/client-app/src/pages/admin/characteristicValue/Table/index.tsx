@@ -9,10 +9,9 @@ import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import EnhancedTable from '../../../../components/EnhancedTable';
 import { TableCellStyle } from '../../../../components/EnhancedTable/styled';
 
-import { ICharacteristicValueInfo } from '../types';
 import { HeadCell } from '../../../../store/types';
-import Create from '../Create';
-import Update from '../Update';
+import { ICharacteristicValueInfo } from '../../../seller/characteristicValue/types';
+import { Typography } from '@mui/material';
 
 const headCells: HeadCell<ICharacteristicValueInfo>[] = [
     {
@@ -32,7 +31,7 @@ const headCells: HeadCell<ICharacteristicValueInfo>[] = [
     },
 ];
 
-const CharacteristicValueTable = () => {
+const AdminCharacteristicValueTable = () => {
     const [page, setPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(8);
     const [name, setName] = useState("");
@@ -51,7 +50,7 @@ const CharacteristicValueTable = () => {
 
     const getData = async () => {
         try {
-            await SearchCharacteristicValues(page, rowsPerPage, name, isAscOrder, orderBy);
+            await SearchCharacteristicValues(page, rowsPerPage, name, isAscOrder, orderBy, false);
             setSelected([]);
         } catch (ex) {
         }
@@ -60,7 +59,6 @@ const CharacteristicValueTable = () => {
     const onDelete = async () => {
         await DeleteCharacteristicValues(selected);
         setPage(1);
-        getData();
     }
 
     const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
@@ -105,7 +103,7 @@ const CharacteristicValueTable = () => {
 
     return (
         <>
-            <Create afterCreate={() => getData()} />
+            <Typography variant="h1" sx={{ my: "30px", py: "4.5px" }}>Characteristic values</Typography>
             <EnhancedTable
                 page={page}
                 rowsPerPage={rowsPerPage}
@@ -121,7 +119,7 @@ const CharacteristicValueTable = () => {
                 numSelected={selected.length}
                 count={count}
                 onDelete={onDelete}
-                update={<Update id={selected[selected.length - 1]} afterUpdate={() => { getData() }} />}
+                update={null}
                 tableBody={
                     characteristicValues.map((row, index) => {
                         const isItemSelected = isSelected(row.id);
@@ -165,4 +163,4 @@ const CharacteristicValueTable = () => {
     );
 }
 
-export default CharacteristicValueTable;
+export default AdminCharacteristicValueTable;

@@ -207,9 +207,6 @@
   <data name="UnitNotFound" xml:space="preserve">
     <value>Unit was not found</value>
   </data>
-  <data name="CharacteristicNameUnitNotUnique" xml:space="preserve">
-    <value>Characteristic name with this unit measure already exists</value>
-  </data>
   <data name="FilterNameUnitNotUnique" xml:space="preserve">
     <value>Filter name with this unit measure already exists</value>
   </data>
@@ -218,9 +215,6 @@
   </data>
   <data name="CharacteristicValueNotFound" xml:space="preserve">
     <value>Characteristic value was not found</value>
-  </data>
-  <data name="CharacteristicValueNameNotUnique" xml:space="preserve">
-    <value>Characteristic value with this characteristic name already exists</value>
   </data>
   <data name="AlreadyComfirmPhone" xml:space="preserve">
     <value>Your phone number has already been confirmed</value>
@@ -272,5 +266,17 @@
   </data>
   <data name="QuestionImageNotFound" xml:space="preserve">
     <value>Question image not found</value>
+  </data>
+  <data name="DontHavePermition" xml:space="preserve">
+    <value>Don't have permition</value>
+  </data>
+  <data name="CharacteristicGroupExist" xml:space="preserve">
+    <value>Characteristic group with name already exist</value>
+  </data>
+  <data name="CharacteristicNameExist" xml:space="preserve">
+    <value>Characteristic name with this group and unit already exist</value>
+  </data>
+  <data name="CharacteristicValueExist" xml:space="preserve">
+    <value>Characteristic value with this name already exist</value>
   </data>
 </root>

@@ -9,9 +9,9 @@ import { ServerError, UpdateProps } from "../../../../store/types";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import { useActions } from "../../../../hooks/useActions";
 import { countryValidation } from "../validation";
-import TextFieldComponent from "../../../../components/TextField";
 import DialogComponent from "../../../../components/Dialog";
 import { toLowerFirstLetter } from "../../../../http_comon";
+import { TextFieldFirstStyle } from "../../../../components/TextField/styled";
 
 
 const Update: FC<UpdateProps> = ({ id, afterUpdate }) => {
@@ -76,21 +76,27 @@ const Update: FC<UpdateProps> = ({ id, afterUpdate }) => {
             dialogContent={
                 <Grid container rowSpacing={2}>
                     <Grid item xs={12}>
-                        <TextFieldComponent
+                        <TextFieldFirstStyle
+                            fullWidth
+                            variant="standard"
+                            autoComplete="name"
                             type="text"
                             label="Name"
-                            error={errors.name}
-                            touched={touched.name}
-                            getFieldProps={{ ...getFieldProps('name') }}
+                            {...getFieldProps('name')}
+                            error={Boolean(touched.name && errors.name)}
+                            helperText={touched.name && errors.name}
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <TextFieldComponent
+                        <TextFieldFirstStyle
+                            fullWidth
+                            variant="standard"
+                            autoComplete="code"
                             type="text"
                             label="Code"
-                            error={errors.code}
-                            touched={touched.code}
-                            getFieldProps={{ ...getFieldProps('code') }}
+                            {...getFieldProps('code')}
+                            error={Boolean(touched.code && errors.code)}
+                            helperText={touched.code && errors.code}
                         />
                     </Grid>
                 </Grid>

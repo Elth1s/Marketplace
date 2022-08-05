@@ -150,7 +150,7 @@ const MainMenu = () => {
                 {isAuth && <Box>
                     {
                         user.role == "Admin" || user.role == "Seller"
-                            ? <LinkRouter underline="none" color="unset" to="/seler" >
+                            ? <LinkRouter underline="none" color="unset" to="/seller" >
                                 <MenuItemStyle                                >
                                     <IconButton sx={{ mr: 2, width: 24, height: 24, color: "secondary" }}>
                                         <Store />

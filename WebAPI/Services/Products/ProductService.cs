@@ -198,14 +198,19 @@ namespace WebAPI.Services.Products
             await _productRepository.SaveChangesAsync();
         }
 
-        public async Task<AdminSearchResponse<ProductResponse>> SearchProductsAsync(AdminSearchRequest request)
+        public async Task<AdminSearchResponse<ProductResponse>> SearchProductsAsync(SellerSearchRequest request, string userId)
         {
-            var spec = new ProductSearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
+            var user = await _userManager.FindByIdAsync(userId);
+            user.UserNullChecking();
+
+            var spec = new ProductSearchSpecification(request.Name, request.IsAscOrder, request.OrderBy, request.IsSeller, user.ShopId);
             var count = await _productRepository.CountAsync(spec);
             spec = new ProductSearchSpecification(
                 request.Name,
                 request.IsAscOrder,
                 request.OrderBy,
+                request.IsSeller,
+                user.ShopId,
                 (request.Page - 1) * request.RowsPerPage,
                 request.RowsPerPage);
 

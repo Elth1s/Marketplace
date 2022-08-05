@@ -8,7 +8,8 @@ import {
     Grid,
     IconButton,
     Paper,
-    Slide
+    Slide,
+    Typography
 } from "@mui/material";
 import { Close } from "@mui/icons-material";
 
@@ -16,6 +17,10 @@ import { LegacyRef, forwardRef, useRef, useState, useEffect } from "react";
 import Cropper from "cropperjs";
 import { TransitionProps } from "@mui/material/transitions";
 
+import { BoxStyle } from "./styled"
+
+import { useDropzone } from 'react-dropzone';
+import { upload_cloud } from "../../assets/icons";
 
 const Transition = forwardRef(function Transition(
     props: TransitionProps & {
@@ -27,7 +32,7 @@ const Transition = forwardRef(function Transition(
 });
 
 export interface ICropperDialog {
-    imgSrc?: string,
+    imgSrc: string,
     aspectRation?: number,
     onDialogSave: any,
     labelId: string
@@ -58,13 +63,24 @@ const CropperDialog: React.FC<ICropperDialog> = ({ imgSrc, aspectRation = 1 / 1,
         setIsCropperDialogOpen(true);
     }
 
-    const handleImageChange = async function (e: React.ChangeEvent<HTMLInputElement>) {
-        const fileList = e.target.files;
-        if (!fileList || fileList.length === 0) return;
+    // const handleImageChange = async function (e: React.ChangeEvent<HTMLInputElement>) {
+    //     console.log("qwe")
+    //     const fileList = e.target.files;
+    //     if (!fileList || fileList.length === 0) return;
 
-        await selectImage(URL.createObjectURL(fileList[0]));
-        e.target.value = "";
-    };
+    //     await selectImage(URL.createObjectURL(fileList[0]));
+    //     e.target.value = "";
+    // };
+    const { getRootProps, getInputProps } = useDropzone({
+        // Note how this callback is never invoked if drop occurs on the inner dropzone
+        multiple: false,
+        onDrop: async (files) => {
+            const fileList = files;
+            if (!fileList || fileList.length === 0) return;
+
+            await selectImage(URL.createObjectURL(fileList[0]));
+        }
+    });
 
     const cropperDialogClose = () => {
         setIsCropperDialogOpen(false);
@@ -76,17 +92,35 @@ const CropperDialog: React.FC<ICropperDialog> = ({ imgSrc, aspectRation = 1 / 1,
         setIsCropperDialogOpen(false);
     };
 
+
     return (
         <>
-            <Box sx={{ width: "160px", height: "160px", boxShadow: 1, borderRadius: "12px" }}>
-                <label htmlFor={labelId}>
+            <BoxStyle imgSrc={imgSrc} sx={{ boxShadow: 4 }}>
+                {/* <label htmlFor={labelId}>
                     <img
                         src={imgSrc}
                         alt="DefaultImage"
                         style={{ width: "160px", height: "160px", cursor: "pointer", borderRadius: "12px" }} />
                 </label>
-                <input style={{ display: "none" }} type="file" name={labelId} id={labelId} onChange={handleImageChange} />
-            </Box>
+                <input style={{ display: "none" }} type="file" name={labelId} id={labelId} onChange={handleImageChange} /> */}
+                <div {...getRootProps({ className: 'dropzone' })}>
+                    <input {...getInputProps()} />
+                    {imgSrc !== ""
+                        ? <img
+                            src={imgSrc}
+                            alt="DefaultImage"
+                            style={{ width: "100px", height: "100px", borderRadius: "10px" }} />
+                        : <Box sx={{ height: "100px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+                            <img
+                                src={upload_cloud}
+                                alt="icon"
+                                style={{ width: "25px", height: "25px" }} />
+                            <Typography variant="subtitle1" align="center">
+                                Select photo
+                            </Typography>
+                        </Box>}
+                </div>
+            </BoxStyle>
             <Dialog
                 open={isCropperDialogOpen}
                 TransitionComponent={Transition}

@@ -68,7 +68,7 @@ const ProductMainPage: FC<Props> = ({ urlSlug, isInBasket, moveToReview }) => {
                             <SwiperSlide key={index}>
                                 <img
                                     style={{ width: "520px", height: "520px", objectFit: "contain" }}
-                                    src={item}
+                                    src={item.name}
                                     alt="productImage"
                                 />
                             </SwiperSlide>
@@ -88,7 +88,7 @@ const ProductMainPage: FC<Props> = ({ urlSlug, isInBasket, moveToReview }) => {
                             <SwiperSlide key={index}>
                                 <img
                                     style={{ width: "65px", height: "65px", objectFit: "contain" }}
-                                    src={item}
+                                    src={item.name}
                                     alt="productImage"
                                 />
                             </SwiperSlide>

@@ -24,7 +24,7 @@ import { IRegisterModel } from "../types";
 import { ServerError } from "../../../store/types";
 
 import { AuthHeaderTypography } from "../styled";
-import { TextFieldFirstStyle } from "../../../components/TextField/style";
+import { TextFieldFirstStyle } from "../../../components/TextField/styled";
 
 import FacebookExternalLogin from "../../../components/Facebook";
 import { toLowerFirstLetter } from "../../../http_comon";

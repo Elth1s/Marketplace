@@ -1,4 +1,4 @@
-import { Avatar, Checkbox, TableRow } from '@mui/material';
+import { Avatar, Checkbox, TableRow, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useActions } from '../../../../hooks/useActions';
 import { useTypedSelector } from '../../../../hooks/useTypedSelector';
@@ -67,7 +67,6 @@ const ShopTable = () => {
     const onDelete = async () => {
         await DeleteShops(selected);
         setPage(1);
-        getData();
     }
 
     const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
@@ -112,7 +111,7 @@ const ShopTable = () => {
 
     return (
         <>
-
+            <Typography variant="h1" sx={{ my: "30px", py: "4.5px" }}>Shops</Typography>
             <EnhancedTable
                 page={page}
                 rowsPerPage={rowsPerPage}

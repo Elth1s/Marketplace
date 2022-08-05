@@ -8,7 +8,7 @@ namespace WebAPI.Interfaces.Products
     public interface IProductService
     {
         Task<IEnumerable<ProductResponse>> GetAsync();
-        Task<AdminSearchResponse<ProductResponse>> SearchProductsAsync(AdminSearchRequest request);
+        Task<AdminSearchResponse<ProductResponse>> SearchProductsAsync(SellerSearchRequest request, string userId);
         Task<ProductResponse> GetByIdAsync(int id);
         Task<ProductWithCategoryParentsResponse> GetByUrlSlugAsync(string urlSlug, string userId);
         Task<IEnumerable<ProductCatalogResponse>> GetSimilarProductsAsync(string urlSlug);

@@ -9,11 +9,10 @@ import { useTypedSelector } from '../../../../hooks/useTypedSelector';
 import EnhancedTable from '../../../../components/EnhancedTable';
 import { TableCellStyle } from '../../../../components/EnhancedTable/styled';
 
-import Create from '../Create';
-import Update from '../Update';
 
-import { ICharacteristicGroupInfo } from '../types';
+import { ICharacteristicGroupInfo } from '../../../seller/characteristicGroup/types';
 import { HeadCell } from '../../../../store/types';
+import { Typography } from '@mui/material';
 
 const headCells: HeadCell<ICharacteristicGroupInfo>[] = [
     {
@@ -28,7 +27,7 @@ const headCells: HeadCell<ICharacteristicGroupInfo>[] = [
     },
 ];
 
-const CharacteristicGroupTable = () => {
+const AdminCharacteristicGroupTable = () => {
     const [page, setPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(8);
     const [name, setName] = useState("");
@@ -47,7 +46,7 @@ const CharacteristicGroupTable = () => {
 
     const getData = async () => {
         try {
-            await SearchCharacteristicGroups(page, rowsPerPage, name, isAscOrder, orderBy);
+            await SearchCharacteristicGroups(page, rowsPerPage, name, isAscOrder, orderBy, false);
             setSelected([]);
         } catch (ex) {
         }
@@ -56,7 +55,6 @@ const CharacteristicGroupTable = () => {
     const onDelete = async () => {
         await DeleteCharacteristicGroups(selected);
         setPage(1);
-        getData();
     }
 
     const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
@@ -101,7 +99,7 @@ const CharacteristicGroupTable = () => {
 
     return (
         <>
-            <Create afterCreate={() => { getData() }} />
+            <Typography variant="h1" sx={{ my: "30px", py: "4.5px" }}>Characteristic groups</Typography>
             <EnhancedTable
                 page={page}
                 rowsPerPage={rowsPerPage}
@@ -117,7 +115,7 @@ const CharacteristicGroupTable = () => {
                 numSelected={selected.length}
                 count={count}
                 onDelete={onDelete}
-                update={<Update id={selected[selected.length - 1]} afterUpdate={() => { getData() }} />}
+                update={null}
                 tableBody={
                     characteristicGroups.map((row, index) => {
                         const isItemSelected = isSelected(row.id);
@@ -160,4 +158,4 @@ const CharacteristicGroupTable = () => {
     );
 }
 
-export default CharacteristicGroupTable
+export default AdminCharacteristicGroupTable
