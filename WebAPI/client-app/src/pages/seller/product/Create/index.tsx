@@ -18,12 +18,11 @@ interface Props {
 }
 
 const ProductCreate: FC<Props> = ({ }) => {
-    const { GetCategoriesWithoutChildren, GetProductStatusesSeller, CreateProductImage } = useActions();
+    const { GetCategoriesWithoutChildren, GetProductStatusesSeller, GetFiltersByCategoryId, CreateProductImage, CreateProduct } = useActions();
 
-    const { categories, productStatuses } = useTypedSelector((store) => store.productSeller);
+    const { categories, productStatuses, filters } = useTypedSelector((store) => store.productSeller);
 
-    const [imagesTest, setImagesTest] = useState<Array<IProductImage>>([]);
-    const [test, setTest] = useState<Array<number>>([1, 2, 3, 4, 5]);
+    const [images, setImages] = useState<Array<IProductImage>>([]);
 
     const item: IProductCreate = {
         name: "",
@@ -32,7 +31,8 @@ const ProductCreate: FC<Props> = ({ }) => {
         count: 0,
         statusId: 0,
         categoryId: 0,
-        images: []
+        images: [],
+        filtersValue: []
     }
 
     const navigate = useNavigate();
@@ -43,12 +43,8 @@ const ProductCreate: FC<Props> = ({ }) => {
     }, []);
 
     useEffect(() => {
-        console.log(imagesTest)
-    }, [imagesTest]);
-
-    useEffect(() => {
-        console.log(test)
-    }, [test]);
+        console.log(images)
+    }, [images]);
 
     const getData = async () => {
         try {
@@ -66,8 +62,8 @@ const ProductCreate: FC<Props> = ({ }) => {
         onSubmit: async (values, { setFieldError }) => {
             try {
                 console.log(values)
-                // await CreateCategory(values);
-                // navigate("/seller/product");
+                await CreateProduct(values);
+                navigate("/seller/product");
             }
             catch (ex) {
                 const serverErrors = ex as ServerError;
@@ -85,31 +81,46 @@ const ProductCreate: FC<Props> = ({ }) => {
         }
     });
 
+    const selectFilterValue = (nameId: number, valueId: number, customValue?: number) => {
+        const index = formik.values.filtersValue.map(object => object.nameId).indexOf(nameId);
+
+        const tmpList = formik.values.filtersValue.slice();
+
+        if (index === -1)
+            tmpList.push({ nameId: nameId, valueId: valueId, customValue: null })
+        else {
+            tmpList.splice(index, 1);
+            tmpList.push({ nameId: nameId, valueId: valueId, customValue: null })
+        }
+
+        setFieldValue("filtersValue", tmpList);
+    };
+
     const { getRootProps, getInputProps } = useDropzone({
         // Note how this callback is never invoked if drop occurs on the inner dropzone
-        onDrop: (files) => {
+        onDrop: async (files) => {
             if (!files || files.length === 0) return;
 
             let tempList: Array<IProductImage> = [];
-            let newTest = [6, 7, 8, 9, 10]
-            files.forEach(element => {
+            let newTest: Array<number> = [];
+            for (let index = 0; index < files.length; index++) {
                 let reader = new FileReader();
 
-                reader.readAsDataURL(element);
-
-                reader.onload = async () => {
+                reader.readAsDataURL(files[index]);
+                let res: IProductImage = { id: 0, name: "", priority: 0 };
+                reader.onload = () => {
                     if (reader.result != null) {
-                        let res = await CreateProductImage(reader.result as string) as unknown as IProductImage;
-                        tempList.push(res);
+                        res = CreateProductImage(reader.result as string) as unknown as IProductImage;
+                        console.log("res", res)
                     }
+                    // res = { id: 1, name: "qwe", priority: 1 }
                 };
-            });
-            console.log(imagesTest)
-            console.log(tempList)
-            setImagesTest([...imagesTest, ...tempList]);
-            console.log(test)
-            console.log(newTest)
-            setTest([...test, ...newTest]);
+                tempList.push(res);
+                newTest.push(index)
+            };
+            console.log("images", images)
+            console.log("tempList", tempList)
+            setImages([...images, ...tempList]);
         }
     });
 
@@ -185,7 +196,11 @@ const ProductCreate: FC<Props> = ({ }) => {
                                     getOptionLabel={(option) => option.name}
                                     isOptionEqualToValue={(option, value) => option?.id === value.id}
                                     defaultValue={undefined}
-                                    onChange={(e, value) => { setFieldValue("categoryId", value?.id) }}
+                                    onChange={async (e, value) => {
+                                        setFieldValue("categoryId", value?.id)
+                                        await GetFiltersByCategoryId(value?.id);
+
+                                    }}
                                 />
                             </Grid>
                             <Grid item xs={6}>
@@ -202,7 +217,42 @@ const ProductCreate: FC<Props> = ({ }) => {
                                 />
                             </Grid>
                             <Grid item xs={6}>
+                                {filters?.length != 0 &&
+                                    filters.map((filterGroup, index) => {
+                                        return (
+                                            <>
+                                                <Typography key={`filter_group_${index}`} variant="h2">
+                                                    {filterGroup.name}
+                                                </Typography>
+                                                {filterGroup.filterNames.map((filterName, index) => {
+                                                    return (
+                                                        <Grid key={`filter_name_${index}`} container>
+                                                            <Grid item xs={6}>
+                                                                <Typography variant="h4">
+                                                                    {filterName.name}
+                                                                </Typography>
+                                                            </Grid>
+                                                            <Grid item xs={6}>
+                                                                <AutocompleteComponent
+                                                                    label="Filter value"
+                                                                    name="value"
+                                                                    // error={errors.statusId}
+                                                                    // touched={touched.statusId}
+                                                                    options={filterName.filterValues}
+                                                                    getOptionLabel={(option) => option.value}
+                                                                    isOptionEqualToValue={(option, value) => option?.id === value.id}
+                                                                    defaultValue={undefined}
+                                                                    onChange={(e, value) => { selectFilterValue(filterName.id, value?.id) }}
+                                                                />
+                                                            </Grid>
+                                                        </Grid>
+                                                    );
+                                                })}
+                                            </>
+                                        );
+                                    })
 
+                                }
                             </Grid>
                             <Grid item xs={6}>
                                 <Box
@@ -227,8 +277,8 @@ const ProductCreate: FC<Props> = ({ }) => {
                                         </Box>
                                     </div>
                                 </Box>
-                                {imagesTest?.length != 0 &&
-                                    imagesTest.map((row, index) => {
+                                {images?.length != 0 &&
+                                    images.map((row, index) => {
                                         return (
                                             <img
                                                 key={`product_image_${index}`}

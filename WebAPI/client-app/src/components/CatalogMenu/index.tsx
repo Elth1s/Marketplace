@@ -151,13 +151,13 @@ const CatalogMenu = () => {
                         <Divider sx={{ height: "622px", borderColor: "black", my: "24px", mr: "20px" }} orientation="vertical" />
                     </Grid>
                     <Grid item xs={8} sx={{ maxHeight: "622px", my: "24px", display: "flex", flexDirection: "column", flexWrap: "wrap" }}>
-                        {fullCatalogItems[selectedCategory]?.childrens && fullCatalogItems[selectedCategory].childrens.map((childF, indexF) => {
+                        {fullCatalogItems[selectedCategory]?.children && fullCatalogItems[selectedCategory].children.map((childF, indexF) => {
                             return (
                                 <Box key={`$catalog_children_f_${indexF}`} sx={{ mb: "23px" }}>
                                     <LinkRouter underline="none" to={`/catalog/${childF.urlSlug}`} onClick={handleClose}>
                                         <CategoryTypographyStyle variant="h4" fontWeight="bold">{childF.name}</CategoryTypographyStyle>
                                     </LinkRouter>
-                                    {childF.childrens.map((childS, indexS) => {
+                                    {childF.children.map((childS, indexS) => {
                                         return (
                                             <LinkRouter key={`$catalog_children_s_${indexS}`} underline="none" to={`/catalog/${childS.urlSlug}`} onClick={handleClose}>
                                                 <CategoryTypographyStyle variant="subtitle1" sx={{ mt: "10px" }}>{childS.name}</CategoryTypographyStyle>

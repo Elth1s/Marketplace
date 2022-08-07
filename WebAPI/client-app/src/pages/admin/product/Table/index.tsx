@@ -67,7 +67,7 @@ const AdminProductTable = () => {
 
     const getData = async () => {
         try {
-            await SearchProducts(page, rowsPerPage, name, isAscOrder, orderBy);
+            await SearchProducts(page, rowsPerPage, name, isAscOrder, orderBy, false);
             setSelected([]);
         } catch (ex) {
         }

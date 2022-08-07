@@ -9,6 +9,7 @@ const initialState: ProductState = {
     products: [],
     productStatuses: [],
     categories: [],
+    filters: []
 }
 
 export const productSellerReducer = (state = initialState, action: ProductAction): ProductState => {
@@ -33,6 +34,11 @@ export const productSellerReducer = (state = initialState, action: ProductAction
                 ...state,
                 count: action.payload.count,
                 products: action.payload.values,
+            }
+        case ProductActionTypes.GET_FILTERS_BY_CATEGORY_ID:
+            return {
+                ...state,
+                filters: action.payload,
             }
         default:
             return state;

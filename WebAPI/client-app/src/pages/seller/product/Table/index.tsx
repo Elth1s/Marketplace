@@ -69,7 +69,7 @@ const ProductTable = () => {
 
     const getData = async () => {
         try {
-            await SearchProducts(page, rowsPerPage, name, isAscOrder, orderBy);
+            await SearchProducts(page, rowsPerPage, name, isAscOrder, orderBy, true);
             setSelected([]);
         } catch (ex) {
         }

@@ -10,10 +10,12 @@ import {
     IProductStatus,
     ICategory,
     IProductImage,
+    IFilterGroupSeller,
+    IProductCreate,
 } from "./types"
 import { ServerError } from "../../../store/types"
 
-export const SearchProducts = (page: number, rowsPerPage: number, name: string, isAscOrder: boolean, orderBy: string) => {
+export const SearchProducts = (page: number, rowsPerPage: number, name: string, isAscOrder: boolean, orderBy: string, isSeller: boolean) => {
     return async (dispatch: Dispatch<ProductAction>) => {
         try {
             let response = await http.get<ISearchProducts>(`api/Product/Search`, {
@@ -22,7 +24,8 @@ export const SearchProducts = (page: number, rowsPerPage: number, name: string, 
                     rowsPerPage: rowsPerPage,
                     name: name,
                     isAscOrder: isAscOrder,
-                    orderBy: orderBy
+                    orderBy: orderBy,
+                    isSeller: isSeller
                 },
                 paramsSerializer: params => {
                     return qs.stringify({ ...params })
@@ -78,6 +81,24 @@ export const GetCategoriesWithoutChildren = () => {
     }
 }
 
+export const GetFiltersByCategoryId = (id: number) => {
+    return async (dispatch: Dispatch<ProductAction>) => {
+        try {
+            let response = await http.get<Array<IFilterGroupSeller>>(`api/Category/GetFiltersByCategoryId/${id}`)
+
+            dispatch({
+                type: ProductActionTypes.GET_FILTERS_BY_CATEGORY_ID,
+                payload: response.data
+            })
+
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
+        }
+    }
+}
+
 export const GetProducts = () => {
     return async (dispatch: Dispatch<ProductAction>) => {
         try {
@@ -102,6 +123,19 @@ export const CreateProductImage = (base64: string) => {
             let response = await http.post<IProductImage>(`api/ProductImage/Create`, base64)
 
             return Promise.resolve(response.data);
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
+        }
+    }
+}
+
+export const CreateProduct = (values: IProductCreate) => {
+    return async (dispatch: Dispatch<ProductAction>) => {
+        try {
+            let response = await http.post(`api/Product/Create`, values)
+
+            return Promise.resolve();
         }
         catch (error) {
             return Promise.reject(error as ServerError)

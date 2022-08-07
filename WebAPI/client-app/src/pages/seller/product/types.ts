@@ -3,6 +3,7 @@ export enum ProductActionTypes {
     SEARCH_PRODUCTS = "SEARCH_PRODUCTS",
     GET_PRODUCT_STATUSES = "GET_PRODUCT_STATUSES",
     GET_CATEGORIES_WITHOUT_CHILDREN = "GET_CATEGORIES_WITHOUT_CHILDREN",
+    GET_FILTERS_BY_CATEGORY_ID = "GET_FILTERS_BY_CATEGORY_ID",
 }
 
 export interface ICategory {
@@ -19,6 +20,12 @@ export interface IProductImage {
     id: number,
     name: string,
     priority: number
+}
+
+export interface IFilterRequest {
+    nameId: number,
+    valueId: number,
+    customValue: number | null
 }
 
 export interface IProductInfo {
@@ -38,7 +45,28 @@ export interface IProductCreate {
     count: number,
     statusId: number,
     categoryId: number,
-    images: Array<IProductImage>
+    images: Array<IProductImage>,
+    filtersValue: Array<IFilterRequest>
+}
+
+export interface IFilterGroupSeller {
+    id: number,
+    name: string,
+    filterNames: Array<IFilterNameSeller>
+}
+
+export interface IFilterNameSeller {
+    id: number,
+    name: string,
+    unitMeasure: string,
+    filterValues: Array<IFilterValueSeller>
+}
+
+export interface IFilterValueSeller {
+    id: number,
+    value: string,
+    min: number,
+    max: number,
 }
 
 export interface ISearchProducts {
@@ -51,6 +79,7 @@ export interface ProductState {
     products: Array<IProductInfo>,
     productStatuses: Array<IProductStatus>,
     categories: Array<ICategory>,
+    filters: Array<IFilterGroupSeller>
 }
 
 
@@ -74,8 +103,14 @@ export interface GetCategoriesWithoutChildrenAction {
     payload: Array<ICategory>
 }
 
+export interface GetFiltersByCategoryIdAction {
+    type: ProductActionTypes.GET_FILTERS_BY_CATEGORY_ID,
+    payload: Array<IFilterGroupSeller>
+}
+
 
 export type ProductAction = GetProductsAction |
     GetProductStatusesAction |
     GetCategoriesWithoutChildrenAction |
+    GetFiltersByCategoryIdAction |
     SearchProductsAction;

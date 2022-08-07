@@ -174,12 +174,12 @@ namespace WebAPI.Services
             {
                 Id = g.Key.Id,
                 Name = g.Key.Name,
-                FilterNames = g.Key.FiltersName.Select(n => new FilterNameSellerResponse()
+                FilterNames = g.Select(n => new FilterNameSellerResponse()
                 {
-                    Id = n.Id,
-                    Name = n.Name,
-                    UnitMeasure = n.Unit?.Measure,
-                    FilterValues = _mapper.Map<IEnumerable<FilterValueSellerResponse>>(n.FilterValues)
+                    Id = n.Key.Id,
+                    Name = n.Key.Name,
+                    UnitMeasure = n.Key.Unit?.Measure,
+                    FilterValues = _mapper.Map<IEnumerable<FilterValueSellerResponse>>(n.Key.FilterValues)
                 })
             });
 
