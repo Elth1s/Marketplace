@@ -3,13 +3,13 @@ using DAL;
 using DAL.Constants;
 using DAL.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Localization;
 using System.Net;
 using WebAPI.Constants;
 using WebAPI.Exceptions;
 using WebAPI.Extensions;
 using WebAPI.Interfaces;
 using WebAPI.Interfaces.Users;
-using WebAPI.Resources;
 using WebAPI.Specifications.Shops;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Response;
@@ -19,18 +19,20 @@ namespace WebAPI.Services
 {
     public class ShopService : IShopService
     {
+        private readonly IStringLocalizer<ErrorMessages> _errorMessagesLocalizer;
         private readonly IRepository<Shop> _shopRepository;
         private readonly IJwtTokenService _jwtTokenService;
         private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
 
-        public ShopService(
+        public ShopService(IStringLocalizer<ErrorMessages> errorMessagesLocalizer,
             IMapper mapper,
             IRepository<Shop> shopRepository,
             IJwtTokenService jwtTokenService,
             UserManager<AppUser> userManager
             )
         {
+            _errorMessagesLocalizer = errorMessagesLocalizer;
             _shopRepository = shopRepository;
             _jwtTokenService = jwtTokenService;
             _userManager = userManager;
@@ -61,19 +63,15 @@ namespace WebAPI.Services
             user.UserNullChecking();
 
             var resultPasswordCheck = await _userManager.CheckPasswordAsync(user, request.Password);
-            if (!resultPasswordCheck)
-            {
-                throw new AppException(ErrorMessages.InvalidUserData, HttpStatusCode.Unauthorized);
-            }
+            if (resultPasswordCheck)
+                throw new AppException(_errorMessagesLocalizer["InvalidUserData"], HttpStatusCode.Unauthorized);
 
             var resultRoles = await _userManager.GetRolesAsync(user);
             if (resultRoles.Count == 0)
             {
                 var resultRole = await _userManager.AddToRoleAsync(user, Roles.Seller);
                 if (!resultRole.Succeeded)
-                {
-                    throw new AppException(ErrorMessages.UserAddRoleFail);
-                }
+                    throw new AppException(_errorMessagesLocalizer["UserAddRoleFail"]);
             }
 
             var shop = _mapper.Map<Shop>(request);

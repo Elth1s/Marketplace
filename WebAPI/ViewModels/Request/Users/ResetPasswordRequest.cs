@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.Extensions.Localization;
 
 namespace WebAPI.ViewModels.Request.Users
 {
@@ -34,22 +35,24 @@ namespace WebAPI.ViewModels.Request.Users
     /// </summary>
     public class ResetPasswordRequestValidator : AbstractValidator<ResetPasswordRequest>
     {
-        public ResetPasswordRequestValidator()
+        private readonly IStringLocalizer<ValidationResourсes> _validationResources;
+        public ResetPasswordRequestValidator(IStringLocalizer<ValidationResourсes> validationResources)
         {
+            _validationResources = validationResources;
             //Password
             RuleFor(x => x.Password).Cascade(CascadeMode.Stop)
-           .NotEmpty().WithName("Password").WithMessage("{PropertyName} is required")
-           .MinimumLength(8).WithMessage("{PropertyName} must be at least 8 characters")
-           .Matches(@"(?=.*[A-Z])").WithMessage("{PropertyName} must contain at least one lowercase letter")
-           .Matches(@"(?=.*[A-Z])").WithMessage("{PropertyName} must contain at least one uppercase letter")
-           .Matches(@"(?=.*?[0-9])").WithMessage("{PropertyName} must contain at least one digit")
-           .Matches(@"(?=.*?[!@#\$&*~_-])").WithMessage("{PropertyName} must contain at least one special character");
+               .NotEmpty().WithName(_validationResources["PasswordPropName"])
+               .MinimumLength(8).WithMessage(_validationResources["PasswordMinLengthMessage"])
+               .Matches(@"(?=.*[A-Z])").WithMessage(_validationResources["ContainLowercaseMessage"])
+               .Matches(@"(?=.*[A-Z])").WithMessage(_validationResources["ContainUppercaseMessage"])
+               .Matches(@"(?=.*?[0-9])").WithMessage(_validationResources["ContainDigitMessage"])
+               .Matches(@"(?=.*?[!@#\$&*~_-])").WithMessage(_validationResources["ContainSpecialCharacterMessage"]);
 
 
             //ConfirmPassword
             RuleFor(x => x.ConfirmPassword).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName("Confirm Password").WithMessage("{PropertyName} is required")
-               .Equal(x => x.Password).WithMessage("Password and {PropertyName} do not match");
+               .NotEmpty().WithName(_validationResources["ConfirmPasswordPropName"])
+               .Equal(x => x.Password).WithMessage(_validationResources["PasswordConfrimPasswordEqualMessage"]);
         }
     }
 }

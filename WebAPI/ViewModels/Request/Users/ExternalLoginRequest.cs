@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.Extensions.Localization;
 
 namespace WebAPI.ViewModels.Request.Users
 {
@@ -20,11 +21,13 @@ namespace WebAPI.ViewModels.Request.Users
     /// </summary>
     public class ExternalLoginRequestValidator : AbstractValidator<ExternalLoginRequest>
     {
-        public ExternalLoginRequestValidator()
+        private readonly IStringLocalizer<ValidationResourсes> _validationResources;
+        public ExternalLoginRequestValidator(IStringLocalizer<ValidationResourсes> validationResources)
         {
+            _validationResources = validationResources;
+
             RuleFor(x => x.Token).Cascade(CascadeMode.Stop)
-                .NotNull()
-                .NotEmpty();
+                .NotEmpty().WithName(_validationResources["TokenPropName"]);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Security.Claims;
 using WebAPI.Interfaces.Reviews;
@@ -18,10 +19,14 @@ namespace WebAPI.Controllers.Reviews
     public class ReviewReplyController : ControllerBase
     {
         private string UserId => User?.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        private readonly IStringLocalizer<ReviewReplyController> _reviewReplyLocalizer;
         private readonly IReviewReplyService _reviewReplyService;
-        public ReviewReplyController(IReviewReplyService reviewReplyService)
+        public ReviewReplyController(IReviewReplyService reviewReplyService,
+            IStringLocalizer<ReviewReplyController> reviewReplyLocalizer)
         {
             _reviewReplyService = reviewReplyService;
+            _reviewReplyLocalizer = reviewReplyLocalizer;
         }
 
         /// <summary>
@@ -43,7 +48,7 @@ namespace WebAPI.Controllers.Reviews
         public async Task<IActionResult> Create([FromBody] ReviewReplyRequest request)
         {
             await _reviewReplyService.CreateAsync(request, UserId);
-            return Ok("Review reply created successfully");
+            return Ok(_reviewReplyLocalizer["CreateSuccess"].Value);
         }
 
         /// <summary>

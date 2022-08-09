@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
 using WebAPI.Helpers;
 using WebAPI.Interfaces.Users;
@@ -16,10 +17,13 @@ namespace WebAPI.Controllers.Users
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly IStringLocalizer<AuthController> _authLocalizer;
 
-        public AuthController(IAuthService authService)
+
+        public AuthController(IAuthService authService, IStringLocalizer<AuthController> authLocalizer)
         {
             _authService = authService;
+            _authLocalizer = authLocalizer;
         }
 
         /// <summary>
@@ -89,7 +93,7 @@ namespace WebAPI.Controllers.Users
         public async Task<IActionResult> Logout([FromBody] TokenRequest request)
         {
             await _authService.RevokeTokenAsync(request, IpUtil.GetIpAddress(Request, HttpContext));
-            return Ok("Logout success");
+            return Ok(_authLocalizer["LogoutSuccess"].Value);
         }
 
         /// <summary>

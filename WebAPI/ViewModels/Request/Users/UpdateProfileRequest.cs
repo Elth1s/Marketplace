@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.Extensions.Localization;
 
 namespace WebAPI.ViewModels.Request.Users
 {
@@ -28,17 +29,20 @@ namespace WebAPI.ViewModels.Request.Users
     /// </summary>
     public class UpdateProfileRequestValidator : AbstractValidator<UpdateProfileRequest>
     {
-        public UpdateProfileRequestValidator()
+        private readonly IStringLocalizer<ValidationResourсes> _validationResources;
+        public UpdateProfileRequestValidator(IStringLocalizer<ValidationResourсes> validationResources)
         {
+            _validationResources = validationResources;
+
             //First name
             RuleFor(x => x.FirstName).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName("First name").WithMessage("{PropertyName} is required")
-               .Length(2, 15).WithMessage("{PropertyName} should be between 2 and 15 characters");
+               .NotEmpty().WithName(_validationResources["FirstNamePropName"])
+               .Length(2, 15);
 
             //Second name
             RuleFor(x => x.SecondName).Cascade(CascadeMode.Stop)
-              .NotEmpty().WithName("Second name").WithMessage("{PropertyName} is required")
-              .Length(2, 40).WithMessage("{PropertyName} should be between 2 and 40 characters");
+              .NotEmpty().WithName(_validationResources["SecondNamePropName"])
+              .Length(2, 40);
         }
     }
 }

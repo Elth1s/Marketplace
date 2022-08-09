@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
 using WebAPI.Interfaces.Filters;
 using WebAPI.ViewModels.Request;
@@ -18,9 +19,12 @@ namespace WebAPI.Controllers.Filters
     public class FilterNameController : ControllerBase
     {
         private readonly IFilterNameService _filterNameService;
-        public FilterNameController(IFilterNameService filterNameService)
+        private readonly IStringLocalizer<FilterNameController> _filterNameLocalizer;
+
+        public FilterNameController(IFilterNameService filterNameService, IStringLocalizer<FilterNameController> filterNameLocalizer)
         {
             _filterNameService = filterNameService;
+            _filterNameLocalizer = filterNameLocalizer;
         }
 
         /// <summary>
@@ -102,7 +106,7 @@ namespace WebAPI.Controllers.Filters
         public async Task<IActionResult> CreateFilterName([FromBody] FilterNameRequest request)
         {
             await _filterNameService.CreateFilterNameAsync(request);
-            return Ok("Filter name created successfully");
+            return Ok(_filterNameLocalizer["CreateSuccess"].Value);
         }
 
         /// <summary>
@@ -125,7 +129,7 @@ namespace WebAPI.Controllers.Filters
         public async Task<IActionResult> UpdateFilterName(int filterNameId, [FromBody] FilterNameRequest request)
         {
             await _filterNameService.UpdateFilterNameAsync(filterNameId, request);
-            return Ok("Filter name updated successfully");
+            return Ok(_filterNameLocalizer["UpdateSuccess"].Value);
         }
 
         /// <summary>
@@ -147,7 +151,7 @@ namespace WebAPI.Controllers.Filters
         public async Task<IActionResult> DeleteFilterName(int filterNameId)
         {
             await _filterNameService.DeleteFilterNameAsync(filterNameId);
-            return Ok("Filter name deleted successfully");
+            return Ok(_filterNameLocalizer["DeleteSuccess"].Value);
         }
 
         /// <summary>
@@ -168,7 +172,7 @@ namespace WebAPI.Controllers.Filters
         public async Task<IActionResult> Delete([FromQuery] IEnumerable<int> ids)
         {
             await _filterNameService.DeleteAsync(ids);
-            return Ok("Filter names deleted successfully");
+            return Ok(_filterNameLocalizer["DeleteListSuccess"].Value);
         }
     }
 }

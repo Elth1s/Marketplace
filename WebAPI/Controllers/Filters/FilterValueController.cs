@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
 using WebAPI.Interfaces.Filters;
 using WebAPI.ViewModels.Request;
@@ -18,9 +19,13 @@ namespace WebAPI.Controllers.Filters
     public class FilterValueController : ControllerBase
     {
         private readonly IFilterValueService _filterValueService;
-        public FilterValueController(IFilterValueService filterValueService)
+        private readonly IStringLocalizer<FilterValueController> _filterValueLocalizer;
+
+        public FilterValueController(IFilterValueService filterValueService,
+            IStringLocalizer<FilterValueController> filterValueLocalizer)
         {
             _filterValueService = filterValueService;
+            _filterValueLocalizer = filterValueLocalizer;
         }
 
         /// <summary>
@@ -102,7 +107,7 @@ namespace WebAPI.Controllers.Filters
         public async Task<IActionResult> CreateFilterValue([FromBody] FilterValueRequest request)
         {
             await _filterValueService.CreateFilterValueAsync(request);
-            return Ok("Filter value created successfully");
+            return Ok(_filterValueLocalizer["CreateSuccess"].Value);
         }
 
         /// <summary>
@@ -125,7 +130,7 @@ namespace WebAPI.Controllers.Filters
         public async Task<IActionResult> UpdateFilterValue(int filterValueId, [FromBody] FilterValueRequest request)
         {
             await _filterValueService.UpdateFilterValueAsync(filterValueId, request);
-            return Ok("Filter value updated successfully");
+            return Ok(_filterValueLocalizer["UpdateSuccess"].Value);
         }
 
         /// <summary>
@@ -147,7 +152,7 @@ namespace WebAPI.Controllers.Filters
         public async Task<IActionResult> DeleteFilterValue(int filterValueId)
         {
             await _filterValueService.DeleteFilterValueAsync(filterValueId);
-            return Ok("Filter value deleted successfully");
+            return Ok(_filterValueLocalizer["DeleteSuccess"].Value);
         }
 
         /// <summary>
@@ -168,7 +173,7 @@ namespace WebAPI.Controllers.Filters
         public async Task<IActionResult> Delete([FromQuery] IEnumerable<int> ids)
         {
             await _filterValueService.DeleteAsync(ids);
-            return Ok("Filter values deleted successfully");
+            return Ok(_filterValueLocalizer["DeleteListSuccess"].Value);
         }
     }
 }

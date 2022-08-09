@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.Extensions.Localization;
 using WebAPI.Helpers;
 
 namespace WebAPI.ViewModels.Request
@@ -25,20 +26,23 @@ namespace WebAPI.ViewModels.Request
     /// </summary>
     public class CodeRequestValidator : AbstractValidator<CodeRequest>
     {
+        private readonly IStringLocalizer<ValidationResourсes> _validationResources;
         private readonly PhoneNumberManager _phoneNumberManager;
-        public CodeRequestValidator(PhoneNumberManager phoneNumberManager)
+        public CodeRequestValidator(PhoneNumberManager phoneNumberManager,
+            IStringLocalizer<ValidationResourсes> validationResources)
         {
+            _validationResources = validationResources;
             _phoneNumberManager = phoneNumberManager;
 
             //Phone
             RuleFor(x => x.Phone).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName("Phone number").WithMessage("{PropertyName} is required")
-               .Must(IsValidPhone).WithMessage("Invalid {PropertyName} format");
+               .NotEmpty().WithName(_validationResources["PhonePropName"])
+               .Must(IsValidPhone).WithMessage(_validationResources["InvalidFormatMessage"]);
 
             //Code
             RuleFor(x => x.Code).Cascade(CascadeMode.Stop)
-                .NotEmpty().WithName("Code").WithMessage("{PropertyName} is required")
-                .Length(6).WithMessage("{PropertyName} must be 6 characters long");
+                .NotEmpty().WithName(_validationResources["CodePropName"])
+                .Length(6);
         }
 
         private bool IsValidPhone(string phone)

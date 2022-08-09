@@ -1,6 +1,7 @@
 ﻿using DAL;
 using DAL.Entities;
 using FluentValidation;
+using Microsoft.Extensions.Localization;
 using WebAPI.Specifications.Filters;
 
 namespace WebAPI.ViewModels.Request.Filters
@@ -22,16 +23,21 @@ namespace WebAPI.ViewModels.Request.Filters
     /// </summary>
     public class FilterGroupRequestValidator : AbstractValidator<FilterGroupRequest>
     {
+        private readonly IStringLocalizer<ValidationResourсes> _validationResources;
+
         private readonly IRepository<FilterGroup> _filterGroupRepository;
-        public FilterGroupRequestValidator(IRepository<FilterGroup> filterGroupRepository)
+        public FilterGroupRequestValidator(IRepository<FilterGroup> filterGroupRepository,
+            IStringLocalizer<ValidationResourсes> validationResources)
         {
+            _validationResources = validationResources;
+
             _filterGroupRepository = filterGroupRepository;
 
             //Name
             RuleFor(x => x.Name).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName("Name").WithMessage("{PropertyName} is required")
-               .Must(IsUniqueName).WithMessage("Filter group with this {PropertyName} already exists")
-               .Length(2, 30).WithMessage("{PropertyName} should be between 2 and 30 characters");
+               .NotEmpty().WithName(_validationResources["NamePropName"])
+               .Must(IsUniqueName).WithMessage(_validationResources["FilterGroupUniqueNameMessage"])
+               .Length(2, 30);
         }
 
         private bool IsUniqueName(string name)

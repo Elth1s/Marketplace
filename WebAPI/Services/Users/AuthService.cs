@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
 using DAL.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Localization;
 using System.Net;
 using WebAPI.Constants;
 using WebAPI.Exceptions;
 using WebAPI.Extensions;
 using WebAPI.Helpers;
 using WebAPI.Interfaces.Users;
-using WebAPI.Resources;
 using WebAPI.ViewModels.Request.Users;
 using WebAPI.ViewModels.Response.Users;
 
@@ -15,17 +15,20 @@ namespace WebAPI.Services.Users
 {
     public class AuthService : IAuthService
     {
+        private readonly IStringLocalizer<ErrorMessages> _errorMessagesLocalizer;
         private readonly IMapper _mapper;
         private readonly IJwtTokenService _jwtTokenService;
         private readonly IRecaptchaService _recaptchaService;
         private readonly UserManager<AppUser> _userManager;
         private readonly PhoneNumberManager _phoneNumberManager;
-        public AuthService(IMapper mapper,
+        public AuthService(IStringLocalizer<ErrorMessages> errorMessagesLocalizer,
+                           IMapper mapper,
                            IJwtTokenService jwtTokenService,
                            IRecaptchaService recaptchaService,
                            UserManager<AppUser> userManager,
                            PhoneNumberManager phoneNumberManager)
         {
+            _errorMessagesLocalizer = errorMessagesLocalizer;
             _mapper = mapper;
             _jwtTokenService = jwtTokenService;
             _recaptchaService = recaptchaService;
@@ -36,9 +39,8 @@ namespace WebAPI.Services.Users
         public async Task<AuthResponse> SignInAsync(SignInRequest request, string ipAddress)
         {
             if (!_recaptchaService.IsValid(request.ReCaptchaToken))
-            {
-                throw new AppException(ErrorMessages.CaptchaVerificationFailed);
-            }
+                throw new AppException(_errorMessagesLocalizer["CaptchaVerificationFailed"]);
+
 
             var user = await _userManager.FindByEmailAsync(request.EmailOrPhone);
             if (user == null)
@@ -47,9 +49,7 @@ namespace WebAPI.Services.Users
 
             var resultPasswordCheck = await _userManager.CheckPasswordAsync(user, request.Password);
             if (!resultPasswordCheck)
-            {
-                throw new AppException(ErrorMessages.InvalidUserData, HttpStatusCode.Unauthorized);
-            }
+                throw new AppException(_errorMessagesLocalizer["InvalidUserData"], HttpStatusCode.Unauthorized);
 
             var newRefreshToken = _jwtTokenService.GenerateRefreshToken(ipAddress);
             await _jwtTokenService.SaveRefreshToken(newRefreshToken, user);
@@ -66,9 +66,7 @@ namespace WebAPI.Services.Users
         public async Task<AuthResponse> SignUpAsync(SignUpRequest request, string ipAddress)
         {
             if (!_recaptchaService.IsValid(request.ReCaptchaToken))
-            {
-                throw new AppException(ErrorMessages.CaptchaVerificationFailed);
-            }
+                throw new AppException(_errorMessagesLocalizer["CaptchaVerificationFailed"]);
 
             var user = _mapper.Map<AppUser>(request);
 
@@ -82,9 +80,8 @@ namespace WebAPI.Services.Users
 
             var resultCreate = await _userManager.CreateAsync(user, request.Password);
             if (!resultCreate.Succeeded)
-            {
-                throw new AppException(ErrorMessages.UserCreateFail);
-            }
+                throw new AppException(_errorMessagesLocalizer["UserCreateFail"]);
+
 
             var refreshToken = _jwtTokenService.GenerateRefreshToken(ipAddress);
             await _jwtTokenService.SaveRefreshToken(refreshToken, user);
@@ -143,9 +140,8 @@ namespace WebAPI.Services.Users
         {
             var payload = await _jwtTokenService.VerifyGoogleToken(request);
             if (payload == null)
-            {
-                throw new AppException(ErrorMessages.InvalidExternalLoginRequest);
-            }
+                throw new AppException(_errorMessagesLocalizer["InvalidExternalLoginRequest"]);
+
 
             var info = new UserLoginInfo(ExternalLoginProviderName.Google, payload.Subject, ExternalLoginProviderName.Google);
 
@@ -163,17 +159,12 @@ namespace WebAPI.Services.Users
 
                     var resultCreate = await _userManager.CreateAsync(user);
                     if (!resultCreate.Succeeded)
-                    {
-                        throw new AppException(ErrorMessages.UserCreateFail);
-                    }
-
+                        throw new AppException(_errorMessagesLocalizer["UserCreateFail"]);
                 }
 
                 var resultAddLogin = await _userManager.AddLoginAsync(user, info);
                 if (!resultAddLogin.Succeeded)
-                {
-                    throw new AppException(ErrorMessages.ExternalLoginAddFail);
-                }
+                    throw new AppException(_errorMessagesLocalizer["ExternalLoginAddFail"]);
             }
 
             var refreshToken = _jwtTokenService.GenerateRefreshToken(ipAddress);
@@ -192,9 +183,7 @@ namespace WebAPI.Services.Users
         {
             var payload = await _jwtTokenService.VerifyFacebookToken(request);
             if (payload == null)
-            {
-                throw new AppException(ErrorMessages.InvalidExternalLoginRequest);
-            }
+                throw new AppException(_errorMessagesLocalizer["InvalidExternalLoginRequest"]);
 
             var info = new UserLoginInfo(ExternalLoginProviderName.Facebook, payload.Id, ExternalLoginProviderName.Facebook);
 
@@ -213,17 +202,12 @@ namespace WebAPI.Services.Users
 
                     var resultCreate = await _userManager.CreateAsync(user);
                     if (!resultCreate.Succeeded)
-                    {
-                        throw new AppException(ErrorMessages.UserCreateFail);
-                    }
-
+                        throw new AppException(_errorMessagesLocalizer["UserCreateFail"]);
                 }
 
                 var resultAddLogin = await _userManager.AddLoginAsync(user, info);
                 if (!resultAddLogin.Succeeded)
-                {
-                    throw new AppException(ErrorMessages.ExternalLoginAddFail);
-                }
+                    throw new AppException(_errorMessagesLocalizer["ExternalLoginAddFail"]);
             }
 
             var refreshToken = _jwtTokenService.GenerateRefreshToken(ipAddress);

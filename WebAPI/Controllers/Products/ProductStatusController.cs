@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
 using WebAPI.Interfaces.Products;
 using WebAPI.ViewModels.Request;
@@ -18,10 +19,14 @@ namespace WebAPI.Controllers.Products
     public class ProductStatusController : Controller
     {
         private readonly IProductStatusService _productStatusService;
+        private readonly IStringLocalizer<ProductStatusController> _productStatusLocalizer;
 
-        public ProductStatusController(IProductStatusService productStatusService)
+
+        public ProductStatusController(IProductStatusService productStatusService,
+            IStringLocalizer<ProductStatusController> productStatusLocalizer)
         {
             _productStatusService = productStatusService;
+            _productStatusLocalizer = productStatusLocalizer;
         }
 
         /// <summary>
@@ -101,7 +106,7 @@ namespace WebAPI.Controllers.Products
         public async Task<IActionResult> Create([FromBody] ProductStatusRequest request)
         {
             await _productStatusService.CreateAsync(request);
-            return Ok("Product status updated successfully");
+            return Ok(_productStatusLocalizer["CreateSuccess"].Value);
         }
 
         /// <summary>
@@ -124,7 +129,7 @@ namespace WebAPI.Controllers.Products
         public async Task<IActionResult> Update(int id, [FromBody] ProductStatusRequest request)
         {
             await _productStatusService.UpdateAsync(id, request);
-            return Ok("Product status updated successfully");
+            return Ok(_productStatusLocalizer["UpdateSuccess"].Value);
         }
 
         /// <summary>
@@ -146,7 +151,7 @@ namespace WebAPI.Controllers.Products
         public async Task<IActionResult> Delete(int id)
         {
             await _productStatusService.DeleteAsync(id);
-            return Ok("Product status deleted successfully");
+            return Ok(_productStatusLocalizer["DeleteSuccess"].Value);
         }
 
         /// <summary>
@@ -167,7 +172,7 @@ namespace WebAPI.Controllers.Products
         public async Task<IActionResult> DeleteProductStatuses([FromQuery] IEnumerable<int> ids)
         {
             await _productStatusService.DeleteProductStatusesAsync(ids);
-            return Ok("Categories deleted successfully");
+            return Ok(_productStatusLocalizer["DeleteListSuccess"].Value);
         }
     }
 }

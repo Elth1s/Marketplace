@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
 using DAL.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Localization;
 using System.Drawing.Imaging;
 using WebAPI.Constants;
 using WebAPI.Exceptions;
 using WebAPI.Extensions;
 using WebAPI.Helpers;
 using WebAPI.Interfaces.Users;
-using WebAPI.Resources;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Request.Users;
 using WebAPI.ViewModels.Response;
@@ -17,11 +17,16 @@ namespace WebAPI.Services.Users
 {
     public class UserService : IUserService
     {
+        private readonly IStringLocalizer<ErrorMessages> _errorMessagesLocalizer;
         private readonly IMapper _mapper;
         private readonly UserManager<AppUser> _userManager;
         private readonly PhoneNumberManager _phoneNumberManager;
-        public UserService(IMapper mapper, UserManager<AppUser> userManager, PhoneNumberManager phoneNumberManager)
+        public UserService(IStringLocalizer<ErrorMessages> errorMessagesLocalizer,
+            IMapper mapper,
+            UserManager<AppUser> userManager,
+            PhoneNumberManager phoneNumberManager)
         {
+            _errorMessagesLocalizer = errorMessagesLocalizer;
             _mapper = mapper;
             _userManager = userManager;
             _phoneNumberManager = phoneNumberManager;
@@ -83,7 +88,7 @@ namespace WebAPI.Services.Users
 
             var passwordCheck = await _userManager.CheckPasswordAsync(user, request.Password);
             if (!passwordCheck)
-                throw new AppException(ErrorMessages.InvalidPassword);
+                throw new AppException(_errorMessagesLocalizer["InvalidPassword"]);
 
             user.Email = request.Email;
 
@@ -97,7 +102,7 @@ namespace WebAPI.Services.Users
 
             var passwordCheck = await _userManager.CheckPasswordAsync(user, request.Password);
             if (!passwordCheck)
-                throw new AppException(ErrorMessages.InvalidPassword);
+                throw new AppException(_errorMessagesLocalizer["InvalidPassword"]);
 
             user.PhoneNumber = _phoneNumberManager.GetPhoneE164Format(request.Phone);
 
@@ -120,11 +125,11 @@ namespace WebAPI.Services.Users
             var hasPassword = await _userManager.HasPasswordAsync(user);
 
             if (hasPassword)
-                throw new AppException(ErrorMessages.PasswordExist);
+                throw new AppException(_errorMessagesLocalizer["PasswordExist"]);
 
             var resultPasswordAdd = await _userManager.AddPasswordAsync(user, request.Password);
             if (!resultPasswordAdd.Succeeded)
-                throw new AppException(ErrorMessages.AddPasswordFailed);
+                throw new AppException(_errorMessagesLocalizer["AddPasswordFailed"]);
         }
 
         public async Task ChangePasswordAsync(string userId, ChangePasswordRequest request)
@@ -134,11 +139,11 @@ namespace WebAPI.Services.Users
 
             var resultPasswordCheck = await _userManager.CheckPasswordAsync(user, request.OldPassword);
             if (!resultPasswordCheck)
-                throw new AppException(ErrorMessages.InvalidPassword);
+                throw new AppException(_errorMessagesLocalizer["InvalidPassword"]);
 
             var resultPasswordUpdate = await _userManager.ChangePasswordAsync(user, request.OldPassword, request.Password);
             if (!resultPasswordUpdate.Succeeded)
-                throw new AppException(ErrorMessages.PasswordUpdateFail);
+                throw new AppException(_errorMessagesLocalizer["PasswordUpdateFail"]);
         }
 
         public async Task<AdminSearchResponse<UserResponse>> SearchUsersAsync(AdminSearchRequest request)

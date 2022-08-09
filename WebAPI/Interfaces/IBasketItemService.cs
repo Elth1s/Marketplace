@@ -1,4 +1,4 @@
-﻿using WebAPI.ViewModels.Request;
+﻿using WebAPI.ViewModels.Request.Baskets;
 using WebAPI.ViewModels.Response;
 
 namespace WebAPI.Interfaces

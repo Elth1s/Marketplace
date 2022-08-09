@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Security.Claims;
 using WebAPI.Interfaces.Characteristics;
@@ -20,10 +21,13 @@ namespace WebAPI.Controllers.Characteristics
     {
         private string UserId => User?.FindFirstValue(ClaimTypes.NameIdentifier);
 
+        private readonly IStringLocalizer<CharacteristicGroupController> _characteristicGroupLocalizer;
         private readonly ICharacteristicGroupService _characteristicGroupService;
-        public CharacteristicGroupController(ICharacteristicGroupService characteristicGroupService)
+        public CharacteristicGroupController(ICharacteristicGroupService characteristicGroupService,
+            IStringLocalizer<CharacteristicGroupController> characteristicGroupLocalizer)
         {
             _characteristicGroupService = characteristicGroupService;
+            _characteristicGroupLocalizer = characteristicGroupLocalizer;
         }
 
         /// <summary>
@@ -107,7 +111,7 @@ namespace WebAPI.Controllers.Characteristics
         public async Task<IActionResult> Create([FromBody] CharacteristicGroupRequest request)
         {
             await _characteristicGroupService.CreateAsync(request, UserId);
-            return Ok("Characteristic group updated successfully");
+            return Ok(_characteristicGroupLocalizer["CreateSuccess"].Value);
         }
 
         /// <summary>
@@ -130,7 +134,7 @@ namespace WebAPI.Controllers.Characteristics
         public async Task<IActionResult> Update(int id, [FromBody] CharacteristicGroupRequest request)
         {
             await _characteristicGroupService.UpdateAsync(id, request);
-            return Ok("Characteristic group updated successfully");
+            return Ok(_characteristicGroupLocalizer["UpdateSuccess"].Value);
         }
 
         /// <summary>
@@ -152,7 +156,7 @@ namespace WebAPI.Controllers.Characteristics
         public async Task<IActionResult> Delete(int id)
         {
             await _characteristicGroupService.DeleteAsync(id);
-            return Ok("Characteristic group deleted successfully");
+            return Ok(_characteristicGroupLocalizer["DeleteSuccess"].Value);
         }
 
         /// <summary>
@@ -173,7 +177,7 @@ namespace WebAPI.Controllers.Characteristics
         public async Task<IActionResult> Delete([FromQuery] IEnumerable<int> ids)
         {
             await _characteristicGroupService.DeleteAsync(ids);
-            return Ok("Characteristic groups deleted successfully");
+            return Ok(_characteristicGroupLocalizer["DeleteListSuccess"].Value);
         }
     }
 }

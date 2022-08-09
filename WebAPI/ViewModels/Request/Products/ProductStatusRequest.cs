@@ -1,6 +1,7 @@
 ﻿using DAL;
 using DAL.Entities;
 using FluentValidation;
+using Microsoft.Extensions.Localization;
 using WebAPI.Specifications.Products;
 
 namespace WebAPI.ViewModels.Request.Products
@@ -22,15 +23,19 @@ namespace WebAPI.ViewModels.Request.Products
     /// </summary>
     public class ProductStatusRequestValidator : AbstractValidator<ProductStatusRequest>
     {
+        private readonly IStringLocalizer<ValidationResourсes> _validationResources;
         private readonly IRepository<ProductStatus> _productStatusRepository;
-        public ProductStatusRequestValidator(IRepository<ProductStatus> productStatusRepository)
+        public ProductStatusRequestValidator(IRepository<ProductStatus> productStatusRepository,
+            IStringLocalizer<ValidationResourсes> validationResources)
         {
+            _validationResources = validationResources;
+
             _productStatusRepository = productStatusRepository;
             //Name
             RuleFor(x => x.Name).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName("Name").WithMessage("{PropertyName} is required")
-               .Must(IsUniqueName).WithMessage("Product status with this {PropertyName} already exists")
-               .Length(2, 20).WithMessage("{PropertyName} should be between 2 and 20 characters");
+               .NotEmpty().WithName(_validationResources["NamePropName"])
+               .Length(2, 20)
+               .Must(IsUniqueName).WithMessage(_validationResources["ProductStatusUniquesNameMessage"]);
         }
 
         private bool IsUniqueName(string name)

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Security.Claims;
 using WebAPI.Interfaces.Questions;
@@ -18,10 +19,15 @@ namespace WebAPI.Controllers.Questions
     public class QuestionReplyController : ControllerBase
     {
         private string UserId => User?.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        private readonly IStringLocalizer<QuestionReplyController> _questionReplyLocalizer;
+
         private readonly IQuestionReplyService _questionReplyService;
-        public QuestionReplyController(IQuestionReplyService questionReplyService)
+        public QuestionReplyController(IQuestionReplyService questionReplyService,
+            IStringLocalizer<QuestionReplyController> questionReplyLocalizer)
         {
             _questionReplyService = questionReplyService;
+            _questionReplyLocalizer = questionReplyLocalizer;
         }
 
         /// <summary>
@@ -43,7 +49,7 @@ namespace WebAPI.Controllers.Questions
         public async Task<IActionResult> Create([FromBody] QuestionReplyRequest request)
         {
             await _questionReplyService.CreateAsync(request, UserId);
-            return Ok("Question reply created successfully");
+            return Ok(_questionReplyLocalizer["CreateSuccess"].Value);
         }
 
         /// <summary>

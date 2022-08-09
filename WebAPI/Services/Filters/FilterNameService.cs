@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using DAL;
 using DAL.Entities;
+using Microsoft.Extensions.Localization;
 using WebAPI.Exceptions;
 using WebAPI.Extensions;
 using WebAPI.Interfaces.Filters;
-using WebAPI.Resources;
 using WebAPI.Specifications.Filters;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Request.Filters;
@@ -15,18 +15,20 @@ namespace WebAPI.Services.Filters
 {
     public class FilterNameService : IFilterNameService
     {
+        private readonly IStringLocalizer<ErrorMessages> _errorMessagesLocalizer;
         private readonly IRepository<FilterName> _filterNameRepository;
         private readonly IRepository<FilterGroup> _filterGroupRepository;
         private readonly IRepository<Unit> _unitRepository;
         private readonly IMapper _mapper;
 
-        public FilterNameService(
+        public FilterNameService(IStringLocalizer<ErrorMessages> errorMessagesLocalizer,
             IRepository<FilterName> filterNameRepository,
             IRepository<FilterGroup> filterGroupRepository,
             IRepository<Unit> unitRepository,
             IMapper mapper
             )
         {
+            _errorMessagesLocalizer = errorMessagesLocalizer;
             _filterNameRepository = filterNameRepository;
             _filterGroupRepository = filterGroupRepository;
             _unitRepository = unitRepository;
@@ -64,7 +66,8 @@ namespace WebAPI.Services.Filters
 
             var spec = new FilterNameGetByNameAndUnitIdSpecification(request.Name, request.UnitId);
             if (await _filterNameRepository.GetBySpecAsync(spec) != null)
-                throw new AppValidationException(new ValidationError(nameof(FilterName.UnitId), ErrorMessages.FilterNameUnitNotUnique));
+                throw new AppValidationException(
+                    new ValidationError(nameof(FilterName.UnitId), _errorMessagesLocalizer["FilterNameUnitNotUnique"]));
 
             var filter = _mapper.Map<FilterName>(request);
 
@@ -85,7 +88,8 @@ namespace WebAPI.Services.Filters
 
             var spec = new FilterNameGetByNameAndUnitIdSpecification(request.Name, request.UnitId.Value);
             if (await _filterNameRepository.GetBySpecAsync(spec) != null)
-                throw new AppValidationException(new ValidationError(nameof(FilterName.UnitId), ErrorMessages.FilterNameUnitNotUnique));
+                throw new AppValidationException(
+                    new ValidationError(nameof(FilterName.UnitId), _errorMessagesLocalizer["FilterNameUnitNotUnique"]));
 
             var filter = await _filterNameRepository.GetByIdAsync(filterNameId);
             filter.FilterNameNullChecking();

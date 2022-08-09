@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
 using WebAPI.Interfaces;
 using WebAPI.ViewModels.Request;
@@ -16,9 +17,12 @@ namespace WebAPI.Controllers
     public class CityController : ControllerBase
     {
         private readonly ICityService _cityService;
-        public CityController(ICityService cityService)
+        private readonly IStringLocalizer<CityController> _cityLocalizer;
+
+        public CityController(ICityService cityService, IStringLocalizer<CityController> cityLocalizer)
         {
             _cityService = cityService;
+            _cityLocalizer = cityLocalizer;
         }
 
         /// <summary>
@@ -100,7 +104,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> CreateCity([FromBody] CityRequest request)
         {
             await _cityService.CreateCityAsync(request);
-            return Ok("City created successfully");
+            return Ok(_cityLocalizer["CreateSuccess"].Value);
         }
 
         /// <summary>
@@ -123,7 +127,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> UpdateCity(int cityId, [FromBody] CityRequest request)
         {
             await _cityService.UpdateCityAsync(cityId, request);
-            return Ok("City updated successfully");
+            return Ok(_cityLocalizer["UpdateSuccess"].Value);
         }
 
         /// <summary>
@@ -145,7 +149,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> DeleteCity(int cityId)
         {
             await _cityService.DeleteCityAsync(cityId);
-            return Ok("City deleted successfully");
+            return Ok(_cityLocalizer["DeleteSuccess"].Value);
         }
 
         /// <summary>
@@ -166,7 +170,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> DeleteCities([FromQuery] IEnumerable<int> ids)
         {
             await _cityService.DeleteCitiesAsync(ids);
-            return Ok("Cities deleted successfully");
+            return Ok(_cityLocalizer["DeleteListSuccess"].Value);
         }
     }
 }

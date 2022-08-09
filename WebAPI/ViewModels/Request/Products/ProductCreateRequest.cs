@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.Extensions.Localization;
 
 namespace WebAPI.ViewModels.Request.Products
 {
@@ -70,27 +71,30 @@ namespace WebAPI.ViewModels.Request.Products
     /// </summary>
     public class ProductCreateRequestValidator : AbstractValidator<ProductCreateRequest>
     {
-        public ProductCreateRequestValidator()
+        private readonly IStringLocalizer<ValidationResourсes> _validationResources;
+        public ProductCreateRequestValidator(IStringLocalizer<ValidationResourсes> validationResources)
         {
+            _validationResources = validationResources;
+
             //Name
             RuleFor(x => x.Name).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName("Name").WithMessage("{PropertyName} is required")
-               .Length(2, 20).WithMessage("{PropertyName} should be between 2 and 20 characters");
+               .NotEmpty().WithName(_validationResources["NamePropName"])
+               .Length(2, 60);
 
             //Description
             RuleFor(x => x.Description).Cascade(CascadeMode.Stop)
-              .NotEmpty().WithName("Description").WithMessage("{PropertyName} is required")
-              .Length(15, 250).WithMessage("{PropertyName} should be between 15 and 250 characters");
+              .NotEmpty().WithName(_validationResources["DescriptionNameProp"])
+              .Length(15, 250);
 
             //Price
             RuleFor(c => c.Price).Cascade(CascadeMode.Stop)
-                .NotEmpty().WithName("Price").WithMessage("{PropertyName} is required!")
-               .InclusiveBetween(0.1f, 99_999_999_999_999f).WithMessage("{PropertyName} should be between 0.1 and 99 999 999 999 999");
+                .NotEmpty().WithName(_validationResources["PriceNameProp"]).WithMessage(_validationResources["RequiredMessage"])
+                .InclusiveBetween(0.1f, 99_999_999_999_999f);
 
             //Count
             RuleFor(a => a.Count).Cascade(CascadeMode.Stop)
-                .NotEmpty().WithName("Count").WithMessage("{PropertyName} is required!")
-                .InclusiveBetween(0, 999_999_999).WithMessage("{PropertyName} should be between 0 and  999 999 999");
+                .NotEmpty().WithName(_validationResources["CountPropName"]).WithMessage(_validationResources["RequiredMessage"])
+                .InclusiveBetween(0, 999_999_999);
         }
     }
 }

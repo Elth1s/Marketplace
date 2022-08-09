@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Security.Claims;
 using WebAPI.Interfaces.Orders;
@@ -18,10 +19,12 @@ namespace WebAPI.Controllers.Orders
     {
         private string UserId => User?.FindFirstValue(ClaimTypes.NameIdentifier);
 
+        private readonly IStringLocalizer<OrderController> _orderLocalizer;
         private readonly IOrderService _orderService;
-        public OrderController(IOrderService orderService)
+        public OrderController(IOrderService orderService, IStringLocalizer<OrderController> orderLocalizer)
         {
             _orderService = orderService;
+            _orderLocalizer = orderLocalizer;
         }
 
         /// <summary>
@@ -79,7 +82,7 @@ namespace WebAPI.Controllers.Orders
         public async Task<IActionResult> Create([FromBody] OrderCreateRequest request)
         {
             await _orderService.CreateAsync(request, UserId);
-            return Ok("Order created successfully");
+            return Ok(_orderLocalizer["CreateSuccess"].Value);
         }
 
 
@@ -103,7 +106,7 @@ namespace WebAPI.Controllers.Orders
         public async Task<IActionResult> Delete(int id)
         {
             await _orderService.DeleteAsync(id);
-            return Ok("Order deleted successfully");
+            return Ok(_orderLocalizer["DeleteSuccess"].Value);
         }
 
     }

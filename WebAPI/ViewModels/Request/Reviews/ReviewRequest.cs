@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.Extensions.Localization;
 
 namespace WebAPI.ViewModels.Request.Reviews
 {
@@ -58,42 +59,45 @@ namespace WebAPI.ViewModels.Request.Reviews
     /// </summary>
     public class ReviewRequestValidator : AbstractValidator<ReviewRequest>
     {
-        public ReviewRequestValidator()
+        private readonly IStringLocalizer<ValidationResourсes> _validationResources;
+        public ReviewRequestValidator(IStringLocalizer<ValidationResourсes> validationResources)
         {
+            _validationResources = validationResources;
+
             //Full name
             RuleFor(x => x.FullName).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName("Full name").WithMessage("{PropertyName} is required")
-               .Length(2, 80).WithMessage("{PropertyName} should be between 2 and 60 characters");
+               .NotEmpty().WithName(_validationResources["FullNamePropName"]).WithMessage(_validationResources["PluralRequiredMessage"])
+               .Length(2, 80).WithMessage(_validationResources["PluralLengthMessage"]);
 
             //Email
             RuleFor(x => x.Email).Cascade(CascadeMode.Stop)
-              .NotEmpty().WithName("Email address").WithMessage("{PropertyName} is required")
-              .EmailAddress().WithMessage("Invalid format of {PropertyName}"); ;
+              .NotEmpty().WithName(_validationResources["EmailAddressPropName"]).WithMessage(_validationResources["RequiredMessage"])
+              .EmailAddress();
 
             //Product rating
             RuleFor(c => c.ProductRating).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName("Product rating").WithMessage("{PropertyName} is required!")
-               .InclusiveBetween(1, 5).WithMessage("{PropertyName} should be between 1 and  5");
+               .NotEmpty().WithName(_validationResources["ProductRatingPropName"])
+               .InclusiveBetween(1, 5);
 
             //Advantage
             RuleFor(a => a.Advantage).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName("Advantage").WithMessage("{PropertyName} is required!")
-               .MaximumLength(100).WithMessage("{PropertyName} should be less than 100 characters");
+               .NotEmpty().WithName(_validationResources["AdvantagePropName"]).WithMessage(_validationResources["PluralRequiredMessage"])
+               .MaximumLength(100).WithMessage(_validationResources["PluralLengthMessage"]);
 
             //Disadvantage
             RuleFor(a => a.Disadvantage).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName("Disadvantage").WithMessage("{PropertyName} is required!")
-               .MaximumLength(100).WithMessage("{PropertyName} should be less than 100 characters");
+               .NotEmpty().WithName(_validationResources["DisadvantagePropName"]).WithMessage(_validationResources["PluralRequiredMessage"])
+               .MaximumLength(100).WithMessage(_validationResources["PluralLengthMessage"]);
 
             //Comment
             RuleFor(a => a.Comment).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName("Comment").WithMessage("{PropertyName} is required!")
-               .Length(1, 850).WithMessage("{PropertyName} should be between 1 and 850 characters");
+               .NotEmpty().WithName(_validationResources["CommentPropName"])
+               .Length(1, 850);
 
-            //Full name
-            RuleFor(x => x.ProductSlug).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName("Product slug").WithMessage("{PropertyName} is required")
-               .Length(2, 70).WithMessage("{PropertyName} should be between 2 and 70 characters");
+            //Product slug 
+            RuleFor(a => a.ProductSlug).Cascade(CascadeMode.Stop)
+                 .NotEmpty().WithName(_validationResources["ProductUrlSlugPropName"])
+                 .WithMessage(_validationResources["RequiredMessage"]);
         }
     }
 }

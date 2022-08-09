@@ -1,6 +1,7 @@
 ﻿using DAL.Entities;
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Localization;
 using WebAPI.Extensions;
 using WebAPI.Helpers;
 
@@ -30,22 +31,25 @@ namespace WebAPI.ViewModels.Request.Users
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly PhoneNumberManager _phoneNumberManager;
-        public ChangePhoneRequestValidator(UserManager<AppUser> userManager, PhoneNumberManager phoneNumberManager)
+        private readonly IStringLocalizer<ValidationResourсes> _validationResources;
+        public ChangePhoneRequestValidator(UserManager<AppUser> userManager, PhoneNumberManager phoneNumberManager,
+            IStringLocalizer<ValidationResourсes> validationResources)
         {
+            _validationResources = validationResources;
             _userManager = userManager;
             _phoneNumberManager = phoneNumberManager;
 
             //Phone
             RuleFor(x => x.Phone).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName("Phone number").WithMessage("{PropertyName} is required")
-               .Must(IsValidPhone).WithMessage("Invalid {PropertyName} format")
-               .Must(IsUniquePhone).WithMessage("User with this {PropertyName} already exists");
+               .NotEmpty().WithName(_validationResources["PhonePropName"])
+               .Must(IsValidPhone).WithMessage(_validationResources["InvalidFormatMessage"])
+               .Must(IsUniquePhone).WithMessage(_validationResources["UserUniquePhoneMessage"]);
 
 
             //Password
             RuleFor(x => x.Password)
                 .Cascade(CascadeMode.Stop)
-                .NotEmpty().WithName("Password").WithMessage("{PropertyName} is required");
+                .NotEmpty().WithName(_validationResources["PasswordPropName"]);
         }
 
         private bool IsUniquePhone(string phone)

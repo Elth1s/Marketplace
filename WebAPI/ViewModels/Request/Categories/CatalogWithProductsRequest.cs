@@ -1,4 +1,7 @@
-﻿namespace WebAPI.ViewModels.Request.Categories
+﻿using FluentValidation;
+using Microsoft.Extensions.Localization;
+
+namespace WebAPI.ViewModels.Request.Categories
 {
     /// <summary>
     /// Category class to create and update category
@@ -24,5 +27,34 @@
         /// List identifier of filters
         /// </summary>
         public IEnumerable<int> Filters { get; set; }
+    }
+
+    /// <summary>
+    /// Class for <seealso cref="CatalogWithProductsRequest" /> validation
+    /// </summary>
+    public class CatalogWithProductsRequestValidation : AbstractValidator<CatalogWithProductsRequest>
+    {
+        private readonly IStringLocalizer<ValidationResourсes> _validationResources;
+        public CatalogWithProductsRequestValidation(IStringLocalizer<ValidationResourсes> validationResources)
+        {
+            _validationResources = validationResources;
+
+            //UrlSlug
+            RuleFor(a => a.UrlSlug).Cascade(CascadeMode.Stop)
+                 .NotEmpty().WithName(_validationResources["CategoryUrlSlugPropName"])
+                 .WithMessage(_validationResources["RequiredMessage"]);
+
+            //Page
+            RuleFor(a => a.Page).Cascade(CascadeMode.Stop)
+                .NotEmpty().WithName(_validationResources["PagePropName"])
+                .WithMessage(_validationResources["RequiredMessage"])
+                .GreaterThan(0).WithMessage(_validationResources["GreaterThanMessage"]);
+
+            //RowsPerPage
+            RuleFor(a => a.RowsPerPage).Cascade(CascadeMode.Stop)
+                .NotEmpty().WithName(_validationResources["RowsPerPagePropName"])
+                .WithMessage(_validationResources["PluralRequiredMessage"])
+                .GreaterThan(0).WithMessage(_validationResources["PluralGreaterThanMessage"]);
+        }
     }
 }

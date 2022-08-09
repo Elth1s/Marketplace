@@ -1,6 +1,7 @@
 ﻿using DAL;
 using DAL.Entities;
 using FluentValidation;
+using Microsoft.Extensions.Localization;
 using WebAPI.Specifications.Units;
 
 namespace WebAPI.ViewModels.Request
@@ -22,19 +23,22 @@ namespace WebAPI.ViewModels.Request
     /// </summary>
     public class UnitRequestValidator : AbstractValidator<UnitRequest>
     {
+        private readonly IStringLocalizer<ValidationResourсes> _validationResources;
         private readonly IRepository<Unit> _unitRepository;
-        public UnitRequestValidator(IRepository<Unit> unitRepository)
+        public UnitRequestValidator(IRepository<Unit> unitRepository,
+            IStringLocalizer<ValidationResourсes> validationResources)
         {
             _unitRepository = unitRepository;
+            _validationResources = validationResources;
 
             //Measure
             RuleFor(x => x.Measure).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName("Measure").WithMessage("{PropertyName} is required")
-               .Must(IsUniqueName).WithMessage("Unit with this {PropertyName} already exists")
-               .Length(1, 30).WithMessage("{PropertyName} should be between 1 and 30 characters");
+               .NotEmpty().WithName(_validationResources["MeasurePropName"]).WithMessage(_validationResources["RequiredMessage"])
+               .Length(1, 30)
+               .Must(IsUniqueMeasure).WithMessage(_validationResources["UnitUniqueMeasureMessage"]);
         }
 
-        private bool IsUniqueName(string measure)
+        private bool IsUniqueMeasure(string measure)
         {
             var spec = new UnitGetByMeasureSpecification(measure);
             return _unitRepository.GetBySpecAsync(spec).Result == null;

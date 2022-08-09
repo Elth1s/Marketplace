@@ -1,6 +1,7 @@
 ﻿using DAL.Entities;
 using Google.Apis.Auth;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
@@ -11,7 +12,6 @@ using System.Text;
 using WebAPI.Constants;
 using WebAPI.Exceptions;
 using WebAPI.Interfaces.Users;
-using WebAPI.Resources;
 using WebAPI.Settings;
 using WebAPI.ViewModels.Request.Users;
 using WebAPI.ViewModels.Response.Users;
@@ -20,16 +20,19 @@ namespace WebAPI.Services.Users
 {
     public class JwtTokenService : IJwtTokenService
     {
+        private readonly IStringLocalizer<ErrorMessages> _errorMessagesLocalizer;
         private readonly UserManager<AppUser> _userManager;
         private readonly JwtSettings _jwtSettings;
         private readonly GoogleAuthSettings _googleAuthSettings;
 
-        public JwtTokenService(IOptions<JwtSettings> jwtSettings,
+        public JwtTokenService(IStringLocalizer<ErrorMessages> errorMessagesLocalizer,
+                                IOptions<JwtSettings> jwtSettings,
                                IOptions<GoogleAuthSettings> googleAuthSettings,
                                UserManager<AppUser> userManager)
         {
             _jwtSettings = jwtSettings.Value;
             _googleAuthSettings = googleAuthSettings.Value;
+            _errorMessagesLocalizer = errorMessagesLocalizer;
             _userManager = userManager;
         }
 
@@ -84,7 +87,7 @@ namespace WebAPI.Services.Users
         {
             var user = _userManager.Users.SingleOrDefault(u => u.RefreshTokens.Any(t => t.Token == token));
             if (user == null)
-                throw new AppException(ErrorMessages.InvalidToken);
+                throw new AppException(_errorMessagesLocalizer["InvalidToken"]);
 
             return user;
         }
@@ -132,7 +135,7 @@ namespace WebAPI.Services.Users
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new AppException("Failed to get Facebook user from token");
+                throw new AppException(_errorMessagesLocalizer["GetFacebookUserFailed"]);
             }
 
             var result = await response.Content.ReadAsStringAsync();

@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.Extensions.Localization;
 
 namespace WebAPI.ViewModels.Request
 {
@@ -24,17 +25,20 @@ namespace WebAPI.ViewModels.Request
     /// </summary>
     public class CountryRequestValidator : AbstractValidator<CountryRequest>
     {
-        public CountryRequestValidator()
+        private readonly IStringLocalizer<ValidationResourсes> _validationResources;
+        public CountryRequestValidator(IStringLocalizer<ValidationResourсes> validationResources)
         {
+            _validationResources = validationResources;
+
             //Name
             RuleFor(x => x.Name).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName("Name").WithMessage("{PropertyName} is required")
-               .Length(2, 60).WithMessage("{PropertyName} should be between 2 and 60 characters");
+               .NotEmpty().WithName(_validationResources["NamePropName"])
+               .Length(2, 60);
 
             //Code
             RuleFor(c => c.Code).Cascade(CascadeMode.Stop)
-                   .NotEmpty().WithMessage("{PropertyName} is required!")
-                   .Length(2).WithMessage("{PropertyName} must be 2 characters long.");
+                   .NotEmpty().WithMessage(_validationResources["CodePropName"])
+                   .Length(2).WithMessage(_validationResources["CodeExactLengthMessage"]);
         }
 
     }

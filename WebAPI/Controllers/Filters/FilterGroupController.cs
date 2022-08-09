@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
 using WebAPI.Interfaces.Filters;
 using WebAPI.ViewModels.Request;
@@ -18,9 +19,13 @@ namespace WebAPI.Controllers.Filters
     public class FilterGroupController : ControllerBase
     {
         private readonly IFilterGroupService _filterGroupService;
-        public FilterGroupController(IFilterGroupService filterGroupService)
+        private readonly IStringLocalizer<FilterGroupController> _filterGroupLocalizer;
+
+        public FilterGroupController(IFilterGroupService filterGroupService,
+             IStringLocalizer<FilterGroupController> filterGroupLocalizer)
         {
             _filterGroupService = filterGroupService;
+            _filterGroupLocalizer = filterGroupLocalizer;
         }
 
         /// <summary>
@@ -100,7 +105,7 @@ namespace WebAPI.Controllers.Filters
         public async Task<IActionResult> CreateFilterGroup([FromBody] FilterGroupRequest request)
         {
             await _filterGroupService.CreateFilterGroupAsync(request);
-            return Ok("Filter group created successfully");
+            return Ok(_filterGroupLocalizer["CreateSuccess"].Value);
         }
 
         /// <summary>
@@ -123,7 +128,7 @@ namespace WebAPI.Controllers.Filters
         public async Task<IActionResult> UpdateFilterGroup(int filterGroupId, [FromBody] FilterGroupRequest request)
         {
             await _filterGroupService.UpdateFilterGroupAsync(filterGroupId, request);
-            return Ok("Filter group updated successfully");
+            return Ok(_filterGroupLocalizer["UpdateSuccess"].Value);
         }
 
         /// <summary>
@@ -145,7 +150,7 @@ namespace WebAPI.Controllers.Filters
         public async Task<IActionResult> DeleteFilterGroup(int filterGroupId)
         {
             await _filterGroupService.DeleteFilterGroupAsync(filterGroupId);
-            return Ok("Filter group deleted successfully");
+            return Ok(_filterGroupLocalizer["DeleteSuccess"].Value);
         }
 
         /// <summary>
@@ -166,7 +171,7 @@ namespace WebAPI.Controllers.Filters
         public async Task<IActionResult> Delete([FromQuery] IEnumerable<int> ids)
         {
             await _filterGroupService.DeleteAsync(ids);
-            return Ok("Filter groups deleted successfully");
+            return Ok(_filterGroupLocalizer["DeleteListSuccess"].Value);
         }
     }
 }

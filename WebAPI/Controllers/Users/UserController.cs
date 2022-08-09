@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Security.Claims;
 using WebAPI.Interfaces.Users;
@@ -24,15 +25,19 @@ namespace WebAPI.Controllers.Users
         private readonly IConfirmEmailService _confirmEmailService;
         private readonly IResetPasswordService _resetPasswordService;
         private readonly IConfirmPhoneService _confirmPhoneService;
+        private readonly IStringLocalizer<UserController> _userLocalizer;
+
         public UserController(IUserService userService,
                               IConfirmEmailService confirmEmailService,
                               IResetPasswordService resetPasswordService,
-                              IConfirmPhoneService confirmPhoneService)
+                              IConfirmPhoneService confirmPhoneService,
+                              IStringLocalizer<UserController> userLocalizer)
         {
             _userService = userService;
             _confirmEmailService = confirmEmailService;
             _resetPasswordService = resetPasswordService;
             _confirmPhoneService = confirmPhoneService;
+            _userLocalizer = userLocalizer;
         }
 
         /// <summary>
@@ -72,7 +77,7 @@ namespace WebAPI.Controllers.Users
         public async Task<IActionResult> DeleteUsers([FromQuery] IEnumerable<string> ids)
         {
             await _userService.DeleteUsersAsync(ids);
-            return Ok("Users deleted successfully");
+            return Ok(_userLocalizer["DeleteListSuccess"].Value);
         }
 
         #region Profile
@@ -115,7 +120,7 @@ namespace WebAPI.Controllers.Users
         public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileRequest request)
         {
             await _userService.UpdateProfileAsync(UserId, request);
-            return Ok("Profile updated successfully");
+            return Ok(_userLocalizer["UpdateProfileSuccess"].Value);
         }
 
         #endregion
@@ -140,7 +145,7 @@ namespace WebAPI.Controllers.Users
         public async Task<IActionResult> SendConfirmEmail()
         {
             await _confirmEmailService.SendConfirmMailAsync(UserId);
-            return Ok("Send email for confirmation");
+            return Ok(_userLocalizer["SendConfirmEmailSuccess"].Value);
         }
 
         /// <summary>
@@ -161,7 +166,7 @@ namespace WebAPI.Controllers.Users
         public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailRequest request)
         {
             await _confirmEmailService.ConfirmEmailAsync(request);
-            return Ok("Email confirmed");
+            return Ok(_userLocalizer["EmailConfirmSuccess"].Value);
         }
 
         /// <summary>
@@ -202,7 +207,7 @@ namespace WebAPI.Controllers.Users
         public async Task<IActionResult> ChangeEmail([FromBody] ChangeEmailRequest request)
         {
             await _userService.ChangeEmailAsync(UserId, request);
-            return Ok("Email changed successfully");
+            return Ok(_userLocalizer["ChangeEmailSuccess"].Value);
         }
 
         #endregion
@@ -225,7 +230,7 @@ namespace WebAPI.Controllers.Users
         public async Task<IActionResult> SendResetPasswordByEmail([FromBody] EmailRequest request)
         {
             await _resetPasswordService.SendResetPasswordByEmailAsync(request);
-            return Ok("Send email for reset password");
+            return Ok(_userLocalizer["SendResetPasswordEmailSuccess"].Value);
         }
 
 
@@ -245,7 +250,7 @@ namespace WebAPI.Controllers.Users
         public async Task<IActionResult> SendResetPasswordByPhone([FromBody] PhoneRequest request)
         {
             await _resetPasswordService.SendResetPasswordByPhoneAsync(request);
-            return Ok("Send phone code for reset password");
+            return Ok(_userLocalizer["SendResetPasswordPhoneCodeSuccess"].Value);
         }
 
         /// <summary>
@@ -283,7 +288,7 @@ namespace WebAPI.Controllers.Users
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request)
         {
             await _resetPasswordService.ResetPasswordAsync(request);
-            return Ok("Password reset successfully");
+            return Ok(_userLocalizer["ResetPasswordSuccess"].Value);
         }
 
 
@@ -324,7 +329,7 @@ namespace WebAPI.Controllers.Users
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest request)
         {
             await _userService.ChangePasswordAsync(UserId, request);
-            return Ok("Password updated successfully");
+            return Ok(_userLocalizer["UpdatePasswordSuccess"].Value);
         }
 
         /// <summary>
@@ -345,7 +350,7 @@ namespace WebAPI.Controllers.Users
         public async Task<IActionResult> AddPassword([FromBody] AddPasswordRequest request)
         {
             await _userService.AddPasswordAsync(UserId, request);
-            return Ok("Password added successfully");
+            return Ok(_userLocalizer["AddPasswordSuccess"].Value);
         }
         #endregion
 
@@ -369,7 +374,7 @@ namespace WebAPI.Controllers.Users
         public async Task<IActionResult> SendVerificationCodeEmail()
         {
             await _confirmPhoneService.SendVerificationCodeAsync(UserId);
-            return Ok("Send code for verify");
+            return Ok(_userLocalizer["SendConfirmPhoneCodeSuccess"].Value);
         }
 
         /// <summary>
@@ -391,7 +396,7 @@ namespace WebAPI.Controllers.Users
         public async Task<IActionResult> ConfirmPhone([FromBody] ConfirmPhoneRequest request)
         {
             await _confirmPhoneService.VerificateAsync(UserId, request);
-            return Ok("Phone confirmed");
+            return Ok(_userLocalizer["PhoneConfirmSuccess"].Value);
         }
 
         /// <summary>
@@ -432,7 +437,7 @@ namespace WebAPI.Controllers.Users
         public async Task<IActionResult> ChangePhone([FromBody] ChangePhoneRequest request)
         {
             await _userService.ChangePhoneAsync(UserId, request);
-            return Ok("Phone changed successfully");
+            return Ok(_userLocalizer["ChangePhoneSuccess"].Value);
         }
 
         #endregion

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Security.Claims;
 using WebAPI.Interfaces.Questions;
@@ -19,11 +20,14 @@ namespace WebAPI.Controllers.Questions
     {
         private string UserId => User?.FindFirstValue(ClaimTypes.NameIdentifier);
 
+        private readonly IStringLocalizer<QuestionController> _questionLocalizer;
         private readonly IQuestionService _questionService;
 
-        public QuestionController(IQuestionService questionService)
+        public QuestionController(IQuestionService questionService,
+            IStringLocalizer<QuestionController> questionLocalizer)
         {
             _questionService = questionService;
+            _questionLocalizer = questionLocalizer;
         }
 
 
@@ -42,7 +46,6 @@ namespace WebAPI.Controllers.Questions
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetAll()
         {
-
             var result = await _questionService.GetAllAsync();
             return Ok(result);
         }
@@ -86,7 +89,7 @@ namespace WebAPI.Controllers.Questions
         public async Task<IActionResult> Create([FromBody] QuestionRequest request)
         {
             await _questionService.CreateAsync(request, UserId);
-            return Ok("Question created successfully");
+            return Ok(_questionLocalizer["CreateSuccess"].Value);
         }
 
         /// <summary>
@@ -106,7 +109,7 @@ namespace WebAPI.Controllers.Questions
         public async Task<IActionResult> DeleteBasket(int questionId)
         {
             await _questionService.DeleteAsync(questionId);
-            return Ok("Question deleted successfully");
+            return Ok(_questionLocalizer["DeleteSuccess"].Value);
         }
 
 
@@ -162,7 +165,7 @@ namespace WebAPI.Controllers.Questions
         public async Task<IActionResult> Like(int id)
         {
             await _questionService.Like(id, UserId);
-            return Ok("Like changed successfully");
+            return Ok(_questionLocalizer["LikeSuccess"].Value);
         }
 
         /// <summary>
@@ -182,7 +185,7 @@ namespace WebAPI.Controllers.Questions
         public async Task<IActionResult> Diskike(int id)
         {
             await _questionService.Dislike(id, UserId);
-            return Ok("Dislike changed successfully");
+            return Ok(_questionLocalizer["DislikeSuccess"].Value);
         }
 
     }

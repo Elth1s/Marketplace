@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
 using WebAPI.Interfaces;
 using WebAPI.ViewModels.Request;
@@ -16,9 +17,12 @@ namespace WebAPI.Controllers
     public class CountryController : ControllerBase
     {
         private readonly ICountryService _countryService;
-        public CountryController(ICountryService countryService)
+        private readonly IStringLocalizer<CountryController> _countryLocalizer;
+
+        public CountryController(ICountryService countryService, IStringLocalizer<CountryController> countryLocalizer)
         {
             _countryService = countryService;
+            _countryLocalizer = countryLocalizer;
         }
 
         /// <summary>
@@ -98,7 +102,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> CreateCountry([FromBody] CountryRequest request)
         {
             await _countryService.CreateCountryAsync(request);
-            return Ok("Country created successfully");
+            return Ok(_countryLocalizer["CreateSuccess"].Value);
         }
 
         /// <summary>
@@ -121,7 +125,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> UpdateCountry(int countryId, [FromBody] CountryRequest request)
         {
             await _countryService.UpdateCountryAsync(countryId, request);
-            return Ok("Country updated successfully");
+            return Ok(_countryLocalizer["UpdateSuccess"].Value);
         }
 
         /// <summary>
@@ -142,7 +146,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> DeleteCountry(int countryId)
         {
             await _countryService.DeleteCountryAsync(countryId);
-            return Ok("Country deleted successfully");
+            return Ok(_countryLocalizer["DeleteSuccess"].Value);
         }
 
         /// <summary>
@@ -163,7 +167,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> DeleteCountries([FromQuery] IEnumerable<int> ids)
         {
             await _countryService.DeleteCountriesAsync(ids);
-            return Ok("Countries deleted successfully");
+            return Ok(_countryLocalizer["DeleteListSuccess"].Value);
         }
     }
 }

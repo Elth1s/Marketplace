@@ -162,11 +162,12 @@ namespace WebAPI.Mapper
             //ProductImage
             CreateMap<ProductImage, ProductImageResponse>()
                 .ForMember(u => u.Name, opt => opt.MapFrom(vm => Path.Combine(ImagePath.RequestProductsImagePath, vm.Name)));
+            CreateMap<ProductImage, string>()
+                .ConstructUsing(u => Path.Combine(ImagePath.RequestProductsImagePath, u.Name));
             #endregion
 
             #region Basket
             //BasketItem
-            CreateMap<BasketCreateRequest, BasketItem>();
             CreateMap<BasketItem, BasketResponse>()
                 .ForMember(u => u.ProductName, opt => opt.MapFrom(vm => vm.Product.Name))
                 .ForMember(u => u.ProductPrice, opt => opt.MapFrom(vm => vm.Product.Price))

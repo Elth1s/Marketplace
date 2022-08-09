@@ -2,10 +2,10 @@
 using DAL;
 using DAL.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Localization;
 using WebAPI.Exceptions;
 using WebAPI.Extensions;
 using WebAPI.Interfaces.Reviews;
-using WebAPI.Resources;
 using WebAPI.Specifications.Reviews;
 using WebAPI.ViewModels.Request.Reviews;
 using WebAPI.ViewModels.Response;
@@ -15,14 +15,19 @@ namespace WebAPI.Services.Reviews
 {
     public class ReviewReplyService : IReviewReplyService
     {
+        private readonly IStringLocalizer<ErrorMessages> _errorMessagesLocalizer;
+
         private readonly IRepository<ReviewReply> _reviewReplyRepository;
         private readonly IRepository<Review> _reviewRepository;
         private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
 
-        public ReviewReplyService(IRepository<ReviewReply> reviewReplyRepository, IRepository<Review> reviewRepository,
+        public ReviewReplyService(IStringLocalizer<ErrorMessages> errorMessagesLocalizer,
+        IRepository<ReviewReply> reviewReplyRepository,
+            IRepository<Review> reviewRepository,
              UserManager<AppUser> userManager, IMapper mapper)
         {
+            _errorMessagesLocalizer = errorMessagesLocalizer;
             _reviewReplyRepository = reviewReplyRepository;
             _reviewRepository = reviewRepository;
             _userManager = userManager;
@@ -39,7 +44,8 @@ namespace WebAPI.Services.Reviews
 
             var userEmail = await _userManager.FindByEmailAsync(request.Email);
             if (userEmail != null && user.Id != userEmail.Id)
-                throw new AppValidationException(new ValidationError(nameof(AppUser.Email), ErrorMessages.InvalidUserEmail));
+                throw new AppValidationException(
+                    new ValidationError(nameof(AppUser.Email), _errorMessagesLocalizer["InvalidUserEmail"]));
 
             if (string.IsNullOrEmpty(user.Email))
                 await _userManager.SetEmailAsync(user, request.Email);

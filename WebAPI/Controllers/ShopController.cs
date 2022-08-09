@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Security.Claims;
 using WebAPI.Helpers;
@@ -19,10 +20,12 @@ namespace WebAPI.Controllers
     {
         private string UserId => User?.FindFirstValue(ClaimTypes.NameIdentifier);
 
+        private readonly IStringLocalizer<ShopController> _shopLocalizer;
         private readonly IShopService _shopService;
-        public ShopController(IShopService shopService)
+        public ShopController(IShopService shopService, IStringLocalizer<ShopController> shopLocalizer)
         {
             _shopService = shopService;
+            _shopLocalizer = shopLocalizer;
         }
 
         /// <summary>
@@ -104,7 +107,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> CreateShop([FromBody] ShopRequest request)
         {
             var response = await _shopService.CreateShopAsync(request, UserId, IpUtil.GetIpAddress(Request, HttpContext));
-            return Created("Shop created successfully", response);
+            return Created(_shopLocalizer["CreateSuccess"].Value, response);
         }
 
         /// <summary>
@@ -127,7 +130,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> UpdateShop(int shopId, [FromBody] ShopRequest request)
         {
             await _shopService.UpdateShopAsync(shopId, request, UserId);
-            return Ok("Shop updated successfully");
+            return Ok(_shopLocalizer["UpdateSuccess"].Value);
         }
 
         /// <summary>
@@ -149,7 +152,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> DeleteShop(int shopId)
         {
             await _shopService.DeleteShopAsync(shopId);
-            return Ok("Shop deleted successfully");
+            return Ok(_shopLocalizer["DeleteSuccess"].Value);
         }
 
         /// <summary>
@@ -170,7 +173,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> DeleteShops([FromQuery] IEnumerable<int> ids)
         {
             await _shopService.DeleteShopsAsync(ids);
-            return Ok("Shops deleted successfully");
+            return Ok(_shopLocalizer["DeleteListSuccess"].Value);
         }
     }
 }

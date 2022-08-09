@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
 using WebAPI.Interfaces;
 using WebAPI.ViewModels.Request;
@@ -16,9 +17,11 @@ namespace WebAPI.Controllers
     public class UnitController : ControllerBase
     {
         private readonly IUnitService _unitService;
-        public UnitController(IUnitService unitService)
+        private readonly IStringLocalizer<UnitController> _unitLocalizer;
+        public UnitController(IUnitService unitService, IStringLocalizer<UnitController> unitLocalizer)
         {
             _unitService = unitService;
+            _unitLocalizer = unitLocalizer;
         }
 
         /// <summary>
@@ -98,7 +101,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> CreateUnit([FromBody] UnitRequest request)
         {
             await _unitService.CreateAsync(request);
-            return Ok("Unit created successfully");
+            return Ok(_unitLocalizer["CreateSuccess"].Value);
         }
 
         /// <summary>
@@ -121,7 +124,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> UpdateUnit(int id, [FromBody] UnitRequest request)
         {
             await _unitService.UpdateAsync(id, request);
-            return Ok("Unit updated successfully");
+            return Ok(_unitLocalizer["UpdateSuccess"].Value);
         }
 
         /// <summary>
@@ -142,7 +145,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> DeleteUnit(int id)
         {
             await _unitService.DeleteAsync(id);
-            return Ok("Unit deleted successfully");
+            return Ok(_unitLocalizer["DeleteSuccess"].Value);
         }
 
         /// <summary>
@@ -163,7 +166,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> DeleteUnits([FromQuery] IEnumerable<int> ids)
         {
             await _unitService.DeleteUnitsAsync(ids);
-            return Ok("Units deleted successfully");
+            return Ok(_unitLocalizer["DeleteListSuccess"].Value);
         }
     }
 }

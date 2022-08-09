@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
 using DAL;
 using DAL.Entities;
+using Microsoft.Extensions.Localization;
 using System.Drawing.Imaging;
 using WebAPI.Constants;
 using WebAPI.Exceptions;
 using WebAPI.Extensions;
 using WebAPI.Helpers;
 using WebAPI.Interfaces;
-using WebAPI.Resources;
 using WebAPI.Specifications.Categories;
 using WebAPI.Specifications.Filters;
 using WebAPI.Specifications.Products;
@@ -22,13 +22,19 @@ namespace WebAPI.Services
 {
     public class CategoryService : ICategoryService
     {
+        private readonly IStringLocalizer<ErrorMessages> _errorMessagesLocalizer;
         private readonly IRepository<Category> _categoryRepository;
         private readonly IRepository<Product> _productRepository;
         private readonly IRepository<FilterValue> _filterValueRepository;
         private readonly IMapper _mapper;
 
-        public CategoryService(IRepository<Category> categorRepository, IRepository<Product> productRepository, IRepository<FilterValue> filterValueRepository, IMapper mapper)
+        public CategoryService(IStringLocalizer<ErrorMessages> errorMessagesLocalizer,
+            IRepository<Category> categorRepository,
+            IRepository<Product> productRepository,
+            IRepository<FilterValue> filterValueRepository,
+            IMapper mapper)
         {
+            _errorMessagesLocalizer = errorMessagesLocalizer;
             _categoryRepository = categorRepository;
             _productRepository = productRepository;
             _filterValueRepository = filterValueRepository;
@@ -76,11 +82,15 @@ namespace WebAPI.Services
 
         public async Task<CatalogWithProductsResponse> GetCatalogWithProductsAsync(CatalogWithProductsRequest request)
         {
-            var response = new CatalogWithProductsResponse();
 
             var urlSlugSpec = new CategoryGetByUrlSlugSpecification(request.UrlSlug);
             var category = await _categoryRepository.GetBySpecAsync(urlSlugSpec);
-            response.Name = category.Name;
+            category.CategoryNullChecking();
+
+            var response = new CatalogWithProductsResponse
+            {
+                Name = category.Name
+            };
 
             var parentIdSpec = new CategoryGetByParentIdSpecification(category.Id);
             var childs = await _categoryRepository.ListAsync(parentIdSpec);
@@ -204,11 +214,11 @@ namespace WebAPI.Services
 
             var nameSpec = new CategoryGetByNameSpecification(request.Name);
             if (await _categoryRepository.GetBySpecAsync(nameSpec) != null)
-                throw new AppException(ErrorMessages.CategoryNameNotUnique);
+                throw new AppException(_errorMessagesLocalizer["CategoryNameNotUnique"]);
             var urlSlugSpec = new CategoryGetByUrlSlugSpecification(request.Name);
             if (await _categoryRepository.GetBySpecAsync(urlSlugSpec) != null)
-                throw new AppException(ErrorMessages.CategoryUrlSlugNotUnique);
-            //
+                throw new AppException(_errorMessagesLocalizer["CategoryUrlSlugNotUnique"]);
+
             var category = _mapper.Map<Category>(request);
 
             if (!string.IsNullOrEmpty(request.Image))

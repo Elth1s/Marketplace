@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
 using WebAPI.Interfaces;
 using WebAPI.ViewModels.Request;
@@ -20,10 +21,12 @@ namespace WebAPI.Controllers
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
+        private readonly IStringLocalizer<CategoryController> _categoryLocalizer;
 
-        public CategoryController(ICategoryService categoryService)
+        public CategoryController(ICategoryService categoryService, IStringLocalizer<CategoryController> categoryLocalizer)
         {
             _categoryService = categoryService;
+            _categoryLocalizer = categoryLocalizer;
         }
 
         /// <summary>
@@ -215,7 +218,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> CreateCategory([FromBody] CategoryRequest request)
         {
             await _categoryService.CreateAsync(request);
-            return Ok("Category created successfully");
+            return Ok(_categoryLocalizer["CreateSuccess"].Value);
         }
 
         /// <summary>
@@ -238,7 +241,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> UpdateCategory(int id, [FromBody] CategoryRequest request)
         {
             await _categoryService.UpdateAsync(id, request);
-            return Ok("Category updated successfully");
+            return Ok(_categoryLocalizer["UpdateSuccess"].Value);
         }
 
         /// <summary>
@@ -260,7 +263,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> DeleteCategory(int id)
         {
             await _categoryService.DeleteAsync(id);
-            return Ok("Category deleted successfully");
+            return Ok(_categoryLocalizer["DeleteSuccess"].Value);
         }
 
         /// <summary>
@@ -281,7 +284,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> DeleteCategories([FromQuery] IEnumerable<int> ids)
         {
             await _categoryService.DeleteCategoriesAsync(ids);
-            return Ok("Categories deleted successfully");
+            return Ok(_categoryLocalizer["DeleteListSuccess"].Value);
         }
     }
 }

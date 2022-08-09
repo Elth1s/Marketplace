@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
 using WebAPI.Interfaces.Reviews;
 using WebAPI.ViewModels.Response.Reviews;
@@ -15,10 +16,13 @@ namespace WebAPI.Controllers.Reviews
     public class ReviewImageController : ControllerBase
     {
         private readonly IReviewImageService _reviewImageService;
+        private readonly IStringLocalizer<ReviewImageController> _reviewImageLocalizer;
 
-        public ReviewImageController(IReviewImageService reviewImageService)
+        public ReviewImageController(IReviewImageService reviewImageService,
+            IStringLocalizer<ReviewImageController> reviewImageLocalizer)
         {
             _reviewImageService = reviewImageService;
+            _reviewImageLocalizer = reviewImageLocalizer;
         }
 
         /// <summary>
@@ -35,7 +39,7 @@ namespace WebAPI.Controllers.Reviews
         public async Task<IActionResult> Create([FromBody] string base64)
         {
             var result = await _reviewImageService.CreateAsync(base64);
-            return Created("Review image created successfully", result);
+            return Created(_reviewImageLocalizer["CreateSuccess"].Value, result);
         }
 
         /// <summary>
@@ -55,7 +59,7 @@ namespace WebAPI.Controllers.Reviews
         public async Task<IActionResult> DeleteCity(int id)
         {
             await _reviewImageService.DeleteAsync(id);
-            return Ok("Review image deleted successfully");
+            return Ok(_reviewImageLocalizer["DeleteSuccess"].Value);
         }
     }
 }

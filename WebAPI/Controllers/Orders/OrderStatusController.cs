@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
 using WebAPI.Interfaces.Orders;
 using WebAPI.ViewModels.Request.Orders;
@@ -16,10 +17,12 @@ namespace WebAPI.Controllers.Orders
     public class OrderStatusController : Controller
     {
         private readonly IOrderStatusService _orderStatusService;
+        private readonly IStringLocalizer<OrderStatusController> _orderStatusLocalizer;
 
-        public OrderStatusController(IOrderStatusService orderStatusService)
+        public OrderStatusController(IOrderStatusService orderStatusService, IStringLocalizer<OrderStatusController> orderStatusLocalizer)
         {
             _orderStatusService = orderStatusService;
+            _orderStatusLocalizer = orderStatusLocalizer;
         }
 
 
@@ -81,7 +84,7 @@ namespace WebAPI.Controllers.Orders
         public async Task<IActionResult> Create([FromBody] OrderStatusRequest request)
         {
             await _orderStatusService.CreateAsync(request);
-            return Ok("Order status created successfully");
+            return Ok(_orderStatusLocalizer["CreateSuccess"].Value);
         }
 
         /// <summary>
@@ -104,7 +107,7 @@ namespace WebAPI.Controllers.Orders
         public async Task<IActionResult> Update(int id, [FromBody] OrderStatusRequest request)
         {
             await _orderStatusService.UpdateAsync(id, request);
-            return Ok("Product status updated successfully");
+            return Ok(_orderStatusLocalizer["UpdateSuccess"].Value);
         }
 
         /// <summary>
@@ -126,11 +129,7 @@ namespace WebAPI.Controllers.Orders
         public async Task<IActionResult> Delete(int id)
         {
             await _orderStatusService.DeleteAsync(id);
-            return Ok("Product status deleted successfully");
+            return Ok(_orderStatusLocalizer["DeleteSuccess"].Value);
         }
-
-
-
-
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
 using WebAPI.Interfaces.Characteristics;
 using WebAPI.ViewModels.Request;
@@ -18,10 +19,14 @@ namespace WebAPI.Controllers.Characteristics
     public class CharacteristicValueController : Controller
     {
         private readonly ICharacteristicValueService _characteristicValueService;
+        private readonly IStringLocalizer<CharacteristicValueController> _characteristicValueLocalizer;
 
-        public CharacteristicValueController(ICharacteristicValueService characteristicValueService)
+
+        public CharacteristicValueController(ICharacteristicValueService characteristicValueService,
+            IStringLocalizer<CharacteristicValueController> characteristicValueLocalizer)
         {
             _characteristicValueService = characteristicValueService;
+            _characteristicValueLocalizer = characteristicValueLocalizer;
         }
 
         /// <summary>
@@ -103,7 +108,7 @@ namespace WebAPI.Controllers.Characteristics
         public async Task<IActionResult> Create([FromBody] CharacteristicValueRequest request)
         {
             await _characteristicValueService.CreateAsync(request);
-            return Ok("Characteristic value updated successfully");
+            return Ok(_characteristicValueLocalizer["CreateSuccess"].Value);
         }
 
         /// <summary>
@@ -126,7 +131,7 @@ namespace WebAPI.Controllers.Characteristics
         public async Task<IActionResult> Update(int id, [FromBody] CharacteristicValueRequest request)
         {
             await _characteristicValueService.UpdateAsync(id, request);
-            return Ok("Characteristic value updated successfully");
+            return Ok(_characteristicValueLocalizer["UpdateSuccess"].Value);
         }
 
         /// <summary>
@@ -148,7 +153,7 @@ namespace WebAPI.Controllers.Characteristics
         public async Task<IActionResult> Delete(int id)
         {
             await _characteristicValueService.DeleteAsync(id);
-            return Ok("Characteristic value deleted successfully");
+            return Ok(_characteristicValueLocalizer["DeleteSuccess"].Value);
         }
 
         /// <summary>
@@ -169,7 +174,7 @@ namespace WebAPI.Controllers.Characteristics
         public async Task<IActionResult> Delete([FromQuery] IEnumerable<int> ids)
         {
             await _characteristicValueService.DeleteAsync(ids);
-            return Ok("Characteristic values deleted successfully");
+            return Ok(_characteristicValueLocalizer["DeleteListSuccess"].Value);
         }
     }
 }

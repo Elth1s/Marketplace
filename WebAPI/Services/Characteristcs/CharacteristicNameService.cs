@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using DAL;
 using DAL.Entities;
+using Microsoft.Extensions.Localization;
 using WebAPI.Exceptions;
 using WebAPI.Extensions;
 using WebAPI.Interfaces.Characteristics;
-using WebAPI.Resources;
 using WebAPI.Specifications.Characteristics;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Request.Characteristics;
@@ -15,13 +15,19 @@ namespace WebAPI.Services.Characteristcs
 {
     public class CharacteristicNameService : ICharacteristicNameService
     {
+        private readonly IStringLocalizer<ErrorMessages> _errorMessagesLocalizer;
         private readonly IRepository<CharacteristicName> _characteristicNameRepository;
         private readonly IRepository<CharacteristicGroup> _characteristicGroupRepository;
         private readonly IRepository<Unit> _unitRepository;
         private readonly IMapper _mapper;
 
-        public CharacteristicNameService(IRepository<CharacteristicName> characteristicNameRepository, IRepository<CharacteristicGroup> characteristicGroupRepository, IRepository<Unit> unitRepository, IMapper mapper)
+        public CharacteristicNameService(IStringLocalizer<ErrorMessages> errorMessagesLocalizer,
+            IRepository<CharacteristicName> characteristicNameRepository,
+            IRepository<CharacteristicGroup> characteristicGroupRepository,
+            IRepository<Unit> unitRepository,
+            IMapper mapper)
         {
+            _errorMessagesLocalizer = errorMessagesLocalizer;
             _characteristicNameRepository = characteristicNameRepository;
             _characteristicGroupRepository = characteristicGroupRepository;
             _unitRepository = unitRepository;
@@ -76,8 +82,10 @@ namespace WebAPI.Services.Characteristcs
 
             var spec = new CharacteristicNameGetByNameAndUnitIdSpecification(request.Name, request.UnitId);
             if (await _characteristicNameRepository.GetBySpecAsync(spec) != null)
-                throw new AppValidationException(new ValidationError(nameof(CharacteristicName.UnitId), ErrorMessages.CharacteristicNameUnitNotUnique));
-
+            {
+                throw new AppValidationException(
+                    new ValidationError(nameof(CharacteristicName.UnitId), _errorMessagesLocalizer["CharacteristicNameUnitNotUnique"]));
+            }
             var characteristicName = _mapper.Map<CharacteristicName>(request);
 
             await _characteristicNameRepository.AddAsync(characteristicName);
@@ -97,7 +105,8 @@ namespace WebAPI.Services.Characteristcs
 
             var spec = new CharacteristicNameGetByNameAndUnitIdSpecification(request.Name, request.UnitId);
             if (await _characteristicNameRepository.GetBySpecAsync(spec) != null)
-                throw new AppValidationException(new ValidationError(nameof(CharacteristicName.UnitId), ErrorMessages.CharacteristicNameUnitNotUnique));
+                throw new AppValidationException(
+                    new ValidationError(nameof(CharacteristicName.UnitId), _errorMessagesLocalizer["CharacteristicNameUnitNotUnique"]));
 
             var characteristicName = await _characteristicNameRepository.GetByIdAsync(id);
             characteristicName.CharacteristicNameNullChecking();

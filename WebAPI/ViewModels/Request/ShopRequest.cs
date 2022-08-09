@@ -1,6 +1,7 @@
 ﻿using DAL;
 using DAL.Entities;
 using FluentValidation;
+using Microsoft.Extensions.Localization;
 using WebAPI.Specifications.Shops;
 
 namespace WebAPI.ViewModels.Request
@@ -42,35 +43,39 @@ namespace WebAPI.ViewModels.Request
     /// </summary>
     public class ShopRequestValidator : AbstractValidator<ShopRequest>
     {
+        private readonly IStringLocalizer<ValidationResourсes> _validationResources;
         private readonly IRepository<Shop> _shopRepository;
-        public ShopRequestValidator(IRepository<Shop> shopRepository)
+        public ShopRequestValidator(IRepository<Shop> shopRepository,
+            IStringLocalizer<ValidationResourсes> validationResources)
         {
             _shopRepository = shopRepository;
+            _validationResources = validationResources;
+
             //Name
             RuleFor(x => x.Name).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName("Name").WithMessage("{PropertyName} is required")
-               .Length(2, 30).WithMessage("{PropertyName} should be between 2 and 30 characters");
+               .NotEmpty().WithName(_validationResources["NamePropName"])
+               .Length(2, 30);
 
             //SiteUrl
-            RuleFor(x => x.Email).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName("Site URL").WithMessage("{PropertyName} is required")
-               .Must(IsUniqueSiteUrl).WithMessage("Shop with this {PropertyName} already exists");
+            RuleFor(x => x.SiteUrl).Cascade(CascadeMode.Stop)
+               .NotEmpty().WithName(_validationResources["SiteURLPropName"]).WithMessage(_validationResources["RequiredMessage"])
+               .Must(IsUniqueSiteUrl).WithMessage(_validationResources["ShopUniqueSiteURLMessage"]);
 
             //FullName
             RuleFor(x => x.FullName).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName("FullName").WithMessage("{PropertyName} is required")
-               .Length(2, 70).WithMessage("{PropertyName} should be between 2 and 70 characters");
+               .NotEmpty().WithName(_validationResources["FullNamePropName"]).WithMessage(_validationResources["PluralRequiredMessage"])
+               .Length(2, 70).WithMessage(_validationResources["PluralLengthMessage"]);
 
             //Email
             RuleFor(x => x.Email).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName("Email address").WithMessage("{PropertyName} is required")
-               .EmailAddress().WithMessage("Invalid format of {PropertyName}")
-               .Must(IsUniqueEmail).WithMessage("Shop with this {PropertyName} already exists");
+               .NotEmpty().WithName(_validationResources["EmailOrPhonePropName"])
+               .EmailAddress()
+               .Must(IsUniqueEmail).WithMessage(_validationResources["ShopUniqueEmailMessage"]);
 
             //Password
             RuleFor(x => x.Password)
                 .Cascade(CascadeMode.Stop)
-                .NotEmpty().WithName("Password").WithMessage("{PropertyName} is required");
+                .NotEmpty().WithName(_validationResources["PasswordPropName"]);
 
         }
         private bool IsUniqueEmail(string email)

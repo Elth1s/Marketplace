@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.Extensions.Localization;
 using System.Text.RegularExpressions;
 
 namespace WebAPI.ViewModels.Request.Categories
@@ -38,19 +39,21 @@ namespace WebAPI.ViewModels.Request.Categories
     /// </summary>
     public class CategoryRequestValidation : AbstractValidator<CategoryRequest>
     {
-
-        public CategoryRequestValidation()
+        private readonly IStringLocalizer<ValidationResourсes> _validationResources;
+        public CategoryRequestValidation(IStringLocalizer<ValidationResourсes> validationResources)
         {
+            _validationResources = validationResources;
+
             //Name
             RuleFor(x => x.Name).Cascade(CascadeMode.Stop)
-                   .NotEmpty().WithName("Name").WithMessage("{PropertyName} is required")
-                   .Length(2, 50).WithMessage("{PropertyName} should be between 2 and 50 characters");
+                   .NotEmpty().WithName(_validationResources["NamePropName"])
+                   .Length(2, 50);
 
             //UrlSlug
             RuleFor(x => x.UrlSlug).Cascade(CascadeMode.Stop)
-                   .NotEmpty().WithName("Url slug").WithMessage("{PropertyName} is required")
-                   .Must(IsValidUrlSlug).WithMessage("Invalid format of {PropertyName}")
-                   .Length(2, 50).WithMessage("{PropertyName} should be between 2 and 50 characters");
+                   .NotEmpty().WithName(_validationResources["CategoryUrlSlugPropName"]).WithMessage(_validationResources["RequiredMessage"])
+                   .Must(IsValidUrlSlug).WithMessage(_validationResources["InvalidFormatMessage"])
+                   .Length(2, 50);
         }
 
         private bool IsValidUrlSlug(string urlSlug)

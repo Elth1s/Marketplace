@@ -1,5 +1,6 @@
 ﻿using DAL.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using System.Net;
 using WebAPI.Exceptions;
@@ -8,7 +9,6 @@ using WebAPI.Helpers;
 using WebAPI.Interfaces;
 using WebAPI.Interfaces.Emails;
 using WebAPI.Interfaces.Users;
-using WebAPI.Resources;
 using WebAPI.Settings;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Request.Users;
@@ -18,20 +18,26 @@ namespace WebAPI.Services.Users
 {
     public class ResetPasswordService : IResetPasswordService
     {
-        private readonly UserManager<AppUser> _userManager;
+        private readonly IStringLocalizer<ErrorMessages> _errorMessagesLocalizer;
+        private readonly IStringLocalizer<MailResources> _mailResourcesLocalizer;
         private readonly IEmailSenderService _emailService;
         private readonly ITemplateService _templateService;
-        private readonly PhoneNumberManager _phoneNumberManager;
         private readonly IPhoneCodeSenderService _phoneCodeSenderService;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly PhoneNumberManager _phoneNumberManager;
         private readonly ClientUrl _clientUrl;
 
-        public ResetPasswordService(UserManager<AppUser> userManager,
+        public ResetPasswordService(IStringLocalizer<ErrorMessages> errorMessagesLocalizer,
+                                    IStringLocalizer<MailResources> mailResourcesLocalizer,
                                     IEmailSenderService emailSender,
                                     ITemplateService templateService,
-                                    PhoneNumberManager phoneNumberManager,
                                     IPhoneCodeSenderService phoneCodeSenderService,
+                                    UserManager<AppUser> userManager,
+                                    PhoneNumberManager phoneNumberManager,
                                     IOptions<ClientUrl> clientUrl)
         {
+            _errorMessagesLocalizer = errorMessagesLocalizer;
+            _mailResourcesLocalizer = mailResourcesLocalizer;
             _userManager = userManager;
             _emailService = emailSender;
             _templateService = templateService;
@@ -54,7 +60,7 @@ namespace WebAPI.Services.Users
             await _emailService.SendEmailAsync(new MailRequest()
             {
                 ToEmail = user.Email,
-                Subject = "Mall reset password",
+                Subject = _mailResourcesLocalizer["EmailThemeResetPassword"],
                 Body = await _templateService.GetTemplateHtmlAsStringAsync("Mails/ResetPassword",
                     new UserTokenRequest() { CallbackUrl = callbackUrl, Name = user.FirstName, Uri = _clientUrl.ApplicationUrl })
             });
@@ -100,9 +106,7 @@ namespace WebAPI.Services.Users
             var result = await _userManager.ResetPasswordAsync(user, request.Token, request.Password);
 
             if (!result.Succeeded)
-            {
-                throw new AppException(ErrorMessages.InvalidResetPasswordToken);
-            }
+                throw new AppException(_errorMessagesLocalizer["InvalidResetPasswordToken"]);
         }
 
 

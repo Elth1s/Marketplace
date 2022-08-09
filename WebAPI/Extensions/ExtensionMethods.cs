@@ -1,18 +1,20 @@
 ﻿using DAL.Entities;
+using Microsoft.Extensions.Localization;
 using System.Net;
 using WebAPI.Exceptions;
-using WebAPI.Resources;
 
 namespace WebAPI.Extensions
 {
     public static class ExtensionMethods
     {
+        static public IStringLocalizerFactory StringLocalizerFactory { set; get; }
         public static void UserNullChecking(this AppUser user)
         {
             if (user == null)
             {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
                 throw new AppException(
-                    ErrorMessages.UserNotFound,
+                    factory["UserNotFound"],
                     HttpStatusCode.NotFound);
             }
         }
@@ -21,8 +23,9 @@ namespace WebAPI.Extensions
         {
             if (user != null && user.Id != id)
             {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
                 throw new AppException(
-                    ErrorMessages.UsernameAlreadyExists);
+                    factory["UsernameAlreadyExists"]);
             }
         }
 
@@ -30,8 +33,9 @@ namespace WebAPI.Extensions
         {
             if (user.EmailConfirmed)
             {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
                 throw new AppException(
-                    ErrorMessages.AlreadyComfirmEmail, HttpStatusCode.Unauthorized);
+                    factory["AlreadyComfirmEmail"], HttpStatusCode.Unauthorized);
             }
         }
 
@@ -39,8 +43,9 @@ namespace WebAPI.Extensions
         {
             if (user.PhoneNumberConfirmed)
             {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
                 throw new AppException(
-                    ErrorMessages.AlreadyComfirmPhone, HttpStatusCode.Unauthorized);
+                    factory["AlreadyComfirmPhone"], HttpStatusCode.Unauthorized);
             }
         }
 
@@ -48,7 +53,8 @@ namespace WebAPI.Extensions
         {
             if (!refreshToken.IsActive)
             {
-                throw new AppException(ErrorMessages.InvalidToken);
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
+                throw new AppException(factory["InvalidToken"]);
             }
         }
 
@@ -56,7 +62,8 @@ namespace WebAPI.Extensions
         {
             if (refreshToken.IsRevoked)
             {
-                throw new AppException(ErrorMessages.TokenRevorked);
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
+                throw new AppException(factory["TokenRevorked"]);
             }
         }
 
@@ -65,8 +72,9 @@ namespace WebAPI.Extensions
         {
             if (category == null)
             {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
                 throw new AppException(
-                    ErrorMessages.CategoryNotFound,
+                    factory["CategoryNotFound"],
                     HttpStatusCode.NotFound);
             }
         }
@@ -76,8 +84,9 @@ namespace WebAPI.Extensions
         {
             if (basketItem == null)
             {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
                 throw new AppException(
-                    ErrorMessages.BasketItemNotFound,
+                    factory["BasketItemNotFound"],
                     HttpStatusCode.NotFound);
             }
         }
@@ -86,8 +95,9 @@ namespace WebAPI.Extensions
         {
             if (shop == null)
             {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
                 throw new AppException(
-                    ErrorMessages.ShopNotFound,
+                    factory["ShopNotFound"],
                     HttpStatusCode.NotFound);
             }
         }
@@ -97,8 +107,9 @@ namespace WebAPI.Extensions
         {
             if (characteristicGroup == null)
             {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
                 throw new AppException(
-                    ErrorMessages.CharacteristicGroupNotFound,
+                    factory["CharacteristicGroupNotFound"],
                     HttpStatusCode.NotFound);
             }
         }
@@ -107,8 +118,9 @@ namespace WebAPI.Extensions
         {
             if (country == null)
             {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
                 throw new AppException(
-                    ErrorMessages.CountryNotFound,
+                    factory["CountryNotFound"],
                     HttpStatusCode.NotFound);
             }
         }
@@ -117,8 +129,9 @@ namespace WebAPI.Extensions
         {
             if (country != null)
             {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
                 throw new AppException(
-                    ErrorMessages.CountryWithCodeExist);
+                   factory["CountryWithCodeExist"]);
             }
         }
 
@@ -126,8 +139,9 @@ namespace WebAPI.Extensions
         {
             if (country != null)
             {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
                 throw new AppException(
-                    ErrorMessages.CountryWithNameExist);
+                    factory["CountryWithNameExist"]);
             }
         }
 
@@ -136,8 +150,9 @@ namespace WebAPI.Extensions
         {
             if (characteristicName == null)
             {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
                 throw new AppException(
-                    ErrorMessages.CharacteristicNameNotFound,
+                    factory["CharacteristicNameNotFound"],
                     HttpStatusCode.NotFound);
             }
         }
@@ -146,8 +161,9 @@ namespace WebAPI.Extensions
         {
             if (characteristicValue == null)
             {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
                 throw new AppException(
-                    ErrorMessages.CharacteristicValueNotFound,
+                    factory["CharacteristicValueNotFound"],
                     HttpStatusCode.NotFound);
             }
         }
@@ -156,8 +172,9 @@ namespace WebAPI.Extensions
         {
             if (city == null)
             {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
                 throw new AppException(
-                    ErrorMessages.CityNotFound,
+                    factory["CityNotFound"],
                     HttpStatusCode.NotFound);
             }
         }
@@ -166,8 +183,9 @@ namespace WebAPI.Extensions
         {
             if (filterGroup == null)
             {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
                 throw new AppException(
-                    ErrorMessages.FilterGroupNotFound,
+                    factory["FilterGroupNotFound"],
                     HttpStatusCode.NotFound);
             }
         }
@@ -176,8 +194,9 @@ namespace WebAPI.Extensions
         {
             if (filterName == null)
             {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
                 throw new AppException(
-                    ErrorMessages.FilterNameNotFound,
+                    factory["FilterNameNotFound"],
                     HttpStatusCode.NotFound);
             }
         }
@@ -186,8 +205,9 @@ namespace WebAPI.Extensions
         {
             if (filterValue == null)
             {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
                 throw new AppException(
-                    ErrorMessages.FilterValueNotFound,
+                    factory["FilterValueNotFound"],
                     HttpStatusCode.NotFound);
             }
         }
@@ -196,8 +216,9 @@ namespace WebAPI.Extensions
         {
             if (productStatus == null)
             {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
                 throw new AppException(
-                    ErrorMessages.ProductStatusNotFound,
+                    factory["ProductStatusNotFound"],
                     HttpStatusCode.NotFound);
             }
         }
@@ -206,8 +227,9 @@ namespace WebAPI.Extensions
         {
             if (product == null)
             {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
                 throw new AppException(
-                    ErrorMessages.ProductNotFound,
+                    factory["ProductNotFound"],
                     HttpStatusCode.NotFound);
             }
         }
@@ -216,8 +238,9 @@ namespace WebAPI.Extensions
         {
             if (order == null)
             {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
                 throw new AppException(
-                    ErrorMessages.OrderNotFound,
+                    factory["OrderNotFound"],
                     HttpStatusCode.NotFound);
             }
         }
@@ -226,8 +249,9 @@ namespace WebAPI.Extensions
         {
             if (productImage == null)
             {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
                 throw new AppException(
-                    ErrorMessages.ProductImageNotFound,
+                    factory["ProductImageNotFound"],
                     HttpStatusCode.NotFound);
             }
         }
@@ -236,8 +260,9 @@ namespace WebAPI.Extensions
         {
             if (unit == null)
             {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
                 throw new AppException(
-                    ErrorMessages.UnitNotFound,
+                    factory["UnitNotFound"],
                     HttpStatusCode.NotFound);
             }
         }
@@ -246,8 +271,9 @@ namespace WebAPI.Extensions
         {
             if (category != null)
             {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
                 throw new AppException(
-                    ErrorMessages.CategoryNameNotUnique);
+                    factory["CategoryNameNotUnique"]);
             }
         }
 
@@ -255,8 +281,9 @@ namespace WebAPI.Extensions
         {
             if (category != null)
             {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
                 throw new AppException(
-                    ErrorMessages.CategoryUrlSlugNotUnique);
+                    factory["CategoryUrlSlugNotUnique"]);
             }
         }
 
@@ -264,8 +291,9 @@ namespace WebAPI.Extensions
         {
             if (orderStatus == null)
             {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
                 throw new AppException(
-                    ErrorMessages.OrderStatusNotFound,
+                    factory["OrderStatusNotFound"],
                     HttpStatusCode.NotFound);
             }
         }
@@ -274,8 +302,9 @@ namespace WebAPI.Extensions
         {
             if (question == null)
             {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
                 throw new AppException(
-                    ErrorMessages.QuestionNotFound,
+                    factory["QuestionNotFound"],
                     HttpStatusCode.NotFound);
             }
         }
@@ -283,8 +312,9 @@ namespace WebAPI.Extensions
         {
             if (questionImage == null)
             {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
                 throw new AppException(
-                    ErrorMessages.QuestionImageNotFound,
+                    factory["QuestionImageNotFound"],
                     HttpStatusCode.NotFound);
             }
         }
@@ -293,8 +323,9 @@ namespace WebAPI.Extensions
         {
             if (reviewImage == null)
             {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
                 throw new AppException(
-                    ErrorMessages.ReviewImageNotFound,
+                    factory["ReviewImageNotFound"],
                     HttpStatusCode.NotFound);
             }
         }
@@ -303,18 +334,9 @@ namespace WebAPI.Extensions
         {
             if (review == null)
             {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
                 throw new AppException(
-                    ErrorMessages.ReviewNotFound,
-                    HttpStatusCode.NotFound);
-            }
-        }
-
-        public static void ReviewReplyNullChecking(this ReviewReply reviewReply)
-        {
-            if (reviewReply == null)
-            {
-                throw new AppException(
-                    ErrorMessages.ReviewReplyNotFound,
+                    factory["ReviewNotFound"],
                     HttpStatusCode.NotFound);
             }
         }

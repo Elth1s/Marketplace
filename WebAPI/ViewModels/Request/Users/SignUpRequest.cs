@@ -1,6 +1,7 @@
 ﻿using DAL.Entities;
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Localization;
 using WebAPI.Extensions;
 using WebAPI.Helpers;
 
@@ -45,39 +46,42 @@ namespace WebAPI.ViewModels.Request.Users
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly PhoneNumberManager _phoneNumberManager;
+        private readonly IStringLocalizer<ValidationResourсes> _validationResources;
         private bool IsPhone = false;
         private bool IsEmail = false;
 
-        public SignUpRequestValidator(UserManager<AppUser> userManager, PhoneNumberManager phoneNumberManager)
+        public SignUpRequestValidator(UserManager<AppUser> userManager, PhoneNumberManager phoneNumberManager,
+            IStringLocalizer<ValidationResourсes> validationResources)
         {
             _userManager = userManager;
             _phoneNumberManager = phoneNumberManager;
+            _validationResources = validationResources;
 
             //First name
             RuleFor(x => x.FirstName).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName("First name").WithMessage("{PropertyName} is required")
-               .Length(2, 15).WithMessage("{PropertyName} should be between 2 and 15 characters");
+               .NotEmpty().WithName(_validationResources["FirstNamePropName"])
+               .Length(2, 15);
 
             //Second name
             RuleFor(x => x.SecondName).Cascade(CascadeMode.Stop)
-              .NotEmpty().WithName("Second name").WithMessage("{PropertyName} is required")
-              .Length(2, 40).WithMessage("{PropertyName} should be between 2 and 40 characters");
+              .NotEmpty().WithName(_validationResources["SecondNamePropName"])
+              .Length(2, 40);
 
             //Email or phone number
             RuleFor(x => x.EmailOrPhone).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName("Email address or phone").WithMessage("{PropertyName} is required")
-               .Must(IsEmailOrPhoneValid).WithMessage("Invalid format of {PropertyName}")
-               .Must(IsUniqueEmail).WithMessage("User with this Email address already exists")
-               .Must(IsUniquePhone).WithMessage("User with this Phone already exists");
+               .NotEmpty().WithName(_validationResources["EmailOrPhonePropName"])
+               .Must(IsEmailOrPhoneValid).WithMessage(_validationResources["InvalidFormatMessage"])
+               .Must(IsUniqueEmail).WithMessage(_validationResources["UserUniqueEmailMessage"])
+               .Must(IsUniquePhone).WithMessage(_validationResources["UserUniquePhoneMessage"]);
 
             //Password
             RuleFor(x => x.Password).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithMessage("{PropertyName} is required")
-               .MinimumLength(8).WithMessage("{PropertyName} must be at least 8 characters")
-               .Matches(@"(?=.*[A-Z])").WithMessage("{PropertyName} must contain at least one lowercase letter")
-               .Matches(@"(?=.*[A-Z])").WithMessage("{PropertyName} must contain at least one uppercase letter")
-               .Matches(@"(?=.*?[0-9])").WithMessage("{PropertyName} must contain at least one digit")
-               .Matches(@"(?=.*?[!@#\$&*~_-])").WithMessage("{PropertyName} must contain at least one special character");
+               .NotEmpty().WithName(_validationResources["PasswordPropName"])
+               .MinimumLength(8).WithMessage(_validationResources["PasswordMinLengthMessage"])
+               .Matches(@"(?=.*[A-Z])").WithMessage(_validationResources["ContainLowercaseMessage"])
+               .Matches(@"(?=.*[A-Z])").WithMessage(_validationResources["ContainUppercaseMessage"])
+               .Matches(@"(?=.*?[0-9])").WithMessage(_validationResources["ContainDigitMessage"])
+               .Matches(@"(?=.*?[!@#\$&*~_-])").WithMessage(_validationResources["ContainSpecialCharacterMessage"]);
 
         }
         private bool IsValidEmail(string email)

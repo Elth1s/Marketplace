@@ -2,10 +2,10 @@
 using DAL;
 using DAL.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Localization;
 using WebAPI.Exceptions;
 using WebAPI.Extensions;
 using WebAPI.Interfaces.Reviews;
-using WebAPI.Resources;
 using WebAPI.Specifications.Products;
 using WebAPI.Specifications.Reviews;
 using WebAPI.ViewModels.Request.Reviews;
@@ -16,6 +16,7 @@ namespace WebAPI.Services.Reviews
 {
     public class ReviewService : IReviewService
     {
+        private readonly IStringLocalizer<ErrorMessages> _errorMessagesLocalizer;
         private readonly IRepository<Review> _reviewRepository;
         private readonly IRepository<ReviewImage> _reviewImageRepository;
         private readonly IRepository<ReviewVotes> _reviewVotesRepository;
@@ -23,7 +24,7 @@ namespace WebAPI.Services.Reviews
         private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
 
-        public ReviewService(
+        public ReviewService(IStringLocalizer<ErrorMessages> errorMessagesLocalizer,
             IRepository<Review> reviewRepository,
             IRepository<ReviewImage> reviewImageRepository,
             IRepository<ReviewVotes> reviewVotesRepository,
@@ -31,6 +32,7 @@ namespace WebAPI.Services.Reviews
             UserManager<AppUser> userManager,
             IMapper mapper)
         {
+            _errorMessagesLocalizer = errorMessagesLocalizer;
             _reviewRepository = reviewRepository;
             _reviewImageRepository = reviewImageRepository;
             _reviewVotesRepository = reviewVotesRepository;
@@ -49,13 +51,14 @@ namespace WebAPI.Services.Reviews
 
             var userEmail = await _userManager.FindByEmailAsync(request.Email);
             if (userEmail != null && user.Id != userEmail.Id)
-                throw new AppValidationException(new ValidationError(nameof(AppUser.Email), ErrorMessages.InvalidUserEmail));
+                throw new AppValidationException(
+                    new ValidationError(nameof(AppUser.Email), _errorMessagesLocalizer["InvalidUserEmail"]));
             if (string.IsNullOrEmpty(user.Email))
                 await _userManager.SetEmailAsync(user, request.Email);
 
             var isOrdered = await _userManager.IsOrderedByUserAsync(userId, product.Id);
             if (!isOrdered)
-                throw new AppException(ErrorMessages.ReviewOrder);
+                throw new AppException(_errorMessagesLocalizer["ReviewOrder"]);
 
             var review = _mapper.Map<Review>(request);
             review.User = user;

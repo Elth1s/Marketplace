@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
+using Microsoft.Extensions.Localization;
 
-namespace WebAPI.ViewModels.Request
+namespace WebAPI.ViewModels.Request.Baskets
 {
     /// <summary>
     /// Basket class to update 
@@ -27,15 +28,16 @@ namespace WebAPI.ViewModels.Request
     /// </summary>
     public class BasketUpdateRequestValidation : AbstractValidator<BasketUpdateRequest>
     {
-        public BasketUpdateRequestValidation()
+        private readonly IStringLocalizer<ValidationResourсes> _validationResources;
+        public BasketUpdateRequestValidation(IStringLocalizer<ValidationResourсes> validationResources)
         {
+            _validationResources = validationResources;
+
             //Count
             RuleFor(a => a.Count).Cascade(CascadeMode.Stop)
-                 .NotEmpty().WithName("Count").WithMessage("{PropertyName} is required!")
-                 .InclusiveBetween(1, int.MaxValue).WithMessage("{PropertyName} should be greater than 1");
+                 .NotEmpty().WithName(_validationResources["CountPropName"])
+                 .WithMessage(_validationResources["RequiredMessage"])
+                 .InclusiveBetween(1, 999_999_999);
         }
     }
-
-
-
 }
