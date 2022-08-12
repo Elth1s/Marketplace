@@ -88,6 +88,15 @@ namespace WebAPI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Product already in basket.
+        /// </summary>
+        internal static string BasketItemExist {
+            get {
+                return ResourceManager.GetString("BasketItemExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Basket item not found.
         /// </summary>
         internal static string BasketItemNotFound {

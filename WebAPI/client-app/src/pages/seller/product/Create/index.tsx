@@ -97,30 +97,23 @@ const ProductCreate: FC<Props> = ({ }) => {
     };
 
     const { getRootProps, getInputProps } = useDropzone({
-        // Note how this callback is never invoked if drop occurs on the inner dropzone
-        onDrop: async (files) => {
+        onDrop: (files) => {
             if (!files || files.length === 0) return;
 
-            let tempList: Array<IProductImage> = [];
-            let newTest: Array<number> = [];
-            for (let index = 0; index < files.length; index++) {
+            let tmp = images.slice();
+            files.forEach(element => {
                 let reader = new FileReader();
 
-                reader.readAsDataURL(files[index]);
-                let res: IProductImage = { id: 0, name: "", priority: 0 };
-                reader.onload = () => {
+                reader.readAsDataURL(element);
+                reader.onload = async () => {
                     if (reader.result != null) {
-                        res = CreateProductImage(reader.result as string) as unknown as IProductImage;
-                        console.log("res", res)
+                        let res = await CreateProductImage(reader.result as string) as unknown as IProductImage;
+                        tmp.push(res);
                     }
-                    // res = { id: 1, name: "qwe", priority: 1 }
                 };
-                tempList.push(res);
-                newTest.push(index)
-            };
-            console.log("images", images)
-            console.log("tempList", tempList)
-            setImages([...images, ...tempList]);
+            });
+
+            setImages(tmp)
         }
     });
 

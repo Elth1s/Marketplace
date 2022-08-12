@@ -22,6 +22,7 @@ import { visuallyHidden } from '@mui/utils';
 import { FC } from 'react';
 
 import { PaperStyle, TextFieldStyle, PaginationItemStyle, SelectStyle } from './styled';
+import { useTranslation } from 'react-i18next';
 
 interface EnhancedTableHeadProps {
     numSelected: number;
@@ -165,6 +166,7 @@ interface FooterTableToolbarProps {
 }
 
 const FooterTableToolbar = (props: FooterTableToolbarProps) => {
+    const { t } = useTranslation();
     const { rowsPerPageOptions, page, rowsPerPage, count, onPageChange, onRowsPerPageChange } = props;
 
     return (
@@ -187,7 +189,7 @@ const FooterTableToolbar = (props: FooterTableToolbarProps) => {
                         <MenuItem key={`${element}`} value={element}>{element}</MenuItem>
                     ))}
                 </SelectStyle>
-                <Typography sx={{ px: 1 }}>Shows {((page - 1) * rowsPerPage) + 1}-{page * rowsPerPage} of {count}</Typography>
+                <Typography sx={{ px: 1 }}>{t('containers.admin_seller.table.rowsPerPage')} {((page - 1) * rowsPerPage) + 1}-{page * rowsPerPage} of {count}</Typography>
             </Box>
             <Pagination count={Math.ceil(count / rowsPerPage)} page={page} shape="rounded" size="large" showFirstButton showLastButton
                 onChange={(event: any, value: number) => {

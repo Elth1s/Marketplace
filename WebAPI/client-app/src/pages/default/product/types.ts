@@ -56,39 +56,14 @@ export interface IProductItem {
     filters: Array<IFilterItem>
 }
 
-export interface ProductState {
-    parents: Array<IParentCategoryItem>,
-    product: IProductItem,
-    similarProducts: Array<ISimilarProduct>
-}
-
-export interface IProductWithParents {
-    product: IProductItem,
-    parents: Array<IParentCategoryItem>,
-}
-
-export interface GetProductByUrlSlugAction {
-    type: ProductActionTypes.GET_PRODUCT_BY_URLSLUG,
-    payload: IProductWithParents
-}
-
-export interface GetSimilarProductsAction {
-    type: ProductActionTypes.GET_SIMILAR_PRODUCTS,
-    payload: Array<ISimilarProduct>
-}
-
-export interface UpdateSelectedProductAction {
-    type: ProductActionTypes.UPDATE_SELECTED_PRODUCT,
-}
-
 //Review
 export interface IReviewItem {
     id: number,
     fullName: string,
-    productRating: string,
+    productRating: number,
     date: string,
-    advantage: string,
-    disadvantage: string,
+    advantages: string,
+    disadvantages: string,
     comment: string,
     videoURL: string,
     isLiked: boolean,
@@ -101,13 +76,13 @@ export interface IReviewItem {
 export interface IReview {
     fullName: string,
     email: string
-    productRating: string,
-    advantage: string,
-    disadvantage: string,
+    productRating: number,
+    advantages: string,
+    disadvantages: string,
     comment: string,
     videoURL: string,
     productSlug: string
-    images: Array<number>
+    images: Array<string>
 }
 
 //Review Reply
@@ -160,6 +135,59 @@ export interface IQuestionReply {
     questionId: number
 }
 
+export interface ProductState {
+    parents: Array<IParentCategoryItem>,
+    product: IProductItem,
+    similarProducts: Array<ISimilarProduct>,
+    reviews: Array<IReviewItem>,
+    reviewsCount: number
+}
+
+export interface IProductWithParents {
+    product: IProductItem,
+    parents: Array<IParentCategoryItem>,
+}
+
+export interface IReviewWithCount {
+    values: Array<IReviewItem>,
+    count: number,
+}
+
+// Product actions
+
+export interface GetProductByUrlSlugAction {
+    type: ProductActionTypes.GET_PRODUCT_BY_URLSLUG,
+    payload: IProductWithParents
+}
+
+export interface GetSimilarProductsAction {
+    type: ProductActionTypes.GET_SIMILAR_PRODUCTS,
+    payload: Array<ISimilarProduct>
+}
+
+export interface UpdateSelectedProductAction {
+    type: ProductActionTypes.UPDATE_SELECTED_PRODUCT,
+}
+
+//ReviewAction
+
+export interface GetReviewsAction {
+    type: ReviewActionTypes.GET_REVIEWS,
+    payload: IReviewWithCount
+}
+
+export interface GetMoreReviewsAction {
+    type: ReviewActionTypes.GET_MORE_REVIEWS,
+    payload: Array<IReviewItem>
+}
+
 export type ProductAction = GetProductByUrlSlugAction |
     GetSimilarProductsAction |
     UpdateSelectedProductAction;
+
+export type ReviewAction = GetReviewsAction |
+    GetMoreReviewsAction;
+
+// export type QuestionAction = GetProductByUrlSlugAction |
+//     GetSimilarProductsAction |
+//     UpdateSelectedProductAction;

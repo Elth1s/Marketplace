@@ -1,5 +1,7 @@
 import { Avatar, Checkbox, TableRow, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { useActions } from '../../../../hooks/useActions';
 import { useTypedSelector } from '../../../../hooks/useTypedSelector';
 
@@ -9,46 +11,47 @@ import EnhancedTable from '../../../../components/EnhancedTable';
 import { TableCellStyle } from '../../../../components/EnhancedTable/styled';
 import { IProductInfo } from '../../../seller/product/types';
 
-
-const headCells: HeadCell<IProductInfo>[] = [
-    {
-        id: 'id',
-        numeric: true,
-        label: 'Identifier',
-    },
-    {
-        id: 'name',
-        numeric: false,
-        label: 'Name',
-    },
-    {
-        id: 'image',
-        numeric: false,
-        label: 'Image',
-    },
-    {
-        id: 'price',
-        numeric: false,
-        label: 'Price',
-    },
-    {
-        id: 'count',
-        numeric: false,
-        label: 'Count',
-    },
-    {
-        id: 'statusName',
-        numeric: false,
-        label: 'Status Name',
-    },
-    {
-        id: 'categoryName',
-        numeric: false,
-        label: 'Category Name',
-    }
-];
-
 const AdminProductTable = () => {
+    const { t } = useTranslation();
+
+    const headCells: HeadCell<IProductInfo>[] = [
+        {
+            id: 'id',
+            numeric: true,
+            label: `${t('containers.admin_seller.tableHeadCell.identifier')}`,
+        },
+        {
+            id: 'name',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.name')}`,
+        },
+        {
+            id: 'image',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.image')}`,
+        },
+        {
+            id: 'price',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.price')}`,
+        },
+        {
+            id: 'count',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.count')}`,
+        },
+        {
+            id: 'statusName',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.productStatus')}`,
+        },
+        {
+            id: 'categoryName',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.category')}`,
+        }
+    ];
+
     const [page, setPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(8);
     const [name, setName] = useState("");
@@ -61,7 +64,7 @@ const AdminProductTable = () => {
     const { products, count } = useTypedSelector((store) => store.productSeller);
 
     useEffect(() => {
-        document.title = "Products";
+        document.title = `${t('containers.admin_seller.sideBar.products')}`;
         getData();
     }, [page, rowsPerPage, name, isAscOrder, orderBy]);
 
@@ -120,7 +123,7 @@ const AdminProductTable = () => {
 
     return (
         <>
-            <Typography variant="h1" sx={{ my: "30px", py: "4.5px" }}>Products</Typography>
+            <Typography variant="h1" sx={{ my: "30px", py: "4.5px" }}>{t('containers.admin_seller.sideBar.products')}</Typography>
             <EnhancedTable
                 page={page}
                 rowsPerPage={rowsPerPage}

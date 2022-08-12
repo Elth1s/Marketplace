@@ -8,8 +8,8 @@ import { Form, FormikProvider } from "formik";
 
 import { IconButton, Slide } from '@mui/material';
 import { Close } from '@mui/icons-material';
-import { LoadingButtonStyle } from './styled';
 import { forwardRef } from 'react';
+import { LoadingButton } from '@mui/lab';
 
 export interface IDialog {
     open: boolean,
@@ -88,14 +88,15 @@ const DialogComponent: React.FC<IDialog> = ({
                             {dialogContent}
                         </DialogContent>
                         <DialogActions sx={{ m: 0, p: 3, pt: 0 }}>
-                            <LoadingButtonStyle
+                            <LoadingButton
                                 type="submit"
                                 loading={isSubmitting}
                                 size="large"
                                 variant="contained"
+                                color="secondary"
                             >
                                 {dialogBtnConfirm}
-                            </LoadingButtonStyle>
+                            </LoadingButton>
                         </DialogActions>
                     </Form>
                 </FormikProvider>

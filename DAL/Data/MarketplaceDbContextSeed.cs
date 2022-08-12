@@ -28,7 +28,6 @@ namespace DAL.Data
             await userManager.AddToRoleAsync(adminUser, Roles.Admin);
 
 
-
             if (!await marketplaceDbContext.Countries.AnyAsync())
             {
                 await marketplaceDbContext.Countries.AddRangeAsync(
@@ -62,6 +61,7 @@ namespace DAL.Data
 
                 await marketplaceDbContext.SaveChangesAsync();
             }
+            adminUser.ShopId = 1;
 
             if (!await marketplaceDbContext.ProductStatuses.AnyAsync())
             {
@@ -528,7 +528,7 @@ namespace DAL.Data
         {
             var shops = new List<Shop>
             {
-                new(){ Name = "Mall",Description="",Photo="",Email="dg646726@gmail.com",SiteUrl="https://http://mall.novakvova.com/",CityId=1,UserId=userId},
+                new(){ Name = "Mall",Description="",Photo="",Email="dg646726@gmail.com",SiteUrl="https://mall.novakvova.com/",CityId=1,UserId=userId},
             };
             return shops;
         }
@@ -605,19 +605,19 @@ namespace DAL.Data
             var productImages = new List<ProductImage>
             {
                 new(){ Name = "BlackDress.jpg",ProductId=1 },
-                new(){ Name = "BlueDress.jpg",ProductId=2 },
                 new(){ Name = "BlueDress2.jpg",ProductId=2 },
+                new(){ Name = "BlueDress.jpg",ProductId=2 },
                 new(){ Name = "GreenDress.jpg",ProductId=3 },
                 new(){ Name = "RedDress.jpg",ProductId=4 },
-                new(){ Name = "YellowDress.jpg",ProductId=5 },
                 new(){ Name = "YellowDress2.jpg",ProductId=5 },
+                new(){ Name = "YellowDress.jpg",ProductId=5 },
                 new(){ Name = "YellowDress3.jpg",ProductId=5 },
 
                 new(){ Name = "BlueDress.jpg",ProductId=6 },
                 new(){ Name = "BlueDress2.jpg",ProductId=6 },
+                new(){ Name = "YellowDress3.jpg",ProductId=7 },
                 new(){ Name = "YellowDress.jpg",ProductId=7 },
                 new(){ Name = "YellowDress2.jpg",ProductId=7 },
-                new(){ Name = "YellowDress3.jpg",ProductId=7 },
                 new(){ Name = "RedDress.jpg",ProductId=8 },
                 new(){ Name = "GreenDress.jpg",ProductId=9 },
                 new(){ Name = "BlackDress.jpg",ProductId=10 },
@@ -770,10 +770,10 @@ namespace DAL.Data
         {
             var statuses = new List<OrderStatus>
             {
-             new(){ Id=OrderStatusId.InProcess, Name="In Process"},
-             new(){ Id=OrderStatusId.PendingPayment, Name="Pending Payment"},
-             new(){ Id=OrderStatusId.Completed, Name="Completed"},
-             new(){ Id=OrderStatusId.Canceled, Name="Canceled"},
+                new(){ Id=OrderStatusId.InProcess, Name="In Process"},
+                new(){ Id=OrderStatusId.PendingPayment, Name="Pending Payment"},
+                new(){ Id=OrderStatusId.Completed, Name="Completed"},
+                new(){ Id=OrderStatusId.Canceled, Name="Canceled"},
             };
             return statuses;
         }

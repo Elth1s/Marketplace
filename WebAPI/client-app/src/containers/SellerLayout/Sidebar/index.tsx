@@ -5,6 +5,7 @@ import {
 } from '@mui/material';
 
 import { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useLocation } from "react-router-dom";
 import { BooleanSchema } from 'yup';
 import LinkRouter from '../../../components/LinkRouter';
@@ -22,11 +23,12 @@ export interface IMenuItem {
 }
 
 const Sidebar: FC<IDrawer> = ({ open }) => {
+    const { t } = useTranslation()
     const [menuItems, setMenuItems] = useState<Array<IMenuItem>>([
-        { lable: 'Characteristic Group', path: '/seller/characteristicGroup', rotate: undefined },
-        { lable: 'Characteristic Name', path: '/seller/characteristicName', rotate: undefined },
-        { lable: 'Characteristic Value', path: '/seller/characteristicValue', rotate: undefined },
-        { lable: 'Product ', path: '/seller/product', rotate: undefined },
+        { lable: `${t('containers.admin_seller.sideBar.characteristicGroups')}`, path: '/seller/characteristicGroups', rotate: undefined },
+        { lable: `${t('containers.admin_seller.sideBar.characteristicNames')}`, path: '/seller/characteristicNames', rotate: undefined },
+        { lable: `${t('containers.admin_seller.sideBar.characteristicValues')}`, path: '/seller/characteristicValues', rotate: undefined },
+        { lable: `${t('containers.admin_seller.sideBar.products')}`, path: '/seller/products', rotate: undefined },
     ]);
     const [selected, setSelected] = useState<string>("");
     const location = useLocation();

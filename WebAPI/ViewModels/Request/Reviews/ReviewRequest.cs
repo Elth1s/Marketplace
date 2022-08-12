@@ -26,12 +26,12 @@ namespace WebAPI.ViewModels.Request.Reviews
         /// Product advantage
         /// </summary>
         /// <example>Some list of benefits</example>
-        public string Advantage { get; set; }
+        public string Advantages { get; set; }
         /// <summary>
         /// Product disadvantage
         /// </summary>
         /// <example>Some list of disadvantages</example>
-        public string Disadvantage { get; set; }
+        public string Disadvantages { get; set; }
         /// <summary>
         /// Comment
         /// </summary>
@@ -73,27 +73,22 @@ namespace WebAPI.ViewModels.Request.Reviews
             //Product rating
             RuleFor(c => c.ProductRating).Cascade(CascadeMode.Stop)
                .NotEmpty().WithName("Product rating").WithMessage("{PropertyName} is required!")
-               .InclusiveBetween(1, 5).WithMessage("{PropertyName} should be between 1 and  5");
+               .InclusiveBetween(0.5f, 5).WithMessage("{PropertyName} should be between 1 and  5");
 
             //Advantage
-            RuleFor(a => a.Advantage).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName("Advantage").WithMessage("{PropertyName} is required!")
+            RuleFor(a => a.Advantages).Cascade(CascadeMode.Stop)
+               //.NotEmpty().WithName("Advantage").WithMessage("{PropertyName} is required!")
                .MaximumLength(100).WithMessage("{PropertyName} should be less than 100 characters");
 
             //Disadvantage
-            RuleFor(a => a.Disadvantage).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName("Disadvantage").WithMessage("{PropertyName} is required!")
+            RuleFor(a => a.Disadvantages).Cascade(CascadeMode.Stop)
+               //.NotEmpty().WithName("Disadvantage").WithMessage("{PropertyName} is required!")
                .MaximumLength(100).WithMessage("{PropertyName} should be less than 100 characters");
 
             //Comment
             RuleFor(a => a.Comment).Cascade(CascadeMode.Stop)
                .NotEmpty().WithName("Comment").WithMessage("{PropertyName} is required!")
                .Length(1, 850).WithMessage("{PropertyName} should be between 1 and 850 characters");
-
-            //Full name
-            RuleFor(x => x.ProductSlug).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName("Product slug").WithMessage("{PropertyName} is required")
-               .Length(2, 70).WithMessage("{PropertyName} should be between 2 and 70 characters");
         }
     }
 }

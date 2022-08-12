@@ -1,8 +1,9 @@
 
 
-import { AddBox, Create, Edit } from "@mui/icons-material";
-import { Avatar, Box, Button, Checkbox, IconButton, TableRow, Typography } from "@mui/material";
+import { Edit } from "@mui/icons-material";
+import { Avatar, Box, Checkbox, IconButton, TableRow, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { white_plus } from "../../../../assets/icons";
 import EnhancedTable from "../../../../components/EnhancedTable";
 import { TableCellStyle } from "../../../../components/EnhancedTable/styled";
@@ -14,40 +15,42 @@ import { HeadCell } from "../../../../store/types";
 import { ICategoryInfo } from "../types";
 
 
-const headCells: HeadCell<ICategoryInfo>[] = [
-    {
-        id: 'id',
-        numeric: true,
-        label: 'Identifier',
-    },
-    {
-        id: 'name',
-        numeric: false,
-        label: 'Name',
-    },
-    {
-        id: 'urlSlug',
-        numeric: false,
-        label: 'Url slug',
-    },
-    {
-        id: 'image',
-        numeric: false,
-        label: 'Image',
-    },
-    {
-        id: 'icon',
-        numeric: false,
-        label: 'Icon',
-    },
-    {
-        id: 'parentName',
-        numeric: false,
-        label: 'Parent category',
-    }
-];
-
 const CategoryTable = () => {
+    const { t } = useTranslation();
+
+    const headCells: HeadCell<ICategoryInfo>[] = [
+        {
+            id: 'id',
+            numeric: true,
+            label: `${t('containers.admin_seller.tableHeadCell.identifier')}`,
+        },
+        {
+            id: 'name',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.name')}`,
+        },
+        {
+            id: 'urlSlug',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.urlSlug')}`,
+        },
+        {
+            id: 'image',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.image')}`,
+        },
+        {
+            id: 'icon',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.icon')}`,
+        },
+        {
+            id: 'parentName',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.parentCategory')}`,
+        }
+    ];
+
     const [page, setPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(8);
     const [name, setName] = useState("");
@@ -60,7 +63,7 @@ const CategoryTable = () => {
     const { categories, count } = useTypedSelector((store) => store.category);
 
     useEffect(() => {
-        document.title = "Categories";
+        document.title = `${t('containers.admin_seller.sideBar.categories')}`;
         getData();
     }, [page, rowsPerPage, name, isAscOrder, orderBy]);
 
@@ -120,8 +123,8 @@ const CategoryTable = () => {
     return (
         <>
             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", my: "30px" }}>
-                <Typography variant="h1">Categories</Typography>
-                <LinkRouter underline="none" to="/admin/category/create" >
+                <Typography variant="h1">{t('containers.admin_seller.sideBar.categories')}</Typography>
+                <LinkRouter underline="none" to="/admin/categories/create" >
                     <IconButton
                         sx={{ borderRadius: '12px', background: "#F45626", "&:hover": { background: "#CB2525" }, "&& .MuiTouchRipple-child": { backgroundColor: "transparent" } }}
                         size="large"
@@ -151,7 +154,7 @@ const CategoryTable = () => {
                 count={count}
                 onDelete={onDelete}
                 update={
-                    <LinkRouter underline="none" color="secondary" to={`/admin/category/update/${selected[selected.length - 1]}`} >
+                    <LinkRouter underline="none" color="secondary" to={`/admin/categories/update/${selected[selected.length - 1]}`} >
                         <Edit />
                     </LinkRouter>
                 }

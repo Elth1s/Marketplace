@@ -1,6 +1,7 @@
 import { Box, Typography, TableRow, Checkbox } from '@mui/material';
 
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { useActions } from '../../../../hooks/useActions';
 import { useTypedSelector } from '../../../../hooks/useTypedSelector';
@@ -14,20 +15,23 @@ import Update from '../Update';
 import { IFilterGroupInfo } from '../types';
 import { HeadCell } from '../../../../store/types';
 
-const headCells: HeadCell<IFilterGroupInfo>[] = [
-    {
-        id: 'id',
-        numeric: true,
-        label: 'Identifier',
-    },
-    {
-        id: 'name',
-        numeric: false,
-        label: 'Name',
-    },
-];
 
 const FilterGroupTable = () => {
+    const { t } = useTranslation();
+
+    const headCells: HeadCell<IFilterGroupInfo>[] = [
+        {
+            id: 'id',
+            numeric: true,
+            label: `${t('containers.admin_seller.tableHeadCell.identifier')}`,
+        },
+        {
+            id: 'name',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.name')}`,
+        },
+    ];
+
     const [page, setPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(8);
     const [name, setName] = useState("");
@@ -40,7 +44,7 @@ const FilterGroupTable = () => {
     const { filterGroups, count } = useTypedSelector((store) => store.filterGroup);
 
     useEffect(() => {
-        document.title = "Filter Group";
+        document.title = `${t('containers.admin_seller.sideBar.filterGroups')}`;
         getData();
     }, [page, rowsPerPage, name, isAscOrder, orderBy]);
 
@@ -100,7 +104,7 @@ const FilterGroupTable = () => {
     return (
         <>
             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", my: "30px" }}>
-                <Typography variant="h1">Filter groups</Typography>
+                <Typography variant="h1">{t('containers.admin_seller.sideBar.filterGroups')}</Typography>
                 <Create afterCreate={() => { getData() }} />
             </Box>
             <EnhancedTable

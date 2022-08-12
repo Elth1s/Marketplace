@@ -8,6 +8,7 @@ const initialState: AuthState = {
     user: {
         name: "",
         emailOrPhone: "",
+        isEmailExist: false,
         role: "",
         photo: ""
     },
@@ -28,6 +29,7 @@ export const authReducer = (state = initialState, action: AuthAction): AuthState
                 user: {
                     name: "",
                     emailOrPhone: "",
+                    isEmailExist: false,
                     role: "",
                     photo: "",
                 },

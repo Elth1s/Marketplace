@@ -1,33 +1,81 @@
-import { DeleteOutline } from "@mui/icons-material"
 import { Box, IconButton, Typography } from "@mui/material"
-import { FC } from "react"
+import { FC, useState } from "react"
 
 import { useActions } from "../../hooks/useActions"
 
 import { empty } from "../../assets/backgrounds"
-import { basket_trash } from "../../assets/icons"
+import { basket_trash, minus, plus } from "../../assets/icons"
+import LinkRouter from "../LinkRouter"
+import { TextFieldStyle } from "./styled"
 
 interface Props {
     id: number
+    count: number
     image: string
     name: string
     price: number
+    productCount: number
+    urlSlug: string
+    closeBasket: any
+    linkUrlSlug: string | undefined
 }
 
-const BasketItem: FC<Props> = ({ id, image, name, price }) => {
+const BasketItem: FC<Props> = ({ id, count, image, name, price, productCount, urlSlug, closeBasket, linkUrlSlug }) => {
     const { GetBasketItems, RemoveFromBasket } = useActions();
 
+    const [basketItemCount, setBasketItemCount] = useState<number>(count);
+
+    const changeCount = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const numberRegex = /^[1-9][0-9]*$/;
+        let value = e.target.value;
+
+        if (value == "") {
+            setBasketItemCount(1)
+            return
+        }
+
+        if (numberRegex.test(value))
+            if (+value > productCount)
+                setBasketItemCount(productCount);
+            else
+                setBasketItemCount(+value);
+
+    }
+
     return (
-        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", my: "15px" }}>
             <img
                 style={{ width: "90px", height: "90px", objectFit: "contain" }}
                 src={image != "" ? image : empty}
                 alt="productImage"
             />
             <Box>
-                <Typography variant="h6" sx={{ width: "250px" }}>
-                    {name}
-                </Typography>
+                <LinkRouter underline="hover" color="inherit" to={`/product/${urlSlug}`} onClick={closeBasket}>
+                    <Typography variant="h6" sx={{ width: "250px" }}>
+                        {name}
+                    </Typography>
+                </LinkRouter>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <IconButton sx={{ "&:hover": { background: "transparent" }, "&& .MuiTouchRipple-child": { backgroundColor: "transparent" } }}>
+                        <img
+                            style={{ width: "20px", height: "20px" }}
+                            src={minus}
+                            alt="minus"
+                        />
+                    </IconButton>
+                    <TextFieldStyle
+                        value={basketItemCount}
+                        sx={{ width: "38px" }}
+                        onChange={changeCount}
+                    />
+                    <IconButton sx={{ "&:hover": { background: "transparent" }, "&& .MuiTouchRipple-child": { backgroundColor: "transparent" } }}>
+                        <img
+                            style={{ width: "20px", height: "20px" }}
+                            src={plus}
+                            alt="plus"
+                        />
+                    </IconButton>
+                </Box>
             </Box>
             <Box>
                 <Typography variant="h4">
@@ -40,7 +88,7 @@ const BasketItem: FC<Props> = ({ id, image, name, price }) => {
                 aria-label="search"
                 color="inherit"
                 onClick={async () => {
-                    await RemoveFromBasket(id);
+                    await RemoveFromBasket(id, urlSlug == linkUrlSlug ? true : false);
                     await GetBasketItems();
                 }}
             >

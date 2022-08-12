@@ -1,23 +1,20 @@
 import {
     Box,
-    Grid,
     Typography,
     Tab
 } from "@mui/material";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
-import { Star, StarRounded } from '@mui/icons-material';
+import { StarRounded } from '@mui/icons-material';
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from "swiper";
 
-import { products } from "./data";
-
 import { useActions } from "../../../hooks/useActions";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 
-import CardProduct from "../../../components/CardProduct";
 import BreadcrumbsComponent from "../../../components/BreadcrumbsComponent";
 
 import ProductMainPage from "./ProductPage/ProductMainPage";
@@ -25,29 +22,45 @@ import ProductReviewsPage from "./ProductPage/ProductReviewsPage";
 import ProductCharacteristicsPage from "./ProductPage/ProductCharacteristicsPage";
 import AddReview from "./AddReview";
 
-import { RatingStyle } from "./styled";
 import ProductItem from "../../../components/ProductItem";
+import { RatingStyle } from "../../../components/Rating/styled";
 
-const dataTabs = [
-    { label: 'All about the product' },
-    { label: 'Characteristics' },
-    { label: 'Reviews' },
-    { label: 'Question' },
-]
 
 const Product = () => {
-    const { GetProductByUrlSlug, GetSimilarProducts } = useActions();
+    const { t } = useTranslation();
+
+    const dataTabs = [
+        { label: `${t("pages.product.menu.allAboutTheProduct")}` },
+        { label: `${t("pages.product.menu.characteristics")}` },
+        { label: `${t("pages.product.menu.reviews")}` },
+        { label: `${t("pages.product.menu.question")}` },
+    ]
+
+    const { GetProductByUrlSlug, GetSimilarProducts, AddProductInCart, GetBasketItems, GetReviews } = useActions();
     const { parents, product, similarProducts } = useTypedSelector(state => state.product);
 
-    const [valueTab, setValueTab] = useState<string>("0");
+    let { urlSlug, menu } = useParams();
 
-    let { urlSlug } = useParams();
+    const [valueTab, setValueTab] = useState<string>("0");
+    const [page, setPage] = useState<number>(1);
+    const [rowsPerPage, setRowsPerPage] = useState<number>(4);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
-        document.title = "Product";
+        document.title = product.name != "" ? product.name : `${t("pages.product.title")}`;
+        if (menu)
+            setValueTab(menu);
 
         getData();
-    }, [urlSlug])
+    }, [urlSlug, product.name])
+
+    const addInCart = async () => {
+        if (urlSlug) {
+            await AddProductInCart(urlSlug)
+            await GetBasketItems()
+        }
+    };
 
     const getData = async () => {
         if (!urlSlug)
@@ -61,6 +74,8 @@ const Product = () => {
 
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         setValueTab(newValue);
+        if (urlSlug)
+            navigate(`/product/${urlSlug}/${newValue}`)
     };
 
     return (
@@ -73,41 +88,49 @@ const Product = () => {
                     ))}
                 </TabList >
 
-                <Typography variant="h1" sx={{ mt: "30px", mb: "15px" }}>{valueTab === "1" && "Characteristics"} {product.name}</Typography>
+                <Typography variant="h1" sx={{ mt: "30px", mb: "15px" }}>{valueTab === "1" && `${t("pages.product.menu.characteristics")}`}{valueTab === "2" && `${t("pages.product.menu.reviews")}`} {product.name}</Typography>
                 <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Typography variant="h4" fontWeight="bold" display="inline" sx={{ marginRight: "70px" }}>Shop: <Typography fontWeight="normal" display="inline" sx={{ fontSize: "20px" }}>{product.shopName}</Typography></Typography>
-                    <Typography variant="h4" fontWeight="bold">Shop rating: </Typography>
+                    <Typography variant="h4" fontWeight="bold" display="inline" sx={{ marginRight: "70px" }}>{t("pages.product.seller")}: <Typography fontWeight="normal" display="inline" sx={{ fontSize: "20px" }}>{product.shopName}</Typography></Typography>
+                    <Typography variant="h4" fontWeight="bold">{t("pages.product.sellerRating")}: </Typography>
                     <RatingStyle
-                        sx={{ ml: 1, fontSize: "30px" }}
+                        sx={{ ml: 1, fontSize: "30px", mr: "40px" }}
                         value={4.5}
                         precision={0.5}
                         readOnly
                         icon={<StarRounded sx={{ fontSize: "30px" }} />}
                         emptyIcon={<StarRounded sx={{ fontSize: "30px" }} />}
                     />
-                    {valueTab === "2" && <AddReview />}
+                    {valueTab === "2" && <AddReview
+                        getData={async () => {
+                            if (urlSlug) {
+                                await GetReviews(urlSlug, 1, rowsPerPage)
+                                setPage(1);
+                            }
+                        }} />}
                 </Box>
 
                 <TabPanel sx={{ p: "0px" }} value="0" >
-                    <ProductMainPage urlSlug={urlSlug} isInBasket={product.isInBasket}
+                    <ProductMainPage addInCart={addInCart}
                         moveToReview={() => {
                             window.scrollTo({
                                 top: 0,
                                 behavior: 'smooth'
                             });
                             setValueTab("2");
+                            if (urlSlug)
+                                navigate(`/product/${urlSlug}/2`)
                         }} />
                 </TabPanel>
                 <TabPanel sx={{ p: "0px" }} value="1">
-                    <ProductCharacteristicsPage urlSlug={urlSlug} isInBasket={product.isInBasket} />
+                    <ProductCharacteristicsPage addInCart={addInCart} />
                 </TabPanel>
                 <TabPanel sx={{ p: "0px" }} value="2">
-                    <ProductReviewsPage />
+                    <ProductReviewsPage addInCart={addInCart} page={page} rowsPerPage={rowsPerPage} />
                 </TabPanel>
             </TabContext>
 
             <Box>
-                <Typography variant="h1" sx={{ mb: "40px" }}>Similar products</Typography>
+                <Typography variant="h1" sx={{ mb: "40px" }}>{t("pages.product.similarProducts")}</Typography>
                 <Swiper
                     modules={[Navigation]}
                     navigation={true}

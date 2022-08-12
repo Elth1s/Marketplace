@@ -1,5 +1,7 @@
 import { Avatar, Checkbox, TableRow, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { useActions } from '../../../../hooks/useActions';
 import { useTypedSelector } from '../../../../hooks/useTypedSelector';
 
@@ -11,35 +13,37 @@ import EnhancedTable from '../../../../components/EnhancedTable';
 import { TableCellStyle } from '../../../../components/EnhancedTable/styled';
 
 
-const headCells: HeadCell<IShopInfo>[] = [
-    {
-        id: 'id',
-        numeric: true,
-        label: 'Identifier',
-    },
-    {
-        id: 'name',
-        numeric: false,
-        label: 'Name',
-    },
-    {
-        id: 'photo',
-        numeric: false,
-        label: 'Photo',
-    },
-    {
-        id: 'siteUrl',
-        numeric: false,
-        label: 'Site URL',
-    },
-    {
-        id: 'cityName',
-        numeric: false,
-        label: 'City Name',
-    }
-];
-
 const ShopTable = () => {
+    const { t } = useTranslation();
+
+    const headCells: HeadCell<IShopInfo>[] = [
+        {
+            id: 'id',
+            numeric: true,
+            label: `${t('containers.admin_seller.tableHeadCell.identifier')}`,
+        },
+        {
+            id: 'name',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.name')}`,
+        },
+        {
+            id: 'photo',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.photo')}`,
+        },
+        {
+            id: 'siteUrl',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.siteURL')}`,
+        },
+        {
+            id: 'cityName',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.city')}`,
+        }
+    ];
+
     const [page, setPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(8);
     const [name, setName] = useState("");
@@ -52,7 +56,7 @@ const ShopTable = () => {
     const { shops, count } = useTypedSelector((store) => store.shop);
 
     useEffect(() => {
-        document.title = "Shops";
+        document.title = `${t('containers.admin_seller.sideBar.shops')}`;
         getData();
     }, [page, rowsPerPage, name, isAscOrder, orderBy]);
 
@@ -111,7 +115,7 @@ const ShopTable = () => {
 
     return (
         <>
-            <Typography variant="h1" sx={{ my: "30px", py: "4.5px" }}>Shops</Typography>
+            <Typography variant="h1" sx={{ my: "30px", py: "4.5px" }}>{t('containers.admin_seller.sideBar.shops')}</Typography>
             <EnhancedTable
                 page={page}
                 rowsPerPage={rowsPerPage}

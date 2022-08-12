@@ -208,7 +208,10 @@ namespace WebAPI.Services.Products
             var user = await _userManager.FindByIdAsync(userId);
             user.UserNullChecking();
 
-            var spec = new ProductSearchSpecification(request.Name, request.IsAscOrder, request.OrderBy, request.IsSeller, user.ShopId);
+            var shop = await _shopRepository.GetByIdAsync(user.ShopId);
+            shop.ShopNullChecking();
+
+            var spec = new ProductSearchSpecification(request.Name, request.IsAscOrder, request.OrderBy, request.IsSeller, shop.Id);
             var count = await _productRepository.CountAsync(spec);
             spec = new ProductSearchSpecification(
                 request.Name,

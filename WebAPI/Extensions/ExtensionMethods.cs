@@ -82,6 +82,14 @@ namespace WebAPI.Extensions
             }
         }
 
+        public static void BasketItemExistChecking(this BasketItem basketItem)
+        {
+            if (basketItem != null)
+            {
+                throw new AppException(ErrorMessages.BasketItemExist);
+            }
+        }
+
         public static void ShopNullChecking(this Shop shop)
         {
             if (shop == null)

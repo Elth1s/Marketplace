@@ -1,5 +1,7 @@
 import { Avatar, Box, Checkbox, IconButton, TableRow, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { useActions } from '../../../../hooks/useActions';
 import { useTypedSelector } from '../../../../hooks/useTypedSelector';
 
@@ -12,45 +14,47 @@ import LinkRouter from '../../../../components/LinkRouter';
 import { white_plus } from '../../../../assets/icons';
 
 
-const headCells: HeadCell<IProductInfo>[] = [
-    {
-        id: 'id',
-        numeric: true,
-        label: 'Identifier',
-    },
-    {
-        id: 'name',
-        numeric: false,
-        label: 'Name',
-    },
-    {
-        id: 'image',
-        numeric: false,
-        label: 'Image',
-    },
-    {
-        id: 'price',
-        numeric: false,
-        label: 'Price',
-    },
-    {
-        id: 'count',
-        numeric: false,
-        label: 'Count',
-    },
-    {
-        id: 'statusName',
-        numeric: false,
-        label: 'Status Name',
-    },
-    {
-        id: 'categoryName',
-        numeric: false,
-        label: 'Category Name',
-    }
-];
-
 const ProductTable = () => {
+    const { t } = useTranslation();
+
+    const headCells: HeadCell<IProductInfo>[] = [
+        {
+            id: 'id',
+            numeric: true,
+            label: `${t('containers.admin_seller.tableHeadCell.identifier')}`,
+        },
+        {
+            id: 'name',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.name')}`,
+        },
+        {
+            id: 'image',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.image')}`,
+        },
+        {
+            id: 'price',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.price')}`,
+        },
+        {
+            id: 'count',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.count')}`,
+        },
+        {
+            id: 'statusName',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.productStatus')}`,
+        },
+        {
+            id: 'categoryName',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.category')}`,
+        }
+    ];
+
     const [page, setPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(8);
     const [name, setName] = useState("");
@@ -63,7 +67,7 @@ const ProductTable = () => {
     const { products, count } = useTypedSelector((store) => store.productSeller);
 
     useEffect(() => {
-        document.title = "Products";
+        document.title = `${t('containers.admin_seller.sideBar.products')}`;
         getData();
     }, [page, rowsPerPage, name, isAscOrder, orderBy]);
 
@@ -123,8 +127,8 @@ const ProductTable = () => {
     return (
         <>
             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", my: "30px" }}>
-                <Typography variant="h1">Products</Typography>
-                <LinkRouter underline="none" to="/seller/product/create" >
+                <Typography variant="h1">{t('containers.admin_seller.sideBar.products')}</Typography>
+                <LinkRouter underline="none" to="/seller/products/create" >
                     <IconButton
                         sx={{ borderRadius: '12px', background: "#F45626", "&:hover": { background: "#CB2525" }, "&& .MuiTouchRipple-child": { backgroundColor: "transparent" } }}
                         size="large"

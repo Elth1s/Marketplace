@@ -47,3 +47,39 @@ export const TextFieldFirstStyle = styled(TextField)<TextFieldProps>(({ theme })
         color: "#000",
     },
 }));
+
+export const TextFieldSecondStyle = styled(TextField)<TextFieldProps>(({ theme }) => ({
+    "& .MuiInputLabel-root": {
+        color: "black",
+        "&.Mui-focused": {
+            color: "black"
+        },
+        "&.Mui-error ": {
+            color: `${theme.palette.error.main}`
+        },
+        "&.Mui-disabled": {
+            color: "#777777"
+        },
+    },
+    "& .MuiOutlinedInput-root": {
+        color: "black",
+        "& fieldset": {
+            borderColor: "black"
+        },
+        "&:hover fieldset": {
+            borderColor: "black"
+        },
+        "&.Mui-focused fieldset": {
+            borderColor: "black"
+        },
+        "&.Mui-disabled fieldset": {
+            borderColor: "#7e7e7e"
+        },
+        "&.Mui-error fieldset": {
+            borderColor: `${theme.palette.error.main}`
+        },
+        "&.Mui-error:hover fieldset": {
+            borderColor: `${theme.palette.error.main}`
+        }
+    },
+}));

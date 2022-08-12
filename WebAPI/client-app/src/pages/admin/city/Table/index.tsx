@@ -1,6 +1,7 @@
-import Paper from '@mui/material/Paper';
+import { Box, Checkbox, TableRow, Typography } from '@mui/material';
 
 import { useEffect, useState } from "react";
+import { useTranslation } from 'react-i18next';
 
 import { useActions } from "../../../../hooks/useActions";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
@@ -11,29 +12,30 @@ import { ICityInfo } from '../types';
 import Create from '../Create';
 import Update from '../Update';
 import EnhancedTable from '../../../../components/EnhancedTable';
-import { Box, Checkbox, TableRow, Typography } from '@mui/material';
 import { TableCellStyle } from '../../../../components/EnhancedTable/styled';
 
 
-const headCells: HeadCell<ICityInfo>[] = [
-    {
-        id: 'id',
-        numeric: true,
-        label: 'Identifier',
-    },
-    {
-        id: 'name',
-        numeric: false,
-        label: 'Name',
-    },
-    {
-        id: 'countryName',
-        numeric: false,
-        label: 'County',
-    }
-];
-
 const CityTable = () => {
+    const { t } = useTranslation();
+
+    const headCells: HeadCell<ICityInfo>[] = [
+        {
+            id: 'id',
+            numeric: true,
+            label: `${t('containers.admin_seller.tableHeadCell.identifier')}`,
+        },
+        {
+            id: 'name',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.name')}`,
+        },
+        {
+            id: 'countryName',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.country')}`,
+        }
+    ];
+
     const [page, setPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(8);
     const [name, setName] = useState("");
@@ -46,7 +48,7 @@ const CityTable = () => {
     const { cities, count } = useTypedSelector((store) => store.city);
 
     useEffect(() => {
-        document.title = "Cities";
+        document.title = `${t('containers.admin_seller.sideBar.cities')}`;
         getData();
     }, [page, rowsPerPage, name, isAscOrder, orderBy]);
 
@@ -106,7 +108,7 @@ const CityTable = () => {
     return (
         <>
             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", my: "30px" }}>
-                <Typography variant="h1">Cities</Typography>
+                <Typography variant="h1">{t('containers.admin_seller.sideBar.cities')}</Typography>
                 <Create afterCreate={() => { getData() }} />
             </Box>
             <EnhancedTable

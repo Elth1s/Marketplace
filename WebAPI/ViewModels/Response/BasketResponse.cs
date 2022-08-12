@@ -35,6 +35,11 @@
         /// </summary>
         /// <example>1000</example>
         public int ProductCount { get; set; }
+        /// <summary>
+        ///  Url slug
+        /// </summary>
+        /// <example>url-slug</example>
+        public string ProductUrlSlug { get; set; }
 
     }
 }

@@ -1,0 +1,131 @@
+{
+    "common": {
+        "containers": {
+            "default": {
+                "header": {
+                    "catalog": "Catalog",
+                    "searchProducts": "Search products...",
+                    "userMenu": {
+                        "adminPanel": "Admin Panel",
+                        "createShop": "Create Shop",
+                        "sellerPanel": "Seller Panel",
+                        "darkTheme": "Dark Theme",
+                        "signIn": "Sign In",
+                        "logOut": "Log Out"
+                    }
+                }
+            },
+            "admin_seller": {
+                "sideBar": {
+                    "categories": "Categories",
+                    "characteristicGroups": "Characteristic groups",
+                    "characteristicNames": "Characteristic names",
+                    "characteristicValues": "Characteristic values",
+                    "filterGroups": "Filter groups",
+                    "filterNames": "Filter names",
+                    "filterValues": "Filter values",
+                    "products": "Products",
+                    "productStatuses": "Product statuses",
+                    "shops": "Shops",
+                    "countries": "Countries",
+                    "cities": "Cities",
+                    "units": "Units",
+                    "users": "Users"
+                },
+                "table": {
+                    "rowsPerPage": "Shows"
+                },
+                "tableHeadCell": {
+                    "identifier": "Identifier",
+                    "name": "Name",
+                    "value": "Value",
+                    "urlSlug": "URL slug",
+                    "image": "Image",
+                    "icon": "Icon",
+                    "parentCategory": "Parent category",
+                    "characteristicGroup": "Characteristic group",
+                    "characteristicName": "Characteristic name",
+                    "filterGroup": "Filter group",
+                    "filterName": "Filter name",
+                    "unitMeasure": "Unit measure",
+                    "min": "Min",
+                    "max": "Max",
+                    "price": "Price",
+                    "count": "Count",
+                    "productStatus": "Product status",
+                    "category": "Category",
+                    "photo": "Photo",
+                    "siteURL": "Site URL",
+                    "city": "City",
+                    "code": "Code",
+                    "country": "Country",
+                    "measure": "Measure",
+                    "firstName": "First name",
+                    "secondName": "Second name",
+                    "email": "Email",
+                    "phone": "Phone"
+                }
+            }
+        },
+        "pages": {
+            "catalog": {
+                "showMore": "Show more",
+                "find": "Find"
+            },
+            "product": {
+                "title": "Product",
+                "menu": {
+                    "allAboutTheProduct": "All about the product",
+                    "characteristics": "Characteristics",
+                    "reviews": "Reviews",
+                    "question": "Question"
+                },
+                "seller": "Seller",
+                "sellerRating": "Seller rating",
+                "ratings": "ratings",
+                "sellerContacts": "Seller contacts",
+                "buy": "Buy",
+                "inBasket": "In basket",
+                "payment": "Payment",
+                "delivery": "Delivery",
+                "characterictics": "Characterictics",
+                "reviews": "Reviews",
+                "addReview": "Add review",
+                "moreReviews": "More reviews",
+                "similarProducts": "Similar products"
+            }
+        },
+        "components": {
+            "breadcrumbs": {
+                "home": "Home",
+                "catalog": "Catalog"
+            },
+            "basket": {
+                "title": "Basket",
+                "order": "Order",
+                "shopping": "Go shopping",
+                "basketEmpty": "The basket is empty",
+                "basketEmptyDescription": "But it's never too late to fix it"
+            },
+            "reviewItem": {
+                "advantages": "Advantages",
+                "disadvantages": "Disdvantages",
+                "reply": "Reply",
+                "showReply": "Show reply"
+            },
+            "reviewDialog": {
+                "title": "Send a review",
+                "overview": "Overview",
+                "button": "Send",
+                "exceptions": {
+                    "urlSlugError": "Something went wrong",
+                    "productRatingWarning": "Set your overview"
+                }
+            }
+        },
+        "toastTitles": {
+            "error": "Error",
+            "warning": "Warning"
+        }
+    }
+}

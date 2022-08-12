@@ -2,6 +2,8 @@
 
 import { Box, Checkbox, TableRow, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { useActions } from '../../../../hooks/useActions';
 import { useTypedSelector } from '../../../../hooks/useTypedSelector';
 
@@ -14,25 +16,27 @@ import Create from '../Create';
 import Update from '../Update';
 
 
-const headCells: HeadCell<ICountryInfo>[] = [
-    {
-        id: 'id',
-        numeric: true,
-        label: 'Identifier',
-    },
-    {
-        id: 'name',
-        numeric: false,
-        label: 'Name',
-    },
-    {
-        id: 'code',
-        numeric: false,
-        label: 'Code',
-    }
-];
-
 const CountryTable = () => {
+    const { t } = useTranslation();
+
+    const headCells: HeadCell<ICountryInfo>[] = [
+        {
+            id: 'id',
+            numeric: true,
+            label: `${t('containers.admin_seller.tableHeadCell.identifier')}`,
+        },
+        {
+            id: 'name',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.name')}`,
+        },
+        {
+            id: 'code',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.code')}`,
+        }
+    ];
+
     const [page, setPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(8);
     const [name, setName] = useState("");
@@ -45,7 +49,7 @@ const CountryTable = () => {
     const { countries, count } = useTypedSelector((store) => store.country);
 
     useEffect(() => {
-        document.title = "Countries";
+        document.title = `${t('containers.admin_seller.sideBar.countries')}`;
         getData();
     }, [page, rowsPerPage, name, isAscOrder, orderBy]);
 
@@ -105,7 +109,7 @@ const CountryTable = () => {
     return (
         <>
             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", my: "30px" }}>
-                <Typography variant="h1">Countries</Typography>
+                <Typography variant="h1">{t('containers.admin_seller.sideBar.countries')}</Typography>
                 <Create afterCreate={() => { getData() }} />
             </Box>
             <EnhancedTable

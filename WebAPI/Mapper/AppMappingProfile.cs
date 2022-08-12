@@ -173,6 +173,7 @@ namespace WebAPI.Mapper
                 .ForMember(u => u.ProductName, opt => opt.MapFrom(vm => vm.Product.Name))
                 .ForMember(u => u.ProductPrice, opt => opt.MapFrom(vm => vm.Product.Price))
                 .ForMember(u => u.ProductCount, opt => opt.MapFrom(vm => vm.Product.Count))
+                .ForMember(u => u.ProductUrlSlug, opt => opt.MapFrom(vm => vm.Product.UrlSlug))
                 .ForMember(u => u.ProductImage, opt => opt.MapFrom(vm => vm.Product.Images.Count != 0 ? Path.Combine(ImagePath.RequestProductsImagePath, vm.Product.Images.FirstOrDefault().Name) : ""));
             #endregion
 
@@ -208,13 +209,13 @@ namespace WebAPI.Mapper
                  .ForMember(r => r.Dislikes, opt => opt.MapFrom(vm => vm.CountDislikes))
                  .ForMember(r => r.Likes, opt => opt.MapFrom(vm => vm.CountLikes))
                  .ForMember(r => r.Replies, opt => opt.MapFrom(vm => vm.Replies.Count))
-                 .ForMember(q => q.Date, opt => opt.MapFrom(vm => vm.Date.ToString("d"))); ;
+                 .ForMember(q => q.Date, opt => opt.MapFrom(vm => vm.Date.ToString("dd MMMM yyyy"))); ;
 
             //ReviewReply
             CreateMap<ReviewReplyRequest, ReviewReply>()
                 .ForMember(r => r.Date, opt => opt.MapFrom(o => DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc)));
             CreateMap<ReviewReply, ReviewReplyResponse>()
-                .ForMember(q => q.Date, opt => opt.MapFrom(vm => vm.Date.ToString("d")));
+                .ForMember(q => q.Date, opt => opt.MapFrom(vm => vm.Date.ToString("dd MMMM yyyy")));
 
 
             //Review Image

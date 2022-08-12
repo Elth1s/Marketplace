@@ -1,6 +1,7 @@
 import { Box, Typography, TableRow, Checkbox } from '@mui/material';
 
 import { useEffect, useState } from "react";
+import { useTranslation } from 'react-i18next';
 
 import { useActions } from "../../../../hooks/useActions";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
@@ -14,30 +15,33 @@ import Update from '../Update';
 import { IFilterNameInfo } from '../types';
 import { HeadCell } from '../../../../store/types';
 
-const headCells: HeadCell<IFilterNameInfo>[] = [
-    {
-        id: 'id',
-        numeric: true,
-        label: 'Identifier',
-    },
-    {
-        id: 'name',
-        numeric: false,
-        label: 'Name',
-    },
-    {
-        id: 'filterGroupName',
-        numeric: false,
-        label: 'Filter Group',
-    },
-    {
-        id: 'unitMeasure',
-        numeric: false,
-        label: 'Unit Measure',
-    },
-];
 
 const FilterNameTable = () => {
+    const { t } = useTranslation();
+
+    const headCells: HeadCell<IFilterNameInfo>[] = [
+        {
+            id: 'id',
+            numeric: true,
+            label: `${t('containers.admin_seller.tableHeadCell.identifier')}`,
+        },
+        {
+            id: 'name',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.name')}`,
+        },
+        {
+            id: 'filterGroupName',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.filterGroup')}`,
+        },
+        {
+            id: 'unitMeasure',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.unitMeasure')}`,
+        },
+    ];
+
     const [page, setPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(8);
     const [name, setName] = useState("");
@@ -51,7 +55,7 @@ const FilterNameTable = () => {
 
     useEffect(() => {
         getData();
-        document.title = "Filter Name";
+        document.title = `${t('containers.admin_seller.sideBar.filterNames')}`;
     }, [page, rowsPerPage, name, isAscOrder, orderBy]);
 
     const getData = async () => {
@@ -110,7 +114,7 @@ const FilterNameTable = () => {
     return (
         <>
             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", my: "30px" }}>
-                <Typography variant="h1">Filter names</Typography>
+                <Typography variant="h1">{t('containers.admin_seller.sideBar.filterNames')}</Typography>
                 <Create afterCreate={() => { getData() }} />
             </Box>
             <EnhancedTable

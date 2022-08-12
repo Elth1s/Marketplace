@@ -1,7 +1,7 @@
-import TableRow from '@mui/material/TableRow';
-import Checkbox from '@mui/material/Checkbox';
+import { Box, Typography, TableRow, Checkbox } from '@mui/material';
 
 import { useEffect, useState } from "react";
+import { useTranslation } from 'react-i18next';
 
 import { useActions } from "../../../../hooks/useActions";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
@@ -14,32 +14,34 @@ import Update from '../Update';
 
 import { ICharacteristicNameInfo } from '../types';
 import { HeadCell } from '../../../../store/types';
-import { Box, Typography } from '@mui/material';
 
-const headCells: HeadCell<ICharacteristicNameInfo>[] = [
-    {
-        id: 'id',
-        numeric: true,
-        label: 'Identifier',
-    },
-    {
-        id: 'name',
-        numeric: false,
-        label: 'Name',
-    },
-    {
-        id: 'characteristicGroupName',
-        numeric: false,
-        label: 'Characteristic Group',
-    },
-    {
-        id: 'unitMeasure',
-        numeric: false,
-        label: 'Unit Measure',
-    },
-];
 
 const CharacteristicNameTable = () => {
+    const { t } = useTranslation();
+
+    const headCells: HeadCell<ICharacteristicNameInfo>[] = [
+        {
+            id: 'id',
+            numeric: true,
+            label: `${t('containers.admin_seller.tableHeadCell.identifier')}`,
+        },
+        {
+            id: 'name',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.name')}`,
+        },
+        {
+            id: 'characteristicGroupName',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.characteristicGroup')}`,
+        },
+        {
+            id: 'unitMeasure',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.unitMeasure')}`,
+        },
+    ];
+
     const [page, setPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(8);
     const [name, setName] = useState("");
@@ -53,7 +55,7 @@ const CharacteristicNameTable = () => {
 
     useEffect(() => {
         getData();
-        document.title = "Characteristic Name";
+        document.title = `${t('containers.admin_seller.sideBar.characteristicNames')}`;
     }, [page, rowsPerPage, name, isAscOrder, orderBy]);
 
     const getData = async () => {
@@ -112,7 +114,7 @@ const CharacteristicNameTable = () => {
     return (
         <>
             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", my: "30px" }}>
-                <Typography variant="h1">Characteristic names</Typography>
+                <Typography variant="h1">{t('containers.admin_seller.sideBar.characteristicNames')}</Typography>
                 <Create afterCreate={() => { getData() }} />
             </Box>
             <EnhancedTable

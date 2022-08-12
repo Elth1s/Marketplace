@@ -8,7 +8,8 @@ export interface IBasketItem {
     productName: string,
     productImage: string,
     productPrice: number,
-    productCount: number
+    productCount: number,
+    productUrlSlug: string
 }
 
 export interface BasketState {

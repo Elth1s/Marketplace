@@ -6,36 +6,29 @@ import {
 } from "@mui/material";
 import { StarRounded } from '@mui/icons-material';
 import { FC } from "react";
+import { useTranslation } from "react-i18next";
 
 import {
     PriceBox,
     CharacteristicDivider,
     CharacteristicGrid,
-    RatingStyle,
     BuyButtonCharacteristic,
     SellerContactsButtonCharacteristic,
 } from "../styled";
+import { RatingStyle } from "../../../../components/Rating/styled";
 
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
-import { useActions } from "../../../../hooks/useActions";
 
 import { buy_cart, orange_heart } from "../../../../assets/icons";
 
 interface Props {
-    urlSlug: string | undefined,
-    isInBasket: boolean
+    addInCart: any
 }
 
-const ProductCharacteristicsPage: FC<Props> = ({ urlSlug, isInBasket }) => {
-    const { AddProductInCart, GetBasketItems } = useActions();
-    const { product } = useTypedSelector(state => state.product);
+const ProductCharacteristicsPage: FC<Props> = ({ addInCart }) => {
+    const { t } = useTranslation();
 
-    const addInCart = async () => {
-        if (urlSlug) {
-            await AddProductInCart(urlSlug)
-            await GetBasketItems()
-        }
-    };
+    const { product } = useTypedSelector(state => state.product);
 
     return (
         <Grid container sx={{ mt: "40px" }}>
@@ -80,9 +73,9 @@ const ProductCharacteristicsPage: FC<Props> = ({ urlSlug, isInBasket }) => {
                                 icon={<StarRounded sx={{ fontSize: "30px" }} />}
                                 emptyIcon={<StarRounded sx={{ fontSize: "30px" }} />}
                             />
-                            <Typography variant="h4" fontWeight="bold" display="inline">5 <Typography fontWeight="medium" display="inline" sx={{ fontSize: "20px" }}>(10 ratings)</Typography></Typography>
+                            <Typography variant="h4" fontWeight="bold" display="inline">5 <Typography fontWeight="medium" display="inline" sx={{ fontSize: "20px" }}>(10 {t("pages.product.ratings")})</Typography></Typography>
                         </Box>
-                        {isInBasket
+                        {product.isInBasket
                             ? <BuyButtonCharacteristic fullWidth color="secondary" variant="contained" disabled
                                 startIcon={
                                     <img
@@ -92,7 +85,7 @@ const ProductCharacteristicsPage: FC<Props> = ({ urlSlug, isInBasket }) => {
                                     />}
                                 sx={{ mt: "47px" }}
                             >
-                                In basket
+                                {t("pages.product.inBasket")}
                             </BuyButtonCharacteristic>
                             : <BuyButtonCharacteristic fullWidth color="secondary" variant="contained"
                                 startIcon={
@@ -104,9 +97,9 @@ const ProductCharacteristicsPage: FC<Props> = ({ urlSlug, isInBasket }) => {
                                 sx={{ mt: "47px" }}
                                 onClick={addInCart}
                             >
-                                Buy
+                                {t("pages.product.buy")}
                             </BuyButtonCharacteristic>}
-                        <SellerContactsButtonCharacteristic fullWidth color="secondary" variant="outlined" sx={{ mt: "26px" }}>Seller contacts</SellerContactsButtonCharacteristic>
+                        <SellerContactsButtonCharacteristic fullWidth color="secondary" variant="outlined" sx={{ mt: "26px" }}>{t("pages.product.sellerContacts")}</SellerContactsButtonCharacteristic>
                     </PriceBox>
                 </Box>
             </Grid>

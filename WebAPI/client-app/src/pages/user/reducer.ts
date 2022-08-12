@@ -25,7 +25,7 @@ const initialState: ProfileState = {
         photo: "",
         isEmailConfirmed: false,
         isPhoneConfirmed: false,
-        hasPassword: false
+        hasPassword: false,
     }
 }
 

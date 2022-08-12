@@ -279,4 +279,7 @@
   <data name="CharacteristicValueExist" xml:space="preserve">
     <value>Characteristic value with this name already exist</value>
   </data>
+  <data name="BasketItemExist" xml:space="preserve">
+    <value>Product already in basket</value>
+  </data>
 </root>

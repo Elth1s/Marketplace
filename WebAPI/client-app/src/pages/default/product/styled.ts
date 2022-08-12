@@ -33,15 +33,6 @@ export const CharacteristicDivider = styled(Divider)(() => ({
     zIndex: "-1",
 }))
 
-export const RatingStyle = styled(Rating)(({ theme }) => ({
-    '& .MuiRating-iconFilled': {
-        color: theme.palette.primary.main,
-    },
-    '& .MuiRating-iconHover': {
-        color: theme.palette.primary.main,
-    },
-}))
-
 export const SellerContactsButton = styled(Button)(() => ({
     fontSize: "20px",
     fontWeight: "medium",

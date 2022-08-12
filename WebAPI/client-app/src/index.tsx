@@ -12,6 +12,7 @@ import reportWebVitals from './reportWebVitals';
 
 import './styles/index.css';
 
+import "./translation/i18n"
 
 
 let token = getLocalAccessToken();

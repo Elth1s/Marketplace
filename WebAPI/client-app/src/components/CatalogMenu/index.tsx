@@ -8,6 +8,7 @@ import {
     Paper,
     Typography
 } from "@mui/material";
+import { PhotoOutlined } from "@mui/icons-material"
 import { useEffect, useState } from "react";
 
 import { useActions } from "../../hooks/useActions";
@@ -18,8 +19,10 @@ import { CategoryTypographyStyle } from "./styled"
 import { list, white_close } from "../../assets/icons";
 import { empty } from "../../assets/backgrounds";
 import LinkRouter from "../LinkRouter";
+import { useTranslation } from "react-i18next";
 
 const CatalogMenu = () => {
+    const { t } = useTranslation()
     const { GetFullCatalog } = useActions();
     const { fullCatalogItems } = useTypedSelector(state => state.catalog);
 
@@ -86,7 +89,7 @@ const CatalogMenu = () => {
                     />
                 }
             >
-                Catalog
+                {t('containers.default.header.catalog')}
             </Button>
             <Menu
                 anchorEl={anchorEl}
@@ -133,13 +136,16 @@ const CatalogMenu = () => {
                                 const isItemSelected = isSelected(index);
 
                                 return (
-                                    <LinkRouter key={`$catalog_${index}`} underline="none" to={`/catalog/${row.urlSlug}`} onClick={handleClose}>
+                                    <LinkRouter key={`$catalog_${index}`} underline="none" color="common.black" to={`/catalog/${row.urlSlug}`} onClick={handleClose}>
                                         <Box sx={{ display: "flex", mb: "14px", alignItems: "center" }} onMouseEnter={() => changeParentCategory(index)}>
-                                            <img
-                                                style={{ width: "20px", height: "20px", objectFit: "contain", marginRight: "13px" }}
-                                                src={row.icon != "" ? row.icon : empty}
-                                                alt="categoryIcon"
-                                            />
+                                            {row.icon != ""
+                                                ? <img
+                                                    style={{ width: "20px", height: "20px", objectFit: "contain", marginRight: "13px" }}
+                                                    src={row.icon}
+                                                    alt="categoryIcon"
+                                                />
+                                                : <PhotoOutlined color={isItemSelected ? "primary" : "inherit"} sx={{ marginRight: "13px" }} />
+                                            }
                                             <CategoryTypographyStyle variant="h4" fontWeight="bold" selected={isItemSelected}>{row.name}</CategoryTypographyStyle>
                                         </Box>
                                     </LinkRouter>

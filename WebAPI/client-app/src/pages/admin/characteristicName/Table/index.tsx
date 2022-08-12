@@ -1,7 +1,7 @@
-import TableRow from '@mui/material/TableRow';
-import Checkbox from '@mui/material/Checkbox';
+import { Typography, TableRow, Checkbox } from '@mui/material';
 
 import { useEffect, useState } from "react";
+import { useTranslation } from 'react-i18next';
 
 import { useActions } from "../../../../hooks/useActions";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
@@ -11,32 +11,34 @@ import { TableCellStyle } from '../../../../components/EnhancedTable/styled';
 
 import { ICharacteristicNameInfo } from '../../../seller/characteristicName/types';
 import { HeadCell } from '../../../../store/types';
-import { Typography } from '@mui/material';
 
-const headCells: HeadCell<ICharacteristicNameInfo>[] = [
-    {
-        id: 'id',
-        numeric: true,
-        label: 'Identifier',
-    },
-    {
-        id: 'name',
-        numeric: false,
-        label: 'Name',
-    },
-    {
-        id: 'characteristicGroupName',
-        numeric: false,
-        label: 'Characteristic Group',
-    },
-    {
-        id: 'unitMeasure',
-        numeric: false,
-        label: 'Unit Measure',
-    },
-];
 
 const AdminCharacteristicNameTable = () => {
+    const { t } = useTranslation();
+
+    const headCells: HeadCell<ICharacteristicNameInfo>[] = [
+        {
+            id: 'id',
+            numeric: true,
+            label: `${t('containers.admin_seller.tableHeadCell.identifier')}`,
+        },
+        {
+            id: 'name',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.name')}`,
+        },
+        {
+            id: 'characteristicGroupName',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.characteristicGroup')}`,
+        },
+        {
+            id: 'unitMeasure',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.unitMeasure')}`,
+        },
+    ];
+
     const [page, setPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(8);
     const [name, setName] = useState("");
@@ -50,7 +52,7 @@ const AdminCharacteristicNameTable = () => {
 
     useEffect(() => {
         getData();
-        document.title = "Characteristic Name";
+        document.title = `${t('containers.admin_seller.tableHeadCell.characteristicName')}`;
     }, [page, rowsPerPage, name, isAscOrder, orderBy]);
 
     const getData = async () => {
@@ -108,7 +110,7 @@ const AdminCharacteristicNameTable = () => {
 
     return (
         <>
-            <Typography variant="h1" sx={{ my: "30px", py: "4.5px" }}>Characteristic names</Typography>
+            <Typography variant="h1" sx={{ my: "30px", py: "4.5px" }}>{t('containers.admin_seller.tableHeadCell.characteristicName')}</Typography>
             <EnhancedTable
                 page={page}
                 rowsPerPage={rowsPerPage}

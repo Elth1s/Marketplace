@@ -193,54 +193,55 @@ function App() {
             <Route path="/catalog" element={<Catalog />} />
             <Route path="/catalog/:urlSlug" element={<CatalogWithProducts />} />
             <Route path="/product/:urlSlug" element={<Product />} />
+            <Route path="/product/:urlSlug/:menu" element={<Product />} />
 
           </Route>
 
-          <Route path="/profile" element={<ProfileLayout />}>
-            <Route path="/profile/information" element={<Profile />} />
-            <Route path="/profile/reviewed-products" element={<Reviewed />} />
-            <Route path="/profile/order" element={<Order />} />
+          <Route path="/profile/" element={<ProfileLayout />}>
+            <Route path="information" element={<Profile />} />
+            <Route path="reviewed-products" element={<Reviewed />} />
+            <Route path="order" element={<Order />} />
           </Route>
 
-          <Route path="/ordering" element={<Ordering />} />
+          <Route path="ordering" element={<Ordering />} />
 
-          <Route element={<AuthLayout />}>
+          {/* <Route element={<AuthLayout />}>
             <Route path="/auth/signin" element={<SignIn />} />
             <Route path="/auth/signup" element={<SignUp />} />
+          </Route> */}
+
+          <Route path="/seller/" element={<SellerLayout />}>
+            <Route path="characteristicGroups" element={<CharacteristicGroupTable />} />
+            <Route path="characteristicNames" element={<CharacteristicNameTable />} />
+            <Route path="characteristicValues" element={<CharacteristicValueTable />} />
+            <Route path="products" element={<ProductTable />} />
+            <Route path="products/create" element={<ProductCreate />} />
           </Route>
 
-          <Route path="/seller" element={<SellerLayout />}>
-            <Route path="/seller/characteristicGroup" element={<CharacteristicGroupTable />} />
-            <Route path="/seller/characteristicName" element={<CharacteristicNameTable />} />
-            <Route path="/seller/characteristicValue" element={<CharacteristicValueTable />} />
-            <Route path="/seller/product" element={<ProductTable />} />
-            <Route path="/seller/product/create" element={<ProductCreate />} />
-          </Route>
+          <Route path="/admin/" element={<AdminLayout />}>
+            <Route path="categories" element={<CategoryTable />} />
+            <Route path="categories/create" element={<CategoryCreate />} />
+            <Route path="categories/update/:id" element={<CategoryUpdate />} />
 
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route path="/admin/category" element={<CategoryTable />} />
-            <Route path="/admin/category/create" element={<CategoryCreate />} />
-            <Route path="/admin/category/update/:id" element={<CategoryUpdate />} />
+            <Route path="characteristicGroups" element={<AdminCharacteristicGroupTable />} />
+            <Route path="characteristicNames" element={<AdminCharacteristicNameTable />} />
+            <Route path="characteristicValues" element={<AdminCharacteristicValueTable />} />
 
-            <Route path="/admin/characteristicGroup" element={<AdminCharacteristicGroupTable />} />
-            <Route path="/admin/characteristicName" element={<AdminCharacteristicNameTable />} />
-            <Route path="/admin/characteristicValue" element={<AdminCharacteristicValueTable />} />
+            <Route path="filterGroups" element={<FilterGroupTable />} />
+            <Route path="filterNames" element={<FilterNameTable />} />
+            <Route path="filterValues" element={<FilterValueTable />} />
 
-            <Route path="/admin/filterGroup" element={<FilterGroupTable />} />
-            <Route path="/admin/filterName" element={<FilterNameTable />} />
-            <Route path="/admin/filterValue" element={<FilterValueTable />} />
+            <Route path="productStatuses" element={<ProductStatusTable />} />
+            <Route path="products" element={<AdminProductTable />} />
 
-            <Route path="/admin/productStatus" element={<ProductStatusTable />} />
-            <Route path="/admin/product" element={<AdminProductTable />} />
+            <Route path="shops" element={<ShopTable />} />
 
-            <Route path="/admin/shop" element={<ShopTable />} />
+            <Route path="countries" element={<CountryTable />} />
+            <Route path="cities" element={<CityTable />} />
 
-            <Route path="/admin/country" element={<CountryTable />} />
-            <Route path="/admin/city" element={<CityTable />} />
+            <Route path="units" element={<UnitTable />} />
 
-            <Route path="/admin/unit" element={<UnitTable />} />
-
-            <Route path="/admin/user" element={<UserTable />} />
+            <Route path="users" element={<UserTable />} />
           </Route>
 
           <Route path="/confirmEmail" element={<ConfirmEmail />} />

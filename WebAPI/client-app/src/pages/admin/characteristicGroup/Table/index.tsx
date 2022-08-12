@@ -1,7 +1,7 @@
-import TableRow from '@mui/material/TableRow';
-import Checkbox from '@mui/material/Checkbox';
+import { Typography, TableRow, Checkbox } from '@mui/material';
 
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { useActions } from '../../../../hooks/useActions';
 import { useTypedSelector } from '../../../../hooks/useTypedSelector';
@@ -12,22 +12,24 @@ import { TableCellStyle } from '../../../../components/EnhancedTable/styled';
 
 import { ICharacteristicGroupInfo } from '../../../seller/characteristicGroup/types';
 import { HeadCell } from '../../../../store/types';
-import { Typography } from '@mui/material';
 
-const headCells: HeadCell<ICharacteristicGroupInfo>[] = [
-    {
-        id: 'id',
-        numeric: true,
-        label: 'Identifier',
-    },
-    {
-        id: 'name',
-        numeric: false,
-        label: 'Name',
-    },
-];
 
 const AdminCharacteristicGroupTable = () => {
+    const { t } = useTranslation();
+
+    const headCells: HeadCell<ICharacteristicGroupInfo>[] = [
+        {
+            id: 'id',
+            numeric: true,
+            label: `${t('containers.admin_seller.tableHeadCell.identifier')}`,
+        },
+        {
+            id: 'name',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.name')}`,
+        },
+    ];
+
     const [page, setPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(8);
     const [name, setName] = useState("");
@@ -40,7 +42,7 @@ const AdminCharacteristicGroupTable = () => {
     const { characteristicGroups, count } = useTypedSelector((store) => store.characteristicGroup);
 
     useEffect(() => {
-        document.title = "Characteristic Group";
+        document.title = `${t('containers.admin_seller.sideBar.characteristicGroups')}`;
         getData();
     }, [page, rowsPerPage, name, isAscOrder, orderBy]);
 
@@ -99,7 +101,7 @@ const AdminCharacteristicGroupTable = () => {
 
     return (
         <>
-            <Typography variant="h1" sx={{ my: "30px", py: "4.5px" }}>Characteristic groups</Typography>
+            <Typography variant="h1" sx={{ my: "30px", py: "4.5px" }}>{t('containers.admin_seller.sideBar.characteristicGroups')}</Typography>
             <EnhancedTable
                 page={page}
                 rowsPerPage={rowsPerPage}

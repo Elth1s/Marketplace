@@ -159,9 +159,11 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
-
                     b.HasIndex("UserId");
+
+                    b.HasIndex("ProductId", "UserId")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
 
                     b.ToTable("BasketItems");
                 });
@@ -700,7 +702,7 @@ namespace DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Advantage")
+                    b.Property<string>("Advantages")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Comment")
@@ -709,7 +711,7 @@ namespace DAL.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Disadvantage")
+                    b.Property<string>("Disadvantages")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
@@ -1137,7 +1139,7 @@ namespace DAL.Migrations
             modelBuilder.Entity("DAL.Entities.Category", b =>
                 {
                     b.HasOne("DAL.Entities.Category", "Parent")
-                        .WithMany("Childrens")
+                        .WithMany("Children")
                         .HasForeignKey("ParentId");
 
                     b.Navigation("Parent");
@@ -1540,7 +1542,7 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.Category", b =>
                 {
-                    b.Navigation("Childrens");
+                    b.Navigation("Children");
 
                     b.Navigation("Products");
                 });

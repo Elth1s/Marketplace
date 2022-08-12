@@ -1,0 +1,131 @@
+{
+    "common": {
+        "containers": {
+            "default": {
+                "header": {
+                    "catalog": "Каталог",
+                    "searchProducts": "Пошук товарів...",
+                    "userMenu": {
+                        "adminPanel": "Панель Адміна",
+                        "createShop": "Створити Магазин",
+                        "sellerPanel": "Панель Продавця",
+                        "darkTheme": "Темна Тема",
+                        "signIn": "Увійти",
+                        "logOut": "Вийти"
+                    }
+                }
+            },
+            "admin_seller": {
+                "sideBar": {
+                    "categories": "Категорії",
+                    "characteristicGroups": "Групи характеристик",
+                    "characteristicNames": "Назви характеристик",
+                    "characteristicValues": "Значення характеристик",
+                    "filterGroups": "Групи фільтрів",
+                    "filterNames": "Назви фільтрів",
+                    "filterValues": "Значення фільтрів",
+                    "products": "Товари",
+                    "productStatuses": "Статуси товарів",
+                    "shops": "Магазини",
+                    "countries": "Країни",
+                    "cities": "Міста",
+                    "units": "Одиниці вимірування",
+                    "users": "Користувачі"
+                },
+                "table": {
+                    "rowsPerPage": "Показати"
+                },
+                "tableHeadCell": {
+                    "identifier": "Ідентифікатор",
+                    "name": "Назва",
+                    "value": "Значення",
+                    "urlSlug": "Веб адреса",
+                    "image": "Зображення",
+                    "icon": "Значок",
+                    "parentCategory": "Батківська категорія",
+                    "characteristicGroup": "Група характеристики",
+                    "characteristicName": "Назва характеристики",
+                    "filterGroup": "Група фільтру",
+                    "filterName": "Назва фільтру",
+                    "unitMeasure": "Одиниця вимірування",
+                    "min": "Мінімум",
+                    "max": "Максимум",
+                    "price": "Ціна",
+                    "count": "Кількість",
+                    "productStatus": "Статус продукту",
+                    "category": "Категорія",
+                    "photo": "Фото",
+                    "siteURL": "Веб-адреса",
+                    "city": "Місто",
+                    "code": "Код",
+                    "country": "Країна",
+                    "measure": "Міра",
+                    "firstName": "Ім'я",
+                    "secondName": "Прізвище",
+                    "email": "Електронна пошта",
+                    "phone": "Телефон"
+                }
+            }
+        },
+        "pages": {
+            "catalog": {
+                "showMore": "Показати ще",
+                "find": "Пошук"
+            },
+            "product": {
+                "title": "Продукт",
+                "menu": {
+                    "allAboutTheProduct": "Все про товар",
+                    "characteristics": "Характеристики",
+                    "reviews": "Відгуки",
+                    "question": "Запитання"
+                },
+                "seller": "Продавець",
+                "sellerRating": "Рейтинг продавця",
+                "ratings": "оцінок",
+                "sellerContacts": "Контакти продавця",
+                "buy": "Купити",
+                "inBasket": "В кошику",
+                "payment": "Оплата",
+                "delivery": "Доставка",
+                "characterictics": "Характеристики",
+                "reviews": "Відгуки",
+                "addReview": "Додати відгук",
+                "moreReviews": "Більше відгуків",
+                "similarProducts": "Схожі товари"
+            }
+        },
+        "components": {
+            "breadcrumbs": {
+                "home": "Головна",
+                "catalog": "Каталог"
+            },
+            "basket": {
+                "title": "Кошик",
+                "order": "Оформити замовлення",
+                "shopping": "За покупками",
+                "basketEmpty": "Кошик порожній",
+                "basketEmptyDescription": "Але це ніколи не пізно виправити"
+            },
+            "reviewItem": {
+                "advantages": "Переваги",
+                "disadvantages": "Недоліки",
+                "reply": "Відповісти",
+                "showReply": "Показати відповіді"
+            },
+            "reviewDialog": {
+                "title": "Відправити відповідь",
+                "overview": "Загальне враження",
+                "button": "Відправити",
+                "exceptions": {
+                    "urlSlugError": "Щось пішло не так",
+                    "productRatingWarning": "Вкажіть ваше враження"
+                }
+            }
+        },
+        "toastTitles": {
+            "error": "Помилка",
+            "warning": "Увага"
+        }
+    }
+}

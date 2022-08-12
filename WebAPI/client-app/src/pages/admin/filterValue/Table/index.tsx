@@ -1,7 +1,7 @@
-import TableRow from '@mui/material/TableRow';
-import Checkbox from '@mui/material/Checkbox';
+import { Box, Typography, Checkbox, TableRow } from '@mui/material';
 
 import { useEffect, useState } from "react";
+import { useTranslation } from 'react-i18next';
 
 import { useActions } from "../../../../hooks/useActions";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
@@ -13,37 +13,38 @@ import { IFilterValueInfo } from '../types';
 import { HeadCell } from '../../../../store/types';
 import Create from '../Create';
 import Update from '../Update';
-import { Box, Typography } from '@mui/material';
-
-const headCells: HeadCell<IFilterValueInfo>[] = [
-    {
-        id: 'id',
-        numeric: true,
-        label: 'Identifier',
-    },
-    {
-        id: 'value',
-        numeric: false,
-        label: 'Value',
-    },
-    {
-        id: 'min',
-        numeric: false,
-        label: 'Min',
-    },
-    {
-        id: 'max',
-        numeric: false,
-        label: 'Max',
-    },
-    {
-        id: 'filterName',
-        numeric: false,
-        label: 'Filter Name',
-    },
-];
 
 const FilterValueTable = () => {
+    const { t } = useTranslation();
+
+    const headCells: HeadCell<IFilterValueInfo>[] = [
+        {
+            id: 'id',
+            numeric: true,
+            label: `${t('containers.admin_seller.tableHeadCell.identifier')}`,
+        },
+        {
+            id: 'value',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.value')}`,
+        },
+        {
+            id: 'min',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.min')}`,
+        },
+        {
+            id: 'max',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.max')}`,
+        },
+        {
+            id: 'filterName',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.filterName')}`,
+        },
+    ];
+
     const [page, setPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(8);
     const [name, setName] = useState("");
@@ -57,7 +58,7 @@ const FilterValueTable = () => {
 
     useEffect(() => {
         getData();
-        document.title = "Filter Value";
+        document.title = `${t('containers.admin_seller.sideBar.filterValues')}`;
     }, [page, rowsPerPage, name, isAscOrder, orderBy]);
 
     const getData = async () => {
@@ -116,7 +117,7 @@ const FilterValueTable = () => {
     return (
         <>
             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", my: "30px" }}>
-                <Typography variant="h1">Filter values</Typography>
+                <Typography variant="h1">{t('containers.admin_seller.sideBar.filterValues')}</Typography>
                 <Create afterCreate={() => { getData() }} />
             </Box>
             <EnhancedTable
