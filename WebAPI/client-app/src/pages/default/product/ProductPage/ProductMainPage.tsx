@@ -1,46 +1,28 @@
 import { Box, Grid, Typography, IconButton } from "@mui/material";
 import { StarRounded } from "@mui/icons-material";
 import { FC, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-
-import { FC, useState } from "react";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Controller, Navigation, Thumbs } from "swiper";
 
-import { 
-    arrow_right, 
-    buy_cart, 
-    credit_card, 
-    dollar_sign, 
-    orange_heart, 
-    SellerContactsButton,
-    truck_delivery 
-} from "../../../../assets/icons";
-import { useTypedSelector } from "../../../../hooks/useTypedSelector";
-import { useActions } from "../../../../hooks/useActions";
+import AddReview from "../AddReview";
 
-import { RatingStyle } from "../../../../components/Rating/styled";
-import { useTypedSelector } from "../../../../hooks/useTypedSelector";
-import { arrow_right, buy_cart, credit_card, dollar_sign, orange_heart, package_delivery, truck_delivery } from "../../../../assets/icons";
-import { useActions } from "../../../../hooks/useActions";
-import { useParams } from "react-router-dom";
+import {
+    CharacteristicDivider,
+    SellerContactsButton,
+    BuyButton,
     ListItemStyle,
     ListStyle,
     CharacteristicGrid,
 } from "../styled";
-import { reviews } from "../data";
+import { RatingStyle } from "../../../../components/Rating/styled";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
-import { useActions } from "../../../../hooks/useActions";
 import { arrow_right, buy_cart, credit_card, dollar_sign, orange_heart, package_delivery, truck_delivery } from "../../../../assets/icons";
-import { IconButton } from "@mui/material";
-import { Star, StarRounded } from "@mui/icons-material";
+import { useActions } from "../../../../hooks/useActions";
+
+import ShowInfo from "../../ShopInfo"
 
 interface Props {
     moveToReview: any
@@ -126,8 +108,8 @@ const ProductMainPage: FC<Props> = ({ addInCart, moveToReview }) => {
                         </IconButton>
                     </Box>
                     <Box sx={{ display: "flex", mt: "26px", alignItems: "center" }}>
-                    <SellerContactsButton color="secondary" variant="outlined" sx={{ mt: "41px" }}>{t("pages.product.sellerContacts")}</SellerContactsButton>
-                    {product.isInBasket
+                        <RatingStyle
+                            sx={{ mr: 1, fontSize: "30px" }}
                             value={5}
                             precision={0.5}
                             readOnly
@@ -136,8 +118,8 @@ const ProductMainPage: FC<Props> = ({ addInCart, moveToReview }) => {
                         />
                         <Typography variant="h4" fontWeight="bold" display="inline">5 <Typography fontWeight="medium" display="inline" sx={{ fontSize: "20px" }}>(10 {t("pages.product.ratings")})</Typography></Typography>
                     </Box>
-                    <SellerContactsButton color="secondary" variant="outlined" sx={{ mt: "41px" }}>Seller contacts</SellerContactsButton>
-                    {isInBasket
+                    <ShowInfo isMainPage={true} id={product.shopId} />
+                    {product.isInBasket
                         ? <BuyButton color="secondary" variant="contained" disabled
                             startIcon={
                                 <img

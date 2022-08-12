@@ -12,14 +12,15 @@ import {
     PriceBox,
     CharacteristicDivider,
     CharacteristicGrid,
-    BuyButtonCharacteristic,
-    SellerContactsButtonCharacteristic,
+    BuyButtonSecondStyle,
 } from "../styled";
 import { RatingStyle } from "../../../../components/Rating/styled";
 
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 
 import { buy_cart, orange_heart } from "../../../../assets/icons";
+
+import ShowInfo from "../../ShopInfo"
 
 interface Props {
     addInCart: any
@@ -76,7 +77,7 @@ const ProductCharacteristicsPage: FC<Props> = ({ addInCart }) => {
                             <Typography variant="h4" fontWeight="bold" display="inline">5 <Typography fontWeight="medium" display="inline" sx={{ fontSize: "20px" }}>(10 {t("pages.product.ratings")})</Typography></Typography>
                         </Box>
                         {product.isInBasket
-                            ? <BuyButtonCharacteristic fullWidth color="secondary" variant="contained" disabled
+                            ? <BuyButtonSecondStyle fullWidth color="secondary" variant="contained" disabled
                                 startIcon={
                                     <img
                                         style={{ width: "40px", height: "40px" }}
@@ -86,8 +87,8 @@ const ProductCharacteristicsPage: FC<Props> = ({ addInCart }) => {
                                 sx={{ mt: "47px" }}
                             >
                                 {t("pages.product.inBasket")}
-                            </BuyButtonCharacteristic>
-                            : <BuyButtonCharacteristic fullWidth color="secondary" variant="contained"
+                            </BuyButtonSecondStyle>
+                            : <BuyButtonSecondStyle fullWidth color="secondary" variant="contained"
                                 startIcon={
                                     <img
                                         style={{ width: "40px", height: "40px" }}
@@ -98,8 +99,8 @@ const ProductCharacteristicsPage: FC<Props> = ({ addInCart }) => {
                                 onClick={addInCart}
                             >
                                 {t("pages.product.buy")}
-                            </BuyButtonCharacteristic>}
-                        <SellerContactsButtonCharacteristic fullWidth color="secondary" variant="outlined" sx={{ mt: "26px" }}>{t("pages.product.sellerContacts")}</SellerContactsButtonCharacteristic>
+                            </BuyButtonSecondStyle>}
+                        <ShowInfo isMainPage={false} id={product.shopId} />
                     </PriceBox>
                 </Box>
             </Grid>

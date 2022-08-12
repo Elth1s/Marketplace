@@ -62,7 +62,7 @@ export const BuyButton = styled(Button)(() => ({
     }
 }))
 
-export const BuyButtonCharacteristic = styled(Button)(() => ({
+export const BuyButtonSecondStyle = styled(Button)(() => ({
     fontSize: "27px",
     lineHeight: "34px",
     textTransform: "none",
@@ -75,7 +75,7 @@ export const BuyButtonCharacteristic = styled(Button)(() => ({
     }
 }))
 
-export const SellerContactsButtonCharacteristic = styled(Button)(() => ({
+export const SellerContactsButtonSecondStyle = styled(Button)(() => ({
     fontSize: "27px",
     lineHeight: "34px",
     textTransform: "none",

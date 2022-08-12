@@ -19,7 +19,10 @@ const SellerLayout = () => {
             <Box component="main" sx={{ width: '100%', display: "flex" }}>
                 <Sidebar open={open} />
                 <Box sx={{ px: { xs: 3, sm: 5 }, py: { xs: 1, sm: 2 }, width: '100%' }}>
-                <Outlet />
+                    <Outlet />
+                </Box>
+            </Box>
+        </Box>
     );
 };
 

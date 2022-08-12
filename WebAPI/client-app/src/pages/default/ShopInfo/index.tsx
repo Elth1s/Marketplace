@@ -17,7 +17,8 @@ import { globe, mail, map_pin, phone } from '../../../assets/icons'
 import { useActions } from '../../../hooks/useActions'
 import { useTypedSelector } from '../../../hooks/useTypedSelector';
 
-import { SellerContactsButton } from "../product/styled";
+import { SellerContactsButton, SellerContactsButtonSecondStyle } from "../product/styled";
+import { useTranslation } from 'react-i18next';
 
 const Transition = forwardRef(function Transition(
     props: TransitionProps & {
@@ -36,28 +37,22 @@ const Img = styled('img')({
 });
 
 interface Props {
-    id: number
+    id: number,
+    isMainPage: boolean
 }
 
-const SellerInfo: FC<Props> = ({ id }) => {
+const SellerInfo: FC<Props> = ({ id, isMainPage }) => {
+    const { t } = useTranslation();
+
     const { ShopInfoFromProduct } = useActions();
     const { shopInfo } = useTypedSelector(state => state.shopInfo);
     const [open, setOpen] = useState(false);
 
-    useEffect(() => {
-        getData();
-    }, [])
-
-    const getData = async () => {
+    const handleClickOpen = async () => {
         try {
-            if (id) {
-                await ShopInfoFromProduct(id);
-            }
+            await ShopInfoFromProduct(id);
         } catch (ex) {
         }
-    };
-
-    const handleClickOpen = () => {
         setOpen(true);
     };
 
@@ -67,14 +62,10 @@ const SellerInfo: FC<Props> = ({ id }) => {
 
     return (
         <>
-            <SellerContactsButton
-                color="secondary"
-                variant="outlined"
-                onClick={handleClickOpen}
-                sx={{ mt: "41px" }}
-            >
-                Seller contacts
-            </SellerContactsButton>
+            {isMainPage
+                ? <SellerContactsButton color="secondary" variant="outlined" sx={{ mt: "41px" }} onClick={handleClickOpen}>{t("pages.product.sellerContacts")}</SellerContactsButton>
+                : <SellerContactsButtonSecondStyle fullWidth color="secondary" variant="outlined" sx={{ mt: "26px" }} onClick={handleClickOpen}>{t("pages.product.sellerContacts")}</SellerContactsButtonSecondStyle>
+            }
             <Dialog
                 open={open}
                 maxWidth="sm"

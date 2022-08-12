@@ -59,7 +59,6 @@ import UnitTable from './pages/admin/unit/Table';
 import UserTable from './pages/admin/user/Table';
 
 import NotFound from './pages/notfound';
-import SellerLayout from './containers/SellerLayout';
 import ProductCreate from './pages/seller/product/Create';
 import SellerHome from './pages/seller/Home';
 

@@ -5,9 +5,8 @@ import { FC, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import {
-    BuyButtonCharacteristic,
+    BuyButtonSecondStyle,
     PriceBox,
-    SellerContactsButtonCharacteristic,
 } from "../styled";
 import { RatingStyle } from "../../../../components/Rating/styled";
 
@@ -17,6 +16,8 @@ import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import ReviewItem from "../../../../components/ReviewItem";
 import { useParams } from "react-router-dom";
 import { useActions } from "../../../../hooks/useActions";
+
+import ShowInfo from "../../ShopInfo"
 
 
 interface Props {
@@ -102,7 +103,7 @@ const ProductReviewsPage: FC<Props> = ({ addInCart, page, rowsPerPage }) => {
                                 <Typography variant="h4" fontWeight="bold" display="inline">5 <Typography fontWeight="medium" display="inline" sx={{ fontSize: "20px" }}>(10 {t("pages.product.ratings")})</Typography></Typography>
                             </Box>
                             {product.isInBasket
-                                ? <BuyButtonCharacteristic fullWidth color="secondary" variant="contained" disabled
+                                ? <BuyButtonSecondStyle fullWidth color="secondary" variant="contained" disabled
                                     startIcon={
                                         <img
                                             style={{ width: "40px", height: "40px" }}
@@ -112,8 +113,8 @@ const ProductReviewsPage: FC<Props> = ({ addInCart, page, rowsPerPage }) => {
                                     sx={{ mt: "47px" }}
                                 >
                                     {t("pages.product.inBasket")}
-                                </BuyButtonCharacteristic>
-                                : <BuyButtonCharacteristic fullWidth color="secondary" variant="contained"
+                                </BuyButtonSecondStyle>
+                                : <BuyButtonSecondStyle fullWidth color="secondary" variant="contained"
                                     startIcon={
                                         <img
                                             style={{ width: "40px", height: "40px" }}
@@ -124,8 +125,8 @@ const ProductReviewsPage: FC<Props> = ({ addInCart, page, rowsPerPage }) => {
                                     onClick={addInCart}
                                 >
                                     {t("pages.product.buy")}
-                                </BuyButtonCharacteristic>}
-                            <SellerContactsButtonCharacteristic fullWidth color="secondary" variant="outlined" sx={{ mt: "26px" }}>{t("pages.product.sellerContacts")}</SellerContactsButtonCharacteristic>
+                                </BuyButtonSecondStyle>}
+                            <ShowInfo isMainPage={false} id={product.shopId} />
                         </PriceBox>
                     </Box>
                 </Grid>
