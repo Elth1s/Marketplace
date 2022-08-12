@@ -111,6 +111,7 @@ namespace WebAPI.Mapper
 
             //FilterName
             CreateMap<FilterNameRequest, FilterName>();
+            CreateMap<FilterName, FilterNameSellerResponse>();
             CreateMap<FilterName, FilterNameResponse>()
                 .ForMember(u => u.FilterGroupName, opt => opt.MapFrom(vm => vm.FilterGroup.Name))
                 .ForMember(u => u.UnitMeasure, opt => opt.MapFrom(vm => vm.Unit.Measure));
@@ -118,6 +119,7 @@ namespace WebAPI.Mapper
             //FilterValue
             CreateMap<FilterValueRequest, FilterValue>();
             CreateMap<FilterValue, FilterValueCatalogResponse>();
+            CreateMap<FilterValue, FilterValueSellerResponse>();
             CreateMap<FilterValue, FilterValueResponse>()
                 .ForMember(u => u.FilterName, opt => opt.MapFrom(vm => vm.FilterName.Name));
             CreateMap<FilterValue, ProductFilterValue>()
@@ -178,6 +180,7 @@ namespace WebAPI.Mapper
                 .ForMember(u => u.ProductName, opt => opt.MapFrom(vm => vm.Product.Name))
                 .ForMember(u => u.ProductPrice, opt => opt.MapFrom(vm => vm.Product.Price))
                 .ForMember(u => u.ProductCount, opt => opt.MapFrom(vm => vm.Product.Count))
+                .ForMember(u => u.ProductUrlSlug, opt => opt.MapFrom(vm => vm.Product.UrlSlug))
                 .ForMember(u => u.ProductImage, opt => opt.MapFrom(vm => vm.Product.Images.Count != 0 ? Path.Combine(ImagePath.RequestProductsImagePath, vm.Product.Images.FirstOrDefault().Name) : ""));
             #endregion
 
@@ -213,13 +216,13 @@ namespace WebAPI.Mapper
                  .ForMember(r => r.Dislikes, opt => opt.MapFrom(vm => vm.CountDislikes))
                  .ForMember(r => r.Likes, opt => opt.MapFrom(vm => vm.CountLikes))
                  .ForMember(r => r.Replies, opt => opt.MapFrom(vm => vm.Replies.Count))
-                 .ForMember(q => q.Date, opt => opt.MapFrom(vm => vm.Date.ToString("d"))); ;
+                 .ForMember(q => q.Date, opt => opt.MapFrom(vm => vm.Date.ToString("dd MMMM yyyy"))); ;
 
             //ReviewReply
             CreateMap<ReviewReplyRequest, ReviewReply>()
                 .ForMember(r => r.Date, opt => opt.MapFrom(o => DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc)));
             CreateMap<ReviewReply, ReviewReplyResponse>()
-                .ForMember(q => q.Date, opt => opt.MapFrom(vm => vm.Date.ToString("d")));
+                .ForMember(q => q.Date, opt => opt.MapFrom(vm => vm.Date.ToString("dd MMMM yyyy")));
 
 
             //Review Image

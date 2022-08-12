@@ -1,7 +1,7 @@
-import TableRow from '@mui/material/TableRow';
-import Checkbox from '@mui/material/Checkbox';
+import { Typography, TableRow, Checkbox } from '@mui/material';
 
 import { useEffect, useState } from "react";
+import { useTranslation } from 'react-i18next';
 
 import { useActions } from "../../../../hooks/useActions";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
@@ -9,30 +9,31 @@ import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import EnhancedTable from '../../../../components/EnhancedTable';
 import { TableCellStyle } from '../../../../components/EnhancedTable/styled';
 
-import { ICharacteristicValueInfo } from '../types';
 import { HeadCell } from '../../../../store/types';
-import Create from '../Create';
-import Update from '../Update';
+import { ICharacteristicValueInfo } from '../../../seller/characteristicValue/types';
 
-const headCells: HeadCell<ICharacteristicValueInfo>[] = [
-    {
-        id: 'id',
-        numeric: true,
-        label: 'Identifier',
-    },
-    {
-        id: 'value',
-        numeric: false,
-        label: 'Value',
-    },
-    {
-        id: 'characteristicName',
-        numeric: false,
-        label: 'Characteristic Name',
-    },
-];
 
-const CharacteristicValueTable = () => {
+const AdminCharacteristicValueTable = () => {
+    const { t } = useTranslation();
+
+    const headCells: HeadCell<ICharacteristicValueInfo>[] = [
+        {
+            id: 'id',
+            numeric: true,
+            label: `${t('containers.admin_seller.tableHeadCell.identifier')}`,
+        },
+        {
+            id: 'value',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.value')}`,
+        },
+        {
+            id: 'characteristicName',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.characteristicName')}`,
+        },
+    ];
+
     const [page, setPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(8);
     const [name, setName] = useState("");
@@ -46,12 +47,12 @@ const CharacteristicValueTable = () => {
 
     useEffect(() => {
         getData();
-        document.title = "Characteristic Value";
+        document.title = `${t('containers.admin_seller.sideBar.characteristicValues')}`;
     }, [page, rowsPerPage, name, isAscOrder, orderBy]);
 
     const getData = async () => {
         try {
-            await SearchCharacteristicValues(page, rowsPerPage, name, isAscOrder, orderBy);
+            await SearchCharacteristicValues(page, rowsPerPage, name, isAscOrder, orderBy, false);
             setSelected([]);
         } catch (ex) {
         }
@@ -60,7 +61,6 @@ const CharacteristicValueTable = () => {
     const onDelete = async () => {
         await DeleteCharacteristicValues(selected);
         setPage(1);
-        getData();
     }
 
     const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
@@ -105,7 +105,7 @@ const CharacteristicValueTable = () => {
 
     return (
         <>
-            <Create afterCreate={() => getData()} />
+            <Typography variant="h1" sx={{ my: "30px", py: "4.5px" }}>{t('containers.admin_seller.sideBar.characteristicValues')}</Typography>
             <EnhancedTable
                 page={page}
                 rowsPerPage={rowsPerPage}
@@ -121,7 +121,7 @@ const CharacteristicValueTable = () => {
                 numSelected={selected.length}
                 count={count}
                 onDelete={onDelete}
-                update={<Update id={selected[selected.length - 1]} afterUpdate={() => { getData() }} />}
+                update={null}
                 tableBody={
                     characteristicValues.map((row, index) => {
                         const isItemSelected = isSelected(row.id);
@@ -165,4 +165,4 @@ const CharacteristicValueTable = () => {
     );
 }
 
-export default CharacteristicValueTable;
+export default AdminCharacteristicValueTable;

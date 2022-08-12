@@ -38,7 +38,7 @@
         /// <summary>
         /// List of product images
         /// </summary>
-        public IEnumerable<string> Images { get; set; }
+        public IEnumerable<ProductImageResponse> Images { get; set; }
         /// <summary>
         /// Price of product
         /// </summary>

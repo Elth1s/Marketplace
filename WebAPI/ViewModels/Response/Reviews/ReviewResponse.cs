@@ -19,7 +19,7 @@
         /// Product rating
         /// </summary>
         /// <example>4</example>
-        public int ProductRating { get; set; }
+        public float ProductRating { get; set; }
         /// <summary>
         /// Review date
         /// </summary>
@@ -29,12 +29,12 @@
         /// Product advantage
         /// </summary>
         /// <example>Some list of benefits</example>
-        public string Advantage { get; set; }
+        public string Advantages { get; set; }
         /// <summary>
         /// Product disadvantage
         /// </summary>
         /// <example>Some list of disadvantages</example>
-        public string Disadvantage { get; set; }
+        public string Disadvantages { get; set; }
         /// <summary>
         /// Comment
         /// </summary>

@@ -1,105 +1,134 @@
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
-import CardMedia from "@mui/material/CardMedia";
-import Rating from "@mui/material/Rating";
-import Typography from "@mui/material/Typography";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
+import { Box, Grid, Typography, IconButton } from "@mui/material";
+import { StarRounded } from "@mui/icons-material";
 
-import StarIcon from '@mui/icons-material/Star';
-
-import { useState } from "react";
-
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Controller, Navigation, Thumbs } from "swiper";
+import { FC, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import {
+    BuyButtonSecondStyle,
     PriceBox,
-    RatingBox,
 } from "../styled";
-import { images, reviews } from "../data";
+import { RatingStyle } from "../../../../components/Rating/styled";
 
-const ProductReviewsPage = () => {
-    const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
+import { buy_cart, orange_heart } from "../../../../assets/icons";
+
+import { useTypedSelector } from "../../../../hooks/useTypedSelector";
+import ReviewItem from "../../../../components/ReviewItem";
+import { useParams } from "react-router-dom";
+import { useActions } from "../../../../hooks/useActions";
+
+import ShowInfo from "../../ShopInfo"
+
+
+interface Props {
+    addInCart: any,
+    page: number,
+    rowsPerPage: number
+}
+
+const ProductReviewsPage: FC<Props> = ({ addInCart, page, rowsPerPage }) => {
+    const { t } = useTranslation();
+
+    const { product, reviews } = useTypedSelector(state => state.product);
+    const { GetReviews, GetMoreReviews } = useActions();
+
+    let { urlSlug } = useParams();
+
+    useEffect(() => {
+
+        getData();
+    }, [])
+
+    const getData = async () => {
+        if (!urlSlug)
+            return;
+        try {
+            await GetReviews(urlSlug, page, rowsPerPage)
+        } catch (ex) {
+        }
+    };
 
     return (
         <>
-            <Grid container>
+            <Grid container sx={{ mt: "79px" }}>
                 <Grid item xs={8}>
-                    {reviews.map((item, index) => (
-                        <Card key={index} sx={{ border: "1px solid #000", borderRadius: "10px", mb: "20px", p: "35px" }}>
-                            <CardContent>
-                                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                                    <Typography variant="h4">{item.name}</Typography>
-                                    <Box>
-                                        <Rating
-                                            value={item.rating}
-                                            precision={0.5}
-                                            readOnly
-                                            emptyIcon={<StarIcon fontSize="inherit" />} />
-                                        <Typography variant="body1">{item.data}</Typography>
-                                    </Box>
-                                </Box>
-                                <Typography variant="h6" sx={{ mt: "20px" }}>{item.decs}</Typography>
-                            </CardContent>
-                        </Card>
-                    ))}
+                    {reviews?.length != 0 && reviews.map((item, index) => {
+                        return (
+                            <ReviewItem
+                                fullName={item.fullName}
+                                reviewLink="/"
+                                date={item.date}
+                                productRating={item.productRating}
+                                comment={item.comment}
+                                advantages={item.advantages}
+                                disadvantages={item.disadvantages}
+                                images={item.images}
+                                videoURL={item.videoURL}
+                                isLiked={item.isLiked}
+                                isDisliked={item.isDisliked}
+                                likes={item.likes}
+                                dislikes={item.dislikes}
+                                replies={item.replies}
+                            />
+                        )
+                    })}
                 </Grid>
-                <Grid item xs={4} sx={{ mb: "20px", pl: "100px" }}>
-                    <Swiper
-                        modules={[Controller, Navigation, Thumbs]}
-                        navigation
-                        spaceBetween={15}
-                        thumbs={{ swiper: thumbsSwiper }}
-                    >
-                        {images.map((item, index) => (
-                            <SwiperSlide key={index}>
-                                <CardMedia
-                                    component="img"
-                                    width="420px"
-                                    height="420px"
-                                    image={item}
-                                    alt="product"
+                <Grid item xs={4}>
+                    <Box sx={{ width: "420px", ml: "auto" }}>
+                        {product.images?.length > 0 && <img
+                            style={{ width: "420px", height: "420px", objectFit: "contain" }}
+                            src={product.images[0].name}
+                            alt="productImage"
+                        />}
+                        <PriceBox>
+                            <Box sx={{ display: "flex", alignItems: 'baseline' }}>
+                                <Typography fontSize="64px" lineHeight="74px" sx={{ mr: "35px" }}>{product.price} &#8372;</Typography>
+                                <IconButton color="primary" sx={{ borderRadius: "12px" }}>
+                                    <img
+                                        style={{ width: "50px", height: "50px" }}
+                                        src={orange_heart}
+                                        alt="icon"
+                                    />
+                                </IconButton>
+                            </Box>
+                            <Box sx={{ display: "flex", mt: "26px", alignItems: "center" }}>
+                                <RatingStyle
+                                    sx={{ mr: 1, fontSize: "30px" }}
+                                    value={5}
+                                    precision={0.5}
+                                    readOnly
+                                    icon={<StarRounded sx={{ fontSize: "30px" }} />}
+                                    emptyIcon={<StarRounded sx={{ fontSize: "30px" }} />}
                                 />
-                            </SwiperSlide>
-                        ))}
-                    </Swiper>
-                    <Swiper
-                        modules={[Controller, Thumbs]}
-                        watchSlidesProgress
-                        slidesPerView={3}
-                        spaceBetween={30}
-                        onSwiper={setThumbsSwiper}
-                        style={{
-                            marginTop: "20px",
-                        }}
-                    >
-                        {images.map((item, index) => (
-                            <SwiperSlide key={index}>
-                                <CardMedia
-                                    component="img"
-                                    width="120px"
-                                    height="120px"
-                                    image={item}
-                                    alt="product"
-                                />
-                            </SwiperSlide>
-                        ))}
-                    </Swiper>
-                    <PriceBox>
-                        <Typography variant="h1" sx={{ mt: "50px", mb: "25px" }}>230грн</Typography>
-                        <RatingBox>
-                            <Rating
-                                value={4.5}
-                                precision={0.5}
-                                readOnly
-                                emptyIcon={<StarIcon fontSize="inherit" />} />
-                            <Typography>5(10)</Typography>
-                        </RatingBox>
-                        <Button fullWidth variant="contained" sx={{ fontSize: "27px", py: "15px", mt: "50px", mb: "25px" }}>Купити</Button>
-                        <Button fullWidth variant="outlined" sx={{ fontSize: "27px", py: "15px" }}>Контакти продавця</Button>
-                    </PriceBox>
+                                <Typography variant="h4" fontWeight="bold" display="inline">5 <Typography fontWeight="medium" display="inline" sx={{ fontSize: "20px" }}>(10 {t("pages.product.ratings")})</Typography></Typography>
+                            </Box>
+                            {product.isInBasket
+                                ? <BuyButtonSecondStyle fullWidth color="secondary" variant="contained" disabled
+                                    startIcon={
+                                        <img
+                                            style={{ width: "40px", height: "40px" }}
+                                            src={buy_cart}
+                                            alt="icon"
+                                        />}
+                                    sx={{ mt: "47px" }}
+                                >
+                                    {t("pages.product.inBasket")}
+                                </BuyButtonSecondStyle>
+                                : <BuyButtonSecondStyle fullWidth color="secondary" variant="contained"
+                                    startIcon={
+                                        <img
+                                            style={{ width: "40px", height: "40px" }}
+                                            src={buy_cart}
+                                            alt="icon"
+                                        />}
+                                    sx={{ mt: "47px" }}
+                                    onClick={addInCart}
+                                >
+                                    {t("pages.product.buy")}
+                                </BuyButtonSecondStyle>}
+                            <ShowInfo isMainPage={false} id={product.shopId} />
+                        </PriceBox>
+                    </Box>
                 </Grid>
             </Grid>
         </>

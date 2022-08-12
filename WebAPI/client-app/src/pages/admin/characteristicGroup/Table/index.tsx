@@ -1,7 +1,7 @@
-import TableRow from '@mui/material/TableRow';
-import Checkbox from '@mui/material/Checkbox';
+import { Typography, TableRow, Checkbox } from '@mui/material';
 
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { useActions } from '../../../../hooks/useActions';
 import { useTypedSelector } from '../../../../hooks/useTypedSelector';
@@ -9,26 +9,27 @@ import { useTypedSelector } from '../../../../hooks/useTypedSelector';
 import EnhancedTable from '../../../../components/EnhancedTable';
 import { TableCellStyle } from '../../../../components/EnhancedTable/styled';
 
-import Create from '../Create';
-import Update from '../Update';
 
-import { ICharacteristicGroupInfo } from '../types';
+import { ICharacteristicGroupInfo } from '../../../seller/characteristicGroup/types';
 import { HeadCell } from '../../../../store/types';
 
-const headCells: HeadCell<ICharacteristicGroupInfo>[] = [
-    {
-        id: 'id',
-        numeric: true,
-        label: 'Identifier',
-    },
-    {
-        id: 'name',
-        numeric: false,
-        label: 'Name',
-    },
-];
 
-const CharacteristicGroupTable = () => {
+const AdminCharacteristicGroupTable = () => {
+    const { t } = useTranslation();
+
+    const headCells: HeadCell<ICharacteristicGroupInfo>[] = [
+        {
+            id: 'id',
+            numeric: true,
+            label: `${t('containers.admin_seller.tableHeadCell.identifier')}`,
+        },
+        {
+            id: 'name',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.name')}`,
+        },
+    ];
+
     const [page, setPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(8);
     const [name, setName] = useState("");
@@ -41,13 +42,13 @@ const CharacteristicGroupTable = () => {
     const { characteristicGroups, count } = useTypedSelector((store) => store.characteristicGroup);
 
     useEffect(() => {
-        document.title = "Characteristic Group";
+        document.title = `${t('containers.admin_seller.sideBar.characteristicGroups')}`;
         getData();
     }, [page, rowsPerPage, name, isAscOrder, orderBy]);
 
     const getData = async () => {
         try {
-            await SearchCharacteristicGroups(page, rowsPerPage, name, isAscOrder, orderBy);
+            await SearchCharacteristicGroups(page, rowsPerPage, name, isAscOrder, orderBy, false);
             setSelected([]);
         } catch (ex) {
         }
@@ -56,7 +57,6 @@ const CharacteristicGroupTable = () => {
     const onDelete = async () => {
         await DeleteCharacteristicGroups(selected);
         setPage(1);
-        getData();
     }
 
     const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
@@ -101,7 +101,7 @@ const CharacteristicGroupTable = () => {
 
     return (
         <>
-            <Create afterCreate={() => { getData() }} />
+            <Typography variant="h1" sx={{ my: "30px", py: "4.5px" }}>{t('containers.admin_seller.sideBar.characteristicGroups')}</Typography>
             <EnhancedTable
                 page={page}
                 rowsPerPage={rowsPerPage}
@@ -117,7 +117,7 @@ const CharacteristicGroupTable = () => {
                 numSelected={selected.length}
                 count={count}
                 onDelete={onDelete}
-                update={<Update id={selected[selected.length - 1]} afterUpdate={() => { getData() }} />}
+                update={null}
                 tableBody={
                     characteristicGroups.map((row, index) => {
                         const isItemSelected = isSelected(row.id);
@@ -160,4 +160,4 @@ const CharacteristicGroupTable = () => {
     );
 }
 
-export default CharacteristicGroupTable
+export default AdminCharacteristicGroupTable

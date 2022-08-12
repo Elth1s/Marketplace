@@ -2,6 +2,7 @@ import { Box, Button, Checkbox, Pagination, Typography } from '@mui/material';
 import { CachedOutlined, CheckBoxOutlineBlank } from '@mui/icons-material';
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from "swiper";
@@ -15,6 +16,8 @@ import { BoxCatalogStyle, BoxFilterStyle, BoxProductStyle, PaginationItemStyle, 
 import ProductItem from '../../../components/ProductItem';
 
 const CatalogWithProducts = () => {
+    const { t } = useTranslation();
+
     const { GetParents, GetCatalogWithProducts, GetMoreProducts, GetFiltersByCategory } = useActions();
     const { parents, name, catalogItems, products, countProducts, filterNames } = useTypedSelector(state => state.catalog);
 
@@ -28,7 +31,7 @@ const CatalogWithProducts = () => {
     useEffect(() => {
         document.title = name;
         getData();
-    }, [urlSlug, page])
+    }, [urlSlug, page, name])
 
     const getData = async () => {
         if (!urlSlug)
@@ -116,7 +119,7 @@ const CatalogWithProducts = () => {
                     </BoxCatalogStyle>
                     {products.length != countProducts && <Box sx={{ display: "flex", justifyContent: "center" }}>
                         <ShowMoreButton onClick={showMore} startIcon={<CachedOutlined />}>
-                            Show more
+                            {t("pages.catalog.showMore")}
                         </ShowMoreButton>
                     </Box>}
                 </>
@@ -168,7 +171,7 @@ const CatalogWithProducts = () => {
                                 }}
                                 onClick={() => { getData() }}
                             >
-                                Find
+                                {t("pages.catalog.find")}
                             </Button>
                         </BoxFilterStyle>
                         <BoxProductStyle>

@@ -6,36 +6,30 @@ import {
 } from "@mui/material";
 import { StarRounded } from '@mui/icons-material';
 import { FC } from "react";
+import { useTranslation } from "react-i18next";
 
 import {
     PriceBox,
     CharacteristicDivider,
     CharacteristicGrid,
-    RatingStyle,
-    BuyButtonCharacteristic,
-    SellerContactsButtonCharacteristic,
+    BuyButtonSecondStyle,
 } from "../styled";
+import { RatingStyle } from "../../../../components/Rating/styled";
 
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
-import { useActions } from "../../../../hooks/useActions";
 
 import { buy_cart, orange_heart } from "../../../../assets/icons";
 
+import ShowInfo from "../../ShopInfo"
+
 interface Props {
-    urlSlug: string | undefined,
-    isInBasket: boolean
+    addInCart: any
 }
 
-const ProductCharacteristicsPage: FC<Props> = ({ urlSlug, isInBasket }) => {
-    const { AddProductInCart, GetBasketItems } = useActions();
-    const { product } = useTypedSelector(state => state.product);
+const ProductCharacteristicsPage: FC<Props> = ({ addInCart }) => {
+    const { t } = useTranslation();
 
-    const addInCart = async () => {
-        if (urlSlug) {
-            await AddProductInCart(urlSlug)
-            await GetBasketItems()
-        }
-    };
+    const { product } = useTypedSelector(state => state.product);
 
     return (
         <Grid container sx={{ mt: "40px" }}>
@@ -57,7 +51,7 @@ const ProductCharacteristicsPage: FC<Props> = ({ urlSlug, isInBasket }) => {
                 <Box sx={{ width: "420px", ml: "auto" }}>
                     {product.images?.length > 0 && <img
                         style={{ width: "420px", height: "420px", objectFit: "contain" }}
-                        src={product.images[0]}
+                        src={product.images[0].name}
                         alt="productImage"
                     />}
                     <PriceBox>
@@ -80,10 +74,10 @@ const ProductCharacteristicsPage: FC<Props> = ({ urlSlug, isInBasket }) => {
                                 icon={<StarRounded sx={{ fontSize: "30px" }} />}
                                 emptyIcon={<StarRounded sx={{ fontSize: "30px" }} />}
                             />
-                            <Typography variant="h4" fontWeight="bold" display="inline">5 <Typography fontWeight="medium" display="inline" sx={{ fontSize: "20px" }}>(10 ratings)</Typography></Typography>
+                            <Typography variant="h4" fontWeight="bold" display="inline">5 <Typography fontWeight="medium" display="inline" sx={{ fontSize: "20px" }}>(10 {t("pages.product.ratings")})</Typography></Typography>
                         </Box>
-                        {isInBasket
-                            ? <BuyButtonCharacteristic fullWidth color="secondary" variant="contained" disabled
+                        {product.isInBasket
+                            ? <BuyButtonSecondStyle fullWidth color="secondary" variant="contained" disabled
                                 startIcon={
                                     <img
                                         style={{ width: "40px", height: "40px" }}
@@ -92,9 +86,9 @@ const ProductCharacteristicsPage: FC<Props> = ({ urlSlug, isInBasket }) => {
                                     />}
                                 sx={{ mt: "47px" }}
                             >
-                                In basket
-                            </BuyButtonCharacteristic>
-                            : <BuyButtonCharacteristic fullWidth color="secondary" variant="contained"
+                                {t("pages.product.inBasket")}
+                            </BuyButtonSecondStyle>
+                            : <BuyButtonSecondStyle fullWidth color="secondary" variant="contained"
                                 startIcon={
                                     <img
                                         style={{ width: "40px", height: "40px" }}
@@ -104,9 +98,9 @@ const ProductCharacteristicsPage: FC<Props> = ({ urlSlug, isInBasket }) => {
                                 sx={{ mt: "47px" }}
                                 onClick={addInCart}
                             >
-                                Buy
-                            </BuyButtonCharacteristic>}
-                        <SellerContactsButtonCharacteristic fullWidth color="secondary" variant="outlined" sx={{ mt: "26px" }}>Seller contacts</SellerContactsButtonCharacteristic>
+                                {t("pages.product.buy")}
+                            </BuyButtonSecondStyle>}
+                        <ShowInfo isMainPage={false} id={product.shopId} />
                     </PriceBox>
                 </Box>
             </Grid>

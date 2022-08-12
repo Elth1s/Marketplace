@@ -2,7 +2,7 @@ import { CatalogAction, CatalogActionTypes, CatalogState } from "./types";
 
 const initialState: CatalogState = {
     parents: [],
-    name: "Catalog",
+    name: "",
     catalogItems: [],
     fullCatalogItems: [],
     products: [],

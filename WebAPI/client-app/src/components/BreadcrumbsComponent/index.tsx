@@ -4,6 +4,7 @@ import {
 } from '@mui/material';
 import { NavigateNext } from '@mui/icons-material';
 import { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { ICatalogItem } from '../../pages/default/Catalog/types';
 
@@ -14,17 +15,19 @@ interface Props {
 }
 
 const BreadcrumbsComponent: FC<Props> = ({ parents }) => {
+    const { t } = useTranslation();
+
     return (
         <Breadcrumbs aria-label="breadcrumb" sx={{ marginBottom: "30px" }} separator={<NavigateNext sx={{ color: "#7e7e7e" }} fontSize="small" />} >
             <LinkRouter underline="none" color="common.black" to="/">
-                Home
+                {t("components.breadcrumbs.home")}
             </LinkRouter>
             {parents.length == 0
                 ? <Typography color="#7e7e7e">
-                    Catalog
+                    {t("components.breadcrumbs.catalog")}
                 </Typography>
                 : <LinkRouter underline="none" color="common.black" to="/catalog">
-                    Catalog
+                    {t("components.breadcrumbs.catalog")}
                 </LinkRouter>}
             {parents.map((value, index) => {
                 const last = index === parents.length - 1;

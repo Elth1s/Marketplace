@@ -23,6 +23,6 @@
         /// <summary>
         /// List of category childs
         /// </summary>
-        public IEnumerable<FullCatalogItemResponse> Childrens { get; set; }
+        public IEnumerable<FullCatalogItemResponse> Children { get; set; }
     }
 }

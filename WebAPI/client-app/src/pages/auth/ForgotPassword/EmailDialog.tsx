@@ -10,7 +10,7 @@ import { ServerError } from "../../../store/types";
 
 import { IResetPasswordEmail } from "./types";
 import { ResetPasswordEmailSchema } from "./validation";
-import { TextFieldFirstStyle } from "../../../components/TextField/style";
+import { TextFieldFirstStyle } from "../../../components/TextField/styled";
 import { LoadingButtonStyle } from "../../../components/LoadingButton/styled";
 
 interface Props {

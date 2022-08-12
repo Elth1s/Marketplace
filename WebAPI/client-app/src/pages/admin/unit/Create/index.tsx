@@ -11,8 +11,10 @@ import { IUnit } from "../types";
 import { CreateProps, ServerError } from '../../../../store/types';
 
 import DialogComponent from '../../../../components/Dialog';
-import TextFieldComponent from "../../../../components/TextField";
 import { toLowerFirstLetter } from '../../../../http_comon';
+import { IconButton } from '@mui/material';
+import { white_plus } from '../../../../assets/icons';
+import { TextFieldFirstStyle } from '../../../../components/TextField/styled';
 
 const CountryCreate: FC<CreateProps> = ({ afterCreate }) => {
     const [open, setOpen] = useState(false);
@@ -63,16 +65,18 @@ const CountryCreate: FC<CreateProps> = ({ afterCreate }) => {
             open={open}
             handleClickClose={handleClickClose}
             button={
-                <Button
-                    variant="contained"
-                    sx={{
-                        my: 2,
-                        px: 4,
-                    }}
+                <IconButton
+                    sx={{ borderRadius: '12px', background: "#F45626", "&:hover": { background: "#CB2525" }, "&& .MuiTouchRipple-child": { backgroundColor: "transparent" } }}
+                    size="large"
+                    color="inherit"
                     onClick={handleClickOpen}
                 >
-                    Create
-                </Button>
+                    <img
+                        style={{ width: "30px" }}
+                        src={white_plus}
+                        alt="icon"
+                    />
+                </IconButton>
             }
 
             formik={formik}
@@ -85,12 +89,15 @@ const CountryCreate: FC<CreateProps> = ({ afterCreate }) => {
             dialogContent={
                 <Grid container rowSpacing={2}>
                     <Grid item xs={12} >
-                        <TextFieldComponent
+                        <TextFieldFirstStyle
+                            fullWidth
+                            variant="standard"
+                            autoComplete="measure"
                             type="text"
                             label="Measure"
-                            error={errors.measure}
-                            touched={touched.measure}
-                            getFieldProps={{ ...getFieldProps('measure') }}
+                            {...getFieldProps('measure')}
+                            error={Boolean(touched.measure && errors.measure)}
+                            helperText={touched.measure && errors.measure}
                         />
                     </Grid>
                 </Grid>

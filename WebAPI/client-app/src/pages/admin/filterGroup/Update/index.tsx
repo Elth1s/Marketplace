@@ -10,11 +10,11 @@ import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import { ServerError, UpdateProps } from '../../../../store/types';
 
 import DialogComponent from '../../../../components/Dialog';
-import TextFieldComponent from '../../../../components/TextField';
 
 import { validationFields } from "../validation";
 import { IconButton } from '@mui/material';
 import { toLowerFirstLetter } from '../../../../http_comon';
+import { TextFieldFirstStyle } from '../../../../components/TextField/styled';
 
 
 const FilterGroupUpdate: FC<UpdateProps> = ({ id, afterUpdate }) => {
@@ -79,12 +79,15 @@ const FilterGroupUpdate: FC<UpdateProps> = ({ id, afterUpdate }) => {
             dialogContent={
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        <TextFieldComponent
+                        <TextFieldFirstStyle
+                            fullWidth
+                            variant="standard"
+                            autoComplete="name"
                             type="text"
                             label="Name"
-                            error={errors.name}
-                            touched={touched.name}
-                            getFieldProps={{ ...getFieldProps('name') }}
+                            {...getFieldProps('name')}
+                            error={Boolean(touched.name && errors.name)}
+                            helperText={touched.name && errors.name}
                         />
                     </Grid>
                 </Grid>

@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import { black_eye, eye_off } from '../../../assets/icons'
 import { DialogStyle } from '../../../components/Dialog/styled'
 import { LoadingButtonStyle } from '../../../components/LoadingButton/styled'
-import { TextFieldFirstStyle } from '../../../components/TextField/style'
+import { TextFieldFirstStyle } from '../../../components/TextField/styled'
 import { useActions } from '../../../hooks/useActions'
 import { toLowerFirstLetter } from '../../../http_comon'
 import { ServerError } from '../../../store/types'
@@ -189,11 +189,12 @@ const CreateShopDialog: FC<Props> = ({ dialogOpen, dialogClose }) => {
                     </DialogContent>
                     <DialogActions sx={{ pt: "65px", pb: "26px", px: "32px" }}>
                         <LoadingButtonStyle
+                            fullWidth
                             color="secondary"
                             variant="contained"
                             loading={isSubmitting}
                             type="submit"
-                            sx={{ width: "100%", py: "15px" }}
+                            sx={{ py: "15px", textTransform: "none" }}
                         >
                             Register
                         </LoadingButtonStyle>

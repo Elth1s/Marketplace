@@ -1,8 +1,10 @@
 
 
-import { AddBox, Create, Edit } from "@mui/icons-material";
-import { Avatar, Button, Checkbox, IconButton, TableRow } from "@mui/material";
+import { Edit } from "@mui/icons-material";
+import { Avatar, Box, Checkbox, IconButton, TableRow, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { white_plus } from "../../../../assets/icons";
 import EnhancedTable from "../../../../components/EnhancedTable";
 import { TableCellStyle } from "../../../../components/EnhancedTable/styled";
 import LinkRouter from "../../../../components/LinkRouter";
@@ -13,40 +15,42 @@ import { HeadCell } from "../../../../store/types";
 import { ICategoryInfo } from "../types";
 
 
-const headCells: HeadCell<ICategoryInfo>[] = [
-    {
-        id: 'id',
-        numeric: true,
-        label: 'Identifier',
-    },
-    {
-        id: 'name',
-        numeric: false,
-        label: 'Name',
-    },
-    {
-        id: 'urlSlug',
-        numeric: false,
-        label: 'Url slug',
-    },
-    {
-        id: 'image',
-        numeric: false,
-        label: 'Image',
-    },
-    {
-        id: 'icon',
-        numeric: false,
-        label: 'Icon',
-    },
-    {
-        id: 'parentName',
-        numeric: false,
-        label: 'Parent category',
-    }
-];
-
 const CategoryTable = () => {
+    const { t } = useTranslation();
+
+    const headCells: HeadCell<ICategoryInfo>[] = [
+        {
+            id: 'id',
+            numeric: true,
+            label: `${t('containers.admin_seller.tableHeadCell.identifier')}`,
+        },
+        {
+            id: 'name',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.name')}`,
+        },
+        {
+            id: 'urlSlug',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.urlSlug')}`,
+        },
+        {
+            id: 'image',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.image')}`,
+        },
+        {
+            id: 'icon',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.icon')}`,
+        },
+        {
+            id: 'parentName',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.parentCategory')}`,
+        }
+    ];
+
     const [page, setPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(8);
     const [name, setName] = useState("");
@@ -59,7 +63,7 @@ const CategoryTable = () => {
     const { categories, count } = useTypedSelector((store) => store.category);
 
     useEffect(() => {
-        document.title = "Categories";
+        document.title = `${t('containers.admin_seller.sideBar.categories')}`;
         getData();
     }, [page, rowsPerPage, name, isAscOrder, orderBy]);
 
@@ -73,8 +77,7 @@ const CategoryTable = () => {
 
     const onDelete = async () => {
         await DeleteCategories(selected);
-        setPage(1);
-        getData();
+        await setPage(1);
     }
 
     const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
@@ -119,17 +122,22 @@ const CategoryTable = () => {
 
     return (
         <>
-            <LinkRouter underline="none" to="/admin/category/create" >
-                <Button
-                    variant="contained"
-                    sx={{
-                        my: 2,
-                        px: 4,
-                    }}
-                >
-                    Create
-                </Button>
-            </LinkRouter>
+            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", my: "30px" }}>
+                <Typography variant="h1">{t('containers.admin_seller.sideBar.categories')}</Typography>
+                <LinkRouter underline="none" to="/admin/categories/create" >
+                    <IconButton
+                        sx={{ borderRadius: '12px', background: "#F45626", "&:hover": { background: "#CB2525" }, "&& .MuiTouchRipple-child": { backgroundColor: "transparent" } }}
+                        size="large"
+                        color="inherit"
+                    >
+                        <img
+                            style={{ width: "30px" }}
+                            src={white_plus}
+                            alt="icon"
+                        />
+                    </IconButton>
+                </LinkRouter>
+            </Box>
             <EnhancedTable
                 page={page}
                 rowsPerPage={rowsPerPage}
@@ -146,7 +154,7 @@ const CategoryTable = () => {
                 count={count}
                 onDelete={onDelete}
                 update={
-                    <LinkRouter underline="none" color="secondary" to={`/admin/category/update/${selected[selected.length - 1]}`} >
+                    <LinkRouter underline="none" color="secondary" to={`/admin/categories/update/${selected[selected.length - 1]}`} >
                         <Edit />
                     </LinkRouter>
                 }

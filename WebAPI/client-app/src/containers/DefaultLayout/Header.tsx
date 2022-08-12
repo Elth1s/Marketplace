@@ -3,19 +3,11 @@ import {
     IconButton,
     Toolbar,
     InputAdornment,
-    Button,
     Box,
     Container,
     Divider
 } from "@mui/material";
-import {
-    Search,
-    FavoriteBorderOutlined,
-    ShoppingCartOutlined,
-    FormatListBulletedOutlined
-} from "@mui/icons-material";
 
-import { useActions } from "../../hooks/useActions";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 
 import { logo } from "../../assets/logos"
@@ -26,14 +18,16 @@ import MainMenu from "../../components/Menu";
 import LinkRouter from "../../components/LinkRouter";
 import Basket from "../../components/Basket";
 
-import { orange_heart, list, search } from '../../assets/icons';
+import { orange_heart, search } from '../../assets/icons';
 import { useState } from "react";
 import CatalogMenu from "../../components/CatalogMenu";
+import { useTranslation } from "react-i18next";
 
 const Header = () => {
+    const { t, i18n } = useTranslation()
     const { isAuth } = useTypedSelector((state) => state.auth)
 
-    const [isUaLanguage, setIsUaLanguage] = useState<boolean>(false);
+    const [isUaLanguage, setIsUaLanguage] = useState<boolean>(i18n.language == "en" ? false : true);
 
     return (
         <AppBar component="header" sx={{ height: "110px", mb: "30px", mt: "15px" }} elevation={0} position="static" >
@@ -47,7 +41,7 @@ const Header = () => {
                         />
                     </LinkRouter>
                     <CatalogMenu />
-                    <TextFieldStyle placeholder="Search products..."
+                    <TextFieldStyle placeholder={t('containers.default.header.searchProducts')}
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end" >
@@ -62,9 +56,9 @@ const Header = () => {
                             )
                         }} />
                     <Box sx={{ display: "flex" }}>
-                        <LanguageButtonStyle selected={!isUaLanguage} onClick={() => { setIsUaLanguage(false); }}>EN</LanguageButtonStyle>
+                        <LanguageButtonStyle selected={!isUaLanguage} onClick={() => { setIsUaLanguage(false); i18n.changeLanguage("en") }}>EN</LanguageButtonStyle>
                         <Divider sx={{ borderColor: "black", borderRightWidth: "3px", mx: "1px" }} orientation="vertical" flexItem />
-                        <LanguageButtonStyle selected={isUaLanguage} onClick={() => { setIsUaLanguage(true); }}>UA</LanguageButtonStyle>
+                        <LanguageButtonStyle selected={isUaLanguage} onClick={() => { setIsUaLanguage(true); i18n.changeLanguage("ua") }}>UA</LanguageButtonStyle>
                     </Box>
                     {isAuth &&
                         <>

@@ -17,9 +17,9 @@ import { validationFields } from "../validation";
 import { ServerError } from "../../../../store/types";
 
 import CropperDialog from "../../../../components/CropperDialog";
-import TextFieldComponent from "../../../../components/TextField";
 import AutocompleteComponent from "../../../../components/Autocomplete";
 import { toLowerFirstLetter } from "../../../../http_comon";
+import { TextFieldFirstStyle } from "../../../../components/TextField/styled";
 
 const CategoryUpdate = () => {
     const { GetCategoryById, GetCategoryForSelect, UpdateCategory } = useActions();
@@ -105,21 +105,27 @@ const CategoryUpdate = () => {
                             <Grid container spacing={2}>
                                 <Grid container item xs={10}>
                                     <Grid item xs={12}>
-                                        <TextFieldComponent
+                                        <TextFieldFirstStyle
+                                            fullWidth
+                                            variant="standard"
+                                            autoComplete="name"
                                             type="text"
                                             label="Name"
-                                            error={errors.name}
-                                            touched={touched.name}
-                                            getFieldProps={{ ...getFieldProps('name') }}
+                                            {...getFieldProps('name')}
+                                            error={Boolean(touched.name && errors.name)}
+                                            helperText={touched.name && errors.name}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <TextFieldComponent
+                                        <TextFieldFirstStyle
+                                            fullWidth
+                                            variant="standard"
+                                            autoComplete="urlSlug"
                                             type="text"
                                             label="Url slug"
-                                            error={errors.urlSlug}
-                                            touched={touched.urlSlug}
-                                            getFieldProps={{ ...getFieldProps('urlSlug') }}
+                                            {...getFieldProps('urlSlug')}
+                                            error={Boolean(touched.urlSlug && errors.urlSlug)}
+                                            helperText={touched.urlSlug && errors.urlSlug}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
@@ -139,14 +145,14 @@ const CategoryUpdate = () => {
                                 <Grid container item xs={2} rowSpacing={2}>
                                     <Grid item xs={12}>
                                         <CropperDialog
-                                            imgSrc={(formik.values.image === null || formik.values.image === "") ? "https://www.phoca.cz/images/projects/phoca-download-r.png" : formik.values.image}
+                                            imgSrc={formik.values.image}
                                             onDialogSave={onSaveImage}
                                             labelId="Image"
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
                                         <CropperDialog
-                                            imgSrc={(formik.values.icon === null || formik.values.icon === "") ? "https://www.phoca.cz/images/projects/phoca-download-r.png" : formik.values.icon}
+                                            imgSrc={formik.values.icon}
                                             onDialogSave={onSaveIcon}
                                             labelId="Icon"
                                         />

@@ -88,6 +88,15 @@ namespace WebAPI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Product already in basket.
+        /// </summary>
+        internal static string BasketItemExist {
+            get {
+                return ResourceManager.GetString("BasketItemExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Basket item not found.
         /// </summary>
         internal static string BasketItemNotFound {
@@ -133,11 +142,29 @@ namespace WebAPI.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Characteristic group with name already exist.
+        /// </summary>
+        internal static string CharacteristicGroupExist {
+            get {
+                return ResourceManager.GetString("CharacteristicGroupExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Characteristic group was not found.
         /// </summary>
         internal static string CharacteristicGroupNotFound {
             get {
                 return ResourceManager.GetString("CharacteristicGroupNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Characteristic name with this group and unit already exist.
+        /// </summary>
+        internal static string CharacteristicNameExist {
+            get {
+                return ResourceManager.GetString("CharacteristicNameExist", resourceCulture);
             }
         }
         
@@ -151,20 +178,11 @@ namespace WebAPI.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Characteristic name with this unit measure already exists.
+        ///   Looks up a localized string similar to Characteristic value with this name already exist.
         /// </summary>
-        internal static string CharacteristicNameUnitNotUnique {
+        internal static string CharacteristicValueExist {
             get {
-                return ResourceManager.GetString("CharacteristicNameUnitNotUnique", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Characteristic value with this characteristic name already exists.
-        /// </summary>
-        internal static string CharacteristicValueNameNotUnique {
-            get {
-                return ResourceManager.GetString("CharacteristicValueNameNotUnique", resourceCulture);
+                return ResourceManager.GetString("CharacteristicValueExist", resourceCulture);
             }
         }
         
@@ -219,6 +237,15 @@ namespace WebAPI.Resources {
         internal static string CountryWithNameExist {
             get {
                 return ResourceManager.GetString("CountryWithNameExist", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Don&apos;t have permition.
+        /// </summary>
+        internal static string DontHavePermition {
+            get {
+                return ResourceManager.GetString("DontHavePermition", resourceCulture);
             }
         }
         

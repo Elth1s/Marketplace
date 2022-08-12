@@ -9,9 +9,9 @@ import { ServerError, UpdateProps } from "../../../../store/types";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import { useActions } from "../../../../hooks/useActions";
 import { UnitSchema } from "../validation";
-import TextFieldComponent from "../../../../components/TextField";
 import DialogComponent from "../../../../components/Dialog";
 import { toLowerFirstLetter } from "../../../../http_comon";
+import { TextFieldFirstStyle } from "../../../../components/TextField/styled";
 
 
 const Update: FC<UpdateProps> = ({ id, afterUpdate }) => {
@@ -75,12 +75,15 @@ const Update: FC<UpdateProps> = ({ id, afterUpdate }) => {
             dialogContent={
                 <Grid container rowSpacing={2}>
                     <Grid item xs={12}>
-                        <TextFieldComponent
+                        <TextFieldFirstStyle
+                            fullWidth
+                            variant="standard"
+                            autoComplete="measure"
                             type="text"
                             label="Measure"
-                            error={errors.measure}
-                            touched={touched.measure}
-                            getFieldProps={{ ...getFieldProps('measure') }}
+                            {...getFieldProps('measure')}
+                            error={Boolean(touched.measure && errors.measure)}
+                            helperText={touched.measure && errors.measure}
                         />
                     </Grid>
                 </Grid>

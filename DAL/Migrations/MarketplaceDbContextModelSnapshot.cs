@@ -159,9 +159,11 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
-
                     b.HasIndex("UserId");
+
+                    b.HasIndex("ProductId", "UserId")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
 
                     b.ToTable("BasketItems");
                 });
@@ -234,11 +236,16 @@ namespace DAL.Migrations
                     b.Property<int?>("UnitId")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CharacteristicGroupId");
 
                     b.HasIndex("UnitId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("CharacteristicNames");
                 });
@@ -254,12 +261,17 @@ namespace DAL.Migrations
                     b.Property<int>("CharacteristicNameId")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CharacteristicNameId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("CharacteristicValues");
                 });
@@ -690,7 +702,7 @@ namespace DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Advantage")
+                    b.Property<string>("Advantages")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Comment")
@@ -699,7 +711,7 @@ namespace DAL.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Disadvantage")
+                    b.Property<string>("Disadvantages")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
@@ -1127,7 +1139,7 @@ namespace DAL.Migrations
             modelBuilder.Entity("DAL.Entities.Category", b =>
                 {
                     b.HasOne("DAL.Entities.Category", "Parent")
-                        .WithMany("Childrens")
+                        .WithMany("Children")
                         .HasForeignKey("ParentId");
 
                     b.Navigation("Parent");
@@ -1154,9 +1166,15 @@ namespace DAL.Migrations
                         .WithMany("CharacteristicNames")
                         .HasForeignKey("UnitId");
 
+                    b.HasOne("DAL.Entities.AppUser", "User")
+                        .WithMany("CharacteristicNames")
+                        .HasForeignKey("UserId");
+
                     b.Navigation("CharacteristicGroup");
 
                     b.Navigation("Unit");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("DAL.Entities.CharacteristicValue", b =>
@@ -1167,7 +1185,13 @@ namespace DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("DAL.Entities.AppUser", "User")
+                        .WithMany("CharacteristicValues")
+                        .HasForeignKey("UserId");
+
                     b.Navigation("CharacteristicName");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("DAL.Entities.City", b =>
@@ -1497,6 +1521,10 @@ namespace DAL.Migrations
 
                     b.Navigation("CharacteristicGroups");
 
+                    b.Navigation("CharacteristicNames");
+
+                    b.Navigation("CharacteristicValues");
+
                     b.Navigation("Orders");
 
                     b.Navigation("QuestionReplies");
@@ -1514,7 +1542,7 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.Category", b =>
                 {
-                    b.Navigation("Childrens");
+                    b.Navigation("Children");
 
                     b.Navigation("Products");
                 });

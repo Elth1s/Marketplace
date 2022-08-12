@@ -18,6 +18,8 @@ namespace DAL.Entities
         public Shop Shop { get; set; }
 
         public ICollection<CharacteristicGroup> CharacteristicGroups { get; set; }
+        public ICollection<CharacteristicName> CharacteristicNames { get; set; }
+        public ICollection<CharacteristicValue> CharacteristicValues { get; set; }
         public ICollection<RefreshToken> RefreshTokens { get; set; }
         public ICollection<BasketItem> BasketItems { get; set; }
         public ICollection<Order> Orders { get; set; }

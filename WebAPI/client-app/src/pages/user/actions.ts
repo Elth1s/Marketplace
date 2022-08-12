@@ -106,7 +106,7 @@ export const SendConfirmEmail = () => {
 export const IsEmailConfirmed = () => {
     return async (dispatch: Dispatch<EmailConfirmAction>) => {
         try {
-            var res = await http.get(`/api/User/IsEmailConfirmed`)
+            let res = await http.get(`/api/User/IsEmailConfirmed`)
             dispatch({
                 type: ConfirmEmailActionTypes.IS_EMAIL_CONFIRMED,
                 payload: res.data

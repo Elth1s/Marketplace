@@ -33,15 +33,6 @@ export const CharacteristicDivider = styled(Divider)(() => ({
     zIndex: "-1",
 }))
 
-export const RatingStyle = styled(Rating)(({ theme }) => ({
-    '& .MuiRating-iconFilled': {
-        color: theme.palette.primary.main,
-    },
-    '& .MuiRating-iconHover': {
-        color: theme.palette.primary.main,
-    },
-}))
-
 export const SellerContactsButton = styled(Button)(() => ({
     fontSize: "20px",
     fontWeight: "medium",
@@ -71,7 +62,7 @@ export const BuyButton = styled(Button)(() => ({
     }
 }))
 
-export const BuyButtonCharacteristic = styled(Button)(() => ({
+export const BuyButtonSecondStyle = styled(Button)(() => ({
     fontSize: "27px",
     lineHeight: "34px",
     textTransform: "none",
@@ -84,7 +75,7 @@ export const BuyButtonCharacteristic = styled(Button)(() => ({
     }
 }))
 
-export const SellerContactsButtonCharacteristic = styled(Button)(() => ({
+export const SellerContactsButtonSecondStyle = styled(Button)(() => ({
     fontSize: "27px",
     lineHeight: "34px",
     textTransform: "none",

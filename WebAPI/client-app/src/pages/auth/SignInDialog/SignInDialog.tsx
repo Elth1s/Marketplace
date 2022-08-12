@@ -26,7 +26,7 @@ import { ServerError } from '../../../store/types';
 import { ILoginModel } from '../types';
 import { LogInSchema } from '../validation';
 
-import { TextFieldFirstStyle } from '../../../components/TextField/style';
+import { TextFieldFirstStyle } from '../../../components/TextField/styled';
 import { LoadingButtonStyle } from '../../../components/LoadingButton/styled';
 
 import GoogleExternalLogin from '../../../components/Google';

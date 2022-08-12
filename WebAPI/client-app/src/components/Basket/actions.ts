@@ -1,6 +1,7 @@
 import { Dispatch } from "react"
 
 import http from "../../http_comon"
+import { ProductAction, ProductActionTypes } from "../../pages/default/product/types";
 
 import { ServerError } from "../../store/types"
 import { BasketAction, BasketActionTypes, IBasketItem } from "./types";
@@ -25,10 +26,15 @@ export const GetBasketItems = () => {
     }
 }
 
-export const RemoveFromBasket = (id: number) => {
-    return async (dispatch: Dispatch<BasketAction>) => {
+export const RemoveFromBasket = (id: number, isInBasket: boolean) => {
+    return async (dispatch: Dispatch<ProductAction>) => {
         try {
             let response = await http.delete(`api/BasketItem/Delete/${id}`)
+
+            if (isInBasket)
+                dispatch({
+                    type: ProductActionTypes.UPDATE_SELECTED_PRODUCT
+                })
 
             return Promise.resolve();
         }

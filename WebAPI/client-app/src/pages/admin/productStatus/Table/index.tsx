@@ -1,7 +1,9 @@
 
 
-import { Checkbox, TableRow } from '@mui/material';
+import { Box, Checkbox, TableRow, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { useActions } from '../../../../hooks/useActions';
 import { useTypedSelector } from '../../../../hooks/useTypedSelector';
 
@@ -14,20 +16,22 @@ import Create from '../Create';
 import Update from '../Update';
 
 
-const headCells: HeadCell<IProductStatusInfo>[] = [
-    {
-        id: 'id',
-        numeric: true,
-        label: 'Identifier',
-    },
-    {
-        id: 'name',
-        numeric: false,
-        label: 'Name',
-    }
-];
-
 const ProductStatusTable = () => {
+    const { t } = useTranslation();
+
+    const headCells: HeadCell<IProductStatusInfo>[] = [
+        {
+            id: 'id',
+            numeric: true,
+            label: `${t('containers.admin_seller.tableHeadCell.identifier')}`,
+        },
+        {
+            id: 'name',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.name')}`,
+        }
+    ];
+
     const [page, setPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(8);
     const [name, setName] = useState("");
@@ -40,7 +44,7 @@ const ProductStatusTable = () => {
     const { productStatuses, count } = useTypedSelector((store) => store.productStatus);
 
     useEffect(() => {
-        document.title = "ProductStatuses";
+        document.title = `${t('containers.admin_seller.sideBar.productStatuses')}`;
         getData();
     }, [page, rowsPerPage, name, isAscOrder, orderBy]);
 
@@ -55,7 +59,6 @@ const ProductStatusTable = () => {
     const onDelete = async () => {
         await DeleteProductStatuses(selected);
         setPage(1);
-        getData();
     }
 
     const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
@@ -100,7 +103,10 @@ const ProductStatusTable = () => {
 
     return (
         <>
-            <Create afterCreate={() => { getData() }} />
+            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", my: "30px" }}>
+                <Typography variant="h1">{t('containers.admin_seller.sideBar.productStatuses')}</Typography>
+                <Create afterCreate={() => { getData() }} />
+            </Box>
             <EnhancedTable
                 page={page}
                 rowsPerPage={rowsPerPage}

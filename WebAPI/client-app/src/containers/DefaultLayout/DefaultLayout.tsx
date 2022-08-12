@@ -37,7 +37,7 @@ const DefaultLayout = () => {
             <Container component="main" sx={{ maxWidth: { xl: "xl", lg: "lg", md: "md" }, mb: 8 }}>
                 <Outlet />
                 {showButton && (
-                    <IconButton aria-label="edit" color="secondary" sx={{ border: 2, borderRadius: "12px" }} onClick={scrollToTop} style={{ position: "fixed", bottom: "20px", right: "20px" }}>
+                    <IconButton aria-label="edit" color="primary" sx={{ border: 2, borderRadius: "12px" }} onClick={scrollToTop} style={{ position: "fixed", bottom: "20px", right: "30px" }}>
                         <ArrowUpward fontSize="large" />
                     </IconButton>
                 )}

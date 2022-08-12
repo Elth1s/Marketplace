@@ -1,58 +1,60 @@
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-
+import { Box, Grid, Typography, IconButton } from "@mui/material";
 import { StarRounded } from "@mui/icons-material";
+import { FC, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
-import { FC, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Controller, Navigation, Thumbs } from "swiper";
 
-import { 
-    arrow_right, 
-    buy_cart, 
-    credit_card, 
-    dollar_sign, 
-    orange_heart, 
-    package_delivery, 
-    truck_delivery 
-} from "../../../../assets/icons";
-import { useTypedSelector } from "../../../../hooks/useTypedSelector";
-import { useActions } from "../../../../hooks/useActions";
+import AddReview from "../AddReview";
 
 import {
     CharacteristicDivider,
-    RatingStyle,
+    SellerContactsButton,
     BuyButton,
     ListItemStyle,
     ListStyle,
     CharacteristicGrid,
 } from "../styled";
-import { reviews } from "../data";
+import { RatingStyle } from "../../../../components/Rating/styled";
+import { useTypedSelector } from "../../../../hooks/useTypedSelector";
+import { arrow_right, buy_cart, credit_card, dollar_sign, orange_heart, package_delivery, truck_delivery } from "../../../../assets/icons";
+import { useActions } from "../../../../hooks/useActions";
 
-import AddReview from "../AddReview";
-import SellerInfo from "../../ShopInfo";
+import ShowInfo from "../../ShopInfo"
 
 interface Props {
-    urlSlug: string | undefined,
-    isInBasket: boolean,
     moveToReview: any
+    addInCart: any
 }
 
-const ProductMainPage: FC<Props> = ({ urlSlug, isInBasket, moveToReview }) => {
-    const { AddProductInCart, GetBasketItems } = useActions();
-    const { product } = useTypedSelector(state => state.product);
+const ProductMainPage: FC<Props> = ({ addInCart, moveToReview }) => {
+    const { t } = useTranslation();
+
+    const { GetReviews } = useActions();
+    const { product, reviews } = useTypedSelector(state => state.product);
+
+    let { urlSlug } = useParams();
 
     const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
 
-    const addInCart = async () => {
-        if (urlSlug) {
-            await AddProductInCart(urlSlug)
-            await GetBasketItems()
+    useEffect(() => {
+
+        getData();
+    }, [])
+
+
+    const getData = async () => {
+        if (!urlSlug)
+            return;
+        try {
+            await GetReviews(urlSlug, 1, 3)
+        } catch (ex) {
         }
     };
 
+    console.log(reviews)
     return (
         <>
             <Grid container sx={{ mb: "80px" }}>
@@ -67,7 +69,7 @@ const ProductMainPage: FC<Props> = ({ urlSlug, isInBasket, moveToReview }) => {
                             <SwiperSlide key={index}>
                                 <img
                                     style={{ width: "520px", height: "520px", objectFit: "contain" }}
-                                    src={item}
+                                    src={item.name}
                                     alt="productImage"
                                 />
                             </SwiperSlide>
@@ -87,7 +89,7 @@ const ProductMainPage: FC<Props> = ({ urlSlug, isInBasket, moveToReview }) => {
                             <SwiperSlide key={index}>
                                 <img
                                     style={{ width: "65px", height: "65px", objectFit: "contain" }}
-                                    src={item}
+                                    src={item.name}
                                     alt="productImage"
                                 />
                             </SwiperSlide>
@@ -114,10 +116,10 @@ const ProductMainPage: FC<Props> = ({ urlSlug, isInBasket, moveToReview }) => {
                             icon={<StarRounded sx={{ fontSize: "30px" }} />}
                             emptyIcon={<StarRounded sx={{ fontSize: "30px" }} />}
                         />
-                        <Typography variant="h4" fontWeight="bold" display="inline">5 <Typography fontWeight="medium" display="inline" sx={{ fontSize: "20px" }}>(10 ratings)</Typography></Typography>
+                        <Typography variant="h4" fontWeight="bold" display="inline">5 <Typography fontWeight="medium" display="inline" sx={{ fontSize: "20px" }}>(10 {t("pages.product.ratings")})</Typography></Typography>
                     </Box>
-                    <SellerInfo id={product.shopId} />
-                    {isInBasket
+                    <ShowInfo isMainPage={true} id={product.shopId} />
+                    {product.isInBasket
                         ? <BuyButton color="secondary" variant="contained" disabled
                             startIcon={
                                 <img
@@ -127,7 +129,7 @@ const ProductMainPage: FC<Props> = ({ urlSlug, isInBasket, moveToReview }) => {
                                 />}
                             sx={{ mt: "35px" }}
                         >
-                            In basket
+                            {t("pages.product.inBasket")}
                         </BuyButton>
                         : <BuyButton color="secondary" variant="contained"
                             startIcon={
@@ -139,12 +141,14 @@ const ProductMainPage: FC<Props> = ({ urlSlug, isInBasket, moveToReview }) => {
                             sx={{ mt: "35px" }}
                             onClick={addInCart}
                         >
-                            Buy
+                            {t("pages.product.buy")}
                         </BuyButton>}
                 </Grid>
                 <Grid item xs={4}>
                     <Box sx={{ width: "500px", ml: "auto" }}>
-                        <Typography variant="h1">Payment</Typography>
+                        <Typography variant="h1">
+                            {t("pages.product.payment")}
+                        </Typography>
                         <ListStyle>
                             <ListItemStyle>
                                 <img
@@ -178,7 +182,9 @@ const ProductMainPage: FC<Props> = ({ urlSlug, isInBasket, moveToReview }) => {
                             </ListItemStyle>
                         </ListStyle>
 
-                        <Typography variant="h1" sx={{ marginTop: "80px" }}>Delivery</Typography>
+                        <Typography variant="h1" sx={{ marginTop: "80px" }}>
+                            {t("pages.product.delivery")}
+                        </Typography>
                         <ListStyle>
                             <ListItemStyle>
                                 <img
@@ -217,7 +223,9 @@ const ProductMainPage: FC<Props> = ({ urlSlug, isInBasket, moveToReview }) => {
 
             <Grid container sx={{ mb: "42px" }}>
                 <Grid item xs={7}>
-                    <Typography variant="h1" lineHeight="56px" sx={{ mb: "40px" }}>Characterictics</Typography>
+                    <Typography variant="h1" lineHeight="56px" sx={{ mb: "40px" }}>
+                        {t("pages.product.characterictics")}
+                    </Typography>
                     {product.filters.map((item, index) => (
                         <CharacteristicGrid container columns={7} key={index} >
                             <Grid item xs={5}>
@@ -234,32 +242,36 @@ const ProductMainPage: FC<Props> = ({ urlSlug, isInBasket, moveToReview }) => {
                 <Grid item xs={5}>
                     <Box sx={{ width: "590px", ml: "auto" }}>
                         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: "40px" }}>
-                            <Typography variant="h1">Review</Typography>
-                            <AddReview />
+                            <Typography variant="h1">
+                                {t("pages.product.reviews")}
+                            </Typography>
+                            <AddReview getData={getData} />
                         </Box>
-                        {reviews.map((item, index) => (
-                            <Box key={index} sx={{ border: "1px solid #7e7e7e", borderRadius: "10px", mb: "20px", px: "33px", pt: "35px", pb: "34px" }}>
-                                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                                    <Typography variant="h1">{item.name}</Typography>
-                                    <Box>
-                                        <Typography variant="h5" align="center">{item.data}</Typography>
-                                        <RatingStyle
-                                            value={item.rating}
-                                            precision={0.5}
-                                            readOnly
-                                            sx={{ fontSize: "30px" }}
-                                            icon={<StarRounded sx={{ fontSize: "30px" }} />}
-                                            emptyIcon={<StarRounded sx={{ fontSize: "30px" }} />}
-                                        />
+                        {reviews?.length != 0 && reviews.map((item, index) => {
+                            return (
+                                <Box key={`main_page_review_${index}`} sx={{ border: "1px solid #7e7e7e", borderRadius: "10px", mb: "20px", px: "33px", pt: "35px", pb: "34px" }}>
+                                    <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                                        <Typography variant="h1">{item.fullName}</Typography>
+                                        <Box>
+                                            <Typography variant="h5" align="center">{item.date}</Typography>
+                                            <RatingStyle
+                                                value={item.productRating}
+                                                precision={0.5}
+                                                readOnly
+                                                sx={{ fontSize: "30px" }}
+                                                icon={<StarRounded sx={{ fontSize: "30px" }} />}
+                                                emptyIcon={<StarRounded sx={{ fontSize: "30px" }} />}
+                                            />
+                                        </Box>
                                     </Box>
+                                    <Typography variant="h4" sx={{ mt: "21px" }}>{item.comment}</Typography>
                                 </Box>
-                                <Typography variant="h4" sx={{ mt: "21px" }}>{item.decs}</Typography>
-                            </Box>
-                        ))}
+                            )
+                        })}
                         <Box sx={{ width: "100%", display: "flex", justifyContent: "end" }} >
                             <Box sx={{ display: "flex", cursor: "pointer" }} onClick={moveToReview}>
                                 <Typography variant='h4' color="#7e7e7e">
-                                    More reviews
+                                    {t("pages.product.moreReviews")}
                                 </Typography>
                                 <img
                                     style={{ width: "24px", height: "24px", marginTop: "auto" }}
