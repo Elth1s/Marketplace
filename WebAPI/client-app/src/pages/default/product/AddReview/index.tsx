@@ -37,9 +37,7 @@ const AddReview = () => {
 
     const onHandleSubmit = async (values: IReview) => {
         try {
-            console.log("data:", values)
             handleClickClose();
-            resetForm();
         } catch (ex) {
             const serverErrors = ex as ServerError;
             if (serverErrors.errors)

@@ -64,6 +64,26 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
+        /// Return of shop info form product
+        /// </summary>
+        /// /// <param name="shopId">Shop identifier</param>
+        /// <response code="200">Getting shops completed successfully</response>
+        /// <response code="401">You are not authorized</response>
+        /// <response code="403">You don't have permission</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ShopInfoFromProductResponse))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = "Admin,Seller")]
+        [HttpGet("ShopInfoFromProduct/{shopId}")]
+        public async Task<IActionResult> ShopInfoFromProduct(int shopId)
+        {
+            var result = await _shopService.ShopInfoFromProductAsync(shopId);
+            return Ok(result);
+        }
+
+        /// <summary>
         /// Returns shop with the given identifier
         /// </summary>
         /// <param name="shopId">Shop identifier</param>
