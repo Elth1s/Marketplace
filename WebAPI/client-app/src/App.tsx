@@ -12,6 +12,7 @@ import DefaultLayout from './containers/DefaultLayout';
 import AuthLayout from './containers/AuthLayout';
 import AdminLayout from './containers/AdminLayout';
 import ProfileLayout from './containers/ProfileLayout';
+import SellerLayout from './containers/SellerLayout';
 
 import SignIn from './pages/auth/SignInDialog';
 import SignUp from './pages/auth/SignUpDialog';
@@ -60,6 +61,7 @@ import UserTable from './pages/admin/user/Table';
 import NotFound from './pages/notfound';
 import SellerLayout from './containers/SellerLayout';
 import ProductCreate from './pages/seller/product/Create';
+import SellerHome from './pages/seller/Home';
 
 function App() {
   const { isAuth } = useTypedSelector(store => store.auth);
@@ -194,7 +196,10 @@ function App() {
             <Route path="/catalog/:urlSlug" element={<CatalogWithProducts />} />
             <Route path="/product/:urlSlug" element={<Product />} />
             <Route path="/product/:urlSlug/:menu" element={<Product />} />
+          </Route>
 
+          <Route path="/seller" element={<SellerLayout />}>
+            <Route index element={<SellerHome />} />
           </Route>
 
           <Route path="/profile/" element={<ProfileLayout />}>

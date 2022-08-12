@@ -5,6 +5,7 @@ const initialState: ProductState = {
     product: {
         isInBasket: false,
         name: "",
+        shopId: 0,
         shopName: "",
         productStatus: "",
         images: [],

@@ -21,6 +21,8 @@ import * as ProductActionCreators from "../../pages/default/product/actions"
 import * as BasketActionCreators from "../../components/Basket/actions";
 import * as ShopActionCreators from "../../pages/seller/CreateShopDialog/actions"
 
+import * as ShopInfoActionCreators from "../../pages/default/ShopInfo/action"
+
 const actions = {
     ...AuthActionCreators,
     ...ForgotPasswordActionCreators,
@@ -42,6 +44,7 @@ const actions = {
     ...ProductActionCreators,
     ...BasketActionCreators,
     ...UserActionCreators,
-    ...ShopActionCreators
+    ...ShopActionCreators,
+    ...ShopInfoActionCreators
 }
 export default actions;

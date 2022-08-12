@@ -134,7 +134,14 @@ namespace WebAPI.Mapper
                 .ForMember(u => u.CityName, opt => opt.MapFrom(vm => vm.City.Name))
                 .ForMember(u => u.UserFullName, opt => opt.MapFrom(vm => vm.User.FirstName + " " + vm.User.SecondName))
                 .ForMember(u => u.Photo, opt => opt.MapFrom(vm => !string.IsNullOrEmpty(vm.Photo) ? String.Concat(ImagePath.RequestShopsImagePath, "/", vm.Photo) : ""));
+            CreateMap<Shop, ShopInfoFromProductResponse>()
+                .ForMember(u => u.Adress, opt => opt.MapFrom(vm => vm.City.Country.Name + ", " + vm.City.Name))
+                .ForMember(u => u.Photo, opt => opt.MapFrom(vm => !string.IsNullOrEmpty(vm.Photo) ? String.Concat(ImagePath.RequestShopsImagePath, "/", vm.Photo) : ""));
             CreateMap<ShopRequest, Shop>();
+
+            //ShopPhone
+            CreateMap<ShopPhone, string>()
+                .ConstructUsing(u => u.Phone);
             #endregion
 
             #region Product

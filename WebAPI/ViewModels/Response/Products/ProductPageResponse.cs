@@ -16,6 +16,11 @@
         /// <example>T-shirt</example>
         public string Name { get; set; }
         /// <summary>
+        /// Id of product shop
+        /// </summary>
+        /// <example>Mall</example>
+        public int ShopId { get; set; }
+        /// <summary>
         /// Name of product shop
         /// </summary>
         /// <example>Mall</example>

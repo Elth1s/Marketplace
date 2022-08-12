@@ -73,7 +73,6 @@ const AddReview: FC<Props> = ({ getData }) => {
             await AddReview(values);
             getData();
             handleClickClose();
-            resetForm();
         } catch (ex) {
             const serverErrors = ex as ServerError;
             if (serverErrors.errors)

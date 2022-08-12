@@ -49,6 +49,7 @@ export interface IProductImage {
 export interface IProductItem {
     isInBasket: boolean,
     name: string,
+    shopId: number,
     shopName: string,
     productStatus: string,
     images: Array<IProductImage>,
