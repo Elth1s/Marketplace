@@ -1,39 +1,38 @@
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
 import Grid from "@mui/material/Grid";
-import Rating from "@mui/material/Rating";
 import Typography from "@mui/material/Typography";
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
+import IconButton from "@mui/material/IconButton";
+
+import { StarRounded } from "@mui/icons-material";
 
 import { FC, useState } from "react";
-
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Controller, Navigation, Thumbs } from "swiper";
 
-import AddReview from "../AddReview";
+import { 
+    arrow_right, 
+    buy_cart, 
+    credit_card, 
+    dollar_sign, 
+    orange_heart, 
+    package_delivery, 
+    truck_delivery 
+} from "../../../../assets/icons";
+import { useTypedSelector } from "../../../../hooks/useTypedSelector";
+import { useActions } from "../../../../hooks/useActions";
 
 import {
-    CharacteristicTypography,
     CharacteristicDivider,
     RatingStyle,
-    SellerContactsButton,
     BuyButton,
     ListItemStyle,
     ListStyle,
     CharacteristicGrid,
 } from "../styled";
 import { reviews } from "../data";
-import { useTypedSelector } from "../../../../hooks/useTypedSelector";
-import { useActions } from "../../../../hooks/useActions";
-import { arrow_right, buy_cart, credit_card, dollar_sign, orange_heart, package_delivery, truck_delivery } from "../../../../assets/icons";
-import { IconButton } from "@mui/material";
-import { Star, StarRounded } from "@mui/icons-material";
+
+import AddReview from "../AddReview";
+import SellerInfo from "../../ShopInfo";
 
 interface Props {
     urlSlug: string | undefined,
@@ -117,7 +116,7 @@ const ProductMainPage: FC<Props> = ({ urlSlug, isInBasket, moveToReview }) => {
                         />
                         <Typography variant="h4" fontWeight="bold" display="inline">5 <Typography fontWeight="medium" display="inline" sx={{ fontSize: "20px" }}>(10 ratings)</Typography></Typography>
                     </Box>
-                    <SellerContactsButton color="secondary" variant="outlined" sx={{ mt: "41px" }}>Seller contacts</SellerContactsButton>
+                    <SellerInfo id={product.shopId} />
                     {isInBasket
                         ? <BuyButton color="secondary" variant="contained" disabled
                             startIcon={

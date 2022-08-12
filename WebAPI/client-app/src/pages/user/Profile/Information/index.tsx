@@ -110,7 +110,7 @@ const Information = () => {
                             />
                         </Grid>
                         <ButtonStyled fullWidth variant="contained" color="primary" sx={{ mt: "95px" }}>
-                            Change password
+                            Save Change
                         </ButtonStyled>
                     </Grid>
                     <Grid container item xs={6} rowSpacing={2.5} direction="column">

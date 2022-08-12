@@ -20,6 +20,8 @@ import { productReducer } from "../../pages/default/product/reducer";
 import { basketReducer } from "../../components/Basket/reducer";
 import { userReducer } from "../../pages/admin/user/reducer";
 
+import { shopInfoReducer } from "../../pages/default/ShopInfo/reducer";
+
 export const rootReducer = combineReducers({
     auth: authReducer,
     profile: profileReducer,
@@ -40,6 +42,7 @@ export const rootReducer = combineReducers({
     product: productReducer,
     basket: basketReducer,
     user: userReducer,
+    shopInfo: shopInfoReducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

@@ -529,7 +529,7 @@ namespace DAL.Data
         {
             var shops = new List<Shop>
             {
-                new(){ Name = "Mall",Description="",Photo="",Email="dg646726@gmail.com",SiteUrl="https://http://mall.novakvova.com/",CityId=1,UserId=userId},
+                new(){ Name = "Mall",Description="",Photo="4918050.jpg",Email="dg646726@gmail.com",SiteUrl="http://mall.novakvova.com/",CityId=1,UserId=userId},
             };
             return shops;
         }

@@ -55,6 +55,16 @@ namespace WebAPI.Services
             return response;
         }
 
+        public async Task<ShopInfoFromProductResponse> ShopInfoFromProductAsync(int shopId)
+        {
+            var spec = new ShopInfoFromProductSpecification(shopId);
+            var shop = await _shopRepository.GetBySpecAsync(spec);
+            shop.ShopNullChecking();
+
+            var response = _mapper.Map<ShopInfoFromProductResponse>(shop);
+            return response;
+        }
+
         public async Task<AuthResponse> CreateShopAsync(ShopRequest request, string userId, string ipAddress)
         {
             var user = await _userManager.FindByIdAsync(userId);

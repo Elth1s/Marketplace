@@ -55,3 +55,8 @@ export const icon_telegram = "/assets/icons/icon-telegram.png";
 export const icon_viber = "/assets/icons/icon-viber.png";
 
 export const phone_call = "/assets/icons/phone-call.png";
+
+export const phone = "/assets/icons/phone.png";
+export const mail = "/assets/icons/mail.png";
+export const map_pin = "/assets/icons/map_pin.png";
+export const globe = "/assets/icons/globe.png";
