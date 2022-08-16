@@ -73,10 +73,8 @@ const SellerInfo: FC<Props> = ({ id, isMainPage }) => {
                 onClose={handleClickClose}
                 TransitionComponent={Transition}
                 PaperProps={{
-                    sx: {
-                        maxWidth: { sm: "50rem" }
-                    },
-                    style: { borderRadius: 12 }
+                    sx: {minWidth: { sm: "660px" }},
+                    style: { borderRadius: 10 }
                 }}>
                 <DialogTitle sx={{ p: "34px 28px" }}>
                     <Box sx={{

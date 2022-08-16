@@ -14,10 +14,12 @@ import { TransitionProps } from '@mui/material/transitions';
 import { Close } from '@mui/icons-material';
 import { LoadingButton, Rating } from '@mui/lab';
 
-import { forwardRef, useEffect, useState } from 'react';
+import { forwardRef, useState } from 'react';
 import { Form, FormikProvider, useFormik } from "formik";
+import { useTranslation } from 'react-i18next';
 
 import { ServerError } from '../../../../store/types';
+import { RatingStyle } from '../../../../components/Rating/styled';
 
 // import { validationFields } from '../validation';
 
@@ -40,6 +42,7 @@ interface IReview {
 }
 
 const AddReview = () => {
+    const { t } = useTranslation();
     const [open, setOpen] = useState(false);
 
     const item: IReview = {
@@ -49,14 +52,6 @@ const AddReview = () => {
         observanceOfTerms: 0,
         informationRelevance: 0,
         review: "",
-    };
-
-    useEffect(() => {
-        getData();
-    }, [])
-
-    const getData = async () => {
-
     };
 
     const handleClickOpen = () => {
@@ -106,7 +101,7 @@ const AddReview = () => {
                     padding: "14px 48px",
                 }}
             >
-                Add review
+                {t('pages.seller.addReview.button')}
             </Button>
             <Dialog
                 open={open}
@@ -115,9 +110,7 @@ const AddReview = () => {
                 onClose={handleClickClose}
                 TransitionComponent={Transition}
                 PaperProps={{
-                    sx: {
-                        maxWidth: { sm: "50rem" }
-                    },
+                    sx: { minWidth: { sm: "925px" } },
                     style: { borderRadius: 12 }
                 }}>
                 <DialogTitle sx={{ p: "34px 28px" }}>
@@ -126,7 +119,9 @@ const AddReview = () => {
                         justifyContent: "space-between",
                         alignItems: "flex-start"
                     }}>
-                        <Typography sx={{ fontSize: "30px", lineHeight: "38px" }}>Send feedback</Typography>
+                        <Typography sx={{ fontSize: "30px", lineHeight: "38px" }}>
+                            {t('pages.seller.addReview.dialogTitle')}
+                        </Typography>
                         <IconButton aria-label="close" onClick={handleClickClose}>
                             <Close />
                         </IconButton>
@@ -137,29 +132,17 @@ const AddReview = () => {
                         <DialogContent sx={{ p: "34px 28px" }}>
                             <Grid container>
                                 <Grid item container xs={12} sx={{ justifyContent: "space-between", textAlig: "center", mb: "45px" }}>
-                                    <Grid item>
-                                        <Typography variant="h5" sx={{ mb: "10px" }}>Quality of service</Typography>
-                                        <Rating
-                                            color="primary"
-                                            sx={{ fontSize: "30px" }}
-                                            {...getFieldProps("qualityOfService")}
-                                        />
+                                    <Grid item sx={{ textAlign: "center" }}>
+                                        <Typography variant="h5" sx={{ mb: "10px" }}>{t('pages.seller.addReview.service')}</Typography>
+                                        <RatingStyle sx={{ fontSize: "30px" }} {...getFieldProps("qualityOfService")} />
                                     </Grid>
-                                    <Grid item>
-                                        <Typography>Observance of terms</Typography>
-                                        <Rating
-                                            color="primary"
-                                            sx={{ fontSize: "30px" }}
-                                            {...getFieldProps("observanceOfTerms")}
-                                        />
+                                    <Grid item sx={{ textAlign: "center" }}>
+                                        <Typography>{t('pages.seller.addReview.terms')}</Typography>
+                                        <RatingStyle sx={{ fontSize: "30px" }} {...getFieldProps("observanceOfTerms")} />
                                     </Grid>
-                                    <Grid item>
-                                        <Typography>Information relevance</Typography>
-                                        <Rating
-                                            color="primary"
-                                            sx={{ fontSize: "30px" }}
-                                            {...getFieldProps("informationRelevance")}
-                                        />
+                                    <Grid item sx={{ textAlign: "center" }}>
+                                        <Typography>{t('pages.seller.addReview.information')}</Typography>
+                                        <RatingStyle sx={{ fontSize: "30px" }} {...getFieldProps("informationRelevance")} />
                                     </Grid>
                                 </Grid>
                                 <Grid xs={12} sx={{ mb: "25px" }}>
@@ -167,7 +150,7 @@ const AddReview = () => {
                                         fullWidth
                                         variant="outlined"
                                         type="text"
-                                        label="Full Name"
+                                        label={t('pages.seller.addReview.fullName')}
                                         error={Boolean(touched.fullName && errors.fullName)}
                                         helperText={touched.fullName && errors.fullName}
                                         {...getFieldProps("fullName")}
@@ -178,7 +161,7 @@ const AddReview = () => {
                                         fullWidth
                                         variant="outlined"
                                         type="email"
-                                        label="Email"
+                                        label={t('pages.seller.addReview.email')}
                                         error={Boolean(touched.email && errors.email)}
                                         helperText={touched.email && errors.email}
                                         {...getFieldProps("email")}
@@ -191,7 +174,7 @@ const AddReview = () => {
                                         rows={5}
                                         variant="outlined"
                                         type="text"
-                                        label="Review"
+                                        label={t('pages.seller.addReview.review')}
                                         error={Boolean(touched.review && errors.review)}
                                         helperText={touched.review && errors.review}
                                         {...getFieldProps("review")}
@@ -212,7 +195,7 @@ const AddReview = () => {
                                     py: "15px",
                                 }}
                             >
-                                Send
+                                {t('pages.seller.addReview.dialogActions')}
                             </LoadingButton>
                         </DialogActions>
                     </Form>

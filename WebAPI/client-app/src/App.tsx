@@ -13,6 +13,7 @@ import AuthLayout from './containers/AuthLayout';
 import AdminLayout from './containers/AdminLayout';
 import ProfileLayout from './containers/ProfileLayout';
 import SellerLayout from './containers/SellerLayout';
+import SellerInfoLayout from './containers/SellerInfoLayout';
 
 import SignIn from './pages/auth/SignInDialog';
 import SignUp from './pages/auth/SignUpDialog';
@@ -28,6 +29,8 @@ import HomePage from './pages/default/HomePage';
 import Catalog from './pages/default/Catalog';
 import CatalogWithProducts from './pages/default/Catalog/CatalogWithProducts';
 import Product from './pages/default/product';
+import FAQ from './pages/default/FAQ';
+import ContactInfo from './pages/default/ContactInfo';
 
 import CategoryTable from './pages/admin/category/Table';
 import CategoryCreate from './pages/admin/category/Create';
@@ -61,7 +64,7 @@ import UserTable from './pages/admin/user/Table';
 
 import NotFound from './pages/notfound';
 import ProductCreate from './pages/seller/product/Create';
-import SellerHome from './pages/seller/Home';
+import SellerInfo from './pages/seller/Home';
 
 function App() {
   const { isAuth } = useTypedSelector(store => store.auth);
@@ -196,10 +199,12 @@ function App() {
             <Route path="/catalog/:urlSlug" element={<CatalogWithProducts />} />
             <Route path="/product/:urlSlug" element={<Product />} />
             <Route path="/product/:urlSlug/:menu" element={<Product />} />
+            <Route path="faq" element={<FAQ />} />
+            <Route path="contact-info" element={<ContactInfo />} />
           </Route>
 
-          <Route path="/seller" element={<SellerLayout />}>
-            <Route index element={<SellerHome />} />
+          <Route path="/seller-info/" element={<SellerInfoLayout />}>
+            <Route index element={<SellerInfo />} />
           </Route>
 
           <Route path="/profile/" element={<ProfileLayout />}>

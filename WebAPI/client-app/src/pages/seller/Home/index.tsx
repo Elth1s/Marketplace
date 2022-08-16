@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 
 import { useState } from "react";
+import { useTranslation } from 'react-i18next';
 
 import About from "./Tab/About";
 import Reviews from "./Tab/Reviews";
@@ -44,7 +45,8 @@ function a11yProps(index: number) {
     };
 }
 
-const SellerHome = () => {
+const SellerInfo = () => {
+    const { t } = useTranslation();
     const [value, setValue] = useState(0);
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -53,18 +55,18 @@ const SellerHome = () => {
 
     return (
         <>
-            <Typography variant='h1' sx={{ mb: "30px" }}>Seller { }</Typography>
+            <Typography variant='h1' sx={{ mb: "30px" }}>{t('pages.seller.title')}</Typography>
 
             <Grid container sx={{ justifyContent: "space-between" }}>
                 <Grid item>
                     <Tabs value={value} onChange={handleChange} sx={{ minHeight: "0" }} >
-                        <TabStyle label="About" {...a11yProps(0)} />
-                        <TabStyle label="Product seller" {...a11yProps(1)} />
-                        <TabStyle label="Reviews" {...a11yProps(2)} />
+                        <TabStyle label={t('pages.seller.tabs.about')} {...a11yProps(0)} />
+                        <TabStyle label={t('pages.seller.tabs.product')} {...a11yProps(1)} />
+                        <TabStyle label={t('pages.seller.tabs.reviews')} {...a11yProps(2)} />
                     </Tabs>
                 </Grid>
                 <Grid item>
-                    {value === 2 ? ( <AddReview /> ) : (<></>)}
+                    {value === 2 ? (<AddReview />) : (<></>)}
                 </Grid>
             </Grid>
 
@@ -81,4 +83,4 @@ const SellerHome = () => {
     );
 }
 
-export default SellerHome;
+export default SellerInfo;
