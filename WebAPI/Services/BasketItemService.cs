@@ -6,7 +6,7 @@ using WebAPI.Extensions;
 using WebAPI.Interfaces;
 using WebAPI.Specifications;
 using WebAPI.Specifications.Products;
-using WebAPI.ViewModels.Request;
+using WebAPI.ViewModels.Request.Baskets;
 using WebAPI.ViewModels.Response;
 
 namespace WebAPI.Services
@@ -57,7 +57,6 @@ namespace WebAPI.Services
 
             await _basketItemRepository.AddAsync(newBasketItem);
             await _basketItemRepository.SaveChangesAsync();
-
         }
 
         public async Task DeleteAsync(int id)

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
 using WebAPI.Interfaces.Products;
 using WebAPI.ViewModels.Request;
@@ -18,10 +19,14 @@ namespace WebAPI.Controllers.Products
     public class ProductStatusController : Controller
     {
         private readonly IProductStatusService _productStatusService;
+        private readonly IStringLocalizer<ProductStatusController> _productStatusLocalizer;
 
-        public ProductStatusController(IProductStatusService productStatusService)
+
+        public ProductStatusController(IProductStatusService productStatusService,
+            IStringLocalizer<ProductStatusController> productStatusLocalizer)
         {
             _productStatusService = productStatusService;
+            _productStatusLocalizer = productStatusLocalizer;
         }
 
         /// <summary>
@@ -71,7 +76,7 @@ namespace WebAPI.Controllers.Products
         /// <response code="403">You don't have permission</response>
         /// <response code="404">Product status not found</response>
         /// <response code="500">An internal error has occurred</response>
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ProductStatusResponse))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ProductStatusFullInfoResponse))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
@@ -89,10 +94,12 @@ namespace WebAPI.Controllers.Products
         /// </summary>
         /// <param name="request">New product status</param>
         /// <response code="200">Product status creation completed successfully</response>
+        /// <response code="400">Product status name not unique</response>
         /// <response code="401">You are not authorized</response>
         /// <response code="403">You don't have permission</response>
         /// <response code="500">An internal error has occurred</response>
         [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
@@ -101,7 +108,7 @@ namespace WebAPI.Controllers.Products
         public async Task<IActionResult> Create([FromBody] ProductStatusRequest request)
         {
             await _productStatusService.CreateAsync(request);
-            return Ok("Product status updated successfully");
+            return Ok(_productStatusLocalizer["CreateSuccess"].Value);
         }
 
         /// <summary>
@@ -110,11 +117,13 @@ namespace WebAPI.Controllers.Products
         /// <param name="id">Product status identifier</param>
         /// <param name="request">Product status</param>
         /// <response code="200">Product status update completed successfully</response>
+        /// <response code="400">Product status name not unique</response>
         /// <response code="401">You are not authorized</response>
         /// <response code="403">You don't have permission</response>
         /// <response code="404">Product status not found</response>
         /// <response code="500">An internal error has occurred</response>
         [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
@@ -124,7 +133,7 @@ namespace WebAPI.Controllers.Products
         public async Task<IActionResult> Update(int id, [FromBody] ProductStatusRequest request)
         {
             await _productStatusService.UpdateAsync(id, request);
-            return Ok("Product status updated successfully");
+            return Ok(_productStatusLocalizer["UpdateSuccess"].Value);
         }
 
         /// <summary>
@@ -146,7 +155,7 @@ namespace WebAPI.Controllers.Products
         public async Task<IActionResult> Delete(int id)
         {
             await _productStatusService.DeleteAsync(id);
-            return Ok("Product status deleted successfully");
+            return Ok(_productStatusLocalizer["DeleteSuccess"].Value);
         }
 
         /// <summary>
@@ -167,7 +176,7 @@ namespace WebAPI.Controllers.Products
         public async Task<IActionResult> DeleteProductStatuses([FromQuery] IEnumerable<int> ids)
         {
             await _productStatusService.DeleteProductStatusesAsync(ids);
-            return Ok("Categories deleted successfully");
+            return Ok(_productStatusLocalizer["DeleteListSuccess"].Value);
         }
     }
 }

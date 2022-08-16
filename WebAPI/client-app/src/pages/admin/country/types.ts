@@ -7,7 +7,8 @@ export enum CountryActionTypes {
 }
 
 export interface ICountry {
-    name: string,
+    englishName: string,
+    ukrainianName: string,
     code: string
 }
 

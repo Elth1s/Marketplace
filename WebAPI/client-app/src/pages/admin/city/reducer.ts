@@ -6,7 +6,8 @@ import {
 
 const initialState: CityState = {
     selectedCity: {
-        name: "",
+        englishName: "",
+        ukrainianName: "",
         countryId: 0,
     },
     count: 0,

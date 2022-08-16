@@ -1,4 +1,8 @@
-﻿namespace WebAPI.ViewModels.Request.Orders
+﻿using FluentValidation;
+using Microsoft.Extensions.Localization;
+using WebAPI.Helpers;
+
+namespace WebAPI.ViewModels.Request.Orders
 {
     /// <summary>
     /// Order class to create order
@@ -43,6 +47,47 @@
         public int ProductId { get; set; }
     }
 
+
+    /// <summary>
+    /// Class for <seealso cref="OrderCreateRequest" /> validation
+    /// </summary>
+    public class OrderCreateRequestValidator : AbstractValidator<OrderCreateRequest>
+    {
+        private readonly IStringLocalizer<ValidationResourсes> _validationResources;
+        private readonly PhoneNumberManager _phoneNumberManager;
+
+        public OrderCreateRequestValidator(IStringLocalizer<ValidationResourсes> validationResources,
+            PhoneNumberManager phoneNumberManager)
+        {
+            _validationResources = validationResources;
+            _phoneNumberManager = phoneNumberManager;
+
+            //Consumer First Name
+            RuleFor(x => x.ConsumerFirstName).Cascade(CascadeMode.Stop)
+               .NotEmpty().WithName(_validationResources["FirstNamePropName"])
+               .Length(2, 15);
+
+            //Consumer Second Name
+            RuleFor(x => x.ConsumerSecondName).Cascade(CascadeMode.Stop)
+              .NotEmpty().WithName(_validationResources["SecondNamePropName"])
+              .Length(2, 40);
+
+            //Consumer Phone
+            RuleFor(x => x.ConsumerPhone).Cascade(CascadeMode.Stop)
+               .NotEmpty().WithName(_validationResources["PhonePropName"])
+               .Must(IsValidPhone).WithMessage(_validationResources["InvalidFormatMessage"]);
+
+            //Consumer Email
+            RuleFor(x => x.ConsumerEmail).Cascade(CascadeMode.Stop)
+               .NotEmpty().WithName(_validationResources["EmailAddressPropName"]).WithMessage(_validationResources["RequiredMessage"])
+               .EmailAddress();
+
+        }
+        private bool IsValidPhone(string phone)
+        {
+            return _phoneNumberManager.IsValidNumber(phone);
+        }
+    }
 }
 
 

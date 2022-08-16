@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.Extensions.Localization;
 
 namespace WebAPI.ViewModels.Request.Questions
 {
@@ -43,22 +44,30 @@ namespace WebAPI.ViewModels.Request.Questions
     /// </summary>
     public class QuestionRequestValidator : AbstractValidator<QuestionRequest>
     {
-        public QuestionRequestValidator()
+        private readonly IStringLocalizer<ValidationResourсes> _validationResources;
+        public QuestionRequestValidator(IStringLocalizer<ValidationResourсes> validationResources)
         {
-            //FullName
+            _validationResources = validationResources;
+
+            //Full Name
             RuleFor(x => x.FullName).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName("FullName").WithMessage("{PropertyName} is required")
-               .Length(2, 80).WithMessage("{PropertyName} should be between 2 and 80 characters");
+               .NotEmpty().WithName(_validationResources["FullNamePropName"]).WithMessage(_validationResources["PluralRequiredMessage"])
+               .Length(2, 80).WithMessage(_validationResources["PluralLengthMessage"]);
 
             //Message
             RuleFor(x => x.Message).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName("Message").WithMessage("{PropertyName} is required")
-               .Length(2, 500).WithMessage("{PropertyName} should be between 2 and 500 characters");
+               .NotEmpty().WithName(_validationResources["MessagePropName"])
+               .Length(2, 500);
 
             //Email
             RuleFor(x => x.Email).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName("Email address").WithMessage("{PropertyName} is required")
-                .EmailAddress().WithMessage("Invalid format of {PropertyName}");
+               .NotEmpty().WithName(_validationResources["EmailAddressPropName"]).WithMessage(_validationResources["RequiredMessage"])
+                .EmailAddress();
+
+            //Product slug
+            RuleFor(a => a.ProductSlug).Cascade(CascadeMode.Stop)
+                 .NotEmpty().WithName(_validationResources["ProductUrlSlugPropName"])
+                 .WithMessage(_validationResources["RequiredMessage"]);
         }
     }
 

@@ -1,6 +1,7 @@
 ﻿using Ardalis.Specification;
 using DAL.Entities;
 using WebAPI.Extensions;
+using WebAPI.Helpers;
 
 namespace WebAPI.Specifications.Shops
 {
@@ -11,14 +12,14 @@ namespace WebAPI.Specifications.Shops
             if (!string.IsNullOrEmpty(name))
                 Query.Where(item => item.Name.Contains(name));
 
-            Query.Include(o => o.City);
+            Query.Include(o => o.City).ThenInclude(c => c.CityTranslations);
 
             if (orderBy == "cityName")
             {
                 if (isAscOrder)
-                    Query.OrderBy(c => c.City.Name);
+                    Query.OrderBy(c => c.City.CityTranslations.FirstOrDefault(t => t.LanguageId == CurrentLanguage.Id).Name);
                 else
-                    Query.OrderByDescending(c => c.City.Name);
+                    Query.OrderByDescending(c => c.City.CityTranslations.FirstOrDefault(t => t.LanguageId == CurrentLanguage.Id).Name);
             }
             else
             {

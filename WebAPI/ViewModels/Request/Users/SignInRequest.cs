@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.Extensions.Localization;
 
 namespace WebAPI.ViewModels.Request.Users
 {
@@ -29,16 +30,19 @@ namespace WebAPI.ViewModels.Request.Users
     /// </summary>
     public class SignInRequestValidator : AbstractValidator<SignInRequest>
     {
-        public SignInRequestValidator()
+        private readonly IStringLocalizer<ValidationResourсes> _validationResources;
+        public SignInRequestValidator(IStringLocalizer<ValidationResourсes> validationResources)
         {
-            //Email
+            _validationResources = validationResources;
+
+            //Email or phone
             RuleFor(x => x.EmailOrPhone).Cascade(CascadeMode.Stop)
-                   .NotEmpty().WithName("Email address or phone number").WithMessage("{PropertyName} is required");
+                   .NotEmpty().WithName(_validationResources["EmailOrPhonePropName"]);
 
             //Password
             RuleFor(x => x.Password)
                 .Cascade(CascadeMode.Stop)
-                .NotEmpty().WithName("Password").WithMessage("{PropertyName} is required");
+                .NotEmpty().WithName(_validationResources["PasswordPropName"]);
         }
     }
 }

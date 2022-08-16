@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.Extensions.Localization;
 
 namespace WebAPI.ViewModels.Request
 {
@@ -8,10 +9,15 @@ namespace WebAPI.ViewModels.Request
     public class CountryRequest
     {
         /// <summary>
-        /// Name of country
+        /// English name of the country
         /// </summary>
         /// <example>Ukraine</example>
-        public string Name { get; set; }
+        public string EnglishName { get; set; }
+        /// <summary>
+        /// Ukrainian name of the country
+        /// </summary>
+        /// <example>Україна</example>
+        public string UkrainianName { get; set; }
         /// <summary>
         /// Code of country
         /// </summary>
@@ -24,18 +30,22 @@ namespace WebAPI.ViewModels.Request
     /// </summary>
     public class CountryRequestValidator : AbstractValidator<CountryRequest>
     {
-        public CountryRequestValidator()
+        private readonly IStringLocalizer<ValidationResourсes> _validationResources;
+        public CountryRequestValidator(IStringLocalizer<ValidationResourсes> validationResources)
         {
-            //Name
-            RuleFor(x => x.Name).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName("Name").WithMessage("{PropertyName} is required")
-               .Length(2, 60).WithMessage("{PropertyName} should be between 2 and 60 characters");
-
+            _validationResources = validationResources;
+            //English Name
+            RuleFor(x => x.EnglishName).Cascade(CascadeMode.Stop)
+               .NotEmpty().WithName(_validationResources["EnglishNamePropName"]).WithMessage(_validationResources["RequiredMessage"])
+               .Length(2, 60);
+            //Ukrainian Name
+            RuleFor(x => x.UkrainianName).Cascade(CascadeMode.Stop)
+               .NotEmpty().WithName(_validationResources["UkrainianNamePropName"]).WithMessage(_validationResources["RequiredMessage"])
+               .Length(2, 60);
             //Code
             RuleFor(c => c.Code).Cascade(CascadeMode.Stop)
-                   .NotEmpty().WithMessage("{PropertyName} is required!")
-                   .Length(2).WithMessage("{PropertyName} must be 2 characters long.");
+                   .NotEmpty().WithMessage(_validationResources["CodePropName"])
+                   .Length(2).WithMessage(_validationResources["CodeExactLengthMessage"]);
         }
-
     }
 }

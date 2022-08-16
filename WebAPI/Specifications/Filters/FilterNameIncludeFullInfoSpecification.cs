@@ -8,6 +8,7 @@ namespace WebAPI.Specifications.Filters
         public FilterNameIncludeFullInfoSpecification()
         {
             Query.Include(o => o.FilterGroup)
+                 .Include(o => o.FilterNameTranslations)
                  .Include(o => o.Unit)
                  .AsSplitQuery();
         }
@@ -15,6 +16,7 @@ namespace WebAPI.Specifications.Filters
         {
             Query.Where(o => o.Id == id)
                  .Include(o => o.FilterGroup)
+                 .Include(o => o.FilterNameTranslations)
                  .Include(o => o.Unit)
                  .AsSplitQuery();
         }

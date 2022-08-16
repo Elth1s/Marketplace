@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Security.Claims;
 using WebAPI.Interfaces.Reviews;
@@ -20,9 +21,11 @@ namespace WebAPI.Controllers.Reviews
         private string UserId => User?.FindFirstValue(ClaimTypes.NameIdentifier);
 
         private readonly IReviewService _reviewService;
-        public ReviewController(IReviewService reviewService)
+        private readonly IStringLocalizer<ReviewController> _reviewLocalizer;
+        public ReviewController(IReviewService reviewService, IStringLocalizer<ReviewController> reviewLocalizer)
         {
             _reviewService = reviewService;
+            _reviewLocalizer = reviewLocalizer;
         }
 
         /// <summary>
@@ -44,7 +47,7 @@ namespace WebAPI.Controllers.Reviews
         public async Task<IActionResult> Create([FromBody] ReviewRequest request)
         {
             await _reviewService.CreateAsync(request, UserId);
-            return Ok("Review created successfully");
+            return Ok(_reviewLocalizer["CreateSuccess"].Value);
         }
 
         /// <summary>
@@ -99,7 +102,7 @@ namespace WebAPI.Controllers.Reviews
         public async Task<IActionResult> Like(int id)
         {
             await _reviewService.Like(id, UserId);
-            return Ok("Like changed successfully");
+            return Ok(_reviewLocalizer["LikeSuccess"].Value);
         }
 
         /// <summary>
@@ -119,7 +122,7 @@ namespace WebAPI.Controllers.Reviews
         public async Task<IActionResult> Diskike(int id)
         {
             await _reviewService.Dislike(id, UserId);
-            return Ok("Dislike changed successfully");
+            return Ok(_reviewLocalizer["DislikeSuccess"].Value);
         }
     }
 }

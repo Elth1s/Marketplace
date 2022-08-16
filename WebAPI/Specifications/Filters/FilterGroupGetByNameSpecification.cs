@@ -5,9 +5,10 @@ namespace WebAPI.Specifications.Filters
 {
     public class FilterGroupGetByNameSpecification : Specification<FilterGroup>, ISingleResultSpecification<FilterGroup>
     {
-        public FilterGroupGetByNameSpecification(string name)
+        public FilterGroupGetByNameSpecification(string name, int languageId)
         {
-            Query.Where(item => name == item.Name);
+            Query.Include(c => c.FilterGroupTranslations)
+                 .Where(item => item.FilterGroupTranslations.Any(t => t.LanguageId == languageId && t.Name == name));
         }
     }
 }

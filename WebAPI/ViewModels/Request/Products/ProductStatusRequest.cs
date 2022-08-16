@@ -1,7 +1,5 @@
-﻿using DAL;
-using DAL.Entities;
-using FluentValidation;
-using WebAPI.Specifications.Products;
+﻿using FluentValidation;
+using Microsoft.Extensions.Localization;
 
 namespace WebAPI.ViewModels.Request.Products
 {
@@ -11,10 +9,15 @@ namespace WebAPI.ViewModels.Request.Products
     public class ProductStatusRequest
     {
         /// <summary>
-        /// Name of product status
+        /// English name of the product status
         /// </summary>
         /// <example>In stock</example>
-        public string Name { get; set; }
+        public string EnglishName { get; set; }
+        /// <summary>
+        /// Ukrainian name of product status
+        /// </summary>
+        /// <example>В наявності</example>
+        public string UkrainianName { get; set; }
     }
 
     /// <summary>
@@ -22,21 +25,19 @@ namespace WebAPI.ViewModels.Request.Products
     /// </summary>
     public class ProductStatusRequestValidator : AbstractValidator<ProductStatusRequest>
     {
-        private readonly IRepository<ProductStatus> _productStatusRepository;
-        public ProductStatusRequestValidator(IRepository<ProductStatus> productStatusRepository)
+        private readonly IStringLocalizer<ValidationResourсes> _validationResources;
+        public ProductStatusRequestValidator(IStringLocalizer<ValidationResourсes> validationResources)
         {
-            _productStatusRepository = productStatusRepository;
-            //Name
-            RuleFor(x => x.Name).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName("Name").WithMessage("{PropertyName} is required")
-               .Must(IsUniqueName).WithMessage("Product status with this {PropertyName} already exists")
-               .Length(2, 20).WithMessage("{PropertyName} should be between 2 and 20 characters");
-        }
+            _validationResources = validationResources;
 
-        private bool IsUniqueName(string name)
-        {
-            var spec = new ProductStatusGetByNameSpecification(name);
-            return _productStatusRepository.GetBySpecAsync(spec).Result == null;
+            //English Name
+            RuleFor(x => x.EnglishName).Cascade(CascadeMode.Stop)
+               .NotEmpty().WithName(_validationResources["EnglishNamePropName"]).WithMessage(_validationResources["RequiredMessage"])
+               .Length(2, 20);
+            //Ukrainian Name
+            RuleFor(x => x.UkrainianName).Cascade(CascadeMode.Stop)
+               .NotEmpty().WithName(_validationResources["UkrainianNamePropName"]).WithMessage(_validationResources["RequiredMessage"])
+               .Length(2, 20);
         }
     }
 }

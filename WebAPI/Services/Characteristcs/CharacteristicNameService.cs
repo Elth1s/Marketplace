@@ -2,11 +2,11 @@
 using DAL;
 using DAL.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Localization;
 using System.Net;
 using WebAPI.Exceptions;
 using WebAPI.Extensions;
 using WebAPI.Interfaces.Characteristics;
-using WebAPI.Resources;
 using WebAPI.Specifications.Characteristics;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Request.Characteristics;
@@ -17,15 +17,21 @@ namespace WebAPI.Services.Characteristcs
 {
     public class CharacteristicNameService : ICharacteristicNameService
     {
+        private readonly IStringLocalizer<ErrorMessages> _errorMessagesLocalizer;
         private readonly IRepository<CharacteristicName> _characteristicNameRepository;
         private readonly IRepository<CharacteristicGroup> _characteristicGroupRepository;
         private readonly IRepository<Unit> _unitRepository;
         private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
 
-
-        public CharacteristicNameService(IRepository<CharacteristicName> characteristicNameRepository, IRepository<CharacteristicGroup> characteristicGroupRepository, IRepository<Unit> unitRepository, UserManager<AppUser> userManager, IMapper mapper)
+        public CharacteristicNameService(IStringLocalizer<ErrorMessages> errorMessagesLocalizer,
+            IRepository<CharacteristicName> characteristicNameRepository,
+            IRepository<CharacteristicGroup> characteristicGroupRepository,
+            IRepository<Unit> unitRepository,
+            UserManager<AppUser> userManager,
+            IMapper mapper)
         {
+            _errorMessagesLocalizer = errorMessagesLocalizer;
             _characteristicNameRepository = characteristicNameRepository;
             _characteristicGroupRepository = characteristicGroupRepository;
             _unitRepository = unitRepository;
@@ -79,7 +85,7 @@ namespace WebAPI.Services.Characteristcs
             var specExist = new CharacteristicNameGetByNameSpecification(request.CharacteristicGroupId, request.Name, request.UnitId, userId);
             var characteristicNameExist = await _characteristicNameRepository.GetBySpecAsync(specExist);
             if (characteristicNameExist != null)
-                throw new AppValidationException(new ValidationError(nameof(CharacteristicName.Name), ErrorMessages.CharacteristicNameExist));
+                throw new AppValidationException(nameof(CharacteristicName.Name), _errorMessagesLocalizer["CharacteristicNameExist"]);
 
             var characteristicGroup = await _characteristicGroupRepository.GetByIdAsync(request.CharacteristicGroupId);
             characteristicGroup.CharacteristicGroupNullChecking();
@@ -106,7 +112,7 @@ namespace WebAPI.Services.Characteristcs
             var specExist = new CharacteristicNameGetByNameSpecification(request.CharacteristicGroupId, request.Name, request.UnitId, userId);
             var characteristicNameExist = await _characteristicNameRepository.GetBySpecAsync(specExist);
             if (characteristicNameExist != null && id != characteristicNameExist.Id)
-                throw new AppValidationException(new ValidationError(nameof(CharacteristicName.Name), ErrorMessages.CharacteristicNameExist));
+                throw new AppValidationException(nameof(CharacteristicName.Name), _errorMessagesLocalizer["CharacteristicNameExist"]);
 
             var user = await _userManager.FindByIdAsync(userId);
             user.UserNullChecking();
@@ -126,7 +132,7 @@ namespace WebAPI.Services.Characteristcs
             characteristicName.CharacteristicNameNullChecking();
 
             if (user.Id != characteristicName.UserId)
-                throw new AppException(ErrorMessages.DontHavePermition, HttpStatusCode.Forbidden);
+                throw new AppException(_errorMessagesLocalizer["DontHavePermission"], HttpStatusCode.Forbidden);
 
             _mapper.Map(request, characteristicName);
 

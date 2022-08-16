@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.Extensions.Localization;
 
 namespace WebAPI.ViewModels.Request.Filters
 {
@@ -8,10 +9,15 @@ namespace WebAPI.ViewModels.Request.Filters
     public class FilterNameRequest
     {
         /// <summary>
-        /// Name of filter name
+        /// English name of the filter name
         /// </summary>
         /// <example>Brand name</example>
-        public string Name { get; set; }
+        public string EnglishName { get; set; }
+        /// <summary>
+        /// Ukrainian name of the filter name
+        /// </summary>
+        /// <example>Назва бренду</example>
+        public string UkrainianName { get; set; }
         /// <summary>
         /// Filter group identifier
         /// </summary>
@@ -29,12 +35,19 @@ namespace WebAPI.ViewModels.Request.Filters
     /// </summary>
     public class FilterNameRequestValidator : AbstractValidator<FilterNameRequest>
     {
-        public FilterNameRequestValidator()
+        private readonly IStringLocalizer<ValidationResourсes> _validationResources;
+        public FilterNameRequestValidator(IStringLocalizer<ValidationResourсes> validationResources)
         {
-            //Name
-            RuleFor(x => x.Name).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName("Name").WithMessage("{PropertyName} is required")
-               .Length(2, 30).WithMessage("{PropertyName} should be between 2 and 30 characters");
+            _validationResources = validationResources;
+
+            //English Name
+            RuleFor(x => x.EnglishName).Cascade(CascadeMode.Stop)
+               .NotEmpty().WithName(_validationResources["EnglishNamePropName"]).WithMessage(_validationResources["RequiredMessage"])
+               .Length(2, 30);
+            //Ukrainian Name
+            RuleFor(x => x.UkrainianName).Cascade(CascadeMode.Stop)
+               .NotEmpty().WithName(_validationResources["UkrainianNamePropName"]).WithMessage(_validationResources["RequiredMessage"])
+               .Length(2, 30);
         }
     }
 }

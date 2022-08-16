@@ -8,11 +8,10 @@ namespace WebAPI.Specifications.Shops
         public ShopInfoFromProductSpecification(int id)
         {
             Query.Where(a => a.Id == id)
-                .Include(a => a.City)
-                .ThenInclude(c => c.Country)
+                .Include(a => a.City).ThenInclude(c => c.CityTranslations)
+                .Include(a => a.City).ThenInclude(c => c.Country).ThenInclude(c => c.CountryTranslations)
                 .Include(p => p.Phones)
                 .AsSplitQuery();
         }
     }
 }
-    

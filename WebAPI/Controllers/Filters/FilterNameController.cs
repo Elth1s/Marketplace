@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
 using WebAPI.Interfaces.Filters;
 using WebAPI.ViewModels.Request;
@@ -18,9 +19,12 @@ namespace WebAPI.Controllers.Filters
     public class FilterNameController : ControllerBase
     {
         private readonly IFilterNameService _filterNameService;
-        public FilterNameController(IFilterNameService filterNameService)
+        private readonly IStringLocalizer<FilterNameController> _filterNameLocalizer;
+
+        public FilterNameController(IFilterNameService filterNameService, IStringLocalizer<FilterNameController> filterNameLocalizer)
         {
             _filterNameService = filterNameService;
+            _filterNameLocalizer = filterNameLocalizer;
         }
 
         /// <summary>
@@ -70,7 +74,7 @@ namespace WebAPI.Controllers.Filters
         /// <response code="403">You don't have permission</response>
         /// <response code="404">Filter name not found</response>
         /// <response code="500">An internal error has occurred</response>
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(FilterNameResponse))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(FilterNameFullInfoResponse))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
@@ -88,11 +92,13 @@ namespace WebAPI.Controllers.Filters
         /// </summary>
         /// <param name="request">New filter name</param>
         /// <response code="200">Filter name creation completed successfully</response>
+        /// <response code="400">Name of filter name not unique</response>
         /// <response code="401">You are not authorized</response>
         /// <response code="403">You don't have permission</response>
         /// <response code="404">Filter group not found</response>
         /// <response code="500">An internal error has occurred</response>
         [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
@@ -102,7 +108,7 @@ namespace WebAPI.Controllers.Filters
         public async Task<IActionResult> CreateFilterName([FromBody] FilterNameRequest request)
         {
             await _filterNameService.CreateFilterNameAsync(request);
-            return Ok("Filter name created successfully");
+            return Ok(_filterNameLocalizer["CreateSuccess"].Value);
         }
 
         /// <summary>
@@ -111,11 +117,13 @@ namespace WebAPI.Controllers.Filters
         /// <param name="filterNameId">Filter name identifier</param>
         /// <param name="request">Filter name</param>
         /// <response code="200">Filter name update completed successfully</response>
+        /// <response code="400">Name of filter name not unique</response>
         /// <response code="401">You are not authorized</response>
         /// <response code="403">You don't have permission</response>
         /// <response code="404">Filter group or filter name not found</response>
         /// <response code="500">An internal error has occurred</response>
         [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
@@ -125,7 +133,7 @@ namespace WebAPI.Controllers.Filters
         public async Task<IActionResult> UpdateFilterName(int filterNameId, [FromBody] FilterNameRequest request)
         {
             await _filterNameService.UpdateFilterNameAsync(filterNameId, request);
-            return Ok("Filter name updated successfully");
+            return Ok(_filterNameLocalizer["UpdateSuccess"].Value);
         }
 
         /// <summary>
@@ -147,7 +155,7 @@ namespace WebAPI.Controllers.Filters
         public async Task<IActionResult> DeleteFilterName(int filterNameId)
         {
             await _filterNameService.DeleteFilterNameAsync(filterNameId);
-            return Ok("Filter name deleted successfully");
+            return Ok(_filterNameLocalizer["DeleteSuccess"].Value);
         }
 
         /// <summary>
@@ -168,7 +176,7 @@ namespace WebAPI.Controllers.Filters
         public async Task<IActionResult> Delete([FromQuery] IEnumerable<int> ids)
         {
             await _filterNameService.DeleteAsync(ids);
-            return Ok("Filter names deleted successfully");
+            return Ok(_filterNameLocalizer["DeleteListSuccess"].Value);
         }
     }
 }

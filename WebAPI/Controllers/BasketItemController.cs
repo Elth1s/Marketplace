@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Security.Claims;
 using WebAPI.Interfaces;
-using WebAPI.ViewModels.Request;
+using WebAPI.ViewModels.Request.Baskets;
 using WebAPI.ViewModels.Response;
 
 namespace WebAPI.Controllers
@@ -17,11 +18,15 @@ namespace WebAPI.Controllers
     public class BasketItemController : ControllerBase
     {
         private string UserId => User?.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        private readonly IStringLocalizer<BasketItemController> _basketItemLocalizer;
+
         private readonly IBasketItemService _basketItemService;
 
-        public BasketItemController(IBasketItemService basketItemService)
+        public BasketItemController(IBasketItemService basketItemService, IStringLocalizer<BasketItemController> basketItemLocalizer)
         {
             _basketItemService = basketItemService;
+            _basketItemLocalizer = basketItemLocalizer;
         }
 
         /// <summary>
@@ -60,7 +65,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> Create([FromBody] BasketCreateRequest request)
         {
             await _basketItemService.CreateAsync(request, UserId);
-            return Ok("Product added successfully");
+            return Ok(_basketItemLocalizer["AddProductSuccess"].Value);
         }
 
         /// <summary>
@@ -80,7 +85,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> DeleteBasketItem(int id)
         {
             await _basketItemService.DeleteAsync(id);
-            return Ok("Basket deleted successfully");
+            return Ok(_basketItemLocalizer["DeleteProductSuccess"].Value);
         }
 
 
@@ -102,7 +107,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> UpdateCity(int basketId, [FromBody] BasketUpdateRequest request)
         {
             await _basketItemService.UpdateAsync(basketId, request, UserId);
-            return Ok("Basket updated successfully");
+            return Ok(_basketItemLocalizer["UpdateProductSuccess"].Value);
         }
 
 

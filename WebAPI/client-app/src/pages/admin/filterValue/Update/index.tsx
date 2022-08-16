@@ -91,13 +91,25 @@ const FilterValueUpdate: FC<Props> = ({ id, afterUpdate }) => {
                     <Grid item xs={12}>
                         <TextFieldFirstStyle
                             fullWidth
+                            autoComplete="englishValue"
                             variant="standard"
-                            autoComplete="value"
                             type="text"
-                            label="Value"
-                            {...getFieldProps('value')}
-                            error={Boolean(touched.value && errors.value)}
-                            helperText={touched.value && errors.value}
+                            label="English Value"
+                            {...getFieldProps('englishValue')}
+                            error={Boolean(touched.englishValue && errors.englishValue)}
+                            helperText={touched.englishValue && errors.englishValue}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextFieldFirstStyle
+                            fullWidth
+                            autoComplete="ukrainianValue"
+                            variant="standard"
+                            type="text"
+                            label="Ukrainian name"
+                            {...getFieldProps('ukrainianValue')}
+                            error={Boolean(touched.ukrainianValue && errors.ukrainianValue)}
+                            helperText={touched.ukrainianValue && errors.ukrainianValue}
                         />
                     </Grid>
                     <Grid item xs={12}>

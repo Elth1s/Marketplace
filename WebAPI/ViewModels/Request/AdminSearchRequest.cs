@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.Extensions.Localization;
 
 namespace WebAPI.ViewModels.Request
 {
@@ -43,21 +44,25 @@ namespace WebAPI.ViewModels.Request
     /// </summary>
     public class AdminSearchRequestValidator : AbstractValidator<AdminSearchRequest>
     {
-        public AdminSearchRequestValidator()
+        private readonly IStringLocalizer<ValidationResourсes> _validationResources;
+
+        public AdminSearchRequestValidator(IStringLocalizer<ValidationResourсes> validationResources)
         {
+            _validationResources = validationResources;
+
             //Page
             RuleFor(x => x.Page).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName("Page").WithMessage("{PropertyName} is required")
-               .GreaterThan(0).WithMessage("{PropertyName} should be greater than 0");
+               .NotEmpty().WithName(_validationResources["PagePropName"]).WithMessage(_validationResources["RequiredMessage"])
+               .GreaterThan(0).WithMessage(_validationResources["GreaterThanMessage"]);
 
             //RowsPerPage
             RuleFor(x => x.RowsPerPage).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName("Rows per page").WithMessage("{PropertyName} is required")
-               .GreaterThan(0).WithMessage("{PropertyName} should be greater than 0");
+               .NotEmpty().WithName(_validationResources["PagePropName"]).WithMessage(_validationResources["RequiredMessage"])
+               .GreaterThan(0).WithMessage(_validationResources["PluralGreaterThanMessage"]);
 
             //OrderBy
             RuleFor(x => x.OrderBy).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName("Order by").WithMessage("{PropertyName} is required");
+               .NotEmpty().WithName(_validationResources["OrderByPropName"]);
         }
     }
 }

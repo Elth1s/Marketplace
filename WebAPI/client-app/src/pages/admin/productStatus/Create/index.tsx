@@ -22,7 +22,8 @@ const ProductStatusCreate: FC<CreateProps> = ({ afterCreate }) => {
     const { CreateProductStatus } = useActions();
 
     const item: IProductStatus = {
-        name: ""
+        englishName: "",
+        ukrainianName: "",
     };
 
     const handleClickOpen = () => {
@@ -88,16 +89,28 @@ const ProductStatusCreate: FC<CreateProps> = ({ afterCreate }) => {
 
             dialogContent={
                 <Grid container rowSpacing={2}>
-                    <Grid item xs={12} >
+                    <Grid item xs={12}>
                         <TextFieldFirstStyle
                             fullWidth
+                            autoComplete="englishName"
                             variant="standard"
-                            autoComplete="name"
                             type="text"
-                            label="Name"
-                            {...getFieldProps('name')}
-                            error={Boolean(touched.name && errors.name)}
-                            helperText={touched.name && errors.name}
+                            label="English name"
+                            {...getFieldProps('englishName')}
+                            error={Boolean(touched.englishName && errors.englishName)}
+                            helperText={touched.englishName && errors.englishName}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextFieldFirstStyle
+                            fullWidth
+                            autoComplete="ukrainianName"
+                            variant="standard"
+                            type="text"
+                            label="Ukrainian name"
+                            {...getFieldProps('ukrainianName')}
+                            error={Boolean(touched.ukrainianName && errors.ukrainianName)}
+                            helperText={touched.ukrainianName && errors.ukrainianName}
                         />
                     </Grid>
                 </Grid>

@@ -55,6 +55,7 @@ import ShopTable from './pages/admin/shop/Table';
 import CountryTable from './pages/admin/country/Table';
 import CityTable from './pages/admin/city/Table';
 import UnitTable from './pages/admin/unit/Table';
+import OrderStatusTable from './pages/admin/orderStatus/Table';
 
 import UserTable from './pages/admin/user/Table';
 
@@ -246,6 +247,7 @@ function App() {
             <Route path="units" element={<UnitTable />} />
 
             <Route path="users" element={<UserTable />} />
+            <Route path="orderStatuses" element={<OrderStatusTable />} />
           </Route>
 
           <Route path="/confirmEmail" element={<ConfirmEmail />} />

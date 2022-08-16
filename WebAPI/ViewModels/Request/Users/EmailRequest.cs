@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.Extensions.Localization;
 
 namespace WebAPI.ViewModels.Request.Users
 {
@@ -19,11 +20,15 @@ namespace WebAPI.ViewModels.Request.Users
     /// </summary>
     public class EmailRequestValidator : AbstractValidator<EmailRequest>
     {
-        public EmailRequestValidator()
+        private readonly IStringLocalizer<ValidationResourсes> _validationResources;
+        public EmailRequestValidator(IStringLocalizer<ValidationResourсes> validationResources)
         {
+            _validationResources = validationResources;
+
+            //Email
             RuleFor(x => x.Email).Cascade(CascadeMode.Stop)
-                .NotEmpty().WithName("Email address").WithMessage("{PropertyName} is required")
-                .EmailAddress().WithMessage("Invalid format of {PropertyName}");
+                .NotEmpty().WithName(_validationResources["EmailAddressPropName"]).WithMessage(_validationResources["RequiredMessage"])
+                .EmailAddress();
         }
     }
 }

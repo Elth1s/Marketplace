@@ -27,7 +27,8 @@ const FilterCreate: FC<CreateProps> = ({ afterCreate }) => {
     const { units } = useTypedSelector((store) => store.unit);
 
     const item: IFilterName = {
-        name: '',
+        englishName: "",
+        ukrainianName: "",
         filterGroupId: 0,
         unitId: null,
     }
@@ -102,13 +103,25 @@ const FilterCreate: FC<CreateProps> = ({ afterCreate }) => {
                     <Grid item xs={12}>
                         <TextFieldFirstStyle
                             fullWidth
+                            autoComplete="englishName"
                             variant="standard"
-                            autoComplete="name"
                             type="text"
-                            label="Name"
-                            {...getFieldProps('name')}
-                            error={Boolean(touched.name && errors.name)}
-                            helperText={touched.name && errors.name}
+                            label="English name"
+                            {...getFieldProps('englishName')}
+                            error={Boolean(touched.englishName && errors.englishName)}
+                            helperText={touched.englishName && errors.englishName}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextFieldFirstStyle
+                            fullWidth
+                            autoComplete="ukrainianName"
+                            variant="standard"
+                            type="text"
+                            label="Ukrainian name"
+                            {...getFieldProps('ukrainianName')}
+                            error={Boolean(touched.ukrainianName && errors.ukrainianName)}
+                            helperText={touched.ukrainianName && errors.ukrainianName}
                         />
                     </Grid>
                     <Grid item xs={12}>

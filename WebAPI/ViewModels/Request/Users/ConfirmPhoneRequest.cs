@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.Extensions.Localization;
 
 namespace WebAPI.ViewModels.Request.Users
 {
@@ -19,12 +20,15 @@ namespace WebAPI.ViewModels.Request.Users
     /// </summary>
     public class ConfirmPhoneRequestValidator : AbstractValidator<ConfirmPhoneRequest>
     {
-        public ConfirmPhoneRequestValidator()
+        private readonly IStringLocalizer<ValidationResourсes> _validationResources;
+        public ConfirmPhoneRequestValidator(IStringLocalizer<ValidationResourсes> validationResources)
         {
+            _validationResources = validationResources;
+
             //Code
             RuleFor(x => x.Code).Cascade(CascadeMode.Stop)
-                .NotEmpty().WithName("Code").WithMessage("{PropertyName} is required")
-                .Length(6).WithMessage("{PropertyName} must be 6 characters long");
+                .NotEmpty().WithName(_validationResources["CodePropName"])
+                .Length(6);
         }
     }
 }

@@ -8,12 +8,16 @@ namespace WebAPI.Specifications.Cities
         public CityIncludeFullInfoSpecification()
         {
             Query.Include(o => o.Country)
+                 .ThenInclude(o => o.CountryTranslations)
+                 .Include(o => o.CityTranslations)
                  .AsSplitQuery();
         }
         public CityIncludeFullInfoSpecification(int id)
         {
             Query.Where(o => o.Id == id)
                 .Include(o => o.Country)
+                .ThenInclude(o => o.CountryTranslations)
+                .Include(o => o.CityTranslations)
                 .AsSplitQuery();
         }
 

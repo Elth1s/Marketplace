@@ -1,5 +1,6 @@
 ﻿using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Response;
+using WebAPI.ViewModels.Response.Cities;
 
 namespace WebAPI.Interfaces
 {
@@ -7,7 +8,7 @@ namespace WebAPI.Interfaces
     {
         Task<IEnumerable<CityResponse>> GetCitiesAsync();
         Task<AdminSearchResponse<CityResponse>> SearchCitiesAsync(AdminSearchRequest request);
-        Task<CityResponse> GetCityByIdAsync(int cityId);
+        Task<CityFullInfoResponse> GetCityByIdAsync(int cityId);
         Task CreateCityAsync(CityRequest request);
         Task UpdateCityAsync(int cityId, CityRequest request);
         Task DeleteCityAsync(int cityId);

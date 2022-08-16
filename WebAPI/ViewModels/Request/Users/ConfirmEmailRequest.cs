@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.Extensions.Localization;
 
 namespace WebAPI.ViewModels.Request.Users
 {
@@ -24,13 +25,14 @@ namespace WebAPI.ViewModels.Request.Users
     /// </summary>
     public class ConfirmEmailRequestValidator : AbstractValidator<ConfirmEmailRequest>
     {
-        public ConfirmEmailRequestValidator()
+        private readonly IStringLocalizer<ValidationResourсes> _validationResources;
+        public ConfirmEmailRequestValidator(IStringLocalizer<ValidationResourсes> validationResources)
         {
-            //User id
-            RuleFor(x => x.UserId).NotEmpty().WithName("User id").WithMessage("{PropertyName} is required");
+            _validationResources = validationResources;
 
             //Confirmation code
-            RuleFor(x => x.ConfirmationCode).NotEmpty().WithName("Confirmation code").WithMessage("{PropertyName} is required");
+            RuleFor(x => x.ConfirmationCode)
+                .NotEmpty().WithName(_validationResources["ConfirmationCodePropName"]);
         }
     }
 }

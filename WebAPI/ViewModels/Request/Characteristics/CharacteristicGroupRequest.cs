@@ -1,6 +1,5 @@
-﻿using DAL;
-using DAL.Entities;
-using FluentValidation;
+﻿using FluentValidation;
+using Microsoft.Extensions.Localization;
 
 namespace WebAPI.ViewModels.Request.Characteristics
 {
@@ -21,16 +20,16 @@ namespace WebAPI.ViewModels.Request.Characteristics
     /// </summary>
     public class CharacteristicGroupRequestValidation : AbstractValidator<CharacteristicGroupRequest>
     {
-        private readonly IRepository<CharacteristicGroup> _characteristicGroupRequest;
+        private readonly IStringLocalizer<ValidationResourсes> _validationResources;
 
-        public CharacteristicGroupRequestValidation(IRepository<CharacteristicGroup> characteristicGroupRequest)
+        public CharacteristicGroupRequestValidation(IStringLocalizer<ValidationResourсes> validationResources)
         {
-            _characteristicGroupRequest = characteristicGroupRequest;
+            _validationResources = validationResources;
 
             //Name
             RuleFor(x => x.Name).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName("Name").WithMessage("{PropertyName} is required")
-               .Length(2, 30).WithMessage("{PropertyName} should be between 2 and 30 characters");
+               .NotEmpty().WithName(_validationResources["NamePropName"])
+               .Length(2, 30);
         }
     }
 }

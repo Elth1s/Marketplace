@@ -20,7 +20,7 @@ namespace WebAPI.Interfaces
         Task<IEnumerable<FilterGroupSellerResponse>> GetFiltersByCategoryIdAsync(int id);
         Task<IEnumerable<CategoryForSelectResponse>> GetForSelectAsync();
         Task<IEnumerable<CategoryForSelectResponse>> GetCategoriesWithoutChildrenAsync();
-        Task<CategoryResponse> GetByIdAsync(int id);
+        Task<CategoryFullInfoResponse> GetByIdAsync(int id);
         Task CreateAsync(CategoryRequest request);
         Task UpdateAsync(int id, CategoryRequest request);
         Task DeleteAsync(int id);

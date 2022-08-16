@@ -7,6 +7,8 @@ import {
     Container,
     Divider
 } from "@mui/material";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 
@@ -19,15 +21,22 @@ import LinkRouter from "../../components/LinkRouter";
 import Basket from "../../components/Basket";
 
 import { orange_heart, search } from '../../assets/icons';
-import { useState } from "react";
 import CatalogMenu from "../../components/CatalogMenu";
-import { useTranslation } from "react-i18next";
 
 const Header = () => {
     const { t, i18n } = useTranslation()
     const { isAuth } = useTypedSelector((state) => state.auth)
 
+
     const [isUaLanguage, setIsUaLanguage] = useState<boolean>(i18n.language == "en" ? false : true);
+
+    const changeLanguage = (isUa: boolean) => {
+        if (isUa == isUaLanguage)
+            return;
+        setIsUaLanguage(isUa);
+        i18n.changeLanguage(isUa ? "ua" : "en")
+        window.location.reload();
+    }
 
     return (
         <AppBar component="header" sx={{ height: "110px", mb: "30px", mt: "15px" }} elevation={0} position="static" >
@@ -56,9 +65,9 @@ const Header = () => {
                             )
                         }} />
                     <Box sx={{ display: "flex" }}>
-                        <LanguageButtonStyle selected={!isUaLanguage} onClick={() => { setIsUaLanguage(false); i18n.changeLanguage("en") }}>EN</LanguageButtonStyle>
+                        <LanguageButtonStyle selected={!isUaLanguage} onClick={() => { changeLanguage(false) }}>EN</LanguageButtonStyle>
                         <Divider sx={{ borderColor: "black", borderRightWidth: "3px", mx: "1px" }} orientation="vertical" flexItem />
-                        <LanguageButtonStyle selected={isUaLanguage} onClick={() => { setIsUaLanguage(true); i18n.changeLanguage("ua") }}>UA</LanguageButtonStyle>
+                        <LanguageButtonStyle selected={isUaLanguage} onClick={() => { changeLanguage(true) }}>UA</LanguageButtonStyle>
                     </Box>
                     {isAuth &&
                         <>

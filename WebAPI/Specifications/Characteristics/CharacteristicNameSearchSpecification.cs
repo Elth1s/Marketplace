@@ -1,6 +1,7 @@
 ﻿using Ardalis.Specification;
 using DAL.Entities;
 using WebAPI.Extensions;
+using WebAPI.Helpers;
 
 namespace WebAPI.Specifications.Characteristics
 {
@@ -15,7 +16,7 @@ namespace WebAPI.Specifications.Characteristics
                 Query.Where(item => item.UserId == userId);
 
             Query.Include(c => c.CharacteristicGroup)
-                .Include(c => c.Unit)
+                .Include(c => c.Unit).ThenInclude(u => u.UnitTranslations)
                 .AsSplitQuery();
 
             if (orderBy == "characteristicGroupName")
@@ -28,9 +29,11 @@ namespace WebAPI.Specifications.Characteristics
             else if (orderBy == "unitMeasure")
             {
                 if (isAscOrder)
-                    Query.OrderBy(c => c.Unit.Measure);
+                    Query.OrderBy(c => c.Unit.UnitTranslations.FirstOrDefault(
+                                            t => t.LanguageId == CurrentLanguage.Id).Measure);
                 else
-                    Query.OrderByDescending(c => c.Unit.Measure);
+                    Query.OrderByDescending(c => c.Unit.UnitTranslations.FirstOrDefault(
+                                            t => t.LanguageId == CurrentLanguage.Id).Measure);
             }
             else
             {

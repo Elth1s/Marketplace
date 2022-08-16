@@ -33,7 +33,7 @@
         /// <summary>
         /// Name of Filter name 
         /// </summary>
-        /// <example>Brand</example>
+        /// <example>Video card type</example>
         public string FilterName { get; set; }
     }
 }

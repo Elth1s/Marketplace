@@ -9,6 +9,7 @@ namespace WebAPI.Specifications.Categories
         {
             Query.Include(item => item.Children)
                 .Where(item => item.Children.Count == 0)
+                .Include(item => item.CategoryTranslations)
                 .AsSplitQuery();
         }
     }

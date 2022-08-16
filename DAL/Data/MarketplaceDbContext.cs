@@ -49,6 +49,17 @@ namespace DAL.Data
         public DbSet<ReviewReply> ReviewReplies { get; set; }
         public DbSet<ReviewImage> ReviewImages { get; set; }
 
+        public DbSet<Language> Languages { get; set; }
+        public DbSet<CountryTranslation> CountryTranslations { get; set; }
+        public DbSet<CityTranslation> CityTranslations { get; set; }
+        public DbSet<UnitTranslation> UnitTranslations { get; set; }
+        public DbSet<OrderStatusTranslation> OrderStatusTranslations { get; set; }
+        public DbSet<ProductStatusTranslation> ProductStatusTranslations { get; set; }
+        public DbSet<FilterGroupTranslation> FilterGroupTranslations { get; set; }
+        public DbSet<FilterNameTranslation> FilterNameTranslations { get; set; }
+        public DbSet<FilterValueTranslation> FilterValueTranslations { get; set; }
+        public DbSet<CategoryTranslation> CategoryTranslations { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -61,8 +72,49 @@ namespace DAL.Data
             {
                 entity.HasIndex(u => u.PhoneNumber).IsUnique();
                 entity.HasOne(ap => ap.Shop)
-                      .WithOne(s => s.User);
+                      .WithOne(s => s.User)
+                      .HasForeignKey<Shop>(s => s.UserId);
             });
+            builder.Entity<Shop>()
+                   .HasOne(s => s.User)
+                   .WithOne(ap => ap.Shop)
+                   .HasForeignKey<AppUser>(ap => ap.ShopId);
+
+            builder.Entity<CountryTranslation>()
+                   .HasIndex(c => new { c.CountryId, c.LanguageId })
+                   .IsUnique();
+
+            builder.Entity<CityTranslation>()
+                   .HasIndex(c => new { c.CityId, c.LanguageId })
+                   .IsUnique();
+
+            builder.Entity<UnitTranslation>()
+                  .HasIndex(c => new { c.UnitId, c.LanguageId })
+                  .IsUnique();
+
+            builder.Entity<OrderStatusTranslation>()
+                              .HasIndex(c => new { c.OrderStatusId, c.LanguageId })
+                              .IsUnique();
+
+            builder.Entity<ProductStatusTranslation>()
+                  .HasIndex(c => new { c.ProductStatusId, c.LanguageId })
+                  .IsUnique();
+
+            builder.Entity<FilterGroupTranslation>()
+                  .HasIndex(c => new { c.FilterGroupId, c.LanguageId })
+                  .IsUnique();
+
+            builder.Entity<FilterNameTranslation>()
+                  .HasIndex(c => new { c.FilterNameId, c.LanguageId })
+                  .IsUnique();
+
+            builder.Entity<FilterValueTranslation>()
+                  .HasIndex(c => new { c.FilterValueId, c.LanguageId })
+                  .IsUnique();
+
+            builder.Entity<CategoryTranslation>()
+                      .HasIndex(c => new { c.CategoryId, c.LanguageId })
+                      .IsUnique();
 
             builder.Entity<BasketItem>().HasIndex(b => new { b.ProductId, b.UserId }).IsUnique();
         }

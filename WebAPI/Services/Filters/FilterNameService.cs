@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
 using DAL;
+using DAL.Constants;
 using DAL.Entities;
-using WebAPI.Exceptions;
 using WebAPI.Extensions;
 using WebAPI.Interfaces.Filters;
-using WebAPI.Resources;
 using WebAPI.Specifications.Filters;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Request.Filters;
@@ -41,13 +40,13 @@ namespace WebAPI.Services.Filters
             var response = filters.Select(c => _mapper.Map<FilterNameResponse>(c));
             return response;
         }
-        public async Task<FilterNameResponse> GetFilterNameByIdAsync(int filterNameId)
+        public async Task<FilterNameFullInfoResponse> GetFilterNameByIdAsync(int filterNameId)
         {
             var spec = new FilterNameIncludeFullInfoSpecification(filterNameId);
             var filter = await _filterNameRepository.GetBySpecAsync(spec);
             filter.FilterNameNullChecking();
 
-            var response = _mapper.Map<FilterNameResponse>(filter);
+            var response = _mapper.Map<FilterNameFullInfoResponse>(filter);
             return response;
         }
 
@@ -61,10 +60,15 @@ namespace WebAPI.Services.Filters
                 var unit = await _unitRepository.GetByIdAsync(request.UnitId);
                 unit.UnitNullChecking();
             }
+            var specName = new FilterNameGetByNameAndUnitIdSpecification(request.EnglishName, filterGroup.Id, request.UnitId, LanguageId.English);
+            var filterNameEnNameExist = await _filterNameRepository.GetBySpecAsync(specName);
+            if (filterNameEnNameExist != null)
+                filterNameEnNameExist.FilterNameWithEnglishNameChecking(nameof(FilterNameRequest.EnglishName));
 
-            var spec = new FilterNameGetByNameAndUnitIdSpecification(request.Name, request.UnitId);
-            if (await _filterNameRepository.GetBySpecAsync(spec) != null)
-                throw new AppValidationException(new ValidationError(nameof(FilterName.UnitId), ErrorMessages.FilterNameUnitNotUnique));
+            specName = new FilterNameGetByNameAndUnitIdSpecification(request.UkrainianName, filterGroup.Id, request.UnitId, LanguageId.Ukrainian);
+            var filterNameUkNameExist = await _filterNameRepository.GetBySpecAsync(specName);
+            if (filterNameUkNameExist != null)
+                filterNameUkNameExist.FilterNameWithUkrainianNameChecking(nameof(FilterNameRequest.UkrainianName));
 
             var filter = _mapper.Map<FilterName>(request);
 
@@ -74,6 +78,10 @@ namespace WebAPI.Services.Filters
 
         public async Task UpdateFilterNameAsync(int filterNameId, FilterNameRequest request)
         {
+            var spec = new FilterNameIncludeFullInfoSpecification(filterNameId);
+            var filter = await _filterNameRepository.GetBySpecAsync(spec);
+            filter.FilterNameNullChecking();
+
             var filterGroup = await _filterGroupRepository.GetByIdAsync(request.FilterGroupId);
             filterGroup.FilterGroupNullChecking();
 
@@ -83,13 +91,25 @@ namespace WebAPI.Services.Filters
                 unit.UnitNullChecking();
             }
 
-            var spec = new FilterNameGetByNameAndUnitIdSpecification(request.Name, request.UnitId.Value);
-            if (await _filterNameRepository.GetBySpecAsync(spec) != null)
-                throw new AppValidationException(new ValidationError(nameof(FilterName.UnitId), ErrorMessages.FilterNameUnitNotUnique));
+            var specName = new FilterNameGetByNameAndUnitIdSpecification(
+                request.EnglishName,
+                filterGroup.Id,
+                request.UnitId,
+                LanguageId.English);
+            var filterNameEnNameExist = await _filterNameRepository.GetBySpecAsync(specName);
+            if (filterNameEnNameExist != null && filterNameEnNameExist.Id != filter.Id)
+                filterNameEnNameExist.FilterNameWithEnglishNameChecking(nameof(FilterNameRequest.EnglishName));
 
-            var filter = await _filterNameRepository.GetByIdAsync(filterNameId);
-            filter.FilterNameNullChecking();
+            specName = new FilterNameGetByNameAndUnitIdSpecification(
+                request.UkrainianName,
+                filterGroup.Id,
+                request.UnitId,
+                LanguageId.Ukrainian);
+            var filterNameUkNameExist = await _filterNameRepository.GetBySpecAsync(specName);
+            if (filterNameUkNameExist != null && filterNameUkNameExist.Id != filter.Id)
+                filterNameUkNameExist.FilterNameWithUkrainianNameChecking(nameof(FilterNameRequest.UkrainianName));
 
+            filter.FilterNameTranslations.Clear();
             _mapper.Map(request, filter);
 
             await _filterNameRepository.UpdateAsync(filter);

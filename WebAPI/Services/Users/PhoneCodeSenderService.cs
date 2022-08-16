@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Options;
 using Twilio;
 using Twilio.Rest.Verify.V2.Service;
 using WebAPI.Exceptions;
@@ -10,10 +11,13 @@ namespace WebAPI.Services
 {
     public class PhoneCodeSenderService : IPhoneCodeSenderService
     {
+        private readonly IStringLocalizer<ErrorMessages> _errorMessagesLocalizer;
         private readonly TwilioSettings _twilioSettings;
-        public PhoneCodeSenderService(IOptions<TwilioSettings> twilioSettings)
+        public PhoneCodeSenderService(IStringLocalizer<ErrorMessages> errorMessagesLocalizer,
+            IOptions<TwilioSettings> twilioSettings)
         {
             _twilioSettings = twilioSettings.Value;
+            _errorMessagesLocalizer = errorMessagesLocalizer;
         }
         public async Task SendCodeAsync(PhoneRequest request)
         {
@@ -26,7 +30,7 @@ namespace WebAPI.Services
                 pathServiceSid: _twilioSettings.VerificationSid
             );
             if (result.Status == VerificationResource.StatusEnum.Canceled.ToString())
-                throw new AppException("Sending failed");
+                throw new AppException(_errorMessagesLocalizer["CodeSendFailed"]);
         }
 
         public async Task VerifyCodeAsync(CodeRequest request)
@@ -40,7 +44,7 @@ namespace WebAPI.Services
             );
 
             if ((result.Valid.HasValue && !result.Valid.Value) || result.Status == VerificationResource.StatusEnum.Canceled.ToString())
-                throw new AppException("Validation failed");
+                throw new AppException(_errorMessagesLocalizer["CodeValidationFailed"]);
 
         }
     }

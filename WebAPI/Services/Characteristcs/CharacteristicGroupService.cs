@@ -2,11 +2,11 @@
 using DAL;
 using DAL.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Localization;
 using System.Net;
 using WebAPI.Exceptions;
 using WebAPI.Extensions;
 using WebAPI.Interfaces.Characteristics;
-using WebAPI.Resources;
 using WebAPI.Specifications.Characteristics;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Request.Characteristics;
@@ -17,12 +17,16 @@ namespace WebAPI.Services.Characteristcs
 {
     public class CharacteristicGroupService : ICharacteristicGroupService
     {
+        private readonly IStringLocalizer<ErrorMessages> _errorMessagesLocalizer;
         private readonly IRepository<CharacteristicGroup> _characteristicGroupRepository;
         private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
 
-        public CharacteristicGroupService(IRepository<CharacteristicGroup> characteristicGroupRepository, UserManager<AppUser> userManager, IMapper mapper)
+        public CharacteristicGroupService(IStringLocalizer<ErrorMessages> errorMessagesLocalizer,
+            IRepository<CharacteristicGroup> characteristicGroupRepository,
+            UserManager<AppUser> userManager, IMapper mapper)
         {
+            _errorMessagesLocalizer = errorMessagesLocalizer;
             _characteristicGroupRepository = characteristicGroupRepository;
             _userManager = userManager;
             _mapper = mapper;
@@ -74,7 +78,7 @@ namespace WebAPI.Services.Characteristcs
             var spec = new CharacteristicGroupGetByNameSpecification(request.Name, userId);
             var characteristicGroupExist = await _characteristicGroupRepository.GetBySpecAsync(spec);
             if (characteristicGroupExist != null)
-                throw new AppValidationException(new ValidationError(nameof(CharacteristicGroup.Name), ErrorMessages.CharacteristicGroupExist));
+                throw new AppValidationException(nameof(CharacteristicGroup.Name), _errorMessagesLocalizer["CharacteristicGroupExist"]);
 
             var characteristicGroup = _mapper.Map<CharacteristicGroup>(request);
 
@@ -91,7 +95,7 @@ namespace WebAPI.Services.Characteristcs
             var spec = new CharacteristicGroupGetByNameSpecification(request.Name, userId);
             var characteristicGroupExist = await _characteristicGroupRepository.GetBySpecAsync(spec);
             if (characteristicGroupExist != null && id != characteristicGroupExist.Id)
-                throw new AppValidationException(new ValidationError(nameof(CharacteristicGroup.Name), ErrorMessages.CharacteristicGroupExist));
+                throw new AppValidationException(nameof(CharacteristicGroup.Name), _errorMessagesLocalizer["CharacteristicGroupExist"]);
 
             var user = await _userManager.FindByIdAsync(userId);
             user.UserNullChecking();
@@ -100,7 +104,7 @@ namespace WebAPI.Services.Characteristcs
             characteristicGroup.CharacteristicGroupNullChecking();
 
             if (user.Id != characteristicGroup.UserId)
-                throw new AppException(ErrorMessages.DontHavePermition, HttpStatusCode.Forbidden);
+                throw new AppException(_errorMessagesLocalizer["DontHavePermission"], HttpStatusCode.Forbidden);
 
             _mapper.Map(request, characteristicGroup);
 

@@ -77,13 +77,25 @@ const Update: FC<UpdateProps> = ({ id, afterUpdate }) => {
                     <Grid item xs={12}>
                         <TextFieldFirstStyle
                             fullWidth
+                            autoComplete="englishMeasure"
                             variant="standard"
-                            autoComplete="measure"
                             type="text"
-                            label="Measure"
-                            {...getFieldProps('measure')}
-                            error={Boolean(touched.measure && errors.measure)}
-                            helperText={touched.measure && errors.measure}
+                            label="English Measure"
+                            {...getFieldProps('englishMeasure')}
+                            error={Boolean(touched.englishMeasure && errors.englishMeasure)}
+                            helperText={touched.englishMeasure && errors.englishMeasure}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextFieldFirstStyle
+                            fullWidth
+                            autoComplete="ukrainianMeasure"
+                            variant="standard"
+                            type="text"
+                            label="Ukrainian Measure"
+                            {...getFieldProps('ukrainianMeasure')}
+                            error={Boolean(touched.ukrainianMeasure && errors.ukrainianMeasure)}
+                            helperText={touched.ukrainianMeasure && errors.ukrainianMeasure}
                         />
                     </Grid>
                 </Grid>

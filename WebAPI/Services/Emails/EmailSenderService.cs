@@ -1,10 +1,10 @@
 ﻿using Mailjet.Client;
 using Mailjet.Client.Resources;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 using WebAPI.Exceptions;
 using WebAPI.Interfaces.Emails;
-using WebAPI.Resources;
 using WebAPI.Settings;
 using WebAPI.ViewModels.Request;
 
@@ -12,10 +12,12 @@ namespace WebAPI.Services.Emails
 {
     public class EmailSenderService : IEmailSenderService
     {
+        private readonly IStringLocalizer<ErrorMessages> _errorMessagesLocalizer;
         private readonly MailSettings _mailSettings;
-        public EmailSenderService(IOptions<MailSettings> options)
+        public EmailSenderService(IStringLocalizer<ErrorMessages> errorMessagesLocalizer, IOptions<MailSettings> options)
         {
             _mailSettings = options.Value;
+            _errorMessagesLocalizer = errorMessagesLocalizer;
         }
         public async Task SendEmailAsync(MailRequest request)
         {
@@ -25,7 +27,7 @@ namespace WebAPI.Services.Emails
 
             var response = await client.PostAsync(CreateMessage(request));
             if (!response.IsSuccessStatusCode)
-                throw new AppException(ErrorMessages.EmailSendingFailed);
+                throw new AppException(_errorMessagesLocalizer["EmailSendingFailed"]);
         }
         private MailjetRequest CreateMessage(MailRequest request)
         {

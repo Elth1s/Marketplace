@@ -2,10 +2,10 @@
 using DAL;
 using DAL.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Localization;
 using WebAPI.Exceptions;
 using WebAPI.Extensions;
 using WebAPI.Interfaces.Questions;
-using WebAPI.Resources;
 using WebAPI.Specifications.Products;
 using WebAPI.Specifications.Questions;
 using WebAPI.ViewModels.Request.Questions;
@@ -16,13 +16,14 @@ namespace WebAPI.Services.Questions
 {
     public class QuestionService : IQuestionService
     {
+        private readonly IStringLocalizer<ErrorMessages> _errorMessagesLocalizer;
         private readonly UserManager<AppUser> _userManager;
         private readonly IRepository<Question> _questionRepository;
         private readonly IRepository<QuestionImage> _questionImageRepository;
         private readonly IRepository<QuestionVotes> _questionVotesRepository;
         private readonly IRepository<Product> _productRepository;
         private readonly IMapper _mapper;
-        public QuestionService(
+        public QuestionService(IStringLocalizer<ErrorMessages> errorMessagesLocalizer,
             IRepository<Question> questionRepository,
             IRepository<QuestionImage> questionImageRepository,
             IRepository<Product> productRepository,
@@ -30,6 +31,7 @@ namespace WebAPI.Services.Questions
             UserManager<AppUser> userManager,
              IMapper mapper)
         {
+            _errorMessagesLocalizer = errorMessagesLocalizer;
             _questionRepository = questionRepository;
             _questionImageRepository = questionImageRepository;
             _productRepository = productRepository;
@@ -64,7 +66,8 @@ namespace WebAPI.Services.Questions
 
             var userEmail = await _userManager.FindByEmailAsync(request.Email);
             if (userEmail != null && user.Id != userEmail.Id)
-                throw new AppValidationException(new ValidationError(nameof(AppUser.Email), ErrorMessages.InvalidUserEmail));
+                throw new AppValidationException(
+                    new ValidationError(nameof(AppUser.Email), _errorMessagesLocalizer["InvalidUserEmail"]));
             if (string.IsNullOrEmpty(user.Email))
                 await _userManager.SetEmailAsync(user, request.Email);
 

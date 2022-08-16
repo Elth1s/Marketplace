@@ -33,16 +33,16 @@ namespace WebAPI.Services.Filters
             var spec = new FilterValueIncludeFullInfoSpecification();
             var filters = await _filterValueRepository.ListAsync(spec);
 
-            var response = filters.Select(c => _mapper.Map<FilterValueResponse>(c));
+            var response = _mapper.Map<IEnumerable<FilterValueResponse>>(filters);
             return response;
         }
-        public async Task<FilterValueResponse> GetFilterValueByIdAsync(int filterValueId)
+        public async Task<FilterValueFullInfoResponse> GetFilterValueByIdAsync(int filterValueId)
         {
             var spec = new FilterValueIncludeFullInfoSpecification(filterValueId);
             var filter = await _filterValueRepository.GetBySpecAsync(spec);
             filter.FilterValueNullChecking();
 
-            var response = _mapper.Map<FilterValueResponse>(filter);
+            var response = _mapper.Map<FilterValueFullInfoResponse>(filter);
             return response;
         }
 
@@ -51,23 +51,25 @@ namespace WebAPI.Services.Filters
             var filterName = await _filterNameRepository.GetByIdAsync(request.FilterNameId);
             filterName.FilterNameNullChecking();
 
-            var filter = _mapper.Map<FilterValue>(request);
+            var filterValue = _mapper.Map<FilterValue>(request);
 
-            await _filterValueRepository.AddAsync(filter);
+            await _filterValueRepository.AddAsync(filterValue);
             await _filterValueRepository.SaveChangesAsync();
         }
 
         public async Task UpdateFilterValueAsync(int filterValueId, FilterValueRequest request)
         {
+            var spec = new FilterValueIncludeFullInfoSpecification(filterValueId);
+            var filterValue = await _filterValueRepository.GetBySpecAsync(spec);
+            filterValue.FilterValueNullChecking();
+
             var filterName = await _filterNameRepository.GetByIdAsync(request.FilterNameId);
             filterName.FilterNameNullChecking();
 
-            var filter = await _filterValueRepository.GetByIdAsync(filterValueId);
-            filter.FilterValueNullChecking();
+            filterValue.FilterValueTranslations.Clear();
+            _mapper.Map(request, filterValue);
 
-            _mapper.Map(request, filter);
-
-            await _filterValueRepository.UpdateAsync(filter);
+            await _filterValueRepository.UpdateAsync(filterValue);
             await _filterValueRepository.SaveChangesAsync();
         }
 

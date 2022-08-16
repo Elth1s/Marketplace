@@ -19,6 +19,7 @@ import { catalogReducer } from "../../pages/default/Catalog/reducer";
 import { productReducer } from "../../pages/default/product/reducer";
 import { basketReducer } from "../../components/Basket/reducer";
 import { userReducer } from "../../pages/admin/user/reducer";
+import { orderStatusReducer } from "../../pages/admin/orderStatus/reducer";
 
 import { shopInfoReducer } from "../../pages/default/ShopInfo/reducer";
 
@@ -42,7 +43,8 @@ export const rootReducer = combineReducers({
     product: productReducer,
     basket: basketReducer,
     user: userReducer,
-    shopInfo: shopInfoReducer
+    shopInfo: shopInfoReducer,
+    orderStatus: orderStatusReducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

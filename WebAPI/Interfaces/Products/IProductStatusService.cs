@@ -9,7 +9,7 @@ namespace WebAPI.Interfaces.Products
     {
         Task<IEnumerable<ProductStatusResponse>> GetAsync();
         Task<AdminSearchResponse<ProductStatusResponse>> SearchProductStatusesAsync(AdminSearchRequest request);
-        Task<ProductStatusResponse> GetByIdAsync(int id);
+        Task<ProductStatusFullInfoResponse> GetByIdAsync(int id);
         Task CreateAsync(ProductStatusRequest request);
         Task UpdateAsync(int id, ProductStatusRequest request);
         Task DeleteAsync(int id);

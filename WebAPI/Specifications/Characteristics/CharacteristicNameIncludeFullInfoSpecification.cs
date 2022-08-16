@@ -8,7 +8,7 @@ namespace WebAPI.Specifications.Characteristics
         public CharacteristicNameIncludeFullInfoSpecification()
         {
             Query.Include(c => c.CharacteristicGroup)
-                 .Include(c => c.Unit)
+                 .Include(c => c.Unit).ThenInclude(u => u.UnitTranslations)
                  .AsSplitQuery();
 
         }
@@ -17,7 +17,7 @@ namespace WebAPI.Specifications.Characteristics
         {
             Query.Where(i => i.Id == id)
                 .Include(c => c.CharacteristicGroup)
-                .Include(c => c.Unit)
+                .Include(c => c.Unit).ThenInclude(u => u.UnitTranslations)
                 .AsSplitQuery();
 
         }

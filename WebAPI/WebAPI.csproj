@@ -12,6 +12,7 @@
 		<IsPackable>false</IsPackable>
 		<SpaRoot>client-app\</SpaRoot>
 		<DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
+		<EmbeddedResourceUseDependentUponConvention>false</EmbeddedResourceUseDependentUponConvention>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -76,21 +77,15 @@
 	</Target>
 
 	<ItemGroup>
-		<Compile Update="Resources\ErrorMessages.Designer.cs">
-			<DependentUpon>ErrorMessages.resx</DependentUpon>
-			<DesignTime>True</DesignTime>
-			<AutoGen>True</AutoGen>
-		</Compile>
-	</ItemGroup>
-
-	<ItemGroup>
-		<EmbeddedResource Update="Resources\ErrorMessages.resx">
-			<LastGenOutput>ErrorMessages.Designer.cs</LastGenOutput>
-			<Generator>ResXFileCodeGenerator</Generator>
+		<EmbeddedResource Update="Resources\MailResources.uk-UA.resx">
+		  <Generator>PublicResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Resources\ValidationResourсes.en-US.resx">
+		  <Generator></Generator>
 		</EmbeddedResource>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="ViewModels\Request\Basket\" />
+	  <Folder Include="ViewModels\Request\Baskets\" />
 	</ItemGroup>
 </Project>

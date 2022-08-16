@@ -3,7 +3,8 @@ import { CategoryAction, CategoryActionTypes, CategoryState } from "./types";
 const initialState: CategoryState = {
     selectedCategory: {
         id: 0,
-        name: "",
+        englishName: "",
+        ukrainianName: "",
         urlSlug: "",
         image: "",
         icon: "",

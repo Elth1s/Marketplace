@@ -8,20 +8,25 @@ namespace WebAPI.Specifications.Categories
         public CategoryIncludeFullInfoSpecification()
         {
             Query.Include(p => p.Parent)
-                .AsSplitQuery();
+                 .ThenInclude(p => p.CategoryTranslations)
+                 .Include(p => p.CategoryTranslations)
+                 .AsSplitQuery();
         }
 
-        public CategoryIncludeFullInfoSpecification(int id)
+        public CategoryIncludeFullInfoSpecification(int? id)
         {
             Query.Where(o => o.Id == id)
-                .Include(p => p.Parent)
-                .AsSplitQuery();
+                 .Include(p => p.CategoryTranslations)
+                 .Include(p => p.Parent)
+                 .ThenInclude(p => p.CategoryTranslations)
+                 .AsSplitQuery();
         }
         public CategoryIncludeFullInfoSpecification(string urlSlug)
         {
             Query.Where(o => o.UrlSlug == urlSlug)
-                .Include(p => p.Parent)
-                .AsSplitQuery();
+                 .Include(p => p.CategoryTranslations)
+                 .Include(p => p.Parent)
+                 .AsSplitQuery();
         }
     }
 }

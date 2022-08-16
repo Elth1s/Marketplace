@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Security.Claims;
 using WebAPI.Interfaces.Products;
@@ -20,10 +21,12 @@ namespace WebAPI.Controllers.Products
     {
         private string UserId => User?.FindFirstValue(ClaimTypes.NameIdentifier);
 
+        private readonly IStringLocalizer<ProductController> _productLocalizer;
         private readonly IProductService _productService;
-        public ProductController(IProductService productService)
+        public ProductController(IProductService productService, IStringLocalizer<ProductController> productLocalizer)
         {
             _productService = productService;
+            _productLocalizer = productLocalizer;
         }
 
 
@@ -138,7 +141,7 @@ namespace WebAPI.Controllers.Products
         public async Task<IActionResult> Create([FromBody] ProductCreateRequest request)
         {
             await _productService.CreateAsync(request, UserId);
-            return Ok("Product created successfully");
+            return Ok(_productLocalizer["CreateSuccess"].Value);
         }
 
         //[Authorize(Roles = "Admin,Seller")]
@@ -168,7 +171,7 @@ namespace WebAPI.Controllers.Products
         public async Task<IActionResult> Delete(int id)
         {
             await _productService.DeleteAsync(id);
-            return Ok("Product deleted successfully");
+            return Ok(_productLocalizer["DeleteSuccess"].Value);
         }
 
         /// <summary>
@@ -189,7 +192,7 @@ namespace WebAPI.Controllers.Products
         public async Task<IActionResult> DeleteProducts([FromQuery] IEnumerable<int> ids)
         {
             await _productService.DeleteProductsAsync(ids);
-            return Ok("Products deleted successfully");
+            return Ok(_productLocalizer["DeleteListSuccess"].Value);
         }
     }
 }

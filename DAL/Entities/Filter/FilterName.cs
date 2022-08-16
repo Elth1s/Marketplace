@@ -4,8 +4,6 @@ namespace DAL.Entities
 {
     public class FilterName : BaseEntity, IAggregateRoot
     {
-        public string Name { get; set; }
-
         public int FilterGroupId { get; set; }
         public int? UnitId { get; set; }
 
@@ -15,5 +13,6 @@ namespace DAL.Entities
         public Unit Unit { get; set; }
 
         public ICollection<FilterValue> FilterValues { get; set; }
+        public ICollection<FilterNameTranslation> FilterNameTranslations { get; set; }
     }
 }

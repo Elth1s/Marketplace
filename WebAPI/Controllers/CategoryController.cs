@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
 using WebAPI.Interfaces;
 using WebAPI.ViewModels.Request;
@@ -20,10 +21,12 @@ namespace WebAPI.Controllers
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
+        private readonly IStringLocalizer<CategoryController> _categoryLocalizer;
 
-        public CategoryController(ICategoryService categoryService)
+        public CategoryController(ICategoryService categoryService, IStringLocalizer<CategoryController> categoryLocalizer)
         {
             _categoryService = categoryService;
+            _categoryLocalizer = categoryLocalizer;
         }
 
         /// <summary>
@@ -226,7 +229,7 @@ namespace WebAPI.Controllers
         /// <response code="403">You don't have permission</response>
         /// <response code="404">Category not found</response>
         /// <response code="500">An internal error has occurred</response>
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(CategoryResponse))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(CategoryFullInfoResponse))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
@@ -244,16 +247,23 @@ namespace WebAPI.Controllers
         /// </summary>
         /// <param name="request">New category</param>
         /// <response code="200">Category creation completed successfully</response>
+        /// <response code="400">Category name or URL slug not unique</response>
         /// <response code="401">You are not authorized</response>
         /// <response code="403">You don't have permission</response>
         /// <response code="404">Category parent not found</response>
-        /// <response code="500">An internal error has occurred</response>
+        /// <response code="500">An internal error has occurred</response>        
+        [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
         [HttpPost("Create")]
         public async Task<IActionResult> CreateCategory([FromBody] CategoryRequest request)
         {
             await _categoryService.CreateAsync(request);
-            return Ok("Category created successfully");
+            return Ok(_categoryLocalizer["CreateSuccess"].Value);
         }
 
         /// <summary>
@@ -262,11 +272,13 @@ namespace WebAPI.Controllers
         /// <param name="id">Category identifier</param>
         /// <param name="request">Category</param>
         /// <response code="200">Category update completed successfully</response>
+        /// <response code="400">Category name or URL slug not unique</response>
         /// <response code="401">You are not authorized</response>
         /// <response code="403">You don't have permission</response>
         /// <response code="404">Category parent or category not found</response>
         /// <response code="500">An internal error has occurred</response>
         [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
@@ -276,7 +288,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> UpdateCategory(int id, [FromBody] CategoryRequest request)
         {
             await _categoryService.UpdateAsync(id, request);
-            return Ok("Category updated successfully");
+            return Ok(_categoryLocalizer["UpdateSuccess"].Value);
         }
 
         /// <summary>
@@ -298,7 +310,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> DeleteCategory(int id)
         {
             await _categoryService.DeleteAsync(id);
-            return Ok("Category deleted successfully");
+            return Ok(_categoryLocalizer["DeleteSuccess"].Value);
         }
 
         /// <summary>
@@ -319,7 +331,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> DeleteCategories([FromQuery] IEnumerable<int> ids)
         {
             await _categoryService.DeleteCategoriesAsync(ids);
-            return Ok("Categories deleted successfully");
+            return Ok(_categoryLocalizer["DeleteListSuccess"].Value);
         }
     }
 }

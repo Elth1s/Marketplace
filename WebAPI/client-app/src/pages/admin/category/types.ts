@@ -9,7 +9,8 @@ export enum CategoryActionTypes {
 
 export interface ICategory {
     id: number,
-    name: string,
+    englishName: string,
+    ukrainianName: string,
     urlSlug: string,
     image: string,
     icon: string,

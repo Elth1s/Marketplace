@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
 using WebAPI.Interfaces;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Response;
+using WebAPI.ViewModels.Response.Countries;
 
 namespace WebAPI.Controllers
 {
@@ -16,9 +18,12 @@ namespace WebAPI.Controllers
     public class CountryController : ControllerBase
     {
         private readonly ICountryService _countryService;
-        public CountryController(ICountryService countryService)
+        private readonly IStringLocalizer<CountryController> _countryLocalizer;
+
+        public CountryController(ICountryService countryService, IStringLocalizer<CountryController> countryLocalizer)
         {
             _countryService = countryService;
+            _countryLocalizer = countryLocalizer;
         }
 
         /// <summary>
@@ -68,7 +73,7 @@ namespace WebAPI.Controllers
         /// <response code="403">You don't have permission</response>
         /// <response code="404">Country not found</response>
         /// <response code="500">An internal error has occurred</response>
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(CountryResponse))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(CountryFullInfoResponse))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
@@ -86,10 +91,12 @@ namespace WebAPI.Controllers
         /// </summary>
         /// <param name="request">New country</param>
         /// <response code="200">Country creation completed successfully</response>
+        /// <response code="400">Country name not unique</response>
         /// <response code="401">You are not authorized</response>
         /// <response code="403">You don't have permission</response>        
         /// <response code="500">An internal error has occurred</response>
         [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
@@ -98,7 +105,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> CreateCountry([FromBody] CountryRequest request)
         {
             await _countryService.CreateCountryAsync(request);
-            return Ok("Country created successfully");
+            return Ok(_countryLocalizer["CreateSuccess"].Value);
         }
 
         /// <summary>
@@ -107,11 +114,13 @@ namespace WebAPI.Controllers
         /// <param name="countryId">Country identifier</param>
         /// <param name="request">Country</param>
         /// <response code="200">Country update completed successfully</response>
+        /// <response code="400">Country name not unique</response>
         /// <response code="401">You are not authorized</response>
         /// <response code="403">You don't have permission</response>
         /// <response code="404">Country not found</response>
         /// <response code="500">An internal error has occurred</response>
         [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
@@ -121,7 +130,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> UpdateCountry(int countryId, [FromBody] CountryRequest request)
         {
             await _countryService.UpdateCountryAsync(countryId, request);
-            return Ok("Country updated successfully");
+            return Ok(_countryLocalizer["UpdateSuccess"].Value);
         }
 
         /// <summary>
@@ -142,7 +151,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> DeleteCountry(int countryId)
         {
             await _countryService.DeleteCountryAsync(countryId);
-            return Ok("Country deleted successfully");
+            return Ok(_countryLocalizer["DeleteSuccess"].Value);
         }
 
         /// <summary>
@@ -163,7 +172,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> DeleteCountries([FromQuery] IEnumerable<int> ids)
         {
             await _countryService.DeleteCountriesAsync(ids);
-            return Ok("Countries deleted successfully");
+            return Ok(_countryLocalizer["DeleteListSuccess"].Value);
         }
     }
 }

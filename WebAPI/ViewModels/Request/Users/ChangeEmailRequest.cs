@@ -1,6 +1,7 @@
 ﻿using DAL.Entities;
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Localization;
 
 namespace WebAPI.ViewModels.Request.Users
 {
@@ -27,19 +28,22 @@ namespace WebAPI.ViewModels.Request.Users
     public class ChangeEmailRequestValidator : AbstractValidator<ChangeEmailRequest>
     {
         private readonly UserManager<AppUser> _userManager;
-        public ChangeEmailRequestValidator(UserManager<AppUser> userManager)
+        private readonly IStringLocalizer<ValidationResourсes> _validationResources;
+        public ChangeEmailRequestValidator(UserManager<AppUser> userManager,
+            IStringLocalizer<ValidationResourсes> validationResources)
         {
+            _validationResources = validationResources;
             _userManager = userManager;
 
             //Email
             RuleFor(x => x.Email).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName("Email address").WithMessage("{PropertyName} is required")
-               .EmailAddress().WithMessage("Invalid format of {PropertyName}")
-               .Must(IsUniqueEmail).WithMessage("User with this {PropertyName} already exists");
+               .NotEmpty().WithName(_validationResources["EmailAddressPropName"]).WithMessage(_validationResources["RequiredMessage"])
+               .EmailAddress()
+               .Must(IsUniqueEmail).WithMessage(_validationResources["UserUniqueEmailMessage"]);
 
             //Password
             RuleFor(x => x.Password).Cascade(CascadeMode.Stop)
-                .NotEmpty().WithName("Password").WithMessage("{PropertyName} is required");
+                .NotEmpty().WithName(_validationResources["PasswordPropName"]);
         }
 
         private bool IsUniqueEmail(string email)

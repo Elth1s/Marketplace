@@ -31,7 +31,8 @@ const CategoryCreate = () => {
 
     const item: ICategory = {
         id: 0,
-        name: "",
+        englishName: "",
+        ukrainianName: "",
         urlSlug: "",
         image: "",
         icon: "",
@@ -109,23 +110,32 @@ const CategoryCreate = () => {
                         <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
                             <Grid container spacing={2}>
                                 <Grid container item xs={10}>
-                                    <Grid item xs={12}>
+                                    <Grid item xs={6}>
                                         <TextFieldFirstStyle
                                             fullWidth
                                             variant="standard"
-                                            autoComplete="name"
                                             type="text"
-                                            label="Name"
-                                            {...getFieldProps('name')}
-                                            error={Boolean(touched.name && errors.name)}
-                                            helperText={touched.name && errors.name}
+                                            label="English name"
+                                            {...getFieldProps('englishName')}
+                                            error={Boolean(touched.englishName && errors.englishName)}
+                                            helperText={touched.englishName && errors.englishName}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <TextFieldFirstStyle
+                                            fullWidth
+                                            variant="standard"
+                                            type="text"
+                                            label="Ukrainian name"
+                                            {...getFieldProps('ukrainianName')}
+                                            error={Boolean(touched.ukrainianName && errors.ukrainianName)}
+                                            helperText={touched.ukrainianName && errors.ukrainianName}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
                                         <TextFieldFirstStyle
                                             fullWidth
                                             variant="standard"
-                                            autoComplete="urlSlug"
                                             type="text"
                                             label="Url slug"
                                             {...getFieldProps('urlSlug')}

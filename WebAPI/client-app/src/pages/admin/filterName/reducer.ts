@@ -6,7 +6,8 @@ import {
 
 const initialState: FilterNameState = {
     selectedFilterName: {
-        name: "",
+        englishName: "",
+        ukrainianName: "",
         filterGroupId: 0,
         unitId: 0,
     },

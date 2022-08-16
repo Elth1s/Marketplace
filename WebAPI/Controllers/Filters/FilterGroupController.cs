@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
 using WebAPI.Interfaces.Filters;
 using WebAPI.ViewModels.Request;
@@ -18,9 +19,13 @@ namespace WebAPI.Controllers.Filters
     public class FilterGroupController : ControllerBase
     {
         private readonly IFilterGroupService _filterGroupService;
-        public FilterGroupController(IFilterGroupService filterGroupService)
+        private readonly IStringLocalizer<FilterGroupController> _filterGroupLocalizer;
+
+        public FilterGroupController(IFilterGroupService filterGroupService,
+             IStringLocalizer<FilterGroupController> filterGroupLocalizer)
         {
             _filterGroupService = filterGroupService;
+            _filterGroupLocalizer = filterGroupLocalizer;
         }
 
         /// <summary>
@@ -70,7 +75,7 @@ namespace WebAPI.Controllers.Filters
         /// <response code="403">You don't have permission</response>
         /// <response code="404">Filter group not found</response>
         /// <response code="500">An internal error has occurred</response> 
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(FilterGroupResponse))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(FilterGroupFullInfoResponse))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
@@ -88,10 +93,12 @@ namespace WebAPI.Controllers.Filters
         /// </summary>
         /// <param name="request">New filter group</param>
         /// <response code="200">Filter group creation completed successfully</response>
+        /// <response code="400">Filter group name not unique</response>
         /// <response code="401">You are not authorized</response>
         /// <response code="403">You don't have permission</response>
         /// <response code="500">An internal error has occurred</response> 
         [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
@@ -100,7 +107,7 @@ namespace WebAPI.Controllers.Filters
         public async Task<IActionResult> CreateFilterGroup([FromBody] FilterGroupRequest request)
         {
             await _filterGroupService.CreateFilterGroupAsync(request);
-            return Ok("Filter group created successfully");
+            return Ok(_filterGroupLocalizer["CreateSuccess"].Value);
         }
 
         /// <summary>
@@ -109,11 +116,13 @@ namespace WebAPI.Controllers.Filters
         /// <param name="filterGroupId">Filter group identifier</param>
         /// <param name="request">Filter group</param>
         /// <response code="200">Filter group update completed successfully</response>
+        /// <response code="400">Filter group name not unique</response>
         /// <response code="401">You are not authorized</response>
         /// <response code="403">You don't have permission</response>
         /// <response code="404">Filter group not found</response>
         /// <response code="500">An internal error has occurred</response> 
         [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
@@ -123,7 +132,7 @@ namespace WebAPI.Controllers.Filters
         public async Task<IActionResult> UpdateFilterGroup(int filterGroupId, [FromBody] FilterGroupRequest request)
         {
             await _filterGroupService.UpdateFilterGroupAsync(filterGroupId, request);
-            return Ok("Filter group updated successfully");
+            return Ok(_filterGroupLocalizer["UpdateSuccess"].Value);
         }
 
         /// <summary>
@@ -145,7 +154,7 @@ namespace WebAPI.Controllers.Filters
         public async Task<IActionResult> DeleteFilterGroup(int filterGroupId)
         {
             await _filterGroupService.DeleteFilterGroupAsync(filterGroupId);
-            return Ok("Filter group deleted successfully");
+            return Ok(_filterGroupLocalizer["DeleteSuccess"].Value);
         }
 
         /// <summary>
@@ -166,7 +175,7 @@ namespace WebAPI.Controllers.Filters
         public async Task<IActionResult> Delete([FromQuery] IEnumerable<int> ids)
         {
             await _filterGroupService.DeleteAsync(ids);
-            return Ok("Filter groups deleted successfully");
+            return Ok(_filterGroupLocalizer["DeleteListSuccess"].Value);
         }
     }
 }

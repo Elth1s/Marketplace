@@ -8,7 +8,9 @@ namespace WebAPI.Specifications.Products
     {
         public ProductGetByCategoryIdSpecification(int categoryId, List<FilterValue> filters, int? page, int? rowsPerPage, int? productId = null)
         {
-            Query.Where(item => categoryId == item.CategoryId);
+            Query.Where(item => categoryId == item.CategoryId)
+                 .Include(c => c.Category)
+                 .ThenInclude(c => c.CategoryTranslations);
 
             if (productId != null)
                 Query.Where(item => productId != item.Id);

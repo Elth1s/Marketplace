@@ -8,15 +8,17 @@ namespace WebAPI.Specifications.Categories
         public CatalogSpecification()
         {
             Query.Where(c => c.ParentId == null)
-                .AsSplitQuery();
+                 .Include(c => c.CategoryTranslations)
+                 .AsSplitQuery();
         }
 
         public CatalogSpecification(int? parentId)
         {
             Query.Where(c => c.ParentId == parentId)
-                .Include(c => c.Children)
-                .ThenInclude(c => c.Children)
-                .AsSplitQuery();
+                 .Include(c => c.CategoryTranslations)
+                 .Include(c => c.Children).ThenInclude(p => p.CategoryTranslations)
+                 .Include(c => c.Children).ThenInclude(c => c.Children).ThenInclude(p => p.CategoryTranslations)
+                 .AsSplitQuery();
         }
     }
 }

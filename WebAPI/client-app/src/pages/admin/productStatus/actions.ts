@@ -61,7 +61,7 @@ export const GetProductStatuses = () => {
 export const GetByIdProductStatus = (id: number) => {
     return async (dispatch: Dispatch<ProductStatusAction>) => {
         try {
-            let response = await http.get<IProductStatusInfo>(`api/ProductStatus/GetById/${id}`)
+            let response = await http.get<IProductStatus>(`api/ProductStatus/GetById/${id}`)
 
             dispatch({
                 type: ProductStatusActionTypes.GET_BY_ID_PRODUCT_STATUS,

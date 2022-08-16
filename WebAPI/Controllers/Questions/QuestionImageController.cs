@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
 using WebAPI.Interfaces.Questions;
 using WebAPI.ViewModels.Response.Questions;
@@ -15,10 +16,14 @@ namespace WebAPI.Controllers.Questions
     public class QuestionImageController : ControllerBase
     {
         private readonly IQuestionImageService _questionImageService;
+        private readonly IStringLocalizer<QuestionImageController> _queationImageLocalizer;
 
-        public QuestionImageController(IQuestionImageService questionImageService)
+
+        public QuestionImageController(IQuestionImageService questionImageService,
+            IStringLocalizer<QuestionImageController> queationImageLocalizer)
         {
             _questionImageService = questionImageService;
+            _queationImageLocalizer = queationImageLocalizer;
         }
 
         /// <summary>
@@ -35,7 +40,8 @@ namespace WebAPI.Controllers.Questions
         public async Task<IActionResult> Create([FromBody] string base64)
         {
             var result = await _questionImageService.CreateAsync(base64);
-            return Created("Question image created successfully", result);
+            //return Created(_queationImageLocalizer["CreateSuccess"], result);
+            return Created("", result);
         }
 
         /// <summary>
@@ -55,7 +61,7 @@ namespace WebAPI.Controllers.Questions
         public async Task<IActionResult> DeleteCity(int id)
         {
             await _questionImageService.DeleteAsync(id);
-            return Ok("Question image deleted successfully");
+            return Ok(_queationImageLocalizer["DeleteSuccess"]);
         }
     }
 }

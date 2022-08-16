@@ -8,7 +8,8 @@ namespace WebAPI.Specifications.Categories
         public CategoryGetByUrlSlugSpecification(string urlSlug)
         {
             Query.Where(item => item.UrlSlug == urlSlug)
-                .AsSplitQuery();
+                 .Include(item => item.CategoryTranslations)
+                 .AsSplitQuery();
         }
     }
 }

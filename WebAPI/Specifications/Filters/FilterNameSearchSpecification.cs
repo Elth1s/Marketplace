@@ -1,6 +1,7 @@
 ﻿using Ardalis.Specification;
 using DAL.Entities;
 using WebAPI.Extensions;
+using WebAPI.Helpers;
 
 namespace WebAPI.Specifications.Filters
 {
@@ -8,26 +9,42 @@ namespace WebAPI.Specifications.Filters
     {
         public FilterNameSearchSpecification(string name, bool isAscOrder, string orderBy, int? skip = null, int? take = null)
         {
+            Query.Include(c => c.FilterNameTranslations)
+                 .Include(c => c.FilterGroup)
+                 .ThenInclude(f => f.FilterGroupTranslations)
+                 .Include(c => c.Unit)
+                 .ThenInclude(u => u.UnitTranslations)
+                 .AsSplitQuery();
+
             if (!string.IsNullOrEmpty(name))
-                Query.Where(item => item.Name.Contains(name));
+                Query.Where(item => item.FilterNameTranslations.Any(c => c.LanguageId == CurrentLanguage.Id && c.Name.Contains(name)));
 
-            Query.Include(c => c.FilterGroup)
-                .Include(c => c.Unit)
-                .AsSplitQuery();
-
-            if (orderBy == "filterGroupName")
+            if (orderBy == "name")
             {
                 if (isAscOrder)
-                    Query.OrderBy(c => c.FilterGroup.Name);
+                    Query.OrderBy(c => c.FilterNameTranslations.FirstOrDefault(
+                                  t => t.LanguageId == CurrentLanguage.Id).Name);
                 else
-                    Query.OrderByDescending(c => c.FilterGroup.Name);
+                    Query.OrderByDescending(c => c.FilterNameTranslations.FirstOrDefault(
+                                            t => t.LanguageId == CurrentLanguage.Id).Name);
+            }
+            else if (orderBy == "filterGroupName")
+            {
+                if (isAscOrder)
+                    Query.OrderBy(c => c.FilterGroup.FilterGroupTranslations.FirstOrDefault(
+                                  t => t.LanguageId == CurrentLanguage.Id).Name);
+                else
+                    Query.OrderByDescending(c => c.FilterGroup.FilterGroupTranslations.FirstOrDefault(
+                                  t => t.LanguageId == CurrentLanguage.Id).Name);
             }
             else if (orderBy == "unitMeasure")
             {
                 if (isAscOrder)
-                    Query.OrderBy(c => c.Unit.Measure);
+                    Query.OrderBy(c => c.Unit.UnitTranslations.FirstOrDefault(
+                                  t => t.LanguageId == CurrentLanguage.Id).Measure);
                 else
-                    Query.OrderByDescending(c => c.Unit.Measure);
+                    Query.OrderByDescending(c => c.Unit.UnitTranslations.FirstOrDefault(
+                                  t => t.LanguageId == CurrentLanguage.Id).Measure);
             }
             else
             {

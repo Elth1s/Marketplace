@@ -7,7 +7,8 @@ export enum FilterValueActionTypes {
 }
 
 export interface IFilterValue {
-    value: string,
+    englishValue: string,
+    ukrainianValue: string,
     min: number | string | null,
     max: number | string | null,
     filterNameId: number,

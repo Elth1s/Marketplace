@@ -20,6 +20,7 @@ import * as CatalogActionCreators from "../../pages/default/Catalog/actions"
 import * as ProductActionCreators from "../../pages/default/product/actions"
 import * as BasketActionCreators from "../../components/Basket/actions";
 import * as ShopActionCreators from "../../pages/seller/CreateShopDialog/actions"
+import * as OrderStatusActionCreators from "../../pages/admin/orderStatus/actions"
 
 import * as ShopInfoActionCreators from "../../pages/default/ShopInfo/action"
 
@@ -45,6 +46,7 @@ const actions = {
     ...BasketActionCreators,
     ...UserActionCreators,
     ...ShopActionCreators,
+    ...OrderStatusActionCreators,
     ...ShopInfoActionCreators
 }
 export default actions;

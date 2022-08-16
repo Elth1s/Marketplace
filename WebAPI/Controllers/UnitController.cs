@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
 using WebAPI.Interfaces;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Response;
+using WebAPI.ViewModels.Response.Units;
 
 namespace WebAPI.Controllers
 {
@@ -16,9 +18,11 @@ namespace WebAPI.Controllers
     public class UnitController : ControllerBase
     {
         private readonly IUnitService _unitService;
-        public UnitController(IUnitService unitService)
+        private readonly IStringLocalizer<UnitController> _unitLocalizer;
+        public UnitController(IUnitService unitService, IStringLocalizer<UnitController> unitLocalizer)
         {
             _unitService = unitService;
+            _unitLocalizer = unitLocalizer;
         }
 
         /// <summary>
@@ -68,7 +72,7 @@ namespace WebAPI.Controllers
         /// <response code="403">You don't have permission</response>
         /// <response code="404">Unit not found</response>
         /// <response code="500">An internal error has occurred</response>
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(UnitResponse))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(UnitFullInfoResponse))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
@@ -86,10 +90,12 @@ namespace WebAPI.Controllers
         /// </summary>
         /// <param name="request">New unit</param>
         /// <response code="200">Unit creation completed successfully</response>
+        /// <response code="400">Measure not unique</response>
         /// <response code="401">You are not authorized</response>
         /// <response code="403">You don't have permission</response>        
         /// <response code="500">An internal error has occurred</response>
         [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
@@ -98,7 +104,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> CreateUnit([FromBody] UnitRequest request)
         {
             await _unitService.CreateAsync(request);
-            return Ok("Unit created successfully");
+            return Ok(_unitLocalizer["CreateSuccess"].Value);
         }
 
         /// <summary>
@@ -107,11 +113,13 @@ namespace WebAPI.Controllers
         /// <param name="id">Unit identifier</param>
         /// <param name="request">Unit</param>
         /// <response code="200">Unit update completed successfully</response>
+        /// <response code="400">Measure not unique</response>
         /// <response code="401">You are not authorized</response>
         /// <response code="403">You don't have permission</response>
         /// <response code="404">Unit not found</response>
         /// <response code="500">An internal error has occurred</response>
         [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
@@ -121,7 +129,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> UpdateUnit(int id, [FromBody] UnitRequest request)
         {
             await _unitService.UpdateAsync(id, request);
-            return Ok("Unit updated successfully");
+            return Ok(_unitLocalizer["UpdateSuccess"].Value);
         }
 
         /// <summary>
@@ -142,7 +150,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> DeleteUnit(int id)
         {
             await _unitService.DeleteAsync(id);
-            return Ok("Unit deleted successfully");
+            return Ok(_unitLocalizer["DeleteSuccess"].Value);
         }
 
         /// <summary>
@@ -163,7 +171,7 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> DeleteUnits([FromQuery] IEnumerable<int> ids)
         {
             await _unitService.DeleteUnitsAsync(ids);
-            return Ok("Units deleted successfully");
+            return Ok(_unitLocalizer["DeleteListSuccess"].Value);
         }
     }
 }

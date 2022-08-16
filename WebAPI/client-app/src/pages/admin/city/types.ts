@@ -7,7 +7,8 @@ export enum CityActionTypes {
 }
 
 export interface ICity {
-    name: string,
+    englishName: string,
+    ukrainianName: string,
     countryId: number,
 }
 

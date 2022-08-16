@@ -1,7 +1,5 @@
-﻿using DAL;
-using DAL.Entities;
-using FluentValidation;
-using WebAPI.Specifications.Filters;
+﻿using FluentValidation;
+using Microsoft.Extensions.Localization;
 
 namespace WebAPI.ViewModels.Request.Filters
 {
@@ -11,10 +9,15 @@ namespace WebAPI.ViewModels.Request.Filters
     public class FilterGroupRequest
     {
         /// <summary>
-        /// Name of filter group
+        /// English name of the filter group
         /// </summary>
         /// <example>Main</example>
-        public string Name { get; set; }
+        public string EnglishName { get; set; }
+        /// <summary>
+        /// Ukrainian name of the filter group
+        /// </summary>
+        /// <example>Основна</example>
+        public string UkrainianName { get; set; }
     }
 
     /// <summary>
@@ -22,22 +25,19 @@ namespace WebAPI.ViewModels.Request.Filters
     /// </summary>
     public class FilterGroupRequestValidator : AbstractValidator<FilterGroupRequest>
     {
-        private readonly IRepository<FilterGroup> _filterGroupRepository;
-        public FilterGroupRequestValidator(IRepository<FilterGroup> filterGroupRepository)
+        private readonly IStringLocalizer<ValidationResourсes> _validationResources;
+        public FilterGroupRequestValidator(IStringLocalizer<ValidationResourсes> validationResources)
         {
-            _filterGroupRepository = filterGroupRepository;
+            _validationResources = validationResources;
 
-            //Name
-            RuleFor(x => x.Name).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName("Name").WithMessage("{PropertyName} is required")
-               .Must(IsUniqueName).WithMessage("Filter group with this {PropertyName} already exists")
-               .Length(2, 30).WithMessage("{PropertyName} should be between 2 and 30 characters");
-        }
-
-        private bool IsUniqueName(string name)
-        {
-            var spec = new FilterGroupGetByNameSpecification(name);
-            return _filterGroupRepository.GetBySpecAsync(spec).Result == null;
+            //English Name
+            RuleFor(x => x.EnglishName).Cascade(CascadeMode.Stop)
+               .NotEmpty().WithName(_validationResources["EnglishNamePropName"]).WithMessage(_validationResources["RequiredMessage"])
+               .Length(2, 30);
+            //Ukrainian Name
+            RuleFor(x => x.UkrainianName).Cascade(CascadeMode.Stop)
+               .NotEmpty().WithName(_validationResources["UkrainianNamePropName"]).WithMessage(_validationResources["RequiredMessage"])
+               .Length(2, 30);
         }
     }
 }
