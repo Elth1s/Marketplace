@@ -1,54 +1,57 @@
-import { Avatar, Checkbox, TableRow } from '@mui/material';
+import { Avatar, Checkbox, TableRow, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { useActions } from '../../../../hooks/useActions';
 import { useTypedSelector } from '../../../../hooks/useTypedSelector';
 
-import { IProductInfo } from '../types';
 import { HeadCell } from '../../../../store/types';
 
 import EnhancedTable from '../../../../components/EnhancedTable';
 import { TableCellStyle } from '../../../../components/EnhancedTable/styled';
+import { IProductInfo } from '../../../seller/product/types';
 
+const AdminProductTable = () => {
+    const { t } = useTranslation();
 
-const headCells: HeadCell<IProductInfo>[] = [
-    {
-        id: 'id',
-        numeric: true,
-        label: 'Identifier',
-    },
-    {
-        id: 'name',
-        numeric: false,
-        label: 'Name',
-    },
-    {
-        id: 'image',
-        numeric: false,
-        label: 'Image',
-    },
-    {
-        id: 'price',
-        numeric: false,
-        label: 'Price',
-    },
-    {
-        id: 'count',
-        numeric: false,
-        label: 'Count',
-    },
-    {
-        id: 'statusName',
-        numeric: false,
-        label: 'Status Name',
-    },
-    {
-        id: 'categoryName',
-        numeric: false,
-        label: 'Category Name',
-    }
-];
+    const headCells: HeadCell<IProductInfo>[] = [
+        {
+            id: 'id',
+            numeric: true,
+            label: `${t('containers.admin_seller.tableHeadCell.identifier')}`,
+        },
+        {
+            id: 'name',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.name')}`,
+        },
+        {
+            id: 'image',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.image')}`,
+        },
+        {
+            id: 'price',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.price')}`,
+        },
+        {
+            id: 'count',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.count')}`,
+        },
+        {
+            id: 'statusName',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.productStatus')}`,
+        },
+        {
+            id: 'categoryName',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.category')}`,
+        }
+    ];
 
-const ProductTable = () => {
     const [page, setPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(8);
     const [name, setName] = useState("");
@@ -58,16 +61,16 @@ const ProductTable = () => {
     const [selected, setSelected] = useState<readonly number[]>([]);
 
     const { SearchProducts, DeleteProducts } = useActions();
-    const { products, count } = useTypedSelector((store) => store.productAdmin);
+    const { products, count } = useTypedSelector((store) => store.productSeller);
 
     useEffect(() => {
-        document.title = "Products";
+        document.title = `${t('containers.admin_seller.sideBar.products')}`;
         getData();
     }, [page, rowsPerPage, name, isAscOrder, orderBy]);
 
     const getData = async () => {
         try {
-            await SearchProducts(page, rowsPerPage, name, isAscOrder, orderBy);
+            await SearchProducts(page, rowsPerPage, name, isAscOrder, orderBy, false);
             setSelected([]);
         } catch (ex) {
         }
@@ -76,7 +79,6 @@ const ProductTable = () => {
     const onDelete = async () => {
         await DeleteProducts(selected);
         setPage(1);
-        getData();
     }
 
     const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
@@ -121,7 +123,7 @@ const ProductTable = () => {
 
     return (
         <>
-
+            <Typography variant="h1" sx={{ my: "30px", py: "4.5px" }}>{t('containers.admin_seller.sideBar.products')}</Typography>
             <EnhancedTable
                 page={page}
                 rowsPerPage={rowsPerPage}
@@ -187,4 +189,4 @@ const ProductTable = () => {
     );
 }
 
-export default ProductTable
+export default AdminProductTable

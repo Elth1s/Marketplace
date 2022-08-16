@@ -1,5 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next';
 
 import BreadcrumbsComponent from '../../../components/BreadcrumbsComponent';
 import CatalogItem from '../../../components/CatalogItem';
@@ -9,11 +10,13 @@ import { useTypedSelector } from '../../../hooks/useTypedSelector';
 import { BoxCatalogStyle } from './styled';
 
 const Catalog = () => {
+    const { t } = useTranslation();
+
     const { GetCatalog } = useActions();
     const { name, catalogItems } = useTypedSelector(state => state.catalog);
 
     useEffect(() => {
-        document.title = name;
+        document.title = `${t("components.breadcrumbs.catalog")}`;
         getData();
     }, [])
 
@@ -28,7 +31,7 @@ const Catalog = () => {
         <>
             <BreadcrumbsComponent parents={[]} />
             <Typography variant='h1' sx={{ marginBottom: "30px" }}>
-                Catalog
+                {t("components.breadcrumbs.catalog")}
             </Typography>
             <BoxCatalogStyle>
                 {catalogItems.map((row, index) => {

@@ -60,11 +60,11 @@ namespace WebAPI.Controllers.Products
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Seller")]
         [HttpGet("Search")]
-        public async Task<IActionResult> SearchProducts([FromQuery] AdminSearchRequest request)
+        public async Task<IActionResult> SearchProducts([FromQuery] SellerSearchRequest request)
         {
-            var result = await _productService.SearchProductsAsync(request);
+            var result = await _productService.SearchProductsAsync(request, UserId);
             return Ok(result);
         }
 
@@ -140,7 +140,7 @@ namespace WebAPI.Controllers.Products
         [HttpPost("Create")]
         public async Task<IActionResult> Create([FromBody] ProductCreateRequest request)
         {
-            await _productService.CreateAsync(request);
+            await _productService.CreateAsync(request, UserId);
             return Ok(_productLocalizer["CreateSuccess"].Value);
         }
 

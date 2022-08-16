@@ -10,7 +10,8 @@ import {
     Button,
 } from '@mui/material';
 import React, { useEffect } from 'react'
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 import { useActions } from '../../hooks/useActions';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
@@ -19,14 +20,18 @@ import { getLocalAccessToken } from '../../http_comon';
 import LinkRouter from '../LinkRouter';
 import BasketItem from './BasketItem';
 
-import { orange_shopping_cart } from '../../assets/icons';
+import { orange_shopping_cart, basket_empty } from '../../assets/icons';
 
 const Basket = () => {
+    const { t } = useTranslation();
+
     const { GetBasketItems } = useActions();
     const { basketItems } = useTypedSelector(state => state.basket);
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
+
+    let { urlSlug } = useParams();
 
     const navigate = useNavigate();
 
@@ -77,13 +82,15 @@ const Basket = () => {
                 PaperProps={{
                     elevation: 0,
                     sx: {
-                        borderRadius: 3,
+                        borderRadius: "10px",
                         overflow: 'visible',
                         filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.5))',
-                        mt: 0.5,
+                        pt: "20px",
                         minWidth: "500px",
-                        maxHeight: "450px",
-                        px: 2,
+                        maxHeight: "660px",
+                        px: "20px",
+                        pb: "25px",
+                        mt: "20px",
                         '& .MuiAvatar-root': {
                             width: 32,
                             height: 32,
@@ -92,12 +99,17 @@ const Basket = () => {
                         }
                     },
                 }}
+                MenuListProps={{
+                    sx: {
+                        p: 0
+                    }
+                }}
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <Typography variant='h4' fontWeight="bold">
-                        Basket
+                <Box sx={{ height: "auto", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <Typography variant='h3' lineHeight="30px" fontWeight="bold">
+                        {t('components.basket.title')}
                     </Typography>
                     <IconButton
                         aria-label="close"
@@ -108,21 +120,53 @@ const Basket = () => {
                         <Close />
                     </IconButton>
                 </Box>
-                <Paper elevation={0} sx={{ maxHeight: "330px", overflow: 'auto', '&::-webkit-scrollbar': { display: "none" } }} >
-                    {basketItems.map((row, index) => {
-                        return (
-                            <Box key={`$basket_{row.id}`}>
-                                <Divider sx={{ my: 1, background: "#77777" }} />
-                                <BasketItem id={row.id} image={row.productImage} name={row.productName} price={row.productPrice} />
-                            </Box>
-                        );
-                    })}
+                <Paper elevation={0} sx={{ maxHeight: "480px", mt: "15px", overflow: 'auto', '&::-webkit-scrollbar': { display: "none" } }} >
+                    {basketItems?.length != 0
+                        ? basketItems.map((row, index) => {
+                            return (
+                                <Box key={`$basket_${row.id}`}>
+                                    <Divider sx={{ background: "#77777" }} />
+                                    <BasketItem
+                                        id={row.id}
+                                        count={row.count}
+                                        image={row.productImage}
+                                        name={row.productName}
+                                        price={row.productPrice}
+                                        productCount={row.productCount}
+                                        urlSlug={row.productUrlSlug}
+                                        closeBasket={handleClose}
+                                        linkUrlSlug={urlSlug}
+                                    />
+                                </Box>
+                            );
+                        }) :
+                        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", my: "120px" }}>
+                            <img
+                                style={{ width: "100px", height: "100px" }}
+                                src={basket_empty}
+                                alt="basket_empty"
+                            />
+                            <Typography variant='h5' sx={{ my: "13.5px" }}>
+                                {t("components.basket.basketEmpty")}
+                            </Typography>
+                            <Typography variant='subtitle1'>
+                                {t("components.basket.basketEmptyDescription")}
+                            </Typography>
+                        </Box>
+                    }
                 </Paper>
-                <LinkRouter underline="none" to="/ordering">
-                    <Button color="secondary" variant="contained" sx={{ width: "100%", my: 1, mt: 2 }} >
-                        Order
-                    </Button>
-                </LinkRouter>
+                {basketItems?.length
+                    ? <LinkRouter underline="none" to="/ordering">
+                        <Button color="secondary" variant="contained" sx={{ width: "100%", mt: "15px", fontSize: "20px", lineHeight: "25px", py: "12.5px", textTransform: "none" }} >
+                            {t('components.basket.order')}
+                        </Button>
+                    </LinkRouter>
+                    : <LinkRouter underline="none" to="/catalog" onClick={handleClose}>
+                        <Button color="secondary" variant="contained" sx={{ width: "100%", mt: "15px", fontSize: "20px", lineHeight: "25px", py: "12.5px", textTransform: "none" }} >
+                            {t('components.basket.shopping')}
+                        </Button>
+                    </LinkRouter>
+                }
             </Menu>
         </>
     )

@@ -9,9 +9,9 @@ import { ServerError, UpdateProps } from "../../../../store/types";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import { useActions } from "../../../../hooks/useActions";
 import { UnitSchema } from "../validation";
-import TextFieldComponent from "../../../../components/TextField";
 import DialogComponent from "../../../../components/Dialog";
 import { toLowerFirstLetter } from "../../../../http_comon";
+import { TextFieldFirstStyle } from "../../../../components/TextField/styled";
 
 
 const Update: FC<UpdateProps> = ({ id, afterUpdate }) => {
@@ -75,21 +75,27 @@ const Update: FC<UpdateProps> = ({ id, afterUpdate }) => {
             dialogContent={
                 <Grid container rowSpacing={2}>
                     <Grid item xs={12}>
-                        <TextFieldComponent
+                        <TextFieldFirstStyle
+                            fullWidth
+                            autoComplete="englishMeasure"
+                            variant="standard"
                             type="text"
                             label="English Measure"
-                            error={errors.englishMeasure}
-                            touched={touched.englishMeasure}
-                            getFieldProps={{ ...getFieldProps('englishMeasure') }}
+                            {...getFieldProps('englishMeasure')}
+                            error={Boolean(touched.englishMeasure && errors.englishMeasure)}
+                            helperText={touched.englishMeasure && errors.englishMeasure}
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <TextFieldComponent
+                        <TextFieldFirstStyle
+                            fullWidth
+                            autoComplete="ukrainianMeasure"
+                            variant="standard"
                             type="text"
                             label="Ukrainian Measure"
-                            error={errors.ukrainianMeasure}
-                            touched={touched.ukrainianMeasure}
-                            getFieldProps={{ ...getFieldProps('ukrainianMeasure') }}
+                            {...getFieldProps('ukrainianMeasure')}
+                            error={Boolean(touched.ukrainianMeasure && errors.ukrainianMeasure)}
+                            helperText={touched.ukrainianMeasure && errors.ukrainianMeasure}
                         />
                     </Grid>
                 </Grid>

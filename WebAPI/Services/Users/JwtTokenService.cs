@@ -48,7 +48,9 @@ namespace WebAPI.Services.Users
                 (user.Email != null ?
                 new Claim(ClaimTypes.Email, user.Email)
                 :
-                new Claim(ClaimTypes.MobilePhone, user.PhoneNumber))
+                new Claim(ClaimTypes.MobilePhone, user.PhoneNumber)),
+                new Claim(CustomClaimTypes.IsEmailExist, (user.Email != null).ToString()),
+
             };
 
             claims.AddRange(roles.Select(role => new Claim(ClaimsIdentity.DefaultRoleClaimType, role)));

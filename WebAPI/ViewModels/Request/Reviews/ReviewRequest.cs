@@ -77,17 +77,15 @@ namespace WebAPI.ViewModels.Request.Reviews
             //Product rating
             RuleFor(c => c.ProductRating).Cascade(CascadeMode.Stop)
                .NotEmpty().WithName(_validationResources["ProductRatingPropName"])
-               .InclusiveBetween(1, 5);
+               .InclusiveBetween(0.5f, 5);
 
             //Advantage
             RuleFor(a => a.Advantages).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName(_validationResources["AdvantagesPropName"]).WithMessage(_validationResources["PluralRequiredMessage"])
-               .MaximumLength(100).WithMessage(_validationResources["PluralLengthMessage"]);
+               .MaximumLength(100).WithName(_validationResources["AdvantagesPropName"]).WithMessage(_validationResources["PluralLengthMessage"]);
 
             //Disadvantage
             RuleFor(a => a.Disadvantages).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName(_validationResources["DisadvantagesPropName"]).WithMessage(_validationResources["PluralRequiredMessage"])
-               .MaximumLength(100).WithMessage(_validationResources["PluralLengthMessage"]);
+               .MaximumLength(100).WithName(_validationResources["DisadvantagesPropName"]).WithMessage(_validationResources["PluralLengthMessage"]);
 
             //Comment
             RuleFor(a => a.Comment).Cascade(CascadeMode.Stop)

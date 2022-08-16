@@ -15,10 +15,8 @@ namespace WebAPI.Specifications.Shops
         {
             Query.Where(a => a.Id == id)
                 .Include(u => u.User)
-                .Include(a => a.City)
-                .ThenInclude(c => c.CityTranslations)
-                .Include(a => a.City)
-                .ThenInclude(f => f.Country).ThenInclude(c => c.CountryTranslations)
+                .Include(a => a.City).ThenInclude(c => c.CityTranslations)
+                .Include(a => a.City).ThenInclude(f => f.Country).ThenInclude(c => c.CountryTranslations)
                 .AsSplitQuery();
         }
     }

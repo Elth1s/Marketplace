@@ -32,6 +32,9 @@ namespace WebAPI.Services
 
         public async Task<IEnumerable<BasketResponse>> GetAllAsync(string userId)
         {
+            var user = await _userManager.FindByIdAsync(userId);
+            user.UserNullChecking();
+
             var spec = new BasketItemIncludeFullInfoSpecification(userId);
             var baskets = await _basketItemRepository.ListAsync(spec);
             return _mapper.Map<IEnumerable<BasketResponse>>(baskets);
@@ -46,9 +49,13 @@ namespace WebAPI.Services
             var product = await _productRepository.GetBySpecAsync(spec);
             product.ProductNullChecking();
 
-            var basketItem = new BasketItem() { ProductId = product.Id, UserId = user.Id, Count = 1 };
+            var basketSpec = new BasketItemIncludeFullInfoSpecification(user.Id, product.Id);
+            var basketItem = await _basketItemRepository.GetBySpecAsync(basketSpec);
+            basketItem.BasketItemExistChecking();
 
-            await _basketItemRepository.AddAsync(basketItem);
+            var newBasketItem = new BasketItem() { ProductId = product.Id, UserId = user.Id, Count = 1 };
+
+            await _basketItemRepository.AddAsync(newBasketItem);
             await _basketItemRepository.SaveChangesAsync();
         }
 

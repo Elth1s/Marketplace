@@ -12,6 +12,7 @@ import DefaultLayout from './containers/DefaultLayout';
 import AuthLayout from './containers/AuthLayout';
 import AdminLayout from './containers/AdminLayout';
 import ProfileLayout from './containers/ProfileLayout';
+import SellerLayout from './containers/SellerLayout';
 
 import SignIn from './pages/auth/SignInDialog';
 import SignUp from './pages/auth/SignUpDialog';
@@ -32,15 +33,21 @@ import CategoryTable from './pages/admin/category/Table';
 import CategoryCreate from './pages/admin/category/Create';
 import CategoryUpdate from './pages/admin/category/Update';
 
-import CharacteristicGroupTable from './pages/admin/characteristicGroup/Table';
-import CharacteristicNameTable from './pages/admin/characteristicName/Table';
-import CharacteristicValueTable from './pages/admin/characteristicValue/Table';
+import AdminCharacteristicGroupTable from './pages/admin/characteristicGroup/Table';
+import AdminCharacteristicNameTable from './pages/admin/characteristicName/Table';
+import AdminCharacteristicValueTable from './pages/admin/characteristicValue/Table';
+
+import CharacteristicGroupTable from './pages/seller/characteristicGroup/Table';
+import CharacteristicNameTable from './pages/seller/characteristicName/Table';
+import CharacteristicValueTable from './pages/seller/characteristicValue/Table';
+
+import ProductTable from './pages/seller/product/Table';
 
 import FilterGroupTable from './pages/admin/filterGroup/Table';
 import FilterNameTable from './pages/admin/filterName/Table';
 import FilterValueTable from './pages/admin/filterValue/Table';
 
-import ProductTable from './pages/admin/product/Table';
+import AdminProductTable from './pages/admin/product/Table';
 import ProductStatusTable from './pages/admin/productStatus/Table';
 
 import ShopTable from './pages/admin/shop/Table';
@@ -53,6 +60,8 @@ import OrderStatusTable from './pages/admin/orderStatus/Table';
 import UserTable from './pages/admin/user/Table';
 
 import NotFound from './pages/notfound';
+import ProductCreate from './pages/seller/product/Create';
+import SellerHome from './pages/seller/Home';
 
 function App() {
   const { isAuth } = useTypedSelector(store => store.auth);
@@ -166,19 +175,19 @@ function App() {
 
   return (
     <>
-      <ToastContainer
-        position="bottom-right"
-        autoClose={false}
-        hideProgressBar={true}
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light" />
       <ThemeProvider theme={theme}>
         <CssBaseline />
+        <ToastContainer
+          position="bottom-right"
+          autoClose={5000}
+          hideProgressBar={true}
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light" />
         <Routes>
 
           <Route path="/" element={<DefaultLayout />}>
@@ -186,48 +195,59 @@ function App() {
             <Route path="/catalog" element={<Catalog />} />
             <Route path="/catalog/:urlSlug" element={<CatalogWithProducts />} />
             <Route path="/product/:urlSlug" element={<Product />} />
-
+            <Route path="/product/:urlSlug/:menu" element={<Product />} />
           </Route>
 
-          <Route path="/profile" element={<ProfileLayout />}>
-            <Route path="/profile/information" element={<Profile />} />
-            <Route path="/profile/reviewed-products" element={<Reviewed />} />
-            <Route path="/profile/order" element={<Order />} />
+          <Route path="/seller" element={<SellerLayout />}>
+            <Route index element={<SellerHome />} />
           </Route>
 
-          <Route path="/ordering" element={<Ordering />} />
+          <Route path="/profile/" element={<ProfileLayout />}>
+            <Route path="information" element={<Profile />} />
+            <Route path="reviewed-products" element={<Reviewed />} />
+            <Route path="order" element={<Order />} />
+          </Route>
 
-          <Route element={<AuthLayout />}>
+          <Route path="ordering" element={<Ordering />} />
+
+          {/* <Route element={<AuthLayout />}>
             <Route path="/auth/signin" element={<SignIn />} />
             <Route path="/auth/signup" element={<SignUp />} />
+          </Route> */}
+
+          <Route path="/seller/" element={<SellerLayout />}>
+            <Route path="characteristicGroups" element={<CharacteristicGroupTable />} />
+            <Route path="characteristicNames" element={<CharacteristicNameTable />} />
+            <Route path="characteristicValues" element={<CharacteristicValueTable />} />
+            <Route path="products" element={<ProductTable />} />
+            <Route path="products/create" element={<ProductCreate />} />
           </Route>
 
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route path="/admin/category" element={<CategoryTable />} />
-            <Route path="/admin/category/create" element={<CategoryCreate />} />
-            <Route path="/admin/category/update/:id" element={<CategoryUpdate />} />
+          <Route path="/admin/" element={<AdminLayout />}>
+            <Route path="categories" element={<CategoryTable />} />
+            <Route path="categories/create" element={<CategoryCreate />} />
+            <Route path="categories/update/:id" element={<CategoryUpdate />} />
 
-            <Route path="/admin/characteristicGroup" element={<CharacteristicGroupTable />} />
-            <Route path="/admin/characteristicName" element={<CharacteristicNameTable />} />
-            <Route path="/admin/characteristicValue" element={<CharacteristicValueTable />} />
+            <Route path="characteristicGroups" element={<AdminCharacteristicGroupTable />} />
+            <Route path="characteristicNames" element={<AdminCharacteristicNameTable />} />
+            <Route path="characteristicValues" element={<AdminCharacteristicValueTable />} />
 
-            <Route path="/admin/filterGroup" element={<FilterGroupTable />} />
-            <Route path="/admin/filterName" element={<FilterNameTable />} />
-            <Route path="/admin/filterValue" element={<FilterValueTable />} />
+            <Route path="filterGroups" element={<FilterGroupTable />} />
+            <Route path="filterNames" element={<FilterNameTable />} />
+            <Route path="filterValues" element={<FilterValueTable />} />
 
-            <Route path="/admin/productStatus" element={<ProductStatusTable />} />
-            <Route path="/admin/product" element={<ProductTable />} />
+            <Route path="productStatuses" element={<ProductStatusTable />} />
+            <Route path="products" element={<AdminProductTable />} />
 
-            <Route path="/admin/shop" element={<ShopTable />} />
+            <Route path="shops" element={<ShopTable />} />
 
-            <Route path="/admin/country" element={<CountryTable />} />
-            <Route path="/admin/city" element={<CityTable />} />
+            <Route path="countries" element={<CountryTable />} />
+            <Route path="cities" element={<CityTable />} />
 
-            <Route path="/admin/unit" element={<UnitTable />} />
+            <Route path="units" element={<UnitTable />} />
 
-            <Route path="/admin/user" element={<UserTable />} />
-
-            <Route path="/admin/orderStatus" element={<OrderStatusTable />} />
+            <Route path="users" element={<UserTable />} />
+            <Route path="orderStatuses" element={<OrderStatusTable />} />
           </Route>
 
           <Route path="/confirmEmail" element={<ConfirmEmail />} />

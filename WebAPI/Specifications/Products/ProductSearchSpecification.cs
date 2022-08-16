@@ -7,10 +7,14 @@ namespace WebAPI.Specifications.Products
 {
     public class ProductSearchSpecification : Specification<Product>
     {
-        public ProductSearchSpecification(string name, bool isAscOrder, string orderBy, int? skip = null, int? take = null)
+        public ProductSearchSpecification(string name, bool isAscOrder, string orderBy, bool isSeller, int? shopId, int? skip = null, int? take = null)
         {
             if (!string.IsNullOrEmpty(name))
-                Query.Where(item => item.Name.Contains(name));
+                if (shopId != null)
+                    Query.Where(item => item.Name.Contains(name));
+
+            if (isSeller)
+                Query.Where(item => item.ShopId == shopId);
 
             Query.Include(o => o.Category).ThenInclude(c => c.CategoryTranslations)
                  .Include(o => o.Status).ThenInclude(s => s.ProductStatusTranslations)

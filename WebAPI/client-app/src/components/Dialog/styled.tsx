@@ -11,7 +11,14 @@ export const LoadingButtonStyle = styled(LoadingButton)(({ theme }) => ({
 
 export const DialogStyle = styled(Dialog)(({ theme }) => ({
     "& .MuiDialog-paper": {
-        width: "600px",
+        minWidth: "600px",
+        borderRadius: "10px"
+    },
+}));
+
+export const ReviewDialogStyle = styled(Dialog)(({ theme }) => ({
+    "& .MuiDialog-paper": {
+        minWidth: "725px",
         borderRadius: "10px"
     },
 }));

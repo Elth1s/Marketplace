@@ -7,7 +7,26 @@ export const icon_color_facebook = "/assets/icons/icon_color_facebook.png";
 export const close = "/assets/icons/close.png";
 export const white_close = "/assets/icons/white-close.png";
 export const success = "/assets/icons/success.png";
+export const error = "/assets/icons/error.png";
+export const warning = "/assets/icons/warning.png";
+export const info = "/assets/icons/info.png";
 export const check = "/assets/icons/check.png";
+
+export const white_plus = "/assets/icons/white-plus.png";
+
+export const basket_empty = "/assets/icons/basket-empty.png"
+
+export const upload_cloud = "/assets/icons/upload-cloud.png"
+
+export const reply = "/assets/icons/reply.png"
+
+export const like = "/assets/icons/like.png"
+export const dislike = "/assets/icons/dislike.png"
+
+export const link = "/assets/icons/link.png"
+
+export const minus = "/assets/icons/minus.png"
+export const plus = "/assets/icons/black-plus.png"
 
 export const credit_card = "/assets/icons/credit-card.png";
 export const dollar_sign = "/assets/icons/dollar-sign.png";
@@ -55,3 +74,8 @@ export const icon_telegram = "/assets/icons/icon-telegram.png";
 export const icon_viber = "/assets/icons/icon-viber.png";
 
 export const phone_call = "/assets/icons/phone-call.png";
+
+export const phone = "/assets/icons/phone.png";
+export const mail = "/assets/icons/mail.png";
+export const map_pin = "/assets/icons/map_pin.png";
+export const globe = "/assets/icons/globe.png";

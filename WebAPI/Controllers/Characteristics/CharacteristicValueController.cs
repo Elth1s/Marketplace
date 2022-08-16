@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
+using System.Security.Claims;
 using WebAPI.Interfaces.Characteristics;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Request.Characteristics;
@@ -18,6 +19,8 @@ namespace WebAPI.Controllers.Characteristics
     [ApiController]
     public class CharacteristicValueController : Controller
     {
+        private string UserId => User?.FindFirstValue(ClaimTypes.NameIdentifier);
+
         private readonly ICharacteristicValueService _characteristicValueService;
         private readonly IStringLocalizer<CharacteristicValueController> _characteristicValueLocalizer;
 
@@ -59,11 +62,11 @@ namespace WebAPI.Controllers.Characteristics
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Seller")]
         [HttpGet("Search")]
-        public async Task<IActionResult> SearchCharacteristicValue([FromQuery] AdminSearchRequest request)
+        public async Task<IActionResult> SearchCharacteristicValue([FromQuery] SellerSearchRequest request)
         {
-            var result = await _characteristicValueService.SearchAsync(request);
+            var result = await _characteristicValueService.SearchAsync(request, UserId);
             return Ok(result);
         }
 
@@ -107,7 +110,7 @@ namespace WebAPI.Controllers.Characteristics
         [HttpPost("Create")]
         public async Task<IActionResult> Create([FromBody] CharacteristicValueRequest request)
         {
-            await _characteristicValueService.CreateAsync(request);
+            await _characteristicValueService.CreateAsync(request, UserId);
             return Ok(_characteristicValueLocalizer["CreateSuccess"].Value);
         }
 
@@ -130,7 +133,7 @@ namespace WebAPI.Controllers.Characteristics
         [HttpPut("Update/{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] CharacteristicValueRequest request)
         {
-            await _characteristicValueService.UpdateAsync(id, request);
+            await _characteristicValueService.UpdateAsync(id, request, UserId);
             return Ok(_characteristicValueLocalizer["UpdateSuccess"].Value);
         }
 

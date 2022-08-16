@@ -3,15 +3,15 @@ import * as ForgotPasswordActionCreators from "../../pages/auth/ForgotPassword/a
 
 import * as ProfileActionCreators from "../../pages/user/actions"
 import * as CategoryActionCreators from "../../pages/admin/category/actions"
-import * as CharacteristicGroupActionCreators from "../../pages/admin/characteristicGroup/actions"
-import * as CharacteristicNameActionCreators from "../../pages/admin/characteristicName/actions"
-import * as CharacteristicValueActionCreators from "../../pages/admin/characteristicValue/actions"
+import * as CharacteristicGroupActionCreators from "../../pages/seller/characteristicGroup/actions"
+import * as CharacteristicNameActionCreators from "../../pages/seller/characteristicName/actions"
+import * as CharacteristicValueActionCreators from "../../pages/seller/characteristicValue/actions"
 import * as FilterGroupActionCreators from "../../pages/admin/filterGroup/actions"
 import * as FilterNameActionCreators from "../../pages/admin/filterName/actions"
 import * as FilterValueActionCreators from "../../pages/admin/filterValue/actions"
 import * as CountryActionCreators from "../../pages/admin/country/actions"
 import * as ProductStatusActionCreators from "../../pages/admin/productStatus/actions"
-import * as AdminProductActionCreators from "../../pages/admin/product/actions"
+import * as SellerProductActionCreators from "../../pages/seller/product/actions"
 import * as AdminShopActionCreators from "../../pages/admin/shop/actions"
 import * as CityActionCreators from "../../pages/admin/city/actions"
 import * as UnitActionCreators from "../../pages/admin/unit/actions"
@@ -21,6 +21,8 @@ import * as ProductActionCreators from "../../pages/default/product/actions"
 import * as BasketActionCreators from "../../components/Basket/actions";
 import * as ShopActionCreators from "../../pages/seller/CreateShopDialog/actions"
 import * as OrderStatusActionCreators from "../../pages/admin/orderStatus/actions"
+
+import * as ShopInfoActionCreators from "../../pages/default/ShopInfo/action"
 
 const actions = {
     ...AuthActionCreators,
@@ -34,7 +36,7 @@ const actions = {
     ...FilterNameActionCreators,
     ...FilterValueActionCreators,
     ...ProductStatusActionCreators,
-    ...AdminProductActionCreators,
+    ...SellerProductActionCreators,
     ...AdminShopActionCreators,
     ...CountryActionCreators,
     ...CityActionCreators,
@@ -44,6 +46,7 @@ const actions = {
     ...BasketActionCreators,
     ...UserActionCreators,
     ...ShopActionCreators,
-    ...OrderStatusActionCreators
+    ...OrderStatusActionCreators,
+    ...ShopInfoActionCreators
 }
 export default actions;

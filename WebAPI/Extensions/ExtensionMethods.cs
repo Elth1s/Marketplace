@@ -291,8 +291,6 @@ namespace WebAPI.Extensions
             }
         }
 
-
-
         public static void ProductImageNullChecking(this ProductImage productImage)
         {
             if (productImage == null)
@@ -466,6 +464,7 @@ namespace WebAPI.Extensions
         }
         #endregion
 
+        #region Basket
         public static void BasketItemNullChecking(this BasketItem basketItem)
         {
             if (basketItem == null)
@@ -476,6 +475,16 @@ namespace WebAPI.Extensions
                     HttpStatusCode.NotFound);
             }
         }
+
+        public static void BasketItemExistChecking(this BasketItem basketItem)
+        {
+            if (basketItem != null)
+            {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
+                throw new AppException(factory["BasketItemExist"]);
+            }
+        }
+        #endregion
 
         public static void ShopNullChecking(this Shop shop)
         {

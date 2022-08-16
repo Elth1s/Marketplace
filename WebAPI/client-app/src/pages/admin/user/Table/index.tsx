@@ -1,5 +1,7 @@
-import { Avatar, Checkbox, TableRow } from '@mui/material';
+import { Avatar, Checkbox, TableRow, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { useActions } from '../../../../hooks/useActions';
 import { useTypedSelector } from '../../../../hooks/useTypedSelector';
 
@@ -10,40 +12,43 @@ import EnhancedTable from '../../../../components/EnhancedTable';
 import { TableCellStyle } from '../../../../components/EnhancedTable/styled';
 
 
-const headCells: HeadCell<IUserInfo>[] = [
-    {
-        id: 'id',
-        numeric: true,
-        label: 'Identifier',
-    },
-    {
-        id: 'firstName',
-        numeric: false,
-        label: 'First Name',
-    },
-    {
-        id: 'secondName',
-        numeric: false,
-        label: 'Second Name',
-    },
-    {
-        id: 'photo',
-        numeric: false,
-        label: 'Photo',
-    },
-    {
-        id: 'email',
-        numeric: false,
-        label: 'Email',
-    },
-    {
-        id: 'phone',
-        numeric: false,
-        label: 'Phone',
-    }
-];
 
 const UserTable = () => {
+    const { t } = useTranslation();
+
+    const headCells: HeadCell<IUserInfo>[] = [
+        {
+            id: 'id',
+            numeric: true,
+            label: `${t('containers.admin_seller.tableHeadCell.identifier')}`,
+        },
+        {
+            id: 'firstName',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.firstName')}`,
+        },
+        {
+            id: 'secondName',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.secondName')}`,
+        },
+        {
+            id: 'photo',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.photo')}`,
+        },
+        {
+            id: 'email',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.email')}`,
+        },
+        {
+            id: 'phone',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.phone')}`,
+        }
+    ];
+
     const [page, setPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(8);
     const [name, setName] = useState("");
@@ -56,7 +61,7 @@ const UserTable = () => {
     const { users, count } = useTypedSelector((store) => store.user);
 
     useEffect(() => {
-        document.title = "Users";
+        document.title = `${t('containers.admin_seller.sideBar.users')}`;
         getData();
     }, [page, rowsPerPage, name, isAscOrder, orderBy]);
 
@@ -71,7 +76,6 @@ const UserTable = () => {
     const onDelete = async () => {
         await DeleteUsers(selected);
         setPage(1);
-        getData();
     }
 
     const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
@@ -116,7 +120,7 @@ const UserTable = () => {
 
     return (
         <>
-
+            <Typography variant="h1" sx={{ my: "30px", py: "4.5px" }}>{t('containers.admin_seller.sideBar.users')}</Typography>
             <EnhancedTable
                 page={page}
                 rowsPerPage={rowsPerPage}

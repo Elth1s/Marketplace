@@ -39,7 +39,8 @@ namespace WebAPI.Controllers.Reviews
         public async Task<IActionResult> Create([FromBody] string base64)
         {
             var result = await _reviewImageService.CreateAsync(base64);
-            return Created(_reviewImageLocalizer["CreateSuccess"].Value, result);
+            //return Created(_reviewImageLocalizer["CreateSuccess"].Value, result);
+            return Created("", result);
         }
 
         /// <summary>

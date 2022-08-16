@@ -27,7 +27,7 @@ import { toLowerFirstLetter } from "../../../http_comon";
 import { login } from "../../../assets/backgrounds";
 
 import { AuthHeaderTypography } from "../styled";
-import { TextFieldFirstStyle } from "../../../components/TextField/style";
+import { TextFieldFirstStyle } from "../../../components/TextField/styled";
 import { LoadingButtonStyle } from '../../../components/LoadingButton/styled';
 
 

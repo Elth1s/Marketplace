@@ -13,6 +13,7 @@ import { CreateProps, ServerError } from '../../../../store/types';
 import DialogComponent from '../../../../components/Dialog';
 import TextFieldComponent from "../../../../components/TextField";
 import { toLowerFirstLetter } from '../../../../http_comon';
+import { TextFieldFirstStyle } from '../../../../components/TextField/styled';
 
 const OrderStatusCreate: FC<CreateProps> = ({ afterCreate }) => {
     const [open, setOpen] = useState(false);
@@ -85,22 +86,28 @@ const OrderStatusCreate: FC<CreateProps> = ({ afterCreate }) => {
 
             dialogContent={
                 <Grid container rowSpacing={2}>
-                    <Grid item xs={12} >
-                        <TextFieldComponent
+                    <Grid item xs={12}>
+                        <TextFieldFirstStyle
+                            fullWidth
+                            autoComplete="englishName"
+                            variant="standard"
                             type="text"
-                            label="English Name"
-                            error={errors.englishName}
-                            touched={touched.englishName}
-                            getFieldProps={{ ...getFieldProps('englishName') }}
+                            label="English name"
+                            {...getFieldProps('englishName')}
+                            error={Boolean(touched.englishName && errors.englishName)}
+                            helperText={touched.englishName && errors.englishName}
                         />
                     </Grid>
-                    <Grid item xs={12} >
-                        <TextFieldComponent
+                    <Grid item xs={12}>
+                        <TextFieldFirstStyle
+                            fullWidth
+                            autoComplete="ukrainianName"
+                            variant="standard"
                             type="text"
-                            label="Ukrainian Name"
-                            error={errors.ukrainianName}
-                            touched={touched.ukrainianName}
-                            getFieldProps={{ ...getFieldProps('ukrainianName') }}
+                            label="Ukrainian name"
+                            {...getFieldProps('ukrainianName')}
+                            error={Boolean(touched.ukrainianName && errors.ukrainianName)}
+                            helperText={touched.ukrainianName && errors.ukrainianName}
                         />
                     </Grid>
                 </Grid>

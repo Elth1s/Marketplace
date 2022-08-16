@@ -72,6 +72,7 @@ export const LanguageButtonStyle = styled(Button, {
     height: "auto",
     padding: 0,
     "&:hover": { background: "transparent" },
-    "&& .MuiTouchRipple-child": { backgroundColor: "transparent" }
+    "&& .MuiTouchRipple-child": { backgroundColor: "transparent" },
+    cursor: selected ? "default" : "pointer"
 }),
 );

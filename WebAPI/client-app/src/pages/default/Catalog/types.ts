@@ -17,7 +17,7 @@ export interface IFullCatalogItem {
     name: string,
     icon: string,
     urlSlug: string,
-    childrens: Array<IFullCatalogItem>
+    children: Array<IFullCatalogItem>
 }
 
 export interface IProductItem {

@@ -44,16 +44,6 @@ namespace DAL.Migrations
                 name: "Name",
                 table: "Categories");
 
-            migrationBuilder.RenameColumn(
-                name: "Disadvantage",
-                table: "Reviews",
-                newName: "Disadvantages");
-
-            migrationBuilder.RenameColumn(
-                name: "Advantage",
-                table: "Reviews",
-                newName: "Advantages");
-
             migrationBuilder.CreateTable(
                 name: "Languages",
                 columns: table => new
@@ -442,16 +432,6 @@ namespace DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "Languages");
-
-            migrationBuilder.RenameColumn(
-                name: "Disadvantages",
-                table: "Reviews",
-                newName: "Disadvantage");
-
-            migrationBuilder.RenameColumn(
-                name: "Advantages",
-                table: "Reviews",
-                newName: "Advantage");
 
             migrationBuilder.AddColumn<string>(
                 name: "Measure",

@@ -226,7 +226,7 @@
     <value>Ваш номер телефону вже підтверджено</value>
   </data>
   <data name="BasketItemNotFound" xml:space="preserve">
-    <value>Елемент кошика не знайдено</value>
+    <value>Товар в кошику не знайдено</value>
   </data>
   <data name="PasswordExist" xml:space="preserve">
     <value>Пароль вже існує</value>
@@ -323,5 +323,20 @@
   </data>
   <data name="UnitWithEnglishMeasureExist" xml:space="preserve">
     <value>Одиниця з такою мірою на англійській уже існує</value>
+  </data>
+  <data name="CharacteristicGroupExist" xml:space="preserve">
+    <value>Група характеристик з такою назвою вже існує</value>
+  </data>
+  <data name="CharacteristicValueExist" xml:space="preserve">
+    <value>Значення характеристики вже існує</value>
+  </data>
+  <data name="DontHavePermission" xml:space="preserve">
+    <value>Немає дозволу</value>
+  </data>
+  <data name="BasketItemExist" xml:space="preserve">
+    <value>Товар уже добавлено в кошик</value>
+  </data>
+  <data name="CharacteristicNameExist" xml:space="preserve">
+    <value>Назва характеристики вже існує</value>
   </data>
 </root>

@@ -26,7 +26,6 @@ namespace WebAPI.Specifications.Categories
             Query.Where(o => o.UrlSlug == urlSlug)
                  .Include(p => p.CategoryTranslations)
                  .Include(p => p.Parent)
-                 .ThenInclude(p => p.CategoryTranslations)
                  .AsSplitQuery();
         }
     }

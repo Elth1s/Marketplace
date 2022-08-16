@@ -1,7 +1,7 @@
-import TableRow from '@mui/material/TableRow';
-import Checkbox from '@mui/material/Checkbox';
+import { Typography, TableRow, Checkbox } from '@mui/material';
 
 import { useEffect, useState } from "react";
+import { useTranslation } from 'react-i18next';
 
 import { useActions } from "../../../../hooks/useActions";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
@@ -9,36 +9,36 @@ import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import EnhancedTable from '../../../../components/EnhancedTable';
 import { TableCellStyle } from '../../../../components/EnhancedTable/styled';
 
-import Create from '../Create';
-import Update from '../Update';
-
-import { ICharacteristicNameInfo } from '../types';
+import { ICharacteristicNameInfo } from '../../../seller/characteristicName/types';
 import { HeadCell } from '../../../../store/types';
 
-const headCells: HeadCell<ICharacteristicNameInfo>[] = [
-    {
-        id: 'id',
-        numeric: true,
-        label: 'Identifier',
-    },
-    {
-        id: 'name',
-        numeric: false,
-        label: 'Name',
-    },
-    {
-        id: 'characteristicGroupName',
-        numeric: false,
-        label: 'Characteristic Group',
-    },
-    {
-        id: 'unitMeasure',
-        numeric: false,
-        label: 'Unit Measure',
-    },
-];
 
-const CharacteristicNameTable = () => {
+const AdminCharacteristicNameTable = () => {
+    const { t } = useTranslation();
+
+    const headCells: HeadCell<ICharacteristicNameInfo>[] = [
+        {
+            id: 'id',
+            numeric: true,
+            label: `${t('containers.admin_seller.tableHeadCell.identifier')}`,
+        },
+        {
+            id: 'name',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.name')}`,
+        },
+        {
+            id: 'characteristicGroupName',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.characteristicGroup')}`,
+        },
+        {
+            id: 'unitMeasure',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.unitMeasure')}`,
+        },
+    ];
+
     const [page, setPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(8);
     const [name, setName] = useState("");
@@ -52,12 +52,12 @@ const CharacteristicNameTable = () => {
 
     useEffect(() => {
         getData();
-        document.title = "Characteristic Name";
+        document.title = `${t('containers.admin_seller.tableHeadCell.characteristicName')}`;
     }, [page, rowsPerPage, name, isAscOrder, orderBy]);
 
     const getData = async () => {
         try {
-            await SearchCharacteristicNames(page, rowsPerPage, name, isAscOrder, orderBy);
+            await SearchCharacteristicNames(page, rowsPerPage, name, isAscOrder, orderBy, false);
             setSelected([]);
         } catch (ex) {
         }
@@ -66,7 +66,6 @@ const CharacteristicNameTable = () => {
     const onDelete = async () => {
         await DeleteCharacteristicNames(selected);
         setPage(1);
-        getData();
     }
 
     const handleClick = (event: React.MouseEvent<unknown>, id: number) => {
@@ -111,7 +110,7 @@ const CharacteristicNameTable = () => {
 
     return (
         <>
-            <Create afterCreate={() => getData()} />
+            <Typography variant="h1" sx={{ my: "30px", py: "4.5px" }}>{t('containers.admin_seller.tableHeadCell.characteristicName')}</Typography>
             <EnhancedTable
                 page={page}
                 rowsPerPage={rowsPerPage}
@@ -127,7 +126,7 @@ const CharacteristicNameTable = () => {
                 numSelected={selected.length}
                 count={count}
                 onDelete={onDelete}
-                update={<Update id={selected[selected.length - 1]} afterUpdate={() => { getData() }} />}
+                update={null}
                 tableBody={
                     characteristicNames.map((row, index) => {
                         const isItemSelected = isSelected(row.id);
@@ -172,4 +171,4 @@ const CharacteristicNameTable = () => {
     );
 }
 
-export default CharacteristicNameTable;
+export default AdminCharacteristicNameTable;

@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using DAL;
 using DAL.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
+using System.Net;
 using WebAPI.Exceptions;
 using WebAPI.Extensions;
 using WebAPI.Interfaces.Characteristics;
@@ -19,37 +21,46 @@ namespace WebAPI.Services.Characteristcs
         private readonly IRepository<CharacteristicName> _characteristicNameRepository;
         private readonly IRepository<CharacteristicGroup> _characteristicGroupRepository;
         private readonly IRepository<Unit> _unitRepository;
+        private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
 
         public CharacteristicNameService(IStringLocalizer<ErrorMessages> errorMessagesLocalizer,
             IRepository<CharacteristicName> characteristicNameRepository,
             IRepository<CharacteristicGroup> characteristicGroupRepository,
             IRepository<Unit> unitRepository,
+            UserManager<AppUser> userManager,
             IMapper mapper)
         {
             _errorMessagesLocalizer = errorMessagesLocalizer;
             _characteristicNameRepository = characteristicNameRepository;
             _characteristicGroupRepository = characteristicGroupRepository;
             _unitRepository = unitRepository;
+            _userManager = userManager;
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<CharacteristicNameResponse>> GetAsync()
+        public async Task<IEnumerable<CharacteristicNameResponse>> GetAsync(string userId)
         {
-            var spec = new CharacteristicNameIncludeFullInfoSpecification();
+            var spec = new CharacteristicNameGetByUserIdSpecification(userId);
             var characteristicNames = await _characteristicNameRepository.ListAsync(spec);
 
             return _mapper.Map<IEnumerable<CharacteristicNameResponse>>(characteristicNames);
         }
 
-        public async Task<AdminSearchResponse<CharacteristicNameResponse>> SearchAsync(AdminSearchRequest request)
+        public async Task<AdminSearchResponse<CharacteristicNameResponse>> SearchAsync(SellerSearchRequest request, string userId)
         {
-            var spec = new CharacteristicNameSearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
+            var user = await _userManager.FindByIdAsync(userId);
+            user.UserNullChecking();
+
+            var spec = new CharacteristicNameSearchSpecification(request.Name, request.IsAscOrder, request.OrderBy, request.IsSeller, userId);
             var count = await _characteristicNameRepository.CountAsync(spec);
+
             spec = new CharacteristicNameSearchSpecification(
                 request.Name,
                 request.IsAscOrder,
                 request.OrderBy,
+                request.IsSeller,
+                userId,
                 (request.Page - 1) * request.RowsPerPage,
                 request.RowsPerPage);
 
@@ -69,10 +80,18 @@ namespace WebAPI.Services.Characteristcs
             return _mapper.Map<CharacteristicNameResponse>(characteristicName);
         }
 
-        public async Task CreateAsync(CharacteristicNameRequest request)
+        public async Task CreateAsync(CharacteristicNameRequest request, string userId)
         {
+            var specExist = new CharacteristicNameGetByNameSpecification(request.CharacteristicGroupId, request.Name, request.UnitId, userId);
+            var characteristicNameExist = await _characteristicNameRepository.GetBySpecAsync(specExist);
+            if (characteristicNameExist != null)
+                throw new AppValidationException(nameof(CharacteristicName.Name), _errorMessagesLocalizer["CharacteristicNameExist"]);
+
             var characteristicGroup = await _characteristicGroupRepository.GetByIdAsync(request.CharacteristicGroupId);
             characteristicGroup.CharacteristicGroupNullChecking();
+
+            var user = await _userManager.FindByIdAsync(userId);
+            user.UserNullChecking();
 
             if (request.UnitId != null)
             {
@@ -80,20 +99,24 @@ namespace WebAPI.Services.Characteristcs
                 unit.UnitNullChecking();
             }
 
-            var spec = new CharacteristicNameGetByNameAndUnitIdSpecification(request.Name, request.UnitId);
-            if (await _characteristicNameRepository.GetBySpecAsync(spec) != null)
-            {
-                throw new AppValidationException(
-                    new ValidationError(nameof(CharacteristicName.UnitId), _errorMessagesLocalizer["CharacteristicNameUnitNotUnique"]));
-            }
             var characteristicName = _mapper.Map<CharacteristicName>(request);
+
+            characteristicName.UserId = userId;
 
             await _characteristicNameRepository.AddAsync(characteristicName);
             await _characteristicNameRepository.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(int id, CharacteristicNameRequest request)
+        public async Task UpdateAsync(int id, CharacteristicNameRequest request, string userId)
         {
+            var specExist = new CharacteristicNameGetByNameSpecification(request.CharacteristicGroupId, request.Name, request.UnitId, userId);
+            var characteristicNameExist = await _characteristicNameRepository.GetBySpecAsync(specExist);
+            if (characteristicNameExist != null && id != characteristicNameExist.Id)
+                throw new AppValidationException(nameof(CharacteristicName.Name), _errorMessagesLocalizer["CharacteristicNameExist"]);
+
+            var user = await _userManager.FindByIdAsync(userId);
+            user.UserNullChecking();
+
             var characteristicGroup = await _characteristicGroupRepository.GetByIdAsync(request.CharacteristicGroupId);
             characteristicGroup.CharacteristicGroupNullChecking();
 
@@ -103,13 +126,13 @@ namespace WebAPI.Services.Characteristcs
                 unit.UnitNullChecking();
             }
 
-            var spec = new CharacteristicNameGetByNameAndUnitIdSpecification(request.Name, request.UnitId);
-            if (await _characteristicNameRepository.GetBySpecAsync(spec) != null)
-                throw new AppValidationException(
-                    new ValidationError(nameof(CharacteristicName.UnitId), _errorMessagesLocalizer["CharacteristicNameUnitNotUnique"]));
+
 
             var characteristicName = await _characteristicNameRepository.GetByIdAsync(id);
             characteristicName.CharacteristicNameNullChecking();
+
+            if (user.Id != characteristicName.UserId)
+                throw new AppException(_errorMessagesLocalizer["DontHavePermission"], HttpStatusCode.Forbidden);
 
             _mapper.Map(request, characteristicName);
 

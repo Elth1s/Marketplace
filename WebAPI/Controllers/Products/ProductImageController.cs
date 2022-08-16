@@ -41,7 +41,8 @@ namespace WebAPI.Controllers.Products
         public async Task<IActionResult> Create([FromBody] string base64)
         {
             var result = await _productImageService.CreateAsync(base64);
-            return Created(_productImageLocalizer["CreateSuccess"].Value, result);
+            //return Created(_productImageLocalizer["CreateSuccess"].Value, result);
+            return Created("", result);
         }
 
         /// <summary>

@@ -15,9 +15,6 @@ namespace WebAPI.Specifications.Categories
             if (!string.IsNullOrEmpty(name))
                 Query.Where(item => item.CategoryTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).Name.Contains(name));
 
-            if (!string.IsNullOrEmpty(name))
-                Query.Where(item => item.CategoryTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).Name.Contains(name));
-
 
             if (orderBy == "name")
             {

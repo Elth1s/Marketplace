@@ -8,6 +8,7 @@ import {
     Paper,
     Typography
 } from "@mui/material";
+import { PhotoOutlined } from "@mui/icons-material"
 import { useEffect, useState } from "react";
 
 import { useActions } from "../../hooks/useActions";
@@ -18,8 +19,10 @@ import { CategoryTypographyStyle } from "./styled"
 import { list, white_close } from "../../assets/icons";
 import { empty } from "../../assets/backgrounds";
 import LinkRouter from "../LinkRouter";
+import { useTranslation } from "react-i18next";
 
 const CatalogMenu = () => {
+    const { t } = useTranslation()
     const { GetFullCatalog } = useActions();
     const { fullCatalogItems } = useTypedSelector(state => state.catalog);
 
@@ -86,7 +89,7 @@ const CatalogMenu = () => {
                     />
                 }
             >
-                Catalog
+                {t('containers.default.header.catalog')}
             </Button>
             <Menu
                 anchorEl={anchorEl}
@@ -133,13 +136,16 @@ const CatalogMenu = () => {
                                 const isItemSelected = isSelected(index);
 
                                 return (
-                                    <LinkRouter key={`$catalog_${index}`} underline="none" to={`/catalog/${row.urlSlug}`} onClick={handleClose}>
+                                    <LinkRouter key={`$catalog_${index}`} underline="none" color="common.black" to={`/catalog/${row.urlSlug}`} onClick={handleClose}>
                                         <Box sx={{ display: "flex", mb: "14px", alignItems: "center" }} onMouseEnter={() => changeParentCategory(index)}>
-                                            <img
-                                                style={{ width: "20px", height: "20px", objectFit: "contain", marginRight: "13px" }}
-                                                src={row.icon != "" ? row.icon : empty}
-                                                alt="categoryIcon"
-                                            />
+                                            {row.icon != ""
+                                                ? <img
+                                                    style={{ width: "20px", height: "20px", objectFit: "contain", marginRight: "13px" }}
+                                                    src={row.icon}
+                                                    alt="categoryIcon"
+                                                />
+                                                : <PhotoOutlined color={isItemSelected ? "primary" : "inherit"} sx={{ marginRight: "13px" }} />
+                                            }
                                             <CategoryTypographyStyle variant="h4" fontWeight="bold" selected={isItemSelected}>{row.name}</CategoryTypographyStyle>
                                         </Box>
                                     </LinkRouter>
@@ -151,13 +157,13 @@ const CatalogMenu = () => {
                         <Divider sx={{ height: "622px", borderColor: "black", my: "24px", mr: "20px" }} orientation="vertical" />
                     </Grid>
                     <Grid item xs={8} sx={{ maxHeight: "622px", my: "24px", display: "flex", flexDirection: "column", flexWrap: "wrap" }}>
-                        {fullCatalogItems[selectedCategory]?.childrens && fullCatalogItems[selectedCategory].childrens.map((childF, indexF) => {
+                        {fullCatalogItems[selectedCategory]?.children && fullCatalogItems[selectedCategory].children.map((childF, indexF) => {
                             return (
                                 <Box key={`$catalog_children_f_${indexF}`} sx={{ mb: "23px" }}>
                                     <LinkRouter underline="none" to={`/catalog/${childF.urlSlug}`} onClick={handleClose}>
                                         <CategoryTypographyStyle variant="h4" fontWeight="bold">{childF.name}</CategoryTypographyStyle>
                                     </LinkRouter>
-                                    {childF.childrens.map((childS, indexS) => {
+                                    {childF.children.map((childS, indexS) => {
                                         return (
                                             <LinkRouter key={`$catalog_children_s_${indexS}`} underline="none" to={`/catalog/${childS.urlSlug}`} onClick={handleClose}>
                                                 <CategoryTypographyStyle variant="subtitle1" sx={{ mt: "10px" }}>{childS.name}</CategoryTypographyStyle>

@@ -90,11 +90,7 @@ namespace WebAPI.Services.Products
                                                 f => f.LanguageId == CurrentLanguage.Id)?.Measure
             });
 
-            var categories = new List<Category>
-            {
-                new Category() { CategoryTranslations=new List<CategoryTranslation>{
-                    new() { Name = product.Name, LanguageId=CurrentLanguage.Id } } }
-            };
+            var categories = new List<Category>();
             var category = product.Category;
             do
             {
@@ -104,7 +100,9 @@ namespace WebAPI.Services.Products
             } while (category != null);
 
             categories.Reverse();
-            response.Parents = _mapper.Map<IEnumerable<CatalogItemResponse>>(categories);
+            var temp = _mapper.Map<List<CatalogItemResponse>>(categories);
+            temp.Add(new CatalogItemResponse() { Name = product.Name });
+            response.Parents = temp;
 
             var user = await _userManager.FindByIdAsync(userId);
             if (user != null)
@@ -130,9 +128,12 @@ namespace WebAPI.Services.Products
             return _mapper.Map<IEnumerable<ProductCatalogResponse>>(products);
         }
 
-        public async Task CreateAsync(ProductCreateRequest request)
+        public async Task CreateAsync(ProductCreateRequest request, string userId)
         {
-            var shop = await _shopRepository.GetByIdAsync(request.ShopId);
+            var user = await _userManager.FindByIdAsync(userId);
+            user.UserNullChecking();
+
+            var shop = await _shopRepository.GetByIdAsync(user.ShopId);
             shop.ShopNullChecking();
 
             var productStatus = await _productStatusRepository.GetByIdAsync(request.StatusId);
@@ -142,6 +143,8 @@ namespace WebAPI.Services.Products
             category.CategoryNullChecking();
 
             var product = _mapper.Map<Product>(request);
+            product.ShopId = shop.Id;
+            product.UrlSlug = Guid.NewGuid();
 
             await _productRepository.AddAsync(product);
             await _productRepository.SaveChangesAsync();
@@ -152,7 +155,7 @@ namespace WebAPI.Services.Products
                     new FilterValueProduct()
                     {
 
-                        FilterValueId = filterValue.Id,
+                        FilterValueId = filterValue.ValueId,
                         ProductId = product.Id,
                         CustomValue = filterValue.CustomValue != null ? filterValue.CustomValue : null
                     });
@@ -209,14 +212,22 @@ namespace WebAPI.Services.Products
             await _productRepository.SaveChangesAsync();
         }
 
-        public async Task<AdminSearchResponse<ProductResponse>> SearchProductsAsync(AdminSearchRequest request)
+        public async Task<AdminSearchResponse<ProductResponse>> SearchProductsAsync(SellerSearchRequest request, string userId)
         {
-            var spec = new ProductSearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
+            var user = await _userManager.FindByIdAsync(userId);
+            user.UserNullChecking();
+
+            var shop = await _shopRepository.GetByIdAsync(user.ShopId);
+            shop.ShopNullChecking();
+
+            var spec = new ProductSearchSpecification(request.Name, request.IsAscOrder, request.OrderBy, request.IsSeller, shop.Id);
             var count = await _productRepository.CountAsync(spec);
             spec = new ProductSearchSpecification(
                 request.Name,
                 request.IsAscOrder,
                 request.OrderBy,
+                request.IsSeller,
+                user.ShopId,
                 (request.Page - 1) * request.RowsPerPage,
                 request.RowsPerPage);
 

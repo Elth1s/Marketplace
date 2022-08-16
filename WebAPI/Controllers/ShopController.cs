@@ -7,6 +7,7 @@ using WebAPI.Helpers;
 using WebAPI.Interfaces;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Response;
+using WebAPI.ViewModels.Response.Users;
 
 namespace WebAPI.Controllers
 {
@@ -58,11 +59,29 @@ namespace WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Seller")]
         [HttpGet("Search")]
         public async Task<IActionResult> SearchShops([FromQuery] AdminSearchRequest request)
         {
             var result = await _shopService.SearchShopsAsync(request);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Return of shop info form product
+        /// </summary>
+        /// /// <param name="shopId">Shop identifier</param>
+        /// <response code="200">Getting shops completed successfully</response>
+        /// <response code="403">You don't have permission</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ShopInfoFromProductResponse))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [HttpGet("ShopInfoFromProduct/{shopId}")]
+        public async Task<IActionResult> ShopInfoFromProduct(int shopId)
+        {
+            var result = await _shopService.ShopInfoFromProductAsync(shopId);
             return Ok(result);
         }
 
@@ -92,12 +111,12 @@ namespace WebAPI.Controllers
         /// Create new shop
         /// </summary>
         /// <param name="request">New shop</param>
-        /// <response code="200">Shop creation completed successfully</response>
+        /// <response code="201">Shop creation completed successfully</response>
         /// <response code="400">User adding role failed</response>
         /// <response code="401">You are not authorized</response>
         /// <response code="404">User not found</response>
         /// <response code="500">An internal error has occurred</response>
-        [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status201Created, Type = typeof(AuthResponse))]
         [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
@@ -107,7 +126,8 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> CreateShop([FromBody] ShopRequest request)
         {
             var response = await _shopService.CreateShopAsync(request, UserId, IpUtil.GetIpAddress(Request, HttpContext));
-            return Created(_shopLocalizer["CreateSuccess"].Value, response);
+            //return Created(_shopLocalizer["CreateSuccess"].Value, response);
+            return Created("", response);
         }
 
         /// <summary>

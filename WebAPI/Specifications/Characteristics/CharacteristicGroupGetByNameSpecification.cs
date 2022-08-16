@@ -5,9 +5,9 @@ namespace WebAPI.Specifications.Characteristics
 {
     public class CharacteristicGroupGetByNameSpecification : Specification<CharacteristicGroup>, ISingleResultSpecification<CharacteristicGroup>
     {
-        public CharacteristicGroupGetByNameSpecification(string name)
+        public CharacteristicGroupGetByNameSpecification(string name, string userId)
         {
-            Query.Where(item => name == item.Name);
+            Query.Where(item => name == item.Name && userId == item.UserId);
         }
     }
 }

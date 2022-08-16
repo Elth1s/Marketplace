@@ -13,7 +13,7 @@ namespace DAL.Entities
         [ForeignKey(nameof(ParentId))]
         public Category Parent { get; set; }
 
-        public ICollection<Category> Childrens { get; set; }
+        public ICollection<Category> Children { get; set; }
         public ICollection<Product> Products { get; set; }
         public ICollection<FilterValue> FilterValues { get; set; }
         public ICollection<CategoryTranslation> CategoryTranslations { get; set; }

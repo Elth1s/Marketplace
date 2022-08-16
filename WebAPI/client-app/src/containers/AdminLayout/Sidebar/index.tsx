@@ -5,6 +5,7 @@ import {
 } from '@mui/material';
 
 import { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useLocation } from "react-router-dom";
 import { BooleanSchema } from 'yup';
 import LinkRouter from '../../../components/LinkRouter';
@@ -22,22 +23,22 @@ export interface IMenuItem {
 }
 
 const Sidebar: FC<IDrawer> = ({ open }) => {
+    const { t } = useTranslation()
     const [menuItems, setMenuItems] = useState<Array<IMenuItem>>([
-        { lable: 'Category', path: '/admin/category', rotate: undefined },
-        { lable: 'Characteristic Group', path: '/admin/characteristicGroup', rotate: undefined },
-        { lable: 'Characteristic Name', path: '/admin/characteristicName', rotate: undefined },
-        { lable: 'Characteristic Value', path: '/admin/characteristicValue', rotate: undefined },
-        { lable: 'Filter Group', path: '/admin/filterGroup', rotate: undefined },
-        { lable: 'Filter Name', path: '/admin/filterName', rotate: undefined },
-        { lable: 'Filter Value', path: '/admin/filterValue', rotate: undefined },
-        { lable: 'Product ', path: '/admin/product', rotate: undefined },
-        { lable: 'Product status', path: '/admin/productStatus', rotate: undefined },
-        { lable: 'Shop ', path: '/admin/shop', rotate: undefined },
-        { lable: 'Country', path: '/admin/country', rotate: undefined },
-        { lable: 'City', path: '/admin/city', rotate: undefined },
-        { lable: 'Unit', path: '/admin/unit', rotate: undefined },
-        { lable: 'Order status ', path: '/admin/orderStatus', rotate: undefined },
-        { lable: 'User ', path: '/admin/user', rotate: undefined },
+        { lable: `${t('containers.admin_seller.sideBar.categories')}`, path: '/admin/categories', rotate: undefined },
+        { lable: `${t('containers.admin_seller.sideBar.characteristicGroups')}`, path: '/admin/characteristicGroups', rotate: undefined },
+        { lable: `${t('containers.admin_seller.sideBar.characteristicNames')}`, path: '/admin/characteristicNames', rotate: undefined },
+        { lable: `${t('containers.admin_seller.sideBar.characteristicValues')}`, path: '/admin/characteristicValues', rotate: undefined },
+        { lable: `${t('containers.admin_seller.sideBar.filterGroups')}`, path: '/admin/filterGroups', rotate: undefined },
+        { lable: `${t('containers.admin_seller.sideBar.filterNames')}`, path: '/admin/filterNames', rotate: undefined },
+        { lable: `${t('containers.admin_seller.sideBar.filterValues')}`, path: '/admin/filterValues', rotate: undefined },
+        { lable: `${t('containers.admin_seller.sideBar.products')}`, path: '/admin/products', rotate: undefined },
+        { lable: `${t('containers.admin_seller.sideBar.productStatuses')}`, path: '/admin/productStatuses', rotate: undefined },
+        { lable: `${t('containers.admin_seller.sideBar.shops')}`, path: '/admin/shops', rotate: undefined },
+        { lable: `${t('containers.admin_seller.sideBar.countries')}`, path: '/admin/countries', rotate: undefined },
+        { lable: `${t('containers.admin_seller.sideBar.cities')}`, path: '/admin/cities', rotate: undefined },
+        { lable: `${t('containers.admin_seller.sideBar.units')}`, path: '/admin/units', rotate: undefined },
+        { lable: `${t('containers.admin_seller.sideBar.users')}`, path: '/admin/users', rotate: undefined },
     ]);
     const [selected, setSelected] = useState<string>("");
     const location = useLocation();

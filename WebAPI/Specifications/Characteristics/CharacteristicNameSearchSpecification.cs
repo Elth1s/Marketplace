@@ -7,13 +7,16 @@ namespace WebAPI.Specifications.Characteristics
 {
     public class CharacteristicNameSearchSpecification : Specification<CharacteristicName>
     {
-        public CharacteristicNameSearchSpecification(string name, bool isAscOrder, string orderBy, int? skip = null, int? take = null)
+        public CharacteristicNameSearchSpecification(string name, bool isAscOrder, string orderBy, bool isSeller, string userId, int? skip = null, int? take = null)
         {
             if (!string.IsNullOrEmpty(name))
                 Query.Where(item => item.Name.Contains(name));
 
+            if (isSeller)
+                Query.Where(item => item.UserId == userId);
+
             Query.Include(c => c.CharacteristicGroup)
-                .Include(c => c.Unit)
+                .Include(c => c.Unit).ThenInclude(u => u.UnitTranslations)
                 .AsSplitQuery();
 
             if (orderBy == "characteristicGroupName")

@@ -40,7 +40,8 @@ namespace WebAPI.Controllers.Questions
         public async Task<IActionResult> Create([FromBody] string base64)
         {
             var result = await _questionImageService.CreateAsync(base64);
-            return Created(_queationImageLocalizer["CreateSuccess"], result);
+            //return Created(_queationImageLocalizer["CreateSuccess"], result);
+            return Created("", result);
         }
 
         /// <summary>

@@ -1,7 +1,8 @@
 import axios, { AxiosError } from "axios";
+import { useTranslation } from "react-i18next";
 import { accessToken as at, refreshToken as rt } from "./pages/auth/constants"
 
-export const baseURL = "/"
+export const baseURL = `/${window.localStorage.getItem("i18nextLng") == "en" ? "en-US" : "uk-UA"}/`
 
 
 export function getLocalAccessToken() {

@@ -22,6 +22,7 @@ import { MenuItemStyle } from './styled';
 
 import { orange_user } from '../../assets/icons';
 import CreateShopDialog from '../../pages/seller/CreateShopDialog';
+import { useTranslation } from 'react-i18next';
 
 interface ISettingsMenuItem {
     label: string,
@@ -31,6 +32,7 @@ interface ISettingsMenuItem {
 }
 
 const MainMenu = () => {
+    const { t } = useTranslation()
     const { /*SetTheme,*/ LogoutUser } = useActions();
     // const { darkTheme } = useTypedSelector((state) => state.ui);
     const [darkTheme, setDarkTheme] = useState<boolean>(false);
@@ -45,7 +47,7 @@ const MainMenu = () => {
 
     const UISettings: Array<ISettingsMenuItem> = [
         {
-            label: 'Dark theme',
+            label: `${t('containers.default.header.userMenu.darkTheme')}`,
             icon: <NightlightOutlined />,
             onClick: () => handleThemeChange(),
             switchElement: true
@@ -134,13 +136,13 @@ const MainMenu = () => {
                         </LinkRouter>
                         <Divider sx={{ my: 1, background: "#45a29e" }} />
                         {user.role == "Admin" &&
-                            <LinkRouter underline="none" color="unset" to="/admin/country" >
+                            <LinkRouter underline="none" color="unset" to="/admin/categories" >
                                 <MenuItemStyle                                >
                                     <IconButton sx={{ mr: 2, width: 24, height: 24, color: "secondary" }}>
                                         <AdminPanelSettingsOutlined />
                                     </IconButton>
                                     <Typography variant="h6" noWrap sx={{ color: 'secondary' }}>
-                                        Admin Panel
+                                        {t('containers.default.header.userMenu.adminPanel')}
                                     </Typography>
                                 </MenuItemStyle>
                             </LinkRouter>}
@@ -150,13 +152,13 @@ const MainMenu = () => {
                 {isAuth && <Box>
                     {
                         user.role == "Admin" || user.role == "Seller"
-                            ? <LinkRouter underline="none" color="unset" to="/seler" >
+                            ? <LinkRouter underline="none" color="unset" to="/seller" >
                                 <MenuItemStyle                                >
                                     <IconButton sx={{ mr: 2, width: 24, height: 24, color: "secondary" }}>
                                         <Store />
                                     </IconButton>
                                     <Typography variant="h6" noWrap sx={{ color: 'secondary' }}>
-                                        Seller Panel
+                                        {t('containers.default.header.userMenu.sellerPanel')}
                                     </Typography>
                                 </MenuItemStyle>
                             </LinkRouter>
@@ -165,7 +167,7 @@ const MainMenu = () => {
                                     <Store />
                                 </IconButton>
                                 <Typography variant="h6" noWrap sx={{ color: 'secondary' }}>
-                                    Create shop
+                                    {t('containers.default.header.userMenu.createShop')}
                                 </Typography>
                             </MenuItemStyle>
                     }
@@ -193,7 +195,7 @@ const MainMenu = () => {
                             <Logout />
                         </IconButton>
                         <Typography variant="h6" noWrap >
-                            Log Out
+                            {t('containers.default.header.userMenu.logOut')}
                         </Typography>
                     </MenuItemStyle>
                     : <MenuItemStyle onClick={() => { handleClose(); setAuthDialogOpen(true); }}>
@@ -201,7 +203,7 @@ const MainMenu = () => {
                             <Login />
                         </IconButton>
                         <Typography variant="h6" noWrap sx={{ color: 'secondary' }}>
-                            Sign In
+                            {t('containers.default.header.userMenu.signIn')}
                         </Typography>
                     </MenuItemStyle>
                 }

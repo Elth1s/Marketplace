@@ -13,10 +13,10 @@ import { IFilterValue } from "../types";
 import { ServerError } from '../../../../store/types';
 
 import DialogComponent from '../../../../components/Dialog';
-import TextFieldComponent from '../../../../components/TextField';
 import { toLowerFirstLetter } from '../../../../http_comon';
 import { Edit } from '@mui/icons-material';
 import AutocompleteComponent from '../../../../components/Autocomplete';
+import { TextFieldFirstStyle } from '../../../../components/TextField/styled';
 
 interface Props {
     id: number,
@@ -89,39 +89,51 @@ const FilterValueUpdate: FC<Props> = ({ id, afterUpdate }) => {
             dialogContent={
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        <TextFieldComponent
+                        <TextFieldFirstStyle
+                            fullWidth
+                            autoComplete="englishValue"
+                            variant="standard"
                             type="text"
                             label="English Value"
-                            error={errors.englishValue}
-                            touched={touched.englishValue}
-                            getFieldProps={{ ...getFieldProps('englishValue') }}
+                            {...getFieldProps('englishValue')}
+                            error={Boolean(touched.englishValue && errors.englishValue)}
+                            helperText={touched.englishValue && errors.englishValue}
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <TextFieldComponent
+                        <TextFieldFirstStyle
+                            fullWidth
+                            autoComplete="ukrainianValue"
+                            variant="standard"
                             type="text"
-                            label="Ukrainian Value"
-                            error={errors.ukrainianValue}
-                            touched={touched.ukrainianValue}
-                            getFieldProps={{ ...getFieldProps('ukrainianValue') }}
+                            label="Ukrainian name"
+                            {...getFieldProps('ukrainianValue')}
+                            error={Boolean(touched.ukrainianValue && errors.ukrainianValue)}
+                            helperText={touched.ukrainianValue && errors.ukrainianValue}
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <TextFieldComponent
+                        <TextFieldFirstStyle
+                            fullWidth
+                            variant="standard"
+                            autoComplete="min"
                             type="text"
                             label="Min"
-                            error={errors.min}
-                            touched={touched.min}
-                            getFieldProps={{ ...getFieldProps('min') }}
+                            {...getFieldProps('min')}
+                            error={Boolean(touched.min && errors.min)}
+                            helperText={touched.min && errors.min}
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <TextFieldComponent
+                        <TextFieldFirstStyle
+                            fullWidth
+                            variant="standard"
+                            autoComplete="max"
                             type="text"
                             label="Max"
-                            error={errors.max}
-                            touched={touched.max}
-                            getFieldProps={{ ...getFieldProps('max') }}
+                            {...getFieldProps('max')}
+                            error={Boolean(touched.max && errors.max)}
+                            helperText={touched.max && errors.max}
                         />
                     </Grid>
                     <Grid item xs={12}>

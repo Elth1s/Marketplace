@@ -1,4 +1,4 @@
-import { TextFieldStyle } from "./style";
+import { TextFieldStyle } from "./styled";
 import { ITextField } from "./type";
 
 const TextFieldComponent: React.FC<ITextField> = ({ label, touched, error, type, getFieldProps }) => {

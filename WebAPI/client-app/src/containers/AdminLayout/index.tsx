@@ -18,7 +18,7 @@ const AdminLayout = () => {
             <Header handleDrawerToggle={handleDrawerToggle} />
             <Box component="main" sx={{ width: '100%', display: "flex" }}>
                 <Sidebar open={open} />
-                <Box sx={{ p: { xs: 2, sm: 3 }, width: '100%' }}>
+                <Box sx={{ px: { xs: 3, sm: 5 }, py: { xs: 1, sm: 2 }, width: '100%' }}>
                     <Outlet />
                 </Box>
             </Box>

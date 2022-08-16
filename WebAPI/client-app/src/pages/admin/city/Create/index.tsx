@@ -12,9 +12,11 @@ import { ICity } from "../types";
 import { CreateProps, ServerError } from '../../../../store/types';
 
 import DialogComponent from '../../../../components/Dialog';
-import TextFieldComponent from "../../../../components/TextField";
 import { toLowerFirstLetter } from '../../../../http_comon';
 import AutocompleteComponent from '../../../../components/Autocomplete';
+import { IconButton } from '@mui/material';
+import { white_plus } from '../../../../assets/icons';
+import { TextFieldFirstStyle } from '../../../../components/TextField/styled';
 
 const CityCreate: FC<CreateProps> = ({ afterCreate }) => {
     const [open, setOpen] = useState(false);
@@ -70,16 +72,18 @@ const CityCreate: FC<CreateProps> = ({ afterCreate }) => {
             open={open}
             handleClickClose={handleClickClose}
             button={
-                <Button
-                    variant="contained"
-                    sx={{
-                        my: 2,
-                        px: 4,
-                    }}
+                <IconButton
+                    sx={{ borderRadius: '12px', background: "#F45626", "&:hover": { background: "#CB2525" }, "&& .MuiTouchRipple-child": { backgroundColor: "transparent" } }}
+                    size="large"
+                    color="inherit"
                     onClick={handleClickOpen}
                 >
-                    Create
-                </Button>
+                    <img
+                        style={{ width: "30px" }}
+                        src={white_plus}
+                        alt="icon"
+                    />
+                </IconButton>
             }
 
             formik={formik}
@@ -92,25 +96,30 @@ const CityCreate: FC<CreateProps> = ({ afterCreate }) => {
             dialogContent={
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        <TextFieldComponent
+                        <TextFieldFirstStyle
+                            fullWidth
+                            autoComplete="englishName"
+                            variant="standard"
                             type="text"
-                            label="English Name"
-                            error={errors.englishName}
-                            touched={touched.englishName}
-                            getFieldProps={{ ...getFieldProps('englishName') }}
+                            label="English name"
+                            {...getFieldProps('englishName')}
+                            error={Boolean(touched.englishName && errors.englishName)}
+                            helperText={touched.englishName && errors.englishName}
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <TextFieldComponent
+                        <TextFieldFirstStyle
+                            fullWidth
+                            autoComplete="ukrainianName"
+                            variant="standard"
                             type="text"
-                            label="Ukrainian Name"
-                            error={errors.ukrainianName}
-                            touched={touched.ukrainianName}
-                            getFieldProps={{ ...getFieldProps('ukrainianName') }}
+                            label="Ukrainian name"
+                            {...getFieldProps('ukrainianName')}
+                            error={Boolean(touched.ukrainianName && errors.ukrainianName)}
+                            helperText={touched.ukrainianName && errors.ukrainianName}
                         />
                     </Grid>
                     <Grid item xs={12}>
-
                         <AutocompleteComponent
                             label="Country"
                             name="countryId"

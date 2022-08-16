@@ -66,7 +66,7 @@ namespace DAL.Data
 
             builder.Entity<Category>()
                 .HasOne(c => c.Parent)
-                .WithMany(c => c.Childrens);
+                .WithMany(c => c.Children);
 
             builder.Entity<AppUser>(entity =>
             {
@@ -115,6 +115,8 @@ namespace DAL.Data
             builder.Entity<CategoryTranslation>()
                       .HasIndex(c => new { c.CategoryId, c.LanguageId })
                       .IsUnique();
+
+            builder.Entity<BasketItem>().HasIndex(b => new { b.ProductId, b.UserId }).IsUnique();
         }
     }
 }

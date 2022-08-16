@@ -200,6 +200,7 @@ namespace WebAPI.Mapper
                           new(){LanguageId=LanguageId.English, Name=vm.EnglishName},
                           new(){LanguageId=LanguageId.Ukrainian, Name=vm.UkrainianName}
                     }));
+            CreateMap<FilterName, FilterNameSellerResponse>();
             CreateMap<FilterName, FilterNameResponse>()
                 .ForMember(u => u.FilterGroupName, opt => opt.MapFrom(vm => vm.FilterGroup.FilterGroupTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).Name))
                 .ForMember(u => u.UnitMeasure, opt => opt.MapFrom(vm => vm.Unit.UnitTranslations.FirstOrDefault(
@@ -229,6 +230,7 @@ namespace WebAPI.Mapper
                 .ForMember(c => c.Value, opt => opt.MapFrom(
                        vm => vm.FilterValueTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).Value));
 
+            CreateMap<FilterValue, FilterValueSellerResponse>();
             CreateMap<FilterValue, FilterValueResponse>()
                 .ForMember(c => c.Value, opt => opt.MapFrom(
                        vm => vm.FilterValueTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).Value))
@@ -263,7 +265,14 @@ namespace WebAPI.Mapper
                     vm => vm.User.FirstName + " " + vm.User.SecondName))
                 .ForMember(u => u.Photo, opt => opt.MapFrom(
                     vm => !string.IsNullOrEmpty(vm.Photo) ? String.Concat(ImagePath.RequestShopsImagePath, "/", vm.Photo) : ""));
+            CreateMap<Shop, ShopInfoFromProductResponse>()
+                .ForMember(u => u.Adress, opt => opt.MapFrom(vm => vm.City.Country.CountryTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).Name + ", " + vm.City.CityTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).Name))
+                .ForMember(u => u.Photo, opt => opt.MapFrom(vm => !string.IsNullOrEmpty(vm.Photo) ? String.Concat(ImagePath.RequestShopsImagePath, "/", vm.Photo) : ""));
             CreateMap<ShopRequest, Shop>();
+
+            //ShopPhone
+            CreateMap<ShopPhone, string>()
+                .ConstructUsing(u => u.Phone);
             #endregion
 
             #region Product
@@ -323,6 +332,7 @@ namespace WebAPI.Mapper
                 .ForMember(u => u.ProductName, opt => opt.MapFrom(vm => vm.Product.Name))
                 .ForMember(u => u.ProductPrice, opt => opt.MapFrom(vm => vm.Product.Price))
                 .ForMember(u => u.ProductCount, opt => opt.MapFrom(vm => vm.Product.Count))
+                .ForMember(u => u.ProductUrlSlug, opt => opt.MapFrom(vm => vm.Product.UrlSlug))
                 .ForMember(u => u.ProductImage, opt => opt.MapFrom(
                     vm => vm.Product.Images.Count != 0 ? Path.Combine(ImagePath.RequestProductsImagePath, vm.Product.Images.FirstOrDefault().Name) : ""));
             #endregion
@@ -388,13 +398,13 @@ namespace WebAPI.Mapper
                  .ForMember(r => r.Dislikes, opt => opt.MapFrom(vm => vm.CountDislikes))
                  .ForMember(r => r.Likes, opt => opt.MapFrom(vm => vm.CountLikes))
                  .ForMember(r => r.Replies, opt => opt.MapFrom(vm => vm.Replies.Count))
-                 .ForMember(q => q.Date, opt => opt.MapFrom(vm => vm.Date.ToString("d"))); ;
+                 .ForMember(q => q.Date, opt => opt.MapFrom(vm => vm.Date.ToString("dd MMMM yyyy"))); ;
 
             //ReviewReply
             CreateMap<ReviewReplyRequest, ReviewReply>()
                 .ForMember(r => r.Date, opt => opt.MapFrom(o => DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc)));
             CreateMap<ReviewReply, ReviewReplyResponse>()
-                .ForMember(q => q.Date, opt => opt.MapFrom(vm => vm.Date.ToString("d")));
+                .ForMember(q => q.Date, opt => opt.MapFrom(vm => vm.Date.ToString("dd MMMM yyyy")));
 
 
             //Review Image

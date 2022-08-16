@@ -55,10 +55,15 @@ namespace WebAPI.ViewModels.Request.Products
     public class FilterValueProductCreate
     {
         /// <summary>
+        /// Filter name identifier
+        /// </summary>
+        /// <example>1</example>
+        public int NameId { get; set; }
+        /// <summary>
         /// Filter value identifier
         /// </summary>
         /// <example>1</example>
-        public int Id { get; set; }
+        public int ValueId { get; set; }
         /// <summary>
         /// Custom value in the product filter
         /// </summary>

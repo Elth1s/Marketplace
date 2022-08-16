@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CreateSuccess" xml:space="preserve">
-    <value>Магазин успішно створено</value>
+    <value>агазин успішно створено</value>
   </data>
   <data name="DeleteListSuccess" xml:space="preserve">
     <value>Магазини успішно видалені</value>

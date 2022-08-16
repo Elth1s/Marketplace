@@ -57,6 +57,16 @@ namespace WebAPI.Services
             return response;
         }
 
+        public async Task<ShopInfoFromProductResponse> ShopInfoFromProductAsync(int shopId)
+        {
+            var spec = new ShopInfoFromProductSpecification(shopId);
+            var shop = await _shopRepository.GetBySpecAsync(spec);
+            shop.ShopNullChecking();
+
+            var response = _mapper.Map<ShopInfoFromProductResponse>(shop);
+            return response;
+        }
+
         public async Task<AuthResponse> CreateShopAsync(ShopRequest request, string userId, string ipAddress)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -79,6 +89,9 @@ namespace WebAPI.Services
 
             await _shopRepository.AddAsync(shop);
             await _shopRepository.SaveChangesAsync();
+
+            user.ShopId = shop.Id;
+            await _userManager.UpdateAsync(user);
 
             var newRefreshToken = _jwtTokenService.GenerateRefreshToken(ipAddress);
             await _jwtTokenService.SaveRefreshToken(newRefreshToken, user);

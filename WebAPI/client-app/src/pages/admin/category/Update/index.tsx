@@ -17,9 +17,9 @@ import { validationFields } from "../validation";
 import { ServerError } from "../../../../store/types";
 
 import CropperDialog from "../../../../components/CropperDialog";
-import TextFieldComponent from "../../../../components/TextField";
 import AutocompleteComponent from "../../../../components/Autocomplete";
 import { toLowerFirstLetter } from "../../../../http_comon";
+import { TextFieldFirstStyle } from "../../../../components/TextField/styled";
 
 const CategoryUpdate = () => {
     const { GetCategoryById, GetCategoryForSelect, UpdateCategory } = useActions();
@@ -104,31 +104,40 @@ const CategoryUpdate = () => {
                         <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
                             <Grid container spacing={2}>
                                 <Grid container item xs={10}>
-                                    <Grid item xs={12}>
-                                        <TextFieldComponent
+                                    <Grid item xs={6}>
+                                        <TextFieldFirstStyle
+                                            fullWidth
+                                            autoComplete="englishName"
+                                            variant="standard"
                                             type="text"
-                                            label="English Name"
-                                            error={errors.englishName}
-                                            touched={touched.englishName}
-                                            getFieldProps={{ ...getFieldProps('englishName') }}
+                                            label="English name"
+                                            {...getFieldProps('englishName')}
+                                            error={Boolean(touched.englishName && errors.englishName)}
+                                            helperText={touched.englishName && errors.englishName}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <TextFieldFirstStyle
+                                            fullWidth
+                                            autoComplete="ukrainianName"
+                                            variant="standard"
+                                            type="text"
+                                            label="Ukrainian name"
+                                            {...getFieldProps('ukrainianName')}
+                                            error={Boolean(touched.ukrainianName && errors.ukrainianName)}
+                                            helperText={touched.ukrainianName && errors.ukrainianName}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <TextFieldComponent
-                                            type="text"
-                                            label="Ukrainian Name"
-                                            error={errors.ukrainianName}
-                                            touched={touched.ukrainianName}
-                                            getFieldProps={{ ...getFieldProps('ukrainianName') }}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <TextFieldComponent
+                                        <TextFieldFirstStyle
+                                            fullWidth
+                                            variant="standard"
+                                            autoComplete="urlSlug"
                                             type="text"
                                             label="Url slug"
-                                            error={errors.urlSlug}
-                                            touched={touched.urlSlug}
-                                            getFieldProps={{ ...getFieldProps('urlSlug') }}
+                                            {...getFieldProps('urlSlug')}
+                                            error={Boolean(touched.urlSlug && errors.urlSlug)}
+                                            helperText={touched.urlSlug && errors.urlSlug}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
@@ -148,14 +157,14 @@ const CategoryUpdate = () => {
                                 <Grid container item xs={2} rowSpacing={2}>
                                     <Grid item xs={12}>
                                         <CropperDialog
-                                            imgSrc={(formik.values.image === null || formik.values.image === "") ? "https://www.phoca.cz/images/projects/phoca-download-r.png" : formik.values.image}
+                                            imgSrc={formik.values.image}
                                             onDialogSave={onSaveImage}
                                             labelId="Image"
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
                                         <CropperDialog
-                                            imgSrc={(formik.values.icon === null || formik.values.icon === "") ? "https://www.phoca.cz/images/projects/phoca-download-r.png" : formik.values.icon}
+                                            imgSrc={formik.values.icon}
                                             onDialogSave={onSaveIcon}
                                             labelId="Icon"
                                         />

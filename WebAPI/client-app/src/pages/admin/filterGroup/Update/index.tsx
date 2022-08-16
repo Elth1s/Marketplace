@@ -10,11 +10,11 @@ import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import { ServerError, UpdateProps } from '../../../../store/types';
 
 import DialogComponent from '../../../../components/Dialog';
-import TextFieldComponent from '../../../../components/TextField';
 
 import { validationFields } from "../validation";
 import { IconButton } from '@mui/material';
 import { toLowerFirstLetter } from '../../../../http_comon';
+import { TextFieldFirstStyle } from '../../../../components/TextField/styled';
 
 
 const FilterGroupUpdate: FC<UpdateProps> = ({ id, afterUpdate }) => {
@@ -79,21 +79,27 @@ const FilterGroupUpdate: FC<UpdateProps> = ({ id, afterUpdate }) => {
             dialogContent={
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        <TextFieldComponent
+                        <TextFieldFirstStyle
+                            fullWidth
+                            autoComplete="englishName"
+                            variant="standard"
                             type="text"
-                            label="English Name"
-                            error={errors.englishName}
-                            touched={touched.englishName}
-                            getFieldProps={{ ...getFieldProps('englishName') }}
+                            label="English name"
+                            {...getFieldProps('englishName')}
+                            error={Boolean(touched.englishName && errors.englishName)}
+                            helperText={touched.englishName && errors.englishName}
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <TextFieldComponent
+                        <TextFieldFirstStyle
+                            fullWidth
+                            autoComplete="ukrainianName"
+                            variant="standard"
                             type="text"
-                            label="Ukrainian Name"
-                            error={errors.ukrainianName}
-                            touched={touched.ukrainianName}
-                            getFieldProps={{ ...getFieldProps('ukrainianName') }}
+                            label="Ukrainian name"
+                            {...getFieldProps('ukrainianName')}
+                            error={Boolean(touched.ukrainianName && errors.ukrainianName)}
+                            helperText={touched.ukrainianName && errors.ukrainianName}
                         />
                     </Grid>
                 </Grid>
