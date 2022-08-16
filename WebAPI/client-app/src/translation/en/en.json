@@ -13,6 +13,23 @@
                         "signIn": "Sign In",
                         "logOut": "Log Out"
                     }
+                },
+                "footer": {
+                    "join": "Join",
+                    "about": {
+                        "title": "About us",
+                        "mall": "About Mall",
+                        "contact-info": "Contact information"
+                    },
+                    "partners": {
+                        "title": "Partners",
+                        "shafa": "Shafa",
+                        "crafta": "Crafta.ua"
+                    },
+                    "help": {
+                        "title": "Help",
+                        "FAQ": "Information and FAQ"
+                    }
                 }
             },
             "admin_seller": {
@@ -68,9 +85,61 @@
             }
         },
         "pages": {
+            "home": {
+                "novelty": {
+                    "title": "Novelty",
+                    "button": "All novelties"
+                },
+                "features": {
+                    "deliver": {
+                        "title": "Delivery",
+                        "description": "Samovivy from our store, delivery to or from «Nova Poschta»"
+                    },
+                    "guarantee": {
+                        "title": "Guarantee",
+                        "description": "Certified products with an official manufacturer warranty"
+                    },
+                    "payment": {
+                        "title": "Payment",
+                        "description": "You can pay for your purchase in cash, card or cashless."
+                    },
+                    "return": {
+                        "title": "Return",
+                        "description": "Returns within 14 days of purchase, in accordance with applicable law."
+                    }
+                }
+            },
+            "notFound": {
+                "title": "Page not found",
+                "descriptionTop": "Unfortunately, the page you asked for could not be found.",
+                "descriptionBottom": "Please go back to the main page.",
+                "button": "Main"
+            },
             "catalog": {
                 "showMore": "Show more",
                 "find": "Find"
+            },
+            "faq": {
+                "tabs": {
+                    "main": "Main issues",
+                    "order": "Order",
+                    "deliver": "Delivery",
+                    "return": "Return and exchange"
+                }
+            },
+            "contactInfo": {
+                "sellers": {
+                    "title": "Sellers",
+                    "description": "The Marketing Mall presents a significant number of opportunities for people who want to be sellers. Start selling products and developing your own business now!",
+                    "date": "Working hour:",
+                    "work": "Mon - Fri: 9:00 to 18:00",
+                    "weekend": "Sat - Іun: Weekend"
+                },
+                "buyers": {
+                    "title": "Buyers",
+                    "description": "Tens of thousands of people from all over Ukraine sell goods at Mall. When purchasing a product, you order it directly from one of them to contact the company can be obtained by contact information, given on the product page and on the site of the seller company."
+                },
+                "description": "If you have any complaints, suggestions or comments on the account of the marketing of Mall - be sure to inform us about it by phone!"
             },
             "product": {
                 "title": "Product",
@@ -93,6 +162,50 @@
                 "addReview": "Add review",
                 "moreReviews": "More reviews",
                 "similarProducts": "Similar products"
+            },
+            "seller": {
+                "title": "Seller",
+                "tabs": {
+                    "about": "About",
+                    "product": "Product seller",
+                    "reviews": "Reviews"
+                },
+                "about": {
+                    "rating": {
+                        "title": "Overall rating",
+                        "assessments": "assessments"
+                    },
+                    "assessment": {
+                        "title": "Assessment",
+                        "product": "Current information about the product",
+                        "delivery": "Compliance with delivery terms",
+                        "service": "Quality of service"
+                    },
+                    "schedule": {
+                        "title": "Schedule of work",
+                        "work": "Mon - Fri 08:00 - 21:00",
+                        "weekend": "Sat - NA weekend"
+                    },
+                    "description": {
+                        "title": "Store description"
+                    }
+                },
+                "reviews": {
+                    "service": "Quality of service",
+                    "terms": "Observance of terms",
+                    "information": "Information relevance"
+                },
+                "addReview": {
+                    "button": "Add review",
+                    "dialogTitle": "Send feedback",
+                    "service": "Quality of service",
+                    "terms": "Observance of terms",
+                    "information": "Information relevance",
+                    "fullName": "Full Name",
+                    "email": "Email",
+                    "review": "Review",
+                    "dialogActions": "Send"
+                }
             }
         },
         "components": {

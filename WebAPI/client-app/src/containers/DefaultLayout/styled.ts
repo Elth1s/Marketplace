@@ -53,7 +53,7 @@ export const LinkStyle = styled(Link)(() => ({
 }));
 
 export const ItemBoxStyled = styled(Box)(() => ({
-    marginBottom: "35px",
+    marginBottom: "30px",
     display: "flex",
     alignItems: "center",
     "&:last-child": {

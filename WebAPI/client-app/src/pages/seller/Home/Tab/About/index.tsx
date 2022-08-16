@@ -1,9 +1,12 @@
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import Rating from "@mui/material/Rating";
 import Box from "@mui/material/Box";
 
 import StarIcon from '@mui/icons-material/Star';
+
+import { useTranslation } from 'react-i18next';
+
+import { RatingStyle } from "../../../../../components/Rating/styled";
 
 import { FC } from "react";
 import { BorderLinearProgress } from "../../styled";
@@ -32,6 +35,8 @@ const RatingProgres: FC<IRatingProgres> = ({ ratingValue, ratingValueCount, allR
 }
 
 const About = () => {
+    const { t } = useTranslation();
+
     return (
         <Grid
             container
@@ -40,10 +45,10 @@ const About = () => {
                 mb: "150px"
             }}>
             <Grid item>
-                <Typography variant="h1" sx={{ mb: "30px" }}>Overall rating</Typography>
+                <Typography variant="h1" sx={{ mb: "30px" }}>{t('pages.seller.about.rating.title')}</Typography>
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: "20px" }}>
-                    <Rating readOnly value={5} precision={0.5} color="primary" sx={{ fontSize: "30px", mr: "10px" }} />
-                    <Typography variant="h2">{5} ( {10} assessments)</Typography>
+                    <RatingStyle readOnly value={5} precision={0.5} sx={{ fontSize: "30px", mr: "10px" }} />
+                    <Typography variant="h2">{5} ({10}  {t('pages.seller.about.rating.assessments')})</Typography>
                 </Box>
                 <RatingProgres ratingValue={5} ratingValueCount={8} allRatingCount={10} />
                 <RatingProgres ratingValue={4} ratingValueCount={1} allRatingCount={10} />
@@ -52,27 +57,27 @@ const About = () => {
                 <RatingProgres ratingValue={1} ratingValueCount={0} allRatingCount={10} />
             </Grid>
             <Grid item>
-                <Typography variant="h1" sx={{ mb: "30px" }}>Assessment</Typography>
+                <Typography variant="h1" sx={{ mb: "30px" }}>{t('pages.seller.about.assessment.title')}</Typography>
                 <Box sx={{ bm: "65px" }}>
-                    <Typography variant="h2" sx={{ mb: "15px" }}>Current information about the product</Typography>
-                    <Rating readOnly value={5} precision={0.5} color="primary" sx={{ fontSize: "30px" }} />
+                    <Typography variant="h2" sx={{ mb: "15px" }}>{t('pages.seller.about.assessment.product')}</Typography>
+                    <RatingStyle readOnly value={5} precision={0.5} sx={{ fontSize: "30px" }} />
                 </Box>
                 <Box sx={{ bm: "65px" }}>
-                    <Typography variant="h2" sx={{ mb: "15px" }}>Compliance with delivery terms</Typography>
-                    <Rating readOnly value={4.5} precision={0.5} color="primary" sx={{ fontSize: "30px" }} />
+                    <Typography variant="h2" sx={{ mb: "15px" }}>{t('pages.seller.about.assessment.delivery')}</Typography>
+                    <RatingStyle readOnly value={4.5} precision={0.5} sx={{ fontSize: "30px" }} />
                 </Box>
                 <Box sx={{ bm: "65px" }}>
-                    <Typography variant="h2" sx={{ mb: "15px" }}>Quality of service</Typography>
-                    <Rating readOnly value={4.5} precision={0.5} color="primary" sx={{ fontSize: "30px" }} />
+                    <Typography variant="h2" sx={{ mb: "15px" }}>{t('pages.seller.about.assessment.service')}</Typography>
+                    <RatingStyle readOnly value={4.5} precision={0.5} sx={{ fontSize: "30px" }} />
                 </Box>
             </Grid>
             <Grid item>
-                <Typography variant="h2" sx={{ mb: "30px" }}>Schedule of work</Typography>
-                <Typography variant="h2" sx={{ mb: "20px" }}>Mon - Fri 08:00 - 21:00</Typography>
-                <Typography variant="h2">Sat - NA weekend</Typography>
+                <Typography variant="h2" sx={{ mb: "30px" }}>{t('pages.seller.about.schedule.title')}</Typography>
+                <Typography variant="h2" sx={{ mb: "20px" }}>{t('pages.seller.about.schedule.work')}</Typography>
+                <Typography variant="h2">{t('pages.seller.about.schedule.weekend')}</Typography>
             </Grid>
             <Grid item xs={12}>
-                <Typography variant="h1" sx={{ mb: "30px" }}>Store description</Typography>
+                <Typography variant="h1" sx={{ mb: "30px" }}>{t('pages.seller.about.description.title')}</Typography>
                 <Typography variant="h2">EUROSHOP presents a wide range of children's, women's and men's clothes of European quality, which provides maximum comfort and laconic design</Typography>
             </Grid>
         </Grid>

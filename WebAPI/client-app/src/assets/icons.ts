@@ -79,3 +79,16 @@ export const phone = "/assets/icons/phone.png";
 export const mail = "/assets/icons/mail.png";
 export const map_pin = "/assets/icons/map_pin.png";
 export const globe = "/assets/icons/globe.png";
+
+export const shopping_bag_45 = "/assets/icons/shopping-bag-45.png";
+export const package_45 = "/assets/icons/package-45.png";
+export const truck_45 = "/assets/icons/truck-45.png";
+export const info_45 = "/assets/icons/info-45.png";
+
+export const outline_shop = "/assets/icons/outline-shop.png";
+export const shopping_bag_85 = "/assets/icons/shopping-bag-85.png";
+
+export const deliver_car = "/assets/icons/deliver-car.png";
+export const shield = "/assets/icons/shield.png";
+export const cash = "/assets/icons/cash.png";
+export const arrow_return = "/assets/icons/arrow-return.png";
