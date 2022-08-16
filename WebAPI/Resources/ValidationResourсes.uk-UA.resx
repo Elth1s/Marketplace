@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AdvantagePropName" xml:space="preserve">
+  <data name="AdvantagesPropName" xml:space="preserve">
     <value>Переваги</value>
   </data>
   <data name="CategoryUrlSlugPropName" xml:space="preserve">
@@ -156,7 +156,7 @@
   <data name="DescriptionNameProp" xml:space="preserve">
     <value>Опис</value>
   </data>
-  <data name="DisadvantagePropName" xml:space="preserve">
+  <data name="DisadvantagesPropName" xml:space="preserve">
     <value>Недоліки</value>
   </data>
   <data name="EmailAddressPropName" xml:space="preserve">
@@ -164,6 +164,12 @@
   </data>
   <data name="EmailOrPhonePropName" xml:space="preserve">
     <value>Email-адреса або номер телефону</value>
+  </data>
+  <data name="EnglishMeasurePropName" xml:space="preserve">
+    <value>Міра англійською</value>
+  </data>
+  <data name="EnglishNamePropName" xml:space="preserve">
+    <value>Назва англійською</value>
   </data>
   <data name="FilterGroupUniqueNameMessage" xml:space="preserve">
     <value>Група фільтрів з таким ім'ям вже існує</value>
@@ -179,9 +185,6 @@
   </data>
   <data name="InvalidFormatMessage" xml:space="preserve">
     <value>{PropertyName} має неправильний формат</value>
-  </data>
-  <data name="MeasurePropName" xml:space="preserve">
-    <value>Міра</value>
   </data>
   <data name="MessagePropName" xml:space="preserve">
     <value>Повідомлення</value>
@@ -258,8 +261,11 @@
   <data name="TokenPropName" xml:space="preserve">
     <value>Токен</value>
   </data>
-  <data name="UnitUniqueMeasureMessage" xml:space="preserve">
-    <value>Одиниця з такою мірою уже існує</value>
+  <data name="UkrainianMeasurePropName" xml:space="preserve">
+    <value>Міра українською</value>
+  </data>
+  <data name="UkrainianNamePropName" xml:space="preserve">
+    <value>Назва українською</value>
   </data>
   <data name="UserUniqueEmailMessage" xml:space="preserve">
     <value>Користувач із цією email-адресою вже існує</value>

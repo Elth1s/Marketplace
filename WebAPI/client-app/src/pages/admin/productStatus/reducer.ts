@@ -6,7 +6,8 @@ import {
 
 const initialState: ProductStatusState = {
     selectedProductStatus: {
-        name: "",
+        englishName: "",
+        ukrainianName: "",
     },
     count: 0,
     productStatuses: []

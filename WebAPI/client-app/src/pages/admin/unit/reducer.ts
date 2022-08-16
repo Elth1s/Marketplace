@@ -6,7 +6,8 @@ import {
 
 const initialState: UnitState = {
     selectedUnit: {
-        measure: ""
+        englishMeasure: "",
+        ukrainianMeasure: "",
     },
     count: 0,
     units: []

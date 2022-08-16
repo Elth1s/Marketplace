@@ -48,6 +48,7 @@ import ShopTable from './pages/admin/shop/Table';
 import CountryTable from './pages/admin/country/Table';
 import CityTable from './pages/admin/city/Table';
 import UnitTable from './pages/admin/unit/Table';
+import OrderStatusTable from './pages/admin/orderStatus/Table';
 
 import UserTable from './pages/admin/user/Table';
 
@@ -188,11 +189,11 @@ function App() {
 
           </Route>
 
-        <Route path="/profile" element={<ProfileLayout />}>
-          <Route path="/profile/information" element={<Profile />} />
-          <Route path="/profile/reviewed-products" element={<Reviewed />} />
-          <Route path="/profile/order" element={<Order />} />
-        </Route>
+          <Route path="/profile" element={<ProfileLayout />}>
+            <Route path="/profile/information" element={<Profile />} />
+            <Route path="/profile/reviewed-products" element={<Reviewed />} />
+            <Route path="/profile/order" element={<Order />} />
+          </Route>
 
           <Route path="/ordering" element={<Ordering />} />
 
@@ -225,6 +226,8 @@ function App() {
             <Route path="/admin/unit" element={<UnitTable />} />
 
             <Route path="/admin/user" element={<UserTable />} />
+
+            <Route path="/admin/orderStatus" element={<OrderStatusTable />} />
           </Route>
 
           <Route path="/confirmEmail" element={<ConfirmEmail />} />

@@ -120,6 +120,9 @@
   <data name="CreateSuccess" xml:space="preserve">
     <value>Order status created successfully</value>
   </data>
+  <data name="DeleteListSuccess" xml:space="preserve">
+    <value>Order statuses deleted successfully</value>
+  </data>
   <data name="DeleteSuccess" xml:space="preserve">
     <value>Order status deleted successfully</value>
   </data>

@@ -2,8 +2,7 @@
 {
     public class OrderStatus : BaseEntity, IAggregateRoot
     {
-        public string Name { get; set; }
-
         public ICollection<Order> Orders { get; set; }
+        public ICollection<OrderStatusTranslation> OrderStatusTranslations { get; set; }
     }
 }

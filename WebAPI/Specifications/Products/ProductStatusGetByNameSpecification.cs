@@ -5,9 +5,10 @@ namespace WebAPI.Specifications.Products
 {
     public class ProductStatusGetByNameSpecification : Specification<ProductStatus>, ISingleResultSpecification<ProductStatus>
     {
-        public ProductStatusGetByNameSpecification(string name)
+        public ProductStatusGetByNameSpecification(string name, int languageId)
         {
-            Query.Where(item => name == item.Name);
+            Query.Include(c => c.ProductStatusTranslations)
+                  .Where(item => item.ProductStatusTranslations.Any(t => t.LanguageId == languageId && t.Name == name));
         }
     }
 }

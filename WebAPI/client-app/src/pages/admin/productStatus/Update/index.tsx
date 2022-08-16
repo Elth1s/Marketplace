@@ -74,13 +74,22 @@ const ProductStatusUpdate: FC<UpdateProps> = ({ id, afterUpdate }) => {
 
             dialogContent={
                 <Grid container rowSpacing={2}>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} >
                         <TextFieldComponent
                             type="text"
-                            label="Name"
-                            error={errors.name}
-                            touched={touched.name}
-                            getFieldProps={{ ...getFieldProps('name') }}
+                            label="English Name"
+                            error={errors.englishName}
+                            touched={touched.englishName}
+                            getFieldProps={{ ...getFieldProps('englishName') }}
+                        />
+                    </Grid>
+                    <Grid item xs={12} >
+                        <TextFieldComponent
+                            type="text"
+                            label="Ukrainian Name"
+                            error={errors.ukrainianName}
+                            touched={touched.ukrainianName}
+                            getFieldProps={{ ...getFieldProps('ukrainianName') }}
                         />
                     </Grid>
                 </Grid>

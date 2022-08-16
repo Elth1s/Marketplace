@@ -191,7 +191,7 @@ namespace WebAPI.Controllers
         /// <response code="403">You don't have permission</response>
         /// <response code="404">Category not found</response>
         /// <response code="500">An internal error has occurred</response>
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(CategoryResponse))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(CategoryFullInfoResponse))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
@@ -209,10 +209,17 @@ namespace WebAPI.Controllers
         /// </summary>
         /// <param name="request">New category</param>
         /// <response code="200">Category creation completed successfully</response>
+        /// <response code="400">Category name or URL slug not unique</response>
         /// <response code="401">You are not authorized</response>
         /// <response code="403">You don't have permission</response>
         /// <response code="404">Category parent not found</response>
-        /// <response code="500">An internal error has occurred</response>
+        /// <response code="500">An internal error has occurred</response>        
+        [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
         [HttpPost("Create")]
         public async Task<IActionResult> CreateCategory([FromBody] CategoryRequest request)
@@ -227,11 +234,13 @@ namespace WebAPI.Controllers
         /// <param name="id">Category identifier</param>
         /// <param name="request">Category</param>
         /// <response code="200">Category update completed successfully</response>
+        /// <response code="400">Category name or URL slug not unique</response>
         /// <response code="401">You are not authorized</response>
         /// <response code="403">You don't have permission</response>
         /// <response code="404">Category parent or category not found</response>
         /// <response code="500">An internal error has occurred</response>
         [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]

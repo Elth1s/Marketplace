@@ -117,8 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AdvantagePropName" xml:space="preserve">
-    <value>Advantage</value>
+  <data name="AdvantagesPropName" xml:space="preserve">
+    <value>Advantages</value>
   </data>
   <data name="CategoryUrlSlugPropName" xml:space="preserve">
     <value>Category url slug</value>
@@ -156,14 +156,20 @@
   <data name="DescriptionNameProp" xml:space="preserve">
     <value>Description</value>
   </data>
-  <data name="DisadvantagePropName" xml:space="preserve">
-    <value>Disadvantage</value>
+  <data name="DisadvantagesPropName" xml:space="preserve">
+    <value>Disadvantages</value>
   </data>
   <data name="EmailAddressPropName" xml:space="preserve">
     <value>Email address</value>
   </data>
   <data name="EmailOrPhonePropName" xml:space="preserve">
     <value>Email address or phone number</value>
+  </data>
+  <data name="EnglishMeasurePropName" xml:space="preserve">
+    <value>English Measure</value>
+  </data>
+  <data name="EnglishNamePropName" xml:space="preserve">
+    <value>English name</value>
   </data>
   <data name="FilterGroupUniqueNameMessage" xml:space="preserve">
     <value>Filter group with this name already exists</value>
@@ -179,9 +185,6 @@
   </data>
   <data name="InvalidFormatMessage" xml:space="preserve">
     <value>{PropertyName} is not in the correct format</value>
-  </data>
-  <data name="MeasurePropName" xml:space="preserve">
-    <value>Measure</value>
   </data>
   <data name="MessagePropName" xml:space="preserve">
     <value>Message</value>
@@ -258,8 +261,11 @@
   <data name="TokenPropName" xml:space="preserve">
     <value>Token</value>
   </data>
-  <data name="UnitUniqueMeasureMessage" xml:space="preserve">
-    <value>Unit with this measure already exists</value>
+  <data name="UkrainianMeasurePropName" xml:space="preserve">
+    <value>Ukrainian Measure</value>
+  </data>
+  <data name="UkrainianNamePropName" xml:space="preserve">
+    <value>Ukrainian name</value>
   </data>
   <data name="UserUniqueEmailMessage" xml:space="preserve">
     <value>User with this email already exists</value>

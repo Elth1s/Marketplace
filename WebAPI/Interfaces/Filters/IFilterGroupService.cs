@@ -9,7 +9,7 @@ namespace WebAPI.Interfaces.Filters
     {
         Task<IEnumerable<FilterGroupResponse>> GetFilterGroupsAsync();
         Task<AdminSearchResponse<FilterGroupResponse>> SearchAsync(AdminSearchRequest request);
-        Task<FilterGroupResponse> GetFilterGroupByIdAsync(int filterGroupId);
+        Task<FilterGroupFullInfoResponse> GetFilterGroupByIdAsync(int filterGroupId);
         Task CreateFilterGroupAsync(FilterGroupRequest request);
         Task UpdateFilterGroupAsync(int filterGroupId, FilterGroupRequest request);
         Task DeleteFilterGroupAsync(int filterGroupId);

@@ -8,8 +8,8 @@ namespace DAL.Entities
         public string Email { get; set; }
         public float ProductRating { get; set; }
         public DateTime Date { get; set; }
-        public string Advantage { get; set; }
-        public string Disadvantage { get; set; }
+        public string Advantages { get; set; }
+        public string Disadvantages { get; set; }
         public string Comment { get; set; }
         public string VideoURL { get; set; }
 

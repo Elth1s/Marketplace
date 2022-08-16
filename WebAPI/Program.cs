@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using WebAPI.Extensions;
 using WebAPI.Helpers;
+using WebAPI.Helpers.Localization;
 using WebAPI.Mapper;
 using WebAPI.Middlewares;
 
@@ -111,8 +112,8 @@ app.AddStaticFiles();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
-        name: "default",
-        pattern: "{culture}/{controller}/{action=Index}/{id?}");
+        name: "apiLanguage",
+      pattern: "{culture}/{controller}/{action=Index}/{id?}");
 });
 
 app.UseSpa(spa =>

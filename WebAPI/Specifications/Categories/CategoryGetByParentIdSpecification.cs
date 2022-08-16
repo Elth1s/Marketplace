@@ -8,7 +8,8 @@ namespace WebAPI.Specifications.Categories
         public CategoryGetByParentIdSpecification(int parentId)
         {
             Query.Where(item => parentId == item.ParentId)
-                .AsSplitQuery();
+                 .Include(c => c.CategoryTranslations)
+                 .AsSplitQuery();
         }
     }
 }

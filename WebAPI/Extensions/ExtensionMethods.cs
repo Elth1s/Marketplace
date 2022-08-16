@@ -8,6 +8,8 @@ namespace WebAPI.Extensions
     public static class ExtensionMethods
     {
         static public IStringLocalizerFactory StringLocalizerFactory { set; get; }
+
+        #region User
         public static void UserNullChecking(this AppUser user)
         {
             if (user == null)
@@ -66,54 +68,9 @@ namespace WebAPI.Extensions
                 throw new AppException(factory["TokenRevorked"]);
             }
         }
+        #endregion
 
-
-        public static void CategoryNullChecking(this Category category)
-        {
-            if (category == null)
-            {
-                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
-                throw new AppException(
-                    factory["CategoryNotFound"],
-                    HttpStatusCode.NotFound);
-            }
-        }
-
-
-        public static void BasketItemNullChecking(this BasketItem basketItem)
-        {
-            if (basketItem == null)
-            {
-                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
-                throw new AppException(
-                    factory["BasketItemNotFound"],
-                    HttpStatusCode.NotFound);
-            }
-        }
-
-        public static void ShopNullChecking(this Shop shop)
-        {
-            if (shop == null)
-            {
-                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
-                throw new AppException(
-                    factory["ShopNotFound"],
-                    HttpStatusCode.NotFound);
-            }
-        }
-
-
-        public static void CharacteristicGroupNullChecking(this CharacteristicGroup characteristicGroup)
-        {
-            if (characteristicGroup == null)
-            {
-                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
-                throw new AppException(
-                    factory["CharacteristicGroupNotFound"],
-                    HttpStatusCode.NotFound);
-            }
-        }
-
+        #region Country
         public static void CountryNullChecking(this Country country)
         {
             if (country == null)
@@ -125,27 +82,69 @@ namespace WebAPI.Extensions
             }
         }
 
+        public static void CountryWithEnglishNameChecking(this Country country, string propName)
+        {
+            if (country != null)
+            {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
+                throw new AppValidationException(propName,
+                   factory["CountryWithEnglishNameExist"]);
+            }
+        }
+        public static void CountryWithUkrainianNameChecking(this Country country, string propName)
+        {
+            if (country != null)
+            {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
+                throw new AppValidationException(propName,
+                   factory["CountryWithUkrainianNameExist"]);
+            }
+        }
+
         public static void CountryCodeChecking(this Country country)
         {
             if (country != null)
             {
                 var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
-                throw new AppException(
+                throw new AppValidationException(nameof(Country.Code),
                    factory["CountryWithCodeExist"]);
             }
         }
 
-        public static void CountryNameChecking(this Country country)
+        #endregion
+
+        #region City
+        public static void CityNullChecking(this City city)
         {
-            if (country != null)
+            if (city == null)
             {
                 var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
                 throw new AppException(
-                    factory["CountryWithNameExist"]);
+                    factory["CityNotFound"],
+                    HttpStatusCode.NotFound);
             }
         }
+        public static void CityWithEnglishNameChecking(this City city, string propName)
+        {
+            if (city != null)
+            {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
+                throw new AppValidationException(propName,
+                   factory["CityWithEnglishNameExist"]);
+            }
+        }
+        public static void CityWithUkrainianNameChecking(this City city, string propName)
+        {
+            if (city != null)
+            {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
+                throw new AppValidationException(propName,
+                   factory["CityWithUkrainianNameExist"]);
+            }
+        }
+        #endregion
 
-
+        #region Characteristic 
         public static void CharacteristicNameNullChecking(this CharacteristicName characteristicName)
         {
             if (characteristicName == null)
@@ -167,17 +166,19 @@ namespace WebAPI.Extensions
                     HttpStatusCode.NotFound);
             }
         }
-
-        public static void CityNullChecking(this City city)
+        public static void CharacteristicGroupNullChecking(this CharacteristicGroup characteristicGroup)
         {
-            if (city == null)
+            if (characteristicGroup == null)
             {
                 var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
                 throw new AppException(
-                    factory["CityNotFound"],
+                    factory["CharacteristicGroupNotFound"],
                     HttpStatusCode.NotFound);
             }
         }
+        #endregion
+
+        #region Filter
 
         public static void FilterGroupNullChecking(this FilterGroup filterGroup)
         {
@@ -187,6 +188,24 @@ namespace WebAPI.Extensions
                 throw new AppException(
                     factory["FilterGroupNotFound"],
                     HttpStatusCode.NotFound);
+            }
+        }
+        public static void FilterGroupWithEnglishNameChecking(this FilterGroup filterGroup, string propName)
+        {
+            if (filterGroup != null)
+            {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
+                throw new AppValidationException(propName,
+                   factory["FilterGroupWithEnglishNameExist"]);
+            }
+        }
+        public static void FilterGroupWithUkrainianNameChecking(this FilterGroup filterGroup, string propName)
+        {
+            if (filterGroup != null)
+            {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
+                throw new AppValidationException(propName,
+                   factory["FilterGroupWithUkrainianNameExist"]);
             }
         }
 
@@ -200,7 +219,24 @@ namespace WebAPI.Extensions
                     HttpStatusCode.NotFound);
             }
         }
-
+        public static void FilterNameWithEnglishNameChecking(this FilterName filterName, string propName)
+        {
+            if (filterName != null)
+            {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
+                throw new AppValidationException(propName,
+                   factory["FilterNameWithEnglishNameExist"]);
+            }
+        }
+        public static void FilterNameWithUkrainianNameChecking(this FilterName filterName, string propName)
+        {
+            if (filterName != null)
+            {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
+                throw new AppValidationException(propName,
+                   factory["FilterNameWithUkrainianNameExist"]);
+            }
+        }
         public static void FilterValueNullChecking(this FilterValue filterValue)
         {
             if (filterValue == null)
@@ -211,7 +247,9 @@ namespace WebAPI.Extensions
                     HttpStatusCode.NotFound);
             }
         }
+        #endregion
 
+        #region Product
         public static void ProductStatusNullChecking(this ProductStatus productStatus)
         {
             if (productStatus == null)
@@ -220,6 +258,25 @@ namespace WebAPI.Extensions
                 throw new AppException(
                     factory["ProductStatusNotFound"],
                     HttpStatusCode.NotFound);
+            }
+        }
+        public static void ProductStatusWithEnglishNameChecking(this ProductStatus productStatus, string propName)
+        {
+            if (productStatus != null)
+            {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
+                throw new AppValidationException(propName,
+                   factory["ProductStatusWithEnglishNameExist"]);
+            }
+        }
+
+        public static void ProductStatusWithUkrainianNameChecking(this ProductStatus productStatus, string propName)
+        {
+            if (productStatus != null)
+            {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
+                throw new AppValidationException(propName,
+                   factory["ProductStatusWithUkrainianNameExist"]);
             }
         }
 
@@ -234,16 +291,7 @@ namespace WebAPI.Extensions
             }
         }
 
-        public static void OrderNullChecking(this Order order)
-        {
-            if (order == null)
-            {
-                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
-                throw new AppException(
-                    factory["OrderNotFound"],
-                    HttpStatusCode.NotFound);
-            }
-        }
+
 
         public static void ProductImageNullChecking(this ProductImage productImage)
         {
@@ -255,38 +303,60 @@ namespace WebAPI.Extensions
                     HttpStatusCode.NotFound);
             }
         }
+        #endregion
 
-        public static void UnitNullChecking(this Unit unit)
+        #region Category
+        public static void CategoryNullChecking(this Category category)
         {
-            if (unit == null)
+            if (category == null)
             {
                 var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
                 throw new AppException(
-                    factory["UnitNotFound"],
+                    factory["CategoryNotFound"],
                     HttpStatusCode.NotFound);
             }
         }
-
-        public static void CategoryNameChecking(this Category category)
+        public static void CategoryWithEnglishNameChecking(this Category category, string propName)
         {
             if (category != null)
             {
                 var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
-                throw new AppException(
-                    factory["CategoryNameNotUnique"]);
+                throw new AppValidationException(propName,
+                   factory["CategoryWithEnglishNameExist"]);
+            }
+        }
+        public static void CategoryWithUkrainianNameChecking(this Category category, string propName)
+        {
+            if (category != null)
+            {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
+                throw new AppValidationException(propName,
+                   factory["CategoryWithUkrainianNameExist"]);
             }
         }
 
-        public static void CategoryUrlSlugChecking(this Category category)
+        public static void CategoryUrlSlugChecking(this Category category, string propName)
         {
             if (category != null)
             {
                 var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
-                throw new AppException(
+                throw new AppValidationException(propName,
                     factory["CategoryUrlSlugNotUnique"]);
             }
         }
+        #endregion
 
+        #region Order
+        public static void OrderNullChecking(this Order order)
+        {
+            if (order == null)
+            {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
+                throw new AppException(
+                    factory["OrderNotFound"],
+                    HttpStatusCode.NotFound);
+            }
+        }
         public static void OrderStatusNullChecking(this OrderStatus orderStatus)
         {
             if (orderStatus == null)
@@ -298,6 +368,27 @@ namespace WebAPI.Extensions
             }
         }
 
+        public static void OrderStatusWithEnglishNameChecking(this OrderStatus orderStatus, string propName)
+        {
+            if (orderStatus != null)
+            {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
+                throw new AppValidationException(propName,
+                   factory["OrderStatusWithEnglishNameExist"]);
+            }
+        }
+        public static void OrderStatusWithUkrainianNameChecking(this OrderStatus orderStatus, string propName)
+        {
+            if (orderStatus != null)
+            {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
+                throw new AppValidationException(propName,
+                   factory["OrderStatusWithUkrainianNameExist"]);
+            }
+        }
+        #endregion
+
+        #region Question
         public static void QuestionNullChecking(this Question question)
         {
             if (question == null)
@@ -318,7 +409,9 @@ namespace WebAPI.Extensions
                     HttpStatusCode.NotFound);
             }
         }
+        #endregion
 
+        #region Review
         public static void ReviewImageNullChecking(this ReviewImage reviewImage)
         {
             if (reviewImage == null)
@@ -337,6 +430,60 @@ namespace WebAPI.Extensions
                 var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
                 throw new AppException(
                     factory["ReviewNotFound"],
+                    HttpStatusCode.NotFound);
+            }
+        }
+        #endregion
+
+        #region Unit
+        public static void UnitNullChecking(this Unit unit)
+        {
+            if (unit == null)
+            {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
+                throw new AppException(
+                    factory["UnitNotFound"],
+                    HttpStatusCode.NotFound);
+            }
+        }
+        public static void UnitWithEnglishMeasureChecking(this Unit unit, string propName)
+        {
+            if (unit != null)
+            {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
+                throw new AppValidationException(propName,
+                   factory["UnitWithEnglishMeasureExist"]);
+            }
+        }
+        public static void UnitWithUkrainianMeasureChecking(this Unit unit, string propName)
+        {
+            if (unit != null)
+            {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
+                throw new AppValidationException(propName,
+                   factory["UnitWithUkrainianMeasureExist"]);
+            }
+        }
+        #endregion
+
+        public static void BasketItemNullChecking(this BasketItem basketItem)
+        {
+            if (basketItem == null)
+            {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
+                throw new AppException(
+                    factory["BasketItemNotFound"],
+                    HttpStatusCode.NotFound);
+            }
+        }
+
+        public static void ShopNullChecking(this Shop shop)
+        {
+            if (shop == null)
+            {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
+                throw new AppException(
+                    factory["ShopNotFound"],
                     HttpStatusCode.NotFound);
             }
         }

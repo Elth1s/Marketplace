@@ -2,6 +2,7 @@
 {
     public class ProductStatus : BaseEntity, IAggregateRoot
     {
-        public string Name { get; set; }
+        public ICollection<Product> Products { get; set; }
+        public ICollection<ProductStatusTranslation> ProductStatusTranslations { get; set; }
     }
 }

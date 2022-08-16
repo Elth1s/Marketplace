@@ -75,7 +75,7 @@ namespace WebAPI.Controllers.Filters
         /// <response code="403">You don't have permission</response>
         /// <response code="404">Filter group not found</response>
         /// <response code="500">An internal error has occurred</response> 
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(FilterGroupResponse))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(FilterGroupFullInfoResponse))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
@@ -93,10 +93,12 @@ namespace WebAPI.Controllers.Filters
         /// </summary>
         /// <param name="request">New filter group</param>
         /// <response code="200">Filter group creation completed successfully</response>
+        /// <response code="400">Filter group name not unique</response>
         /// <response code="401">You are not authorized</response>
         /// <response code="403">You don't have permission</response>
         /// <response code="500">An internal error has occurred</response> 
         [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
@@ -114,11 +116,13 @@ namespace WebAPI.Controllers.Filters
         /// <param name="filterGroupId">Filter group identifier</param>
         /// <param name="request">Filter group</param>
         /// <response code="200">Filter group update completed successfully</response>
+        /// <response code="400">Filter group name not unique</response>
         /// <response code="401">You are not authorized</response>
         /// <response code="403">You don't have permission</response>
         /// <response code="404">Filter group not found</response>
         /// <response code="500">An internal error has occurred</response> 
         [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]

@@ -6,7 +6,8 @@ import {
 
 const initialState: FilterValueState = {
     selectedFilterValue: {
-        value: "",
+        englishValue: "",
+        ukrainianValue: "",
         filterNameId: 0,
         min: "",
         max: ""
@@ -32,7 +33,8 @@ export const filterValueReducer = (state = initialState, action: FilterValueActi
             return {
                 ...state,
                 selectedFilterValue: {
-                    value: action.payload.value,
+                    englishValue: action.payload.englishValue,
+                    ukrainianValue: action.payload.ukrainianValue,
                     filterNameId: action.payload.filterNameId,
                     min: action.payload.min == null ? "" : action.payload.min,
                     max: action.payload.max == null ? "" : action.payload.max,

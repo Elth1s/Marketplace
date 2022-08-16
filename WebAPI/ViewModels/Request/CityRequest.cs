@@ -9,10 +9,15 @@ namespace WebAPI.ViewModels.Request
     public class CityRequest
     {
         /// <summary>
-        /// City name
+        /// English name of the city
         /// </summary>
         /// <example>Atlanta</example>
-        public string Name { get; set; }
+        public string EnglishName { get; set; }
+        /// <summary>
+        /// Ukrainian name of the city
+        /// </summary>
+        /// <example>Атланта</example>
+        public string UkrainianName { get; set; }
         /// <summary>
         /// Country identifier
         /// </summary>
@@ -30,9 +35,13 @@ namespace WebAPI.ViewModels.Request
         {
             _validationResources = validationResources;
 
-            //Name
-            RuleFor(x => x.Name).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName(_validationResources["NamePropName"])
+            //English Name
+            RuleFor(x => x.EnglishName).Cascade(CascadeMode.Stop)
+               .NotEmpty().WithName(_validationResources["EnglishNamePropName"]).WithMessage(_validationResources["RequiredMessage"])
+               .Length(2, 30);
+            //Ukrainian Name
+            RuleFor(x => x.UkrainianName).Cascade(CascadeMode.Stop)
+               .NotEmpty().WithName(_validationResources["UkrainianNamePropName"]).WithMessage(_validationResources["RequiredMessage"])
                .Length(2, 30);
         }
     }

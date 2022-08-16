@@ -74,7 +74,7 @@ namespace WebAPI.Controllers.Filters
         /// <response code="403">You don't have permission</response>
         /// <response code="404">Filter name not found</response>
         /// <response code="500">An internal error has occurred</response>
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(FilterNameResponse))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(FilterNameFullInfoResponse))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
@@ -92,11 +92,13 @@ namespace WebAPI.Controllers.Filters
         /// </summary>
         /// <param name="request">New filter name</param>
         /// <response code="200">Filter name creation completed successfully</response>
+        /// <response code="400">Name of filter name not unique</response>
         /// <response code="401">You are not authorized</response>
         /// <response code="403">You don't have permission</response>
         /// <response code="404">Filter group not found</response>
         /// <response code="500">An internal error has occurred</response>
         [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
@@ -115,11 +117,13 @@ namespace WebAPI.Controllers.Filters
         /// <param name="filterNameId">Filter name identifier</param>
         /// <param name="request">Filter name</param>
         /// <response code="200">Filter name update completed successfully</response>
+        /// <response code="400">Name of filter name not unique</response>
         /// <response code="401">You are not authorized</response>
         /// <response code="403">You don't have permission</response>
         /// <response code="404">Filter group or filter name not found</response>
         /// <response code="500">An internal error has occurred</response>
         [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]

@@ -213,8 +213,8 @@
   <data name="FilterNameUnitNotUnique" xml:space="preserve">
     <value>Filter name with this unit measure already exists</value>
   </data>
-  <data name="CityCountryNotUnique" xml:space="preserve">
-    <value>City with this country already exists</value>
+  <data name="CityWithEnglishNameExist" xml:space="preserve">
+    <value>City with this english name already exist</value>
   </data>
   <data name="CharacteristicValueNotFound" xml:space="preserve">
     <value>Characteristic value was not found</value>
@@ -237,8 +237,8 @@
   <data name="CountryWithCodeExist" xml:space="preserve">
     <value>Country with this code already exist</value>
   </data>
-  <data name="CountryWithNameExist" xml:space="preserve">
-    <value>Country with this name already exist</value>
+  <data name="CountryWithEnglishNameExist" xml:space="preserve">
+    <value>Country with this english name already exist</value>
   </data>
   <data name="CategoryNameNotUnique" xml:space="preserve">
     <value>Category with this name already exist</value>
@@ -278,5 +278,47 @@
   </data>
   <data name="GetFacebookUserFailed" xml:space="preserve">
     <value>Failed to get Facebook user from token</value>
+  </data>
+  <data name="CountryWithUkrainianNameExist" xml:space="preserve">
+    <value>Country with this ukrainian name already exist</value>
+  </data>
+  <data name="CityWithUkrainianNameExist" xml:space="preserve">
+    <value>City with this ukrainian name already exist</value>
+  </data>
+  <data name="OrderStatusWithEnglishNameExist" xml:space="preserve">
+    <value>Order status with this english name already exist</value>
+  </data>
+  <data name="OrderStatusWithUkrainianNameExist" xml:space="preserve">
+    <value>Order status with this ukrainian name already exist</value>
+  </data>
+  <data name="ProductStatusWithEnglishNameExist" xml:space="preserve">
+    <value>Product status with this english name already exist</value>
+  </data>
+  <data name="ProductStatusWithUkrainianNameExist" xml:space="preserve">
+    <value>Product status with this ukrainian name already exist</value>
+  </data>
+  <data name="FilterGroupWithEnglishNameExist" xml:space="preserve">
+    <value>Filter group with this english name already exist</value>
+  </data>
+  <data name="FilterGroupWithUkrainianNameExist" xml:space="preserve">
+    <value>Filter group with this ukrainian name already exist</value>
+  </data>
+  <data name="FilterNameWithEnglishNameExist" xml:space="preserve">
+    <value>Filter name with this english name already exist</value>
+  </data>
+  <data name="FilterNameWithUkrainianNameExist" xml:space="preserve">
+    <value>Filter name with this ukrainian name already exist</value>
+  </data>
+  <data name="CategoryWithEnglishNameExist" xml:space="preserve">
+    <value>Category with this english name already exist</value>
+  </data>
+  <data name="CategoryWithUkrainianNameExist" xml:space="preserve">
+    <value>Category with this ukrainian name already exist</value>
+  </data>
+  <data name="UnitWithEnglishMeasureExist" xml:space="preserve">
+    <value>Unit with this english measure already exists</value>
+  </data>
+  <data name="UnitWithUkrainianMeasureExist" xml:space="preserve">
+    <value>Unit with this ukrainian measure already exists</value>
   </data>
 </root>

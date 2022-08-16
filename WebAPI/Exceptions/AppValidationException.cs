@@ -19,9 +19,20 @@ namespace WebAPI.Exceptions
         public HttpStatusCode StatusCode { get; }
         public IEnumerable<ValidationError> Errors { get; set; }
         public AppValidationException(
-            ValidationError error,
-            string message = "Validation failed",
-            HttpStatusCode statusCode = HttpStatusCode.BadRequest) : base(message)
+        string propertyName,
+        string errorMessage,
+        string message = "Validation failed",
+        HttpStatusCode statusCode = HttpStatusCode.BadRequest) : base(message)
+        {
+            StatusCode = statusCode;
+            Errors = new List<ValidationError>(){
+                new ValidationError(propertyName,errorMessage)
+            };
+        }
+        public AppValidationException(
+        ValidationError error,
+        string message = "Validation failed",
+        HttpStatusCode statusCode = HttpStatusCode.BadRequest) : base(message)
         {
             StatusCode = statusCode;
             Errors = new List<ValidationError>(){
@@ -29,9 +40,9 @@ namespace WebAPI.Exceptions
             };
         }
         public AppValidationException(
-            IEnumerable<ValidationError> errors,
-            string message = "Validation failed",
-            HttpStatusCode statusCode = HttpStatusCode.BadRequest) : base(message)
+        IEnumerable<ValidationError> errors,
+        string message = "Validation failed",
+        HttpStatusCode statusCode = HttpStatusCode.BadRequest) : base(message)
         {
             StatusCode = statusCode;
             Errors = errors;

@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using DAL;
+using DAL.Constants;
 using DAL.Entities;
 using WebAPI.Extensions;
 using WebAPI.Interfaces;
 using WebAPI.Specifications.Units;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Response;
+using WebAPI.ViewModels.Response.Units;
 
 namespace WebAPI.Services
 {
@@ -25,7 +27,8 @@ namespace WebAPI.Services
 
         public async Task<IEnumerable<UnitResponse>> GetAllAsync()
         {
-            var units = await _unitRepository.ListAsync();
+            var spec = new UnitIncludeInfoSpecification();
+            var units = await _unitRepository.ListAsync(spec);
 
             var response = _mapper.Map<IEnumerable<UnitResponse>>(units);
             return response;
@@ -48,17 +51,28 @@ namespace WebAPI.Services
             return response;
         }
 
-        public async Task<UnitResponse> GetByIdAsync(int id)
+        public async Task<UnitFullInfoResponse> GetByIdAsync(int id)
         {
-            var unit = await _unitRepository.GetByIdAsync(id);
+            var spec = new UnitIncludeInfoSpecification(id);
+            var unit = await _unitRepository.GetBySpecAsync(spec);
             unit.UnitNullChecking();
 
-            var response = _mapper.Map<UnitResponse>(unit);
+            var response = _mapper.Map<UnitFullInfoResponse>(unit);
             return response;
         }
 
         public async Task CreateAsync(UnitRequest request)
         {
+            var specName = new UnitGetByMeasureSpecification(request.EnglishMeasure, LanguageId.English);
+            var unitEnMeasureExist = await _unitRepository.GetBySpecAsync(specName);
+            if (unitEnMeasureExist != null)
+                unitEnMeasureExist.UnitWithEnglishMeasureChecking(nameof(UnitRequest.EnglishMeasure));
+
+            specName = new UnitGetByMeasureSpecification(request.UkrainianMeasure, LanguageId.Ukrainian);
+            var unitUkMeasureExist = await _unitRepository.GetBySpecAsync(specName);
+            if (unitUkMeasureExist != null)
+                unitUkMeasureExist.UnitWithUkrainianMeasureChecking(nameof(UnitRequest.EnglishMeasure));
+
             var unit = _mapper.Map<Unit>(request);
 
             await _unitRepository.AddAsync(unit);
@@ -67,8 +81,21 @@ namespace WebAPI.Services
 
         public async Task UpdateAsync(int id, UnitRequest request)
         {
-            var unit = await _unitRepository.GetByIdAsync(id);
+            var spec = new UnitIncludeInfoSpecification(id);
+            var unit = await _unitRepository.GetBySpecAsync(spec);
             unit.UnitNullChecking();
+
+            var specName = new UnitGetByMeasureSpecification(request.EnglishMeasure, LanguageId.English);
+            var unitEnMeasureExist = await _unitRepository.GetBySpecAsync(specName);
+            if (unitEnMeasureExist != null && unitEnMeasureExist.Id != unit.Id)
+                unitEnMeasureExist.UnitWithEnglishMeasureChecking(nameof(UnitRequest.EnglishMeasure));
+
+            specName = new UnitGetByMeasureSpecification(request.UkrainianMeasure, LanguageId.Ukrainian);
+            var unitUkMeasureExist = await _unitRepository.GetBySpecAsync(specName);
+            if (unitUkMeasureExist != null && unitUkMeasureExist.Id != unit.Id)
+                unitUkMeasureExist.UnitWithUkrainianMeasureChecking(nameof(UnitRequest.UkrainianMeasure));
+
+            unit.UnitTranslations.Clear();
 
             _mapper.Map(request, unit);
 

@@ -5,9 +5,10 @@ namespace WebAPI.Specifications.Countries
 {
     public class CountryGetByNameSpecification : Specification<Country>, ISingleResultSpecification<Country>
     {
-        public CountryGetByNameSpecification(string name)
+        public CountryGetByNameSpecification(string name, int languageId)
         {
-            Query.Where(item => name == item.Name);
+            Query.Include(c => c.CountryTranslations)
+                 .Where(item => item.CountryTranslations.Any(t => t.LanguageId == languageId && t.Name == name));
         }
     }
 }

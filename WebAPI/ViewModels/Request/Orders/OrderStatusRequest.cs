@@ -1,18 +1,20 @@
-﻿using DAL;
-using DAL.Entities;
-using FluentValidation;
+﻿using FluentValidation;
 using Microsoft.Extensions.Localization;
-using WebAPI.Specifications.Orders;
 
 namespace WebAPI.ViewModels.Request.Orders
 {
     public class OrderStatusRequest
     {
         /// <summary>
-        /// Name of order status
+        /// English name of the order status
         /// </summary>
-        /// <example>Active</example>
-        public string Name { get; set; }
+        /// <example>In Process</example>
+        public string EnglishName { get; set; }
+        /// <summary>
+        /// Ukrainian name of order status
+        /// </summary>
+        /// <example>В процесі</example>
+        public string UkrainianName { get; set; }
     }
 
     /// <summary>
@@ -21,23 +23,18 @@ namespace WebAPI.ViewModels.Request.Orders
     public class OrderStatusRequestValidator : AbstractValidator<OrderStatusRequest>
     {
         private readonly IStringLocalizer<ValidationResourсes> _validationResources;
-        private readonly IRepository<OrderStatus> _orderStatusRepository;
-        public OrderStatusRequestValidator(IRepository<OrderStatus> orderStatusRepository,
-            IStringLocalizer<ValidationResourсes> validationResources)
+        public OrderStatusRequestValidator(IStringLocalizer<ValidationResourсes> validationResources)
         {
             _validationResources = validationResources;
-            _orderStatusRepository = orderStatusRepository;
-            //Name
-            RuleFor(x => x.Name).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName(_validationResources["NamePropName"])
-               .Length(2, 20)
-               .Must(IsUniqueName).WithMessage(_validationResources["OrderStatusUniqueNameMessage"]);
-        }
 
-        private bool IsUniqueName(string name)
-        {
-            var spec = new OrderStatusGetByNameSpecification(name);
-            return _orderStatusRepository.GetBySpecAsync(spec).Result == null;
+            //English Name
+            RuleFor(x => x.EnglishName).Cascade(CascadeMode.Stop)
+               .NotEmpty().WithName(_validationResources["EnglishNamePropName"]).WithMessage(_validationResources["RequiredMessage"])
+               .Length(2, 20);
+            //Ukrainian Name
+            RuleFor(x => x.UkrainianName).Cascade(CascadeMode.Stop)
+               .NotEmpty().WithName(_validationResources["UkrainianNamePropName"]).WithMessage(_validationResources["RequiredMessage"])
+               .Length(2, 20);
         }
     }
 

@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.Extensions.Localization;
 
 namespace WebAPI.ViewModels.Request.Filters
 {
@@ -8,10 +9,15 @@ namespace WebAPI.ViewModels.Request.Filters
     public class FilterValueRequest
     {
         /// <summary>
-        /// Value of filter value
+        /// English value of the filter value
         /// </summary>
-        /// <example>AMD</example>
-        public string Value { get; set; }
+        /// <example>Discrete</example>
+        public string EnglishValue { get; set; }
+        /// <summary>
+        /// Ukrainian value of the filter value
+        /// </summary>
+        /// <example>Дискретна</example>
+        public string UkrainianValue { get; set; }
         /// <summary>
         /// Minimum for custom value
         /// </summary>
@@ -34,13 +40,15 @@ namespace WebAPI.ViewModels.Request.Filters
     /// </summary>
     public class FilterValueRequestValidator : AbstractValidator<FilterValueRequest>
     {
-        public FilterValueRequestValidator()
+        private readonly IStringLocalizer<ValidationResourсes> _validationResources;
+        public FilterValueRequestValidator(IStringLocalizer<ValidationResourсes> validationResources)
         {
-            //Value
-            RuleFor(x => x.Value).Cascade(CascadeMode.Stop)
-                //.NotEmpty().When(a => a.Min == null && a.Max == null).WithName("Value").WithMessage("{PropertyName} is required!")
-                //.Empty().When(a => a.Max != null && a.Min != null).WithMessage("{PropertyName} must be empty!")
-                .Length(2, 30).WithMessage("{PropertyName} should be between 2 and 30 characters");
+            _validationResources = validationResources;
+
+            //English Value
+            RuleFor(x => x.EnglishValue).Cascade(CascadeMode.Stop);
+
+            RuleFor(x => x.UkrainianValue).Cascade(CascadeMode.Stop);
 
             //Min
             RuleFor(a => a.Min).Cascade(CascadeMode.Stop);
@@ -48,10 +56,10 @@ namespace WebAPI.ViewModels.Request.Filters
             //.Empty().When(a => a.Value != null).WithMessage("{PropertyName} must be empty!");
 
             //Max
-            RuleFor(a => a.Max).Cascade(CascadeMode.Stop)
-                //.NotEmpty().When(a => a.Value == null || a.Min != null).WithName("Max").WithMessage("{PropertyName} is required!")
-                //.Empty().When(a => a.Value != null).WithMessage("{PropertyName} must be empty!")
-                .GreaterThan(a => a.Min).When(a => a.Min != null).WithMessage("{PropertyName} must after min!");
+            RuleFor(a => a.Max).Cascade(CascadeMode.Stop);
+            //.NotEmpty().When(a => a.Value == null || a.Min != null).WithName("Max").WithMessage("{PropertyName} is required!")
+            //.Empty().When(a => a.Value != null).WithMessage("{PropertyName} must be empty!")
+            //.GreaterThan(a => a.Min).When(a => a.Min != null).WithMessage("{PropertyName} must after min!");
         }
     }
 }

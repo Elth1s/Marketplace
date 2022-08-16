@@ -1,9 +1,9 @@
-﻿namespace WebAPI.ViewModels.Response
+﻿namespace WebAPI.ViewModels.Response.Countries
 {
     /// <summary>
     /// Country class returned from the controller
     /// </summary>
-    public class CountryResponse
+    public class CountryFullInfoResponse
     {
         /// <summary>
         /// Country identifier
@@ -11,10 +11,15 @@
         /// <example>1</example>
         public int Id { get; set; }
         /// <summary>
-        /// Name of country
+        /// English name of country
         /// </summary>
         /// <example>Ukraine</example>
-        public string Name { get; set; }
+        public string EnglishName { get; set; }
+        /// <summary>
+        /// Ukrainian name of country
+        /// </summary>
+        /// <example>Україна</example>
+        public string UkrainianName { get; set; }
         /// <summary>
         /// Code of country
         /// </summary>

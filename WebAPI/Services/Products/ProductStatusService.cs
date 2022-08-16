@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DAL;
+using DAL.Constants;
 using DAL.Entities;
 using WebAPI.Extensions;
 using WebAPI.Interfaces.Products;
@@ -24,21 +25,33 @@ namespace WebAPI.Services.Products
 
         public async Task<IEnumerable<ProductStatusResponse>> GetAsync()
         {
-            var productStatus = await _productStatusRepository.ListAsync();
+            var spec = new ProductStatusIncludeInfoSpecification();
+            var productStatus = await _productStatusRepository.ListAsync(spec);
 
             return _mapper.Map<IEnumerable<ProductStatusResponse>>(productStatus);
         }
 
-        public async Task<ProductStatusResponse> GetByIdAsync(int id)
+        public async Task<ProductStatusFullInfoResponse> GetByIdAsync(int id)
         {
-            var productStatus = await _productStatusRepository.GetByIdAsync(id);
+            var spec = new ProductStatusIncludeInfoSpecification(id);
+            var productStatus = await _productStatusRepository.GetBySpecAsync(spec);
             productStatus.ProductStatusNullChecking();
 
-            return _mapper.Map<ProductStatusResponse>(productStatus);
+            return _mapper.Map<ProductStatusFullInfoResponse>(productStatus);
         }
 
         public async Task CreateAsync(ProductStatusRequest request)
         {
+            var specName = new ProductStatusGetByNameSpecification(request.EnglishName, LanguageId.English);
+            var productStatusEnNameExist = await _productStatusRepository.GetBySpecAsync(specName);
+            if (productStatusEnNameExist != null)
+                productStatusEnNameExist.ProductStatusWithEnglishNameChecking(nameof(ProductStatusRequest.EnglishName));
+
+            specName = new ProductStatusGetByNameSpecification(request.UkrainianName, LanguageId.Ukrainian);
+            var productStatusUkNameExist = await _productStatusRepository.GetBySpecAsync(specName);
+            if (productStatusUkNameExist != null)
+                productStatusUkNameExist.ProductStatusWithUkrainianNameChecking(nameof(ProductStatusRequest.UkrainianName));
+
             var productStatus = _mapper.Map<ProductStatus>(request);
 
             await _productStatusRepository.AddAsync(productStatus);
@@ -47,9 +60,21 @@ namespace WebAPI.Services.Products
 
         public async Task UpdateAsync(int id, ProductStatusRequest request)
         {
-            var productStatus = await _productStatusRepository.GetByIdAsync(id);
+            var spec = new ProductStatusIncludeInfoSpecification(id);
+            var productStatus = await _productStatusRepository.GetBySpecAsync(spec);
             productStatus.ProductStatusNullChecking();
 
+            var specName = new ProductStatusGetByNameSpecification(request.EnglishName, LanguageId.English);
+            var productStatusEnNameExist = await _productStatusRepository.GetBySpecAsync(specName);
+            if (productStatusEnNameExist != null && productStatusEnNameExist.Id != productStatus.Id)
+                productStatusEnNameExist.ProductStatusWithEnglishNameChecking(nameof(ProductStatusRequest.EnglishName));
+
+            specName = new ProductStatusGetByNameSpecification(request.UkrainianName, LanguageId.Ukrainian);
+            var productStatusUkNameExist = await _productStatusRepository.GetBySpecAsync(specName);
+            if (productStatusUkNameExist != null && productStatusUkNameExist.Id != productStatus.Id)
+                productStatusUkNameExist.ProductStatusWithUkrainianNameChecking(nameof(ProductStatusRequest.UkrainianName));
+
+            productStatus.ProductStatusTranslations.Clear();
             _mapper.Map(request, productStatus);
 
             await _productStatusRepository.UpdateAsync(productStatus);

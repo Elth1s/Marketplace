@@ -63,7 +63,7 @@ namespace WebAPI.Services
             user.UserNullChecking();
 
             var resultPasswordCheck = await _userManager.CheckPasswordAsync(user, request.Password);
-            if (resultPasswordCheck)
+            if (!resultPasswordCheck)
                 throw new AppException(_errorMessagesLocalizer["InvalidUserData"], HttpStatusCode.Unauthorized);
 
             var resultRoles = await _userManager.GetRolesAsync(user);
@@ -79,9 +79,6 @@ namespace WebAPI.Services
 
             await _shopRepository.AddAsync(shop);
             await _shopRepository.SaveChangesAsync();
-
-            user.ShopId = shop.Id;
-            await _userManager.UpdateAsync(user);
 
             var newRefreshToken = _jwtTokenService.GenerateRefreshToken(ipAddress);
             await _jwtTokenService.SaveRefreshToken(newRefreshToken, user);

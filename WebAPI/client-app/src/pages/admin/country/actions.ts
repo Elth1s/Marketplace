@@ -61,7 +61,7 @@ export const GetCountries = () => {
 export const GetByIdCountry = (id: number) => {
     return async (dispatch: Dispatch<CountryAction>) => {
         try {
-            let response = await http.get<ICountryInfo>(`api/Country/GetById/${id}`)
+            let response = await http.get<ICountry>(`api/Country/GetById/${id}`)
 
             dispatch({
                 type: CountryActionTypes.GET_BY_ID_COUNTRY,

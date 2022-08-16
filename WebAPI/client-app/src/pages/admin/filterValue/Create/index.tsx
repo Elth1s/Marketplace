@@ -24,7 +24,8 @@ const FilterValueCreate: FC<CreateProps> = ({ afterCreate }) => {
     const { filterNames } = useTypedSelector((store) => store.filterName);
 
     const item: IFilterValue = {
-        value: '',
+        englishValue: "",
+        ukrainianValue: "",
         min: "",
         max: "",
         filterNameId: 0,
@@ -97,10 +98,19 @@ const FilterValueCreate: FC<CreateProps> = ({ afterCreate }) => {
                     <Grid item xs={12}>
                         <TextFieldComponent
                             type="text"
-                            label="Value"
-                            error={errors.value}
-                            touched={touched.value}
-                            getFieldProps={{ ...getFieldProps('value') }}
+                            label="English Value"
+                            error={errors.englishValue}
+                            touched={touched.englishValue}
+                            getFieldProps={{ ...getFieldProps('englishValue') }}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextFieldComponent
+                            type="text"
+                            label="Ukrainian Value"
+                            error={errors.ukrainianValue}
+                            touched={touched.ukrainianValue}
+                            getFieldProps={{ ...getFieldProps('ukrainianValue') }}
                         />
                     </Grid>
                     <Grid item xs={12}>

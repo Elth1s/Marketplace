@@ -17,7 +17,7 @@ namespace DAL.Entities
 
         [ForeignKey(nameof(CityId))]
         public City City { get; set; }
-        [ForeignKey(nameof(UserId))]
+        // [ForeignKey(nameof(UserId))]
         public AppUser User { get; set; }
 
         public ICollection<ShopPhone> Phones { get; set; }

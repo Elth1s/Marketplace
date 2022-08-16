@@ -24,15 +24,15 @@ namespace WebAPI.ViewModels.Request.Reviews
         /// <example>4</example>
         public float ProductRating { get; set; }
         /// <summary>
-        /// Product advantage
+        /// Product advantages
         /// </summary>
         /// <example>Some list of benefits</example>
-        public string Advantage { get; set; }
+        public string Advantages { get; set; }
         /// <summary>
-        /// Product disadvantage
+        /// Product disadvantages
         /// </summary>
         /// <example>Some list of disadvantages</example>
-        public string Disadvantage { get; set; }
+        public string Disadvantages { get; set; }
         /// <summary>
         /// Comment
         /// </summary>
@@ -80,13 +80,13 @@ namespace WebAPI.ViewModels.Request.Reviews
                .InclusiveBetween(1, 5);
 
             //Advantage
-            RuleFor(a => a.Advantage).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName(_validationResources["AdvantagePropName"]).WithMessage(_validationResources["PluralRequiredMessage"])
+            RuleFor(a => a.Advantages).Cascade(CascadeMode.Stop)
+               .NotEmpty().WithName(_validationResources["AdvantagesPropName"]).WithMessage(_validationResources["PluralRequiredMessage"])
                .MaximumLength(100).WithMessage(_validationResources["PluralLengthMessage"]);
 
             //Disadvantage
-            RuleFor(a => a.Disadvantage).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName(_validationResources["DisadvantagePropName"]).WithMessage(_validationResources["PluralRequiredMessage"])
+            RuleFor(a => a.Disadvantages).Cascade(CascadeMode.Stop)
+               .NotEmpty().WithName(_validationResources["DisadvantagesPropName"]).WithMessage(_validationResources["PluralRequiredMessage"])
                .MaximumLength(100).WithMessage(_validationResources["PluralLengthMessage"]);
 
             //Comment

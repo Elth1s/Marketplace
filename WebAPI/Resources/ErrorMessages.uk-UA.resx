@@ -237,9 +237,6 @@
   <data name="CountryWithCodeExist" xml:space="preserve">
     <value>Країна з таким кодом вже існує</value>
   </data>
-  <data name="CountryWithNameExist" xml:space="preserve">
-    <value>Країна з такою назвою вже існує</value>
-  </data>
   <data name="CategoryNameNotUnique" xml:space="preserve">
     <value>Категорія з такою назвою вже існує</value>
   </data>
@@ -278,5 +275,53 @@
   </data>
   <data name="GetFacebookUserFailed" xml:space="preserve">
     <value>Не вдалося отримати користувача Facebook із токена</value>
+  </data>
+  <data name="CountryWithEnglishNameExist" xml:space="preserve">
+    <value>Країна з такою англійською назвою вже існує</value>
+  </data>
+  <data name="CountryWithUkrainianNameExist" xml:space="preserve">
+    <value>Країна з такою українською назвою вже існує</value>
+  </data>
+  <data name="CityWithEnglishNameExist" xml:space="preserve">
+    <value>Місто з такою англійською назвою вже існує</value>
+  </data>
+  <data name="CityWithUkrainianNameExist" xml:space="preserve">
+    <value>Місто з такою українською назвою вже існує</value>
+  </data>
+  <data name="UnitWithUkrainianMeasureExist" xml:space="preserve">
+    <value>Одиниця з такою мірою на українській уже існує</value>
+  </data>
+  <data name="OrderStatusWithEnglishNameExist" xml:space="preserve">
+    <value>Статус замовлення з такою англійською назвою вже існує</value>
+  </data>
+  <data name="OrderStatusWithUkrainianNameExist" xml:space="preserve">
+    <value>Статус замовлення з такою українською назвою вже існує</value>
+  </data>
+  <data name="ProductStatusWithEnglishNameExist" xml:space="preserve">
+    <value>Статус продукту з такою англійською назвою вже існує</value>
+  </data>
+  <data name="ProductStatusWithUkrainianNameExist" xml:space="preserve">
+    <value>Статус продукту з такою українською назвою вже існує</value>
+  </data>
+  <data name="FilterGroupWithEnglishNameExist" xml:space="preserve">
+    <value>Група фільтрів з такою англійською назвою вже існує</value>
+  </data>
+  <data name="FilterGroupWithUkrainianNameExist" xml:space="preserve">
+    <value>Група фільтрів з такою українською назвою вже існує</value>
+  </data>
+  <data name="FilterNameWithEnglishNameExist" xml:space="preserve">
+    <value>Назва фільтра з такою англійською назвою вже існує</value>
+  </data>
+  <data name="FilterNameWithUkrainianNameExist" xml:space="preserve">
+    <value>Назва фільтра з такою українською назвою вже існує</value>
+  </data>
+  <data name="CategoryWithEnglishNameExist" xml:space="preserve">
+    <value>Категорія з такою англійською назвою вже існує</value>
+  </data>
+  <data name="CategoryWithUkrainianNameExist" xml:space="preserve">
+    <value>Категорія з такою українською назвою вже існує</value>
+  </data>
+  <data name="UnitWithEnglishMeasureExist" xml:space="preserve">
+    <value>Одиниця з такою мірою на англійській уже існує</value>
   </data>
 </root>

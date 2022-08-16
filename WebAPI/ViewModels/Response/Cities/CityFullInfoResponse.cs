@@ -1,9 +1,9 @@
-﻿namespace WebAPI.ViewModels.Response
+﻿namespace WebAPI.ViewModels.Response.Cities
 {
     /// <summary>
     /// City class returned from the controller
     /// </summary>
-    public class CityResponse
+    public class CityFullInfoResponse
     {
         /// <summary>
         /// City identifier
@@ -11,10 +11,15 @@
         /// <example>1</example>
         public int Id { get; set; }
         /// <summary>
-        /// City name
+        /// English name of city
         /// </summary>
         /// <example>Atlanta</example>
-        public string Name { get; set; }
+        public string EnglishName { get; set; }
+        /// <summary>
+        /// Ukrainian name of city
+        /// </summary>
+        /// <example>Атланта</example>
+        public string UkrainianName { get; set; }
         /// <summary>
         /// Country id
         /// </summary>

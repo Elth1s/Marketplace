@@ -1,4 +1,4 @@
-﻿namespace WebAPI.ViewModels.Response
+﻿namespace WebAPI.ViewModels.Response.Units
 {
     /// <summary>
     /// Unit class returned from the controller

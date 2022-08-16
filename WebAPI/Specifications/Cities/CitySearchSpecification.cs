@@ -1,6 +1,7 @@
 ﻿using Ardalis.Specification;
 using DAL.Entities;
 using WebAPI.Extensions;
+using WebAPI.Helpers;
 
 namespace WebAPI.Specifications.Cities
 {
@@ -8,17 +9,28 @@ namespace WebAPI.Specifications.Cities
     {
         public CitySearchSpecification(string name, bool isAscOrder, string orderBy, int? skip = null, int? take = null)
         {
+            Query.Include(o => o.Country)
+                 .ThenInclude(o => o.CountryTranslations)
+                 .Include(o => o.CityTranslations);
+
             if (!string.IsNullOrEmpty(name))
-                Query.Where(item => item.Name.Contains(name));
+                Query.Where(item => item.CityTranslations.FirstOrDefault(t => t.LanguageId == CurrentLanguage.Id).Name.Contains(name));
 
-            Query.Include(o => o.Country);
-
-            if (orderBy == "countryName")
+            if (orderBy == "name")
             {
                 if (isAscOrder)
-                    Query.OrderBy(c => c.Country.Name);
+                    Query.OrderBy(c => c.CityTranslations.FirstOrDefault(t => t.LanguageId == CurrentLanguage.Id).Name);
                 else
-                    Query.OrderByDescending(c => c.Country.Name);
+                    Query.OrderByDescending(c => c.CityTranslations.FirstOrDefault(t => t.LanguageId == CurrentLanguage.Id).Name);
+
+            }
+
+            else if (orderBy == "countryName")
+            {
+                if (isAscOrder)
+                    Query.OrderBy(c => c.Country.CountryTranslations.FirstOrDefault(t => t.LanguageId == CurrentLanguage.Id).Name);
+                else
+                    Query.OrderByDescending(c => c.Country.CountryTranslations.FirstOrDefault(t => t.LanguageId == CurrentLanguage.Id).Name);
             }
             else
             {

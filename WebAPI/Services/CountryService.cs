@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using DAL;
+using DAL.Constants;
 using DAL.Entities;
 using WebAPI.Extensions;
 using WebAPI.Interfaces;
 using WebAPI.Specifications.Countries;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Response;
+using WebAPI.ViewModels.Response.Countries;
 
 namespace WebAPI.Services
 {
@@ -25,9 +27,10 @@ namespace WebAPI.Services
 
         public async Task<IEnumerable<CountryResponse>> GetCountriesAsync()
         {
-            var countries = await _countryRepository.ListAsync();
+            var spec = new CountryIncludeInfoSpecification();
+            var countries = await _countryRepository.ListAsync(spec);
 
-            var response = countries.Select(c => _mapper.Map<CountryResponse>(c));
+            var response = _mapper.Map<IEnumerable<CountryResponse>>(countries);
             return response;
         }
 
@@ -47,24 +50,31 @@ namespace WebAPI.Services
 
             return response;
         }
-        public async Task<CountryResponse> GetCountryByIdAsync(int countryId)
+        public async Task<CountryFullInfoResponse> GetCountryByIdAsync(int countryId)
         {
-            var country = await _countryRepository.GetByIdAsync(countryId);
+            var spec = new CountryIncludeInfoSpecification(countryId);
+            var country = await _countryRepository.GetBySpecAsync(spec);
             country.CountryNullChecking();
 
-            var response = _mapper.Map<CountryResponse>(country);
+            var response = _mapper.Map<CountryFullInfoResponse>(country);
             return response;
         }
 
         public async Task CreateCountryAsync(CountryRequest request)
         {
+            var specName = new CountryGetByNameSpecification(request.EnglishName, LanguageId.English);
+            var countryEnNameExist = await _countryRepository.GetBySpecAsync(specName);
+            if (countryEnNameExist != null)
+                countryEnNameExist.CountryWithEnglishNameChecking(nameof(CountryRequest.EnglishName));
+
+            specName = new CountryGetByNameSpecification(request.UkrainianName, LanguageId.Ukrainian);
+            var countryUkNameExist = await _countryRepository.GetBySpecAsync(specName);
+            if (countryUkNameExist != null)
+                countryUkNameExist.CountryWithUkrainianNameChecking(nameof(CountryRequest.UkrainianName));
+
             var specCode = new CountryGetByCodeSpecification(request.Code);
             var countryCodeExist = await _countryRepository.GetBySpecAsync(specCode);
             countryCodeExist.CountryCodeChecking();
-
-            var specName = new CountryGetByNameSpecification(request.Name);
-            var countryNameExist = await _countryRepository.GetBySpecAsync(specName);
-            countryNameExist.CountryNameChecking();
 
 
             var result = _mapper.Map<Country>(request);
@@ -75,18 +85,26 @@ namespace WebAPI.Services
 
         public async Task UpdateCountryAsync(int countryId, CountryRequest request)
         {
-            var country = await _countryRepository.GetByIdAsync(countryId);
+            var spec = new CountryIncludeInfoSpecification(countryId);
+            var country = await _countryRepository.GetBySpecAsync(spec);
             country.CountryNullChecking();
 
-            var spec = new CountryGetByCodeSpecification(request.Code);
-            var countryCodeExist = await _countryRepository.GetBySpecAsync(spec);
+            var specName = new CountryGetByNameSpecification(request.EnglishName, LanguageId.English);
+            var countryEnNameExist = await _countryRepository.GetBySpecAsync(specName);
+            if (countryEnNameExist != null && countryEnNameExist.Id != countryId)
+                countryEnNameExist.CountryWithEnglishNameChecking(nameof(CountryRequest.EnglishName));
+
+            specName = new CountryGetByNameSpecification(request.UkrainianName, LanguageId.Ukrainian);
+            var countryUkNameExist = await _countryRepository.GetBySpecAsync(specName);
+            if (countryUkNameExist != null && countryUkNameExist.Id != countryId)
+                countryUkNameExist.CountryWithUkrainianNameChecking(nameof(CountryRequest.UkrainianName));
+
+            var specCode = new CountryGetByCodeSpecification(request.Code);
+            var countryCodeExist = await _countryRepository.GetBySpecAsync(specCode);
             if (countryCodeExist != null && countryCodeExist.Id != countryId)
                 country.CountryCodeChecking();
 
-            var specName = new CountryGetByNameSpecification(request.Name);
-            var countryNameExist = await _countryRepository.GetBySpecAsync(specName);
-            if (countryNameExist != null && countryNameExist.Id != countryId)
-                countryNameExist.CountryNameChecking();
+            country.CountryTranslations.Clear();
 
             _mapper.Map(request, country);
 

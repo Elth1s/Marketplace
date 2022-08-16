@@ -75,7 +75,7 @@ namespace WebAPI.Controllers.Filters
         /// <response code="403">You don't have permission</response>
         /// <response code="404">Filter value not found</response>
         /// <response code="500">An internal error has occurred</response>
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(FilterNameResponse))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(FilterValueFullInfoResponse))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]

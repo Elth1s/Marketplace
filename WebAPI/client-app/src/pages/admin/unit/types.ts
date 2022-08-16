@@ -7,7 +7,8 @@ export enum UnitActionTypes {
 }
 
 export interface IUnit {
-    measure: string,
+    englishMeasure: string,
+    ukrainianMeasure: string,
 }
 
 export interface IUnitInfo {

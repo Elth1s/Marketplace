@@ -43,7 +43,7 @@ export const SearchFilterGroups = (page: number, rowsPerPage: number, name: stri
 export const GetByIdFilterGroup = (id: number) => {
     return async (dispatch: Dispatch<FilterGroupAction>) => {
         try {
-            let response = await http.get<IFilterGroupInfo>(`api/FilterGroup/GetById/${id}`)
+            let response = await http.get<IFilterGroup>(`api/FilterGroup/GetById/${id}`)
 
             dispatch({
                 type: FilterGroupActionTypes.GET_BY_ID_FILTER_GROUP,

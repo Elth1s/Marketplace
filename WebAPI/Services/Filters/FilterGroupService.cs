@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DAL;
+using DAL.Constants;
 using DAL.Entities;
 using WebAPI.Extensions;
 using WebAPI.Interfaces.Filters;
@@ -27,22 +28,34 @@ namespace WebAPI.Services.Filters
 
         public async Task<IEnumerable<FilterGroupResponse>> GetFilterGroupsAsync()
         {
-            var filterGroups = await _filterGroupRepository.ListAsync();
+            var spec = new FilterGroupIncludeInfoSpecification();
+            var filterGroups = await _filterGroupRepository.ListAsync(spec);
 
-            var response = filterGroups.Select(c => _mapper.Map<FilterGroupResponse>(c));
+            var response = _mapper.Map<IEnumerable<FilterGroupResponse>>(filterGroups);
             return response;
         }
-        public async Task<FilterGroupResponse> GetFilterGroupByIdAsync(int filterGroupId)
+        public async Task<FilterGroupFullInfoResponse> GetFilterGroupByIdAsync(int filterGroupId)
         {
-            var filterGroup = await _filterGroupRepository.GetByIdAsync(filterGroupId);
+            var spec = new FilterGroupIncludeInfoSpecification(filterGroupId);
+            var filterGroup = await _filterGroupRepository.GetBySpecAsync(spec);
             filterGroup.FilterGroupNullChecking();
 
-            var response = _mapper.Map<FilterGroupResponse>(filterGroup);
+            var response = _mapper.Map<FilterGroupFullInfoResponse>(filterGroup);
             return response;
         }
 
         public async Task CreateFilterGroupAsync(FilterGroupRequest request)
         {
+            var specName = new FilterGroupGetByNameSpecification(request.EnglishName, LanguageId.English);
+            var filterGroupEnNameExist = await _filterGroupRepository.GetBySpecAsync(specName);
+            if (filterGroupEnNameExist != null)
+                filterGroupEnNameExist.FilterGroupWithEnglishNameChecking(nameof(CountryRequest.EnglishName));
+
+            specName = new FilterGroupGetByNameSpecification(request.UkrainianName, LanguageId.Ukrainian);
+            var filterGroupUkNameExist = await _filterGroupRepository.GetBySpecAsync(specName);
+            if (filterGroupUkNameExist != null)
+                filterGroupUkNameExist.FilterGroupWithUkrainianNameChecking(nameof(CountryRequest.UkrainianName));
+
             var filterGroup = _mapper.Map<FilterGroup>(request);
 
             await _filterGroupRepository.AddAsync(filterGroup);
@@ -51,9 +64,21 @@ namespace WebAPI.Services.Filters
 
         public async Task UpdateFilterGroupAsync(int filterGroupId, FilterGroupRequest request)
         {
-            var filterGroup = await _filterGroupRepository.GetByIdAsync(filterGroupId);
+            var spec = new FilterGroupIncludeInfoSpecification(filterGroupId);
+            var filterGroup = await _filterGroupRepository.GetBySpecAsync(spec);
             filterGroup.FilterGroupNullChecking();
 
+            var specName = new FilterGroupGetByNameSpecification(request.EnglishName, LanguageId.English);
+            var filterGroupEnNameExist = await _filterGroupRepository.GetBySpecAsync(specName);
+            if (filterGroupEnNameExist != null && filterGroupEnNameExist.Id != filterGroup.Id)
+                filterGroupEnNameExist.FilterGroupWithEnglishNameChecking(nameof(FilterGroupRequest.EnglishName));
+
+            specName = new FilterGroupGetByNameSpecification(request.UkrainianName, LanguageId.Ukrainian);
+            var filterGroupUkNameExist = await _filterGroupRepository.GetBySpecAsync(specName);
+            if (filterGroupUkNameExist != null && filterGroupUkNameExist.Id != filterGroup.Id)
+                filterGroupUkNameExist.FilterGroupWithUkrainianNameChecking(nameof(FilterGroupRequest.UkrainianName));
+
+            filterGroup.FilterGroupTranslations.Clear();
             _mapper.Map(request, filterGroup);
 
             await _filterGroupRepository.UpdateAsync(filterGroup);

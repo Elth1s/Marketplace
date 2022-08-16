@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using DAL;
+using DAL.Constants;
 using DAL.Entities;
 using Microsoft.Extensions.Localization;
 using System.Drawing.Imaging;
 using WebAPI.Constants;
-using WebAPI.Exceptions;
 using WebAPI.Extensions;
 using WebAPI.Helpers;
 using WebAPI.Interfaces;
@@ -89,7 +89,7 @@ namespace WebAPI.Services
 
             var response = new CatalogWithProductsResponse
             {
-                Name = category.Name
+                Name = category.CategoryTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).Name
             };
 
             var parentIdSpec = new CategoryGetByParentIdSpecification(category.Id);
@@ -163,8 +163,8 @@ namespace WebAPI.Services
             var response = gropedFilters.Select(g => new FilterNameValuesResponse()
             {
                 Id = g.Key.Id,
-                Name = g.Key.Name,
-                UnitMeasure = g.Key.Unit?.Measure,
+                Name = g.Key.FilterNameTranslations.FirstOrDefault(f => f.LanguageId == CurrentLanguage.Id).Name,
+                UnitMeasure = g.Key.Unit?.UnitTranslations.FirstOrDefault(f => f.LanguageId == CurrentLanguage.Id).Measure,
                 FilterValues = _mapper.Map<IEnumerable<FilterValueCatalogResponse>>(g.Key.FilterValues)
             });
 
@@ -191,17 +191,18 @@ namespace WebAPI.Services
 
         public async Task<IEnumerable<CategoryForSelectResponse>> GetForSelectAsync()
         {
-            var categories = await _categoryRepository.ListAsync();
+            var spec = new CategoryIncludeFullInfoSpecification();
+            var categories = await _categoryRepository.ListAsync(spec);
             return _mapper.Map<IEnumerable<CategoryForSelectResponse>>(categories);
         }
 
-        public async Task<CategoryResponse> GetByIdAsync(int id)
+        public async Task<CategoryFullInfoResponse> GetByIdAsync(int id)
         {
             var spec = new CategoryIncludeFullInfoSpecification(id);
             var category = await _categoryRepository.GetBySpecAsync(spec);
             category.CategoryNullChecking();
 
-            return _mapper.Map<CategoryResponse>(category);
+            return _mapper.Map<CategoryFullInfoResponse>(category);
         }
 
         public async Task CreateAsync(CategoryRequest request)
@@ -211,13 +212,20 @@ namespace WebAPI.Services
                 var parentCategory = await _categoryRepository.GetByIdAsync(request.ParentId);
                 parentCategory.CategoryNullChecking();
             }
+            var specName = new CategoryGetByNameSpecification(request.EnglishName, LanguageId.English);
+            var categoryEnNameExist = await _categoryRepository.GetBySpecAsync(specName);
+            if (categoryEnNameExist != null)
+                categoryEnNameExist.CategoryWithEnglishNameChecking(nameof(CountryRequest.EnglishName));
 
-            var nameSpec = new CategoryGetByNameSpecification(request.Name);
-            if (await _categoryRepository.GetBySpecAsync(nameSpec) != null)
-                throw new AppException(_errorMessagesLocalizer["CategoryNameNotUnique"]);
-            var urlSlugSpec = new CategoryGetByUrlSlugSpecification(request.Name);
-            if (await _categoryRepository.GetBySpecAsync(urlSlugSpec) != null)
-                throw new AppException(_errorMessagesLocalizer["CategoryUrlSlugNotUnique"]);
+            specName = new CategoryGetByNameSpecification(request.UkrainianName, LanguageId.Ukrainian);
+            var categoryUkNameExist = await _categoryRepository.GetBySpecAsync(specName);
+            if (categoryUkNameExist != null)
+                categoryUkNameExist.CategoryWithUkrainianNameChecking(nameof(CountryRequest.UkrainianName));
+
+            var urlSlugSpec = new CategoryGetByUrlSlugSpecification(request.UrlSlug);
+            var categoryUrlSlugExist = await _categoryRepository.GetBySpecAsync(urlSlugSpec);
+            if (categoryUrlSlugExist != null)
+                categoryUrlSlugExist.CategoryUrlSlugChecking(nameof(CategoryRequest.UrlSlug));
 
             var category = _mapper.Map<Category>(request);
 
@@ -257,23 +265,30 @@ namespace WebAPI.Services
 
         public async Task UpdateAsync(int id, CategoryRequest request)
         {
+            var spec = new CategoryIncludeFullInfoSpecification(id);
+            var category = await _categoryRepository.GetBySpecAsync(spec);
+            category.CategoryNullChecking();
+
+            var specName = new CategoryGetByNameSpecification(request.EnglishName, LanguageId.English);
+            var categoryEnNameExist = await _categoryRepository.GetBySpecAsync(specName);
+            if (categoryEnNameExist != null && categoryEnNameExist.Id != category.Id)
+                categoryEnNameExist.CategoryWithEnglishNameChecking(nameof(CountryRequest.EnglishName));
+
+            specName = new CategoryGetByNameSpecification(request.UkrainianName, LanguageId.Ukrainian);
+            var categoryUkNameExist = await _categoryRepository.GetBySpecAsync(specName);
+            if (categoryUkNameExist != null && categoryUkNameExist.Id != category.Id)
+                categoryUkNameExist.CategoryWithUkrainianNameChecking(nameof(CountryRequest.UkrainianName));
+
+            var urlSlugSpec = new CategoryGetByUrlSlugSpecification(request.UrlSlug);
+            var categoryUrlSlugExist = await _categoryRepository.GetBySpecAsync(urlSlugSpec);
+            if (categoryUrlSlugExist != null && categoryUrlSlugExist.Id != id)
+                categoryUrlSlugExist.CategoryUrlSlugChecking(nameof(CategoryRequest.UrlSlug));
+
             if (request.ParentId != null)
             {
                 var parentCategory = await _categoryRepository.GetByIdAsync(request.ParentId);
                 parentCategory.CategoryNullChecking();
             }
-
-            var nameSpec = new CategoryGetByNameSpecification(request.Name);
-            var categoryNameExist = await _categoryRepository.GetBySpecAsync(nameSpec);
-            if (categoryNameExist != null && categoryNameExist.Id != id)
-                categoryNameExist.CategoryNameChecking();
-            var urlSlugSpec = new CategoryGetByUrlSlugSpecification(request.Name);
-            var categoryUrlSlugExist = await _categoryRepository.GetBySpecAsync(urlSlugSpec);
-            if (categoryUrlSlugExist != null && categoryUrlSlugExist.Id != id)
-                categoryUrlSlugExist.CategoryUrlSlugChecking();
-
-            var category = await _categoryRepository.GetByIdAsync(id);
-            category.CategoryNullChecking();
 
             if (!string.IsNullOrEmpty(request.Image))
             {
@@ -319,6 +334,8 @@ namespace WebAPI.Services
                     category.Icon = randomFilename;
                 }
             }
+
+            category.CategoryTranslations.Clear();
 
             _mapper.Map(request, category);
 

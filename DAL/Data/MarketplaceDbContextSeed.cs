@@ -27,7 +27,16 @@ namespace DAL.Data
             adminUser = await userManager.FindByNameAsync(UsersInfo.AdminUserName);
             await userManager.AddToRoleAsync(adminUser, Roles.Admin);
 
-
+            if (!await marketplaceDbContext.Languages.AnyAsync())
+            {
+                using var transaction = marketplaceDbContext.Database.BeginTransaction();
+                await marketplaceDbContext.Languages.AddRangeAsync(
+                  GetPreconfiguredMarketplaceLanguages());
+                marketplaceDbContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Languages ON");
+                await marketplaceDbContext.SaveChangesAsync();
+                marketplaceDbContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT Languages OFF");
+                transaction.Commit();
+            }
 
             if (!await marketplaceDbContext.Countries.AnyAsync())
             {
@@ -136,260 +145,511 @@ namespace DAL.Data
                 marketplaceDbContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT OrderStatuses OFF");
                 transaction.Commit();
             }
+
         }
 
         static IEnumerable<Country> GetPreconfiguredCountries()
         {
             var countries = new List<Country>()
             {
-                    new(){ Name= "Afghanistan", Code= "AF" },
-                    new(){ Name= "Alland Islands", Code= "AX"},
-                    new(){ Name= "Albania", Code= "AL" },
-                    new(){ Name= "Algeria", Code= "DZ"},
-                    new(){ Name= "American Samoa", Code= "AS"},
-                    new(){ Name= "Andorra", Code= "AD"},
-                    new(){ Name= "Angola", Code= "AO"},
-                    new(){ Name= "Anguilla", Code= "AI"},
-                    new(){ Name= "Antarctica", Code= "AQ"},
-                    new(){ Name= "Antigua and Barbuda", Code= "AG"},
-                    new(){ Name= "Argentina", Code= "AR"},
-                    new(){ Name= "Armenia", Code= "AM"},
-                    new(){ Name= "Aruba", Code= "AW" },
-                    new(){ Name= "Australia", Code= "AU"},
-                    new(){ Name= "Austria", Code= "AT"},
-                    new(){ Name= "Azerbaijan", Code= "AZ"},
-                    new(){ Name= "Bahamas", Code= "BS"},
-                    new(){ Name= "Bahrain", Code= "BH"},
-                    new(){ Name= "Bangladesh", Code= "BD"},
-                    new(){ Name= "Barbados", Code= "BB"},
-                    new(){ Name= "Belarus", Code= "BY"},
-                    new(){ Name= "Belgium", Code= "BE"},
-                    new(){ Name= "Belize", Code= "BZ"},
-                    new(){ Name= "Benin", Code= "BJ"},
-                    new(){ Name= "Bermuda", Code= "BM"},
-                    new(){ Name= "Bhutan", Code= "BT"},
-                    new(){ Name= "Bolivia", Code= "BO"},
-                    new(){ Name= "Bosnia and Herzegovina", Code= "BA"},
-                    new(){ Name= "Botswana", Code= "BW"},
-                    new(){ Name= "Bouvet Island", Code= "BV"},
-                    new(){ Name= "Brazil", Code= "BR"},
-                    new(){ Name= "British Indian Ocean Territory", Code= "IO"},
-                    new(){ Name= "British Virgin Islands", Code= "VG"},
-                    new(){ Name= "Brunei Darussalam", Code= "BN"},
-                    new(){ Name= "Bulgaria", Code= "BG"},
-                    new(){ Name= "Burkina Faso", Code= "BF"},
-                    new(){ Name= "Burundi", Code= "BI"},
-                    new(){ Name= "Cambodia", Code= "KH"},
-                    new(){ Name= "Cameroon", Code= "CM"},
-                    new(){ Name= "Canada", Code= "CA"},
-                    new(){ Name= "Cape Verde", Code= "CV"},
-                    new(){ Name= "Cayman Islands", Code= "KY"},
-                    new(){ Name= "Central African Republic", Code= "CF"},
-                    new(){ Name= "Chad", Code= "TD"},
-                    new(){ Name= "Chile", Code= "CL"},
-                    new(){ Name= "China", Code= "CN"},
-                    new(){ Name= "Christmas Island", Code= "CX"},
-                    new(){ Name= "Cocos (Keeling) Islands", Code= "CC"},
-                    new(){ Name= "Colombia", Code= "CO"},
-                    new(){ Name= "Comoros", Code= "KM"},
-                    new(){ Name= "Congo, Democratic Republic of the", Code= "CG"},
-                    new(){ Name= "Congo, Republic of the", Code= "CD"},
-                    new(){ Name= "Cook Islands", Code= "CK"},
-                    new(){ Name= "Costa Rica", Code= "CR"},
-                    new(){ Name= "Cote d'Ivoire", Code= "CI"},
-                    new(){ Name= "Croatia", Code= "HR"},
-                    new(){ Name= "Cuba", Code= "CU"},
-                    new(){ Name= "Curacao", Code= "CW"},
-                    new(){ Name= "Cyprus", Code= "CY"},
-                    new(){ Name= "Czech Republic", Code= "CZ"},
-                    new(){ Name= "Denmark", Code= "DK"},
-                    new(){ Name= "Djibouti", Code= "DJ"},
-                    new(){ Name= "Dominica", Code= "DM"},
-                    new(){ Name= "Dominican Republic", Code= "DO"},
-                    new(){ Name= "Ecuador", Code= "EC"},
-                    new(){ Name= "Egypt", Code= "EG"},
-                    new(){ Name= "El Salvador", Code= "SV"},
-                    new(){ Name= "Equatorial Guinea", Code= "GQ"},
-                    new(){ Name= "Eritrea", Code= "ER"},
-                    new(){ Name= "Estonia", Code= "EE"},
-                    new(){ Name= "Ethiopia", Code= "ET"},
-                    new(){ Name= "Falkland Islands (Malvinas)", Code= "FK"},
-                    new(){ Name= "Faroe Islands", Code= "FO"},
-                    new(){ Name= "Fiji", Code= "FJ"},
-                    new(){ Name= "Finland", Code= "FI"},
-                    new(){ Name= "France", Code= "FR"},
-                    new(){ Name= "French Guiana", Code= "GF"},
-                    new(){ Name= "French Polynesia", Code= "PF"},
-                    new(){ Name= "French Southern Territories", Code= "TF"},
-                    new(){ Name= "Gabon", Code= "GA"},
-                    new(){ Name= "Gambia", Code= "GM"},
-                    new(){ Name= "Georgia", Code= "GE"},
-                    new(){ Name= "Germany", Code= "DE"},
-                    new(){ Name= "Ghana", Code= "GH"},
-                    new(){ Name= "Gibraltar", Code= "GI"},
-                    new(){ Name= "Greece", Code= "GR"},
-                    new(){ Name= "Greenland", Code= "GL"},
-                    new(){ Name= "Grenada", Code= "GD"},
-                    new(){ Name= "Guadeloupe", Code= "GP"},
-                    new(){ Name= "Guam", Code= "GU"},
-                    new(){ Name= "Guatemala", Code= "GT"},
-                    new(){ Name= "Guernsey", Code= "GG"},
-                    new(){ Name= "Guinea-Bissau", Code= "GW"},
-                    new(){ Name= "Guinea", Code= "GN"},
-                    new(){ Name= "Guyana", Code= "GY"},
-                    new(){ Name= "Haiti", Code= "HT"},
-                    new(){ Name= "Heard Island and McDonald Islands", Code= "HM"},
-                    new(){ Name= "Holy See (Vatican City State)",Code= "VA"},
-                    new(){ Name= "Honduras", Code= "HN"},
-                    new(){ Name= "Hong Kong", Code= "HK"},
-                    new(){ Name= "Hungary", Code= "HU"},
-                    new(){ Name= "Iceland", Code= "IS"},
-                    new(){ Name= "India", Code= "IN"},
-                    new(){ Name= "Indonesia", Code= "ID"},
-                    new(){ Name= "Iran, Islamic Republic of", Code= "IR"},
-                    new(){ Name= "Iraq", Code= "IQ"},
-                    new(){ Name= "Ireland", Code= "IE"},
-                    new(){ Name= "Isle of Man", Code= "IM"},
-                    new(){ Name= "Israel", Code= "IL"},
-                    new(){ Name= "Italy", Code= "IT"},
-                    new(){ Name= "Jamaica", Code= "JM"},
-                    new(){ Name= "Japan", Code= "JP"},
-                    new(){ Name= "Jersey", Code= "JE"},
-                    new(){ Name= "Jordan", Code= "JO"},
-                    new(){ Name= "Kazakhstan", Code= "KZ"},
-                    new(){ Name= "Kenya", Code= "KE"},
-                    new(){ Name= "Kiribati", Code= "KI"},
-                    new(){ Name= "Korea, Democratic People's Republic of",Code= "KP"},
-                    new(){ Name= "Korea, Republic of", Code= "KR"},
-                    new(){ Name= "Kosovo", Code= "XK"},
-                    new(){ Name= "Kuwait", Code= "KW"},
-                    new(){ Name= "Kyrgyzstan", Code= "KG"},
-                    new(){ Name= "Lao People's Democratic Republic", Code= "LA"},
-                    new(){ Name= "Latvia", Code= "LV"},
-                    new(){ Name= "Lebanon", Code= "LB"},
-                    new(){ Name= "Lesotho", Code= "LS"},
-                    new(){ Name= "Liberia", Code= "LR"},
-                    new(){ Name= "Libya", Code= "LY"},
-                    new(){ Name= "Liechtenstein", Code= "LI"},
-                    new(){ Name= "Lithuania", Code= "LT"},
-                    new(){ Name= "Luxembourg", Code= "LU"},
-                    new(){ Name= "Macao", Code= "MO"},
-                    new(){ Name= "Macedonia, the Former Yugoslav Republic of", Code= "MK"},
-                    new(){ Name= "Madagascar", Code= "MG"},
-                    new(){ Name= "Malawi", Code= "MW"},
-                    new(){ Name= "Malaysia", Code= "MY"},
-                    new(){ Name= "Maldives", Code= "MV"},
-                    new(){ Name= "Mali", Code= "ML"},
-                    new(){ Name= "Malta", Code= "MT"},
-                    new(){ Name= "Marshall Islands", Code= "MH"},
-                    new(){ Name= "Martinique", Code= "MQ"},
-                    new(){ Name= "Mauritania", Code= "MR"},
-                    new(){ Name= "Mauritius", Code= "MU"},
-                    new(){ Name= "Mayotte", Code= "YT"},
-                    new(){ Name= "Mexico", Code= "MX"},
-                    new(){ Name= "Micronesia, Federated States of", Code= "FM"},
-                    new(){ Name= "Moldova, Republic of", Code= "MD"},
-                    new(){ Name= "Monaco", Code= "MC"},
-                    new(){ Name= "Mongolia", Code= "MN"},
-                    new(){ Name= "Montenegro", Code= "ME"},
-                    new(){ Name= "Montserrat", Code= "MS"},
-                    new(){ Name= "Morocco", Code= "MA"},
-                    new(){ Name= "Mozambique", Code= "MZ"},
-                    new(){ Name= "Myanmar", Code= "MM"},
-                    new(){ Name= "Namibia", Code= "NA"},
-                    new(){ Name= "Nauru", Code= "NR"},
-                    new(){ Name= "Nepal", Code= "NP"},
-                    new(){ Name= "Netherlands", Code= "NL"},
-                    new(){ Name= "New Caledonia", Code= "NC"},
-                    new(){ Name= "New Zealand", Code= "NZ"},
-                    new(){ Name= "Nicaragua", Code= "NI"},
-                    new(){ Name= "Niger", Code= "NE"},
-                    new(){ Name= "Nigeria", Code= "NG"},
-                    new(){ Name= "Niue", Code= "NU"},
-                    new(){ Name= "Norfolk Island", Code= "NF"},
-                    new(){ Name= "Northern Mariana Islands", Code= "MP"},
-                    new(){ Name= "Norway", Code= "NO"},
-                    new(){ Name= "Oman", Code= "OM"},
-                    new(){ Name= "Pakistan", Code= "PK"},
-                    new(){ Name= "Palau", Code= "PW"},
-                    new(){ Name= "Palestine, State of", Code= "PS"},
-                    new(){ Name= "Panama", Code= "PA"},
-                    new(){ Name= "Papua New Guinea", Code= "PG"},
-                    new(){ Name= "Paraguay", Code= "PY"},
-                    new(){ Name= "Peru", Code= "PE"},
-                    new(){ Name= "Philippines", Code= "PH"},
-                    new(){ Name= "Pitcairn", Code= "PN"},
-                    new(){ Name= "Poland", Code= "PL"},
-                    new(){ Name= "Portugal", Code= "PT"},
-                    new(){ Name= "Puerto Rico", Code= "PR"},
-                    new(){ Name= "Qatar", Code= "QA"},
-                    new(){ Name= "Reunion", Code= "RE"},
-                    new(){ Name= "Romania", Code= "RO"},
-                    new(){ Name= "Russian Federation", Code= "RU"},
-                    new(){ Name= "Rwanda", Code= "RW"},
-                    new(){ Name= "Saint Barthelemy", Code= "BL"},
-                    new(){ Name= "Saint Helena", Code= "SH"},
-                    new(){ Name= "Saint Kitts and Nevis", Code= "KN"},
-                    new(){ Name= "Saint Lucia", Code= "LC"},
-                    new(){ Name= "Saint Martin (French part)", Code= "MF"},
-                    new(){ Name= "Saint Pierre and Miquelon", Code= "PM"},
-                    new(){ Name= "Saint Vincent and the Grenadines", Code= "VC"},
-                    new(){ Name= "Samoa", Code= "WS"},
-                    new(){ Name= "San Marino", Code= "SM"},
-                    new(){ Name= "Sao Tome and Principe", Code= "ST"},
-                    new(){ Name= "Saudi Arabia", Code= "SA"},
-                    new(){ Name= "Senegal", Code= "SN"},
-                    new(){ Name= "Serbia", Code= "RS"},
-                    new(){ Name= "Seychelles", Code= "SC"},
-                    new(){ Name= "Sierra Leone", Code= "SL"},
-                    new(){ Name= "Singapore", Code= "SG"},
-                    new(){ Name= "Sint Maarten (Dutch part)", Code= "SX"},
-                    new(){ Name= "Slovakia", Code= "SK"},
-                    new(){ Name= "Slovenia", Code= "SI"},
-                    new(){ Name= "Solomon Islands", Code= "SB"},
-                    new(){ Name= "Somalia", Code= "SO"},
-                    new(){ Name= "South Africa", Code= "ZA"},
-                    new(){ Name= "South Georgia and the South Sandwich Islands", Code= "GS"},
-                    new(){ Name= "South Sudan", Code= "SS"},
-                    new(){ Name= "Spain", Code= "ES"},
-                    new(){ Name= "Sri Lanka", Code= "LK"},
-                    new(){ Name= "Sudan", Code= "SD"},
-                    new(){ Name= "Suriname", Code= "SR"},
-                    new(){ Name= "Svalbard and Jan Mayen", Code= "SJ"},
-                    new(){ Name= "Swaziland", Code= "SZ"},
-                    new(){ Name= "Sweden", Code= "SE"},
-                    new(){ Name= "Switzerland", Code= "CH"},
-                    new(){ Name= "Syrian Arab Republic", Code= "SY"},
-                    new(){ Name= "Taiwan, Province of China", Code= "TW"},
-                    new(){ Name= "Tajikistan", Code= "TJ" },
-                    new(){ Name= "Thailand", Code= "TH"},
-                    new(){ Name= "Timor-Leste", Code= "TL"},
-                    new(){ Name= "Togo", Code= "TG"},
-                    new(){ Name= "Tokelau", Code= "TK"},
-                    new(){ Name= "Tonga", Code= "TO"},
-                    new(){ Name= "Trinidad and Tobago", Code= "TT"},
-                    new(){ Name= "Tunisia", Code= "TN"},
-                    new(){ Name= "Turkey", Code= "TR"},
-                    new(){ Name= "Turkmenistan", Code= "TM"},
-                    new(){ Name= "Turks and Caicos Islands", Code= "TC"},
-                    new(){ Name= "Tuvalu", Code= "TV"},
-                    new(){ Name= "Uganda", Code= "UG"},
-                    new(){ Name= "Ukraine", Code= "UA"},
-                    new(){ Name= "United Arab Emirates", Code= "AE"},
-                    new(){ Name= "United Kingdom", Code= "GB"},
-                    new(){ Name= "United Republic of Tanzania", Code= "TZ"},
-                    new(){ Name= "United States", Code= "US"},
-                    new(){ Name= "Uruguay", Code= "UY"},
-                    new(){ Name= "US Virgin Islands", Code= "VI"},
-                    new(){ Name= "Uzbekistan", Code= "UZ"},
-                    new(){ Name= "Vanuatu", Code= "VU"},
-                    new(){ Name= "Venezuela", Code= "VE"},
-                    new(){ Name= "Vietnam", Code= "VN"},
-                    new(){ Name= "Wallis and Futuna", Code= "WF"},
-                    new(){ Name= "Western Sahara", Code= "EH"},
-                    new(){ Name= "Yemen", Code= "YE"},
-                    new(){ Name= "Zambia", Code= "ZM"},
-                    new(){ Name= "Zimbabwe", Code= "ZW"}
+                    new(){ Code= "AF", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name= "Afghanistan" } ,
+                        new CountryTranslation(){LanguageId=LanguageId.Ukrainian, Name= "Афганістан " }} },
+                    new(){Code= "AX", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name= "Alland Islands" },
+                        new CountryTranslation(){LanguageId=LanguageId.Ukrainian, Name= "Аландські острови" }} },
+                    new() {  Code = "AL", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Albania" } } },
+                    new() {  Code = "DZ", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Algeria" } } },
+                    new() {  Code = "AS" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "American Samoa" } } },
+                    new() { Code = "AD", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Andorra" } } },
+                    new() {  Code = "AO", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Angola" } } },
+                    new() {  Code = "AI", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Anguilla" } } },
+                    new() {  Code = "AQ", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Antarctica" } } },
+                    new() {  Code = "AG" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Antigua and Barbuda" } } },
+                    new() { Code = "AR", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Argentina" } } },
+                    new() {  Code = "AM" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Armenia" } } },
+                    new() { Code = "AW" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Aruba" } } },
+                    new() {  Code = "AU", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Australia" } } },
+                    new() { Code = "AT" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Austria" } } },
+                    new() {  Code = "AZ", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Azerbaijan" } } },
+                    new() {  Code = "BS", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Bahamas" } } },
+                    new() { Code = "BH", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Bahrain" } } },
+                    new() {  Code = "BD" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Bangladesh" } } },
+                    new() { Code = "BB", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Barbados" } } },
+                    new() { Code = "BY" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Belarus" } } },
+                    new() { Code = "BE", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Belgium" } } },
+                    new() {  Code = "BZ", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Belize" } } },
+                    new() { Code = "BJ" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Benin" } } },
+                    new() {  Code = "BM" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Bermuda" } } },
+                    new() {  Code = "BT", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Bhutan" } } },
+                    new() { Code = "BO" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Bolivia" } } },
+                    new() { Code = "BA", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Bosnia and Herzegovina" } } },
+                    new() {  Code = "BW" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Botswana" } } },
+                    new() {  Code = "BV" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Bouvet Island" } } },
+                    new() {  Code = "BR" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Brazil" } } },
+                    new() { Code = "IO", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "British Indian Ocean Territory" } } },
+                    new() { Code = "VG" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "British Virgin Islands" } } },
+                    new() { Code = "BN" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Brunei Darussalam" } } },
+                    new() { Code = "BG", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Bulgaria" } } },
+                    new() {  Code = "BF" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Burkina Faso" } } },
+                    new() {  Code = "BI" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Burundi" } } },
+                    new() {  Code = "KH", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Cambodia" } } },
+                    new() {  Code = "CM", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Cameroon" } } },
+                    new() {  Code = "CA" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Canada" } } },
+                    new() { Code = "CV" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Cape Verde" } } },
+                    new() {  Code = "KY" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Cayman Islands" } } },
+                    new() { Code = "CF" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Central African Republic" } } },
+                    new() {  Code = "TD" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Chad" } } },
+                    new() { Code = "CL", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Chile" } } },
+                    new() { Code = "CN" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "China" } } },
+                    new() {  Code = "CX" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Christmas Island" } } },
+                    new() { Code = "CC" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Cocos (Keeling) Islands" } } },
+                    new() {  Code = "CO", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Colombia" } } },
+                    new() { Code = "KM" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Comoros" } } },
+                    new() {Code = "CG" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Congo, Democratic Republic of the" } } },
+                    new() { Code = "CD" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Congo, Republic of the" } } },
+                    new() {  Code = "CK" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Cook Islands" } } },
+                    new() {  Code = "CR", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Costa Rica" } } },
+                    new() { Code = "CI" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Cote d'Ivoire" } } },
+                    new() {  Code = "HR" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Croatia" } } },
+                    new() {  Code = "CU" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Cuba" } } },
+                    new() {  Code = "CW" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Curacao" } } },
+                    new() {  Code = "CY" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Cyprus" } } },
+                    new() {  Code = "CZ" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Czech Republic" } } },
+                    new() {  Code = "DK" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Denmark" } } },
+                    new() {  Code = "DJ" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Djibouti" } } },
+                    new() {  Code = "DM" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Dominica" } } },
+                    new() {  Code = "DO" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Dominican Republic" } } },
+                    new() {  Code = "EC", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Ecuador" } } },
+                    new() {  Code = "EG" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Egypt" } } },
+                    new() {  Code = "SV", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "El Salvador" } } },
+                    new() {  Code = "GQ" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Equatorial Guinea" } } },
+                    new() {  Code = "ER" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Eritrea" } } },
+                    new() {  Code = "EE", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Estonia" } } },
+                    new() {  Code = "ET" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Ethiopia" } } },
+                    new() {  Code = "FK" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Falkland Islands (Malvinas)" } } },
+                    new() {  Code = "FO" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Faroe Islands" } } },
+                    new() { Code = "FJ" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Fiji" } } },
+                    new() {  Code = "FI" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Finland" } } },
+                    new() {  Code = "FR", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "France" } } },
+                    new() {  Code = "GF" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "French Guiana" } } },
+                    new() { Code = "PF", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "French Polynesia" } } },
+                    new() {  Code = "TF" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "French Southern Territories" } } },
+                    new() { Code = "GA", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Gabon" } } },
+                    new() { Code = "GM" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Gambia" } } },
+                    new() {  Code = "GE" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Georgia" } } },
+                    new() {  Code = "DE" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Germany" } } },
+                    new() {  Code = "GH" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Ghana" } } },
+                    new() {  Code = "GI" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Gibraltar" } } },
+                    new() {  Code = "GR", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Greece" } } },
+                    new() {  Code = "GL" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Greenland" } } },
+                    new() { Code = "GD" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Grenada" } } },
+                    new() {  Code = "GP" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Guadeloupe" } } },
+                    new() {  Code = "GU" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Guam" } } },
+                    new() { Code = "GT", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Guatemala" } } },
+                    new() {  Code = "GG" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Guernsey" } } },
+                    new() {  Code = "GW" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Guinea-Bissau" } } },
+                    new() {  Code = "GN" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Guinea" } } },
+                    new() {  Code = "GY" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Guyana" } } },
+                    new() {  Code = "HT" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Haiti" } } },
+                    new() {  Code = "HM" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Heard Island and McDonald Islands" } } },
+                    new() {  Code = "VA" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Holy See (Vatican City State)" } } },
+                    new() {  Code = "HN", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Honduras" } } },
+                    new() {  Code = "HK" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Hong Kong" } } },
+                    new() {  Code = "HU" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Hungary" } } },
+                    new() {  Code = "IS" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Iceland" } } },
+                    new() {  Code = "IN", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "India" } } },
+                    new() {  Code = "ID" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Indonesia" } } },
+                    new() {  Code = "IR" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Iran, Islamic Republic of" } } },
+                    new() {  Code = "IQ" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Iraq" } } },
+                    new() { Code = "IE" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Ireland" } } },
+                    new() {  Code = "IM" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Isle of Man" } } },
+                    new() { Code = "IL" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Israel" } } },
+                    new() { Code = "IT", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Italy" } } },
+                    new() {  Code = "JM" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Jamaica" } } },
+                    new() {  Code = "JP" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Japan" } } },
+                    new() { Code = "JE" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Jersey" } } },
+                    new() {  Code = "JO" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Jordan" } } },
+                    new() {  Code = "KZ" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Kazakhstan" } } },
+                    new() {  Code = "KE" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Kenya" } } },
+                    new() { Code = "KI" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Kiribati" } } },
+                    new() {  Code = "KP" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Korea, Democratic People's Republic of" } } },
+                    new() {  Code = "KR" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Korea, Republic of" } } },
+                    new() {  Code = "XK" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Kosovo" } } },
+                    new() {  Code = "KW", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Kuwait" } } },
+                    new() {  Code = "KG" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Kyrgyzstan" } } },
+                    new() { Code = "LA" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Lao People's Democratic Republic" } } },
+                    new() {  Code = "LV" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Latvia" } } },
+                    new() {  Code = "LB" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Lebanon" } } },
+                    new() {  Code = "LS" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Lesotho" } } },
+                    new() {  Code = "LR" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Liberia" } } },
+                    new() { Code = "LY" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Libya" } } },
+                    new() {  Code = "LI", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Liechtenstein" } } },
+                    new() { Code = "LT" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Lithuania" } } },
+                    new() {  Code = "LU" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Luxembourg" } } },
+                    new() {  Code = "MO" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Macao" } } },
+                    new() {  Code = "MK" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Macedonia, the Former Yugoslav Republic of" } } },
+                    new() { Code = "MG", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Madagascar" } } },
+                    new() { Code = "MW" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Malawi" } } },
+                    new() {  Code = "MY" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Malaysia" } } },
+                    new() {  Code = "MV" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Maldives" } } },
+                    new() {  Code = "ML" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Mali" } } },
+                    new() {  Code = "MT" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Malta" } } },
+                    new() {  Code = "MH" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Marshall Islands" } } },
+                    new() { Code = "MQ" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Martinique" } } },
+                    new() {  Code = "MR" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Mauritania" } } },
+                    new() { Code = "MU" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Mauritius" } } },
+                    new() {  Code = "YT" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Mayotte" } } },
+                    new() {  Code = "MX" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Mexico" } } },
+                    new() {  Code = "FM" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Micronesia, Federated States of" } } },
+                    new() {  Code = "MD" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Moldova, Republic of" } } },
+                    new() {  Code = "MC" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Monaco" } } },
+                    new() {  Code = "MN" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Mongolia" } } },
+                    new() {  Code = "ME", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Montenegro" } } },
+                    new() { Code = "MS" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Montserrat" } } },
+                    new() {  Code = "MA" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Morocco" } } },
+                    new() { Code = "MZ" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Mozambique" } } },
+                    new() {  Code = "MM" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Myanmar" } } },
+                    new() {  Code = "NA" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Namibia" } } },
+                    new() {  Code = "NR" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Nauru" } } },
+                    new() {  Code = "NP" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Nepal" } } },
+                    new() {  Code = "NL" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Netherlands" } } },
+                    new() {  Code = "NC" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "New Caledonia" } } },
+                    new() { Code = "NZ" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "New Zealand" } } },
+                    new() { Code = "NI" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Nicaragua" } } },
+                    new() {  Code = "NE" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Niger" } } },
+                    new() {  Code = "NG" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Nigeria" } } },
+                    new() {  Code = "NU" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Niue" } } },
+                    new() { Code = "NF", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Norfolk Island" } } },
+                    new() {  Code = "MP", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Northern Mariana Islands" } } },
+                    new() {  Code = "NO" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Norway" } } },
+                    new() {  Code = "OM" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Oman" } } },
+                    new() { Code = "PK" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Pakistan" } } },
+                    new() {  Code = "PW" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Palau" } } },
+                    new() {  Code = "PS" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Palestine, State of" } } },
+                    new() {  Code = "PA", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Panama" } } },
+                    new() {  Code = "PG" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Papua New Guinea" } } },
+                    new() {  Code = "PY", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Paraguay" } } },
+                    new() {  Code = "PE" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Peru" } } },
+                    new() {  Code = "PH" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Philippines" } } },
+                    new() {  Code = "PN" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Pitcairn" } } },
+                    new() {  Code = "PL" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Poland" } } },
+                    new() {  Code = "PT" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Portugal" } } },
+                    new() {  Code = "PR" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Puerto Rico" } } },
+                    new() { Code = "QA" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Qatar" } } },
+                    new() {  Code = "RE" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Reunion" } } },
+                    new() { Code = "RO" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Romania" } } },
+                    new() { Code = "RU" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Russian Federation" } } },
+                    new() {  Code = "RW" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Rwanda" } } },
+                    new() {  Code = "BL" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Saint Barthelemy" } } },
+                    new() {  Code = "SH" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Saint Helena" } } },
+                    new() {  Code = "KN" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Saint Kitts and Nevis" } } },
+                    new() { Code = "LC" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Saint Lucia" } } },
+                    new() {  Code = "MF" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Saint Martin (French part)" } } },
+                    new() {  Code = "PM" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Saint Pierre and Miquelon" } } },
+                    new() {  Code = "VC", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Saint Vincent and the Grenadines" } } },
+                    new() {  Code = "WS" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Samoa" } } },
+                    new() {  Code = "SM" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "San Marino" } } },
+                    new() {  Code = "ST" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Sao Tome and Principe" } } },
+                    new() { Code = "SA" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Saudi Arabia" } } },
+                    new() {  Code = "SN" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Senegal" } } },
+                    new() { Code = "RS" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Serbia" } } },
+                    new() {  Code = "SC" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Seychelles" } } },
+                    new() {  Code = "SL" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Sierra Leone" } } },
+                    new() {  Code = "SG" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Singapore" } } },
+                    new() {  Code = "SX" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Sint Maarten (Dutch part)" } } },
+                    new() {  Code = "SK", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Slovakia" } } },
+                    new() {  Code = "SI" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Slovenia" } } },
+                    new() {  Code = "SB", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Solomon Islands" } } },
+                    new() {  Code = "SO" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Somalia" } } },
+                    new() {  Code = "ZA" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "South Africa" } } },
+                    new() {  Code = "GS", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "South Georgia and the South Sandwich Islands" } } },
+                    new() {  Code = "SS" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "South Sudan" } } },
+                    new() {  Code = "ES" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Spain" } } },
+                    new() {  Code = "LK", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Sri Lanka" } } },
+                    new() { Code = "SD" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Sudan" } } },
+                    new() {  Code = "SR" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Suriname" } } },
+                    new() { Code = "SJ" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Svalbard and Jan Mayen" } } },
+                    new() { Code = "SZ" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Swaziland" } } },
+                    new() {  Code = "SE", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Sweden" } } },
+                    new() {  Code = "CH" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Switzerland" } } },
+                    new() { Code = "SY" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Syrian Arab Republic" } } },
+                    new() {  Code = "TW" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Taiwan, Province of China" } } },
+                    new() { Code = "TJ" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Tajikistan" } } },
+                    new() { Code = "TH", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Thailand" } } },
+                    new() { Code = "TL" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Timor-Leste" } } },
+                    new() { Code = "TG" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Togo" } } },
+                    new() { Code = "TK" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Tokelau" } } },
+                    new() { Code = "TO" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Tonga" } } },
+                    new() { Code = "TT" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Trinidad and Tobago" } } },
+                    new() { Code = "TN", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Tunisia" } } },
+                    new() { Code = "TR", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Turkey" } } },
+                    new() {  Code = "TM", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Turkmenistan" } } },
+                    new() { Code = "TC" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Turks and Caicos Islands" } } },
+                    new() { Code = "TV" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Tuvalu" } } },
+                    new() {  Code = "UG", CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Uganda" } } },
+                    new() {  Code = "UA" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Ukraine" } } },
+                    new() {  Code = "AE" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "United Arab Emirates" } } },
+                    new() { Code = "GB" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "United Kingdom" } } },
+                    new() { Code = "TZ" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "United Republic of Tanzania" } } },
+                    new() { Code = "US" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "United States" } } },
+                    new() { Code = "UY" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Uruguay" } } },
+                    new() { Code = "VI" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "US Virgin Islands" } } },
+                    new() { Code = "UZ" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Uzbekistan" } } },
+                    new() { Code = "VU" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Vanuatu" } } },
+                    new() { Code = "VE" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Venezuela" } } },
+                    new() { Code = "VN" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Vietnam" } } },
+                    new() { Code = "WF" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Wallis and Futuna" } } },
+                    new() { Code = "EH" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Western Sahara" } } },
+                    new() {  Code = "YE" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Yemen" } } },
+                    new() {  Code = "ZM" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Zambia" } } },
+                    new() { Code = "ZW" , CountryTranslations=new List<CountryTranslation>(){
+                        new CountryTranslation(){LanguageId=LanguageId.English, Name = "Zimbabwe" } } },
             };
             return countries;
         }
@@ -398,28 +658,64 @@ namespace DAL.Data
             var cities = new List<City>()
             {
                 //Czech Republic
-                new (){ Name="Prague", CountryId=60 },
-                new (){ Name="Brno", CountryId=60 },
-                new (){ Name="Ostrava", CountryId=60 },
-                new (){ Name="Pilsen", CountryId=60 },
-                new (){ Name="Liberec", CountryId=60 },
-                new (){ Name="Olomouc", CountryId=60 },
+                new (){ CountryId=60 , CityTranslations=new List<CityTranslation>(){
+                        new (){LanguageId=LanguageId.English, Name = "Prague" },
+                        new (){LanguageId=LanguageId.Ukrainian, Name="Прага"} } },
+                new (){  CountryId=60 , CityTranslations=new List<CityTranslation>(){
+                        new (){LanguageId=LanguageId.English, Name = "Brno" },
+                        new (){LanguageId=LanguageId.Ukrainian, Name="Брно"} } },
+                new (){  CountryId=60 , CityTranslations=new List<CityTranslation>(){
+                        new (){LanguageId=LanguageId.English, Name = "Ostrava" },
+                        new (){LanguageId=LanguageId.Ukrainian, Name="Острава"} } },
+                new (){  CountryId=60 , CityTranslations=new List<CityTranslation>(){
+                        new (){LanguageId=LanguageId.English, Name = "Pilsen" },
+                        new (){LanguageId=LanguageId.Ukrainian, Name="Пльзень"} } },
+                new (){  CountryId=60 , CityTranslations=new List<CityTranslation>(){
+                        new (){LanguageId=LanguageId.English, Name = "Liberec"},
+                        new (){LanguageId=LanguageId.Ukrainian, Name="Ліберець"} } },
+                new (){  CountryId=60 , CityTranslations=new List<CityTranslation>(){
+                        new (){LanguageId=LanguageId.English, Name = "Olomouc" },
+                        new (){LanguageId=LanguageId.Ukrainian, Name="Оломоуць"} } },
 
                 //Poland
-                new (){ Name="Warsaw", CountryId=178 },
-                new (){ Name="Cracow", CountryId=178 },
-                new (){ Name="Lodz", CountryId=178 },
-                new (){ Name="Wroclaw", CountryId=178 },
-                new (){ Name="Poznan", CountryId=178 },
-                new (){ Name="Gdansk", CountryId=178 },
+                new (){  CountryId=178, CityTranslations=new List<CityTranslation>(){
+                        new (){LanguageId=LanguageId.English, Name = "Warsaw" },
+                        new (){LanguageId=LanguageId.Ukrainian, Name="Варшава"} } },
+                new (){  CountryId=178 , CityTranslations=new List<CityTranslation>(){
+                        new (){LanguageId=LanguageId.English, Name = "Cracow" },
+                        new (){LanguageId=LanguageId.Ukrainian, Name="Краків"} } },
+                new (){ CountryId=178 , CityTranslations=new List<CityTranslation>(){
+                        new (){LanguageId=LanguageId.English, Name = "Lodz"},
+                        new (){LanguageId=LanguageId.Ukrainian, Name="Лодзь"} } },
+                new (){  CountryId=178, CityTranslations=new List<CityTranslation>(){
+                        new (){LanguageId=LanguageId.English, Name = "Wroclaw" },
+                        new (){LanguageId=LanguageId.Ukrainian, Name="Вроцлав"} } },
+                new (){  CountryId=178 , CityTranslations=new List<CityTranslation>(){
+                        new (){LanguageId=LanguageId.English, Name = "Poznan" },
+                        new (){LanguageId=LanguageId.Ukrainian, Name="Познань"} } },
+                new (){  CountryId=178 , CityTranslations=new List<CityTranslation>(){
+                        new (){LanguageId=LanguageId.English, Name = "Gdansk" },
+                        new (){LanguageId=LanguageId.Ukrainian, Name="Гданськ"} } },
 
                 //Ukraine
-                new (){ Name="Kyiv", CountryId=233 },
-                new (){ Name="Kharkiv", CountryId=233 },
-                new (){ Name="Odesa", CountryId=233 },
-                new (){ Name="Dnipro", CountryId=233 },
-                new (){ Name="Lviv", CountryId=233 },
-                new (){ Name="Mariupol", CountryId=233 },
+                new (){  CountryId=233 , CityTranslations=new List<CityTranslation>(){
+                        new (){LanguageId=LanguageId.English, Name = "Kyiv" },
+                        new (){LanguageId=LanguageId.Ukrainian, Name="Київ"} } },
+                new (){  CountryId=233 , CityTranslations=new List<CityTranslation>(){
+                        new (){LanguageId=LanguageId.English, Name = "Kharkiv" },
+                        new (){LanguageId=LanguageId.Ukrainian, Name="Харків"} } },
+                new (){  CountryId=233 , CityTranslations=new List<CityTranslation>(){
+                        new (){LanguageId=LanguageId.English, Name = "Odesa" },
+                        new (){LanguageId=LanguageId.Ukrainian, Name="Одеса"} } },
+                new (){  CountryId=233 , CityTranslations=new List<CityTranslation>(){
+                        new (){LanguageId=LanguageId.English, Name = "Dnipro" },
+                        new (){LanguageId=LanguageId.Ukrainian, Name="Дніпро"} } },
+                new (){ CountryId=233 , CityTranslations=new List<CityTranslation>(){
+                        new (){LanguageId=LanguageId.English, Name = "Lviv" },
+                        new (){LanguageId=LanguageId.Ukrainian, Name="Львів"} } },
+                new (){  CountryId=233, CityTranslations=new List<CityTranslation>(){
+                        new (){LanguageId=LanguageId.English, Name = "Mariupol" },
+                        new (){LanguageId=LanguageId.Ukrainian, Name="Маріуполь"} } },
             };
             return cities;
         }
@@ -429,98 +725,354 @@ namespace DAL.Data
         {
             var categories = new List<Category>
             {
-/*1*/           new(){ Name = "Beauty and health", UrlSlug = "beauty-and-health", Image = "BeautyAndHealth.png", ParentId = null},
-/*2*/           new(){ Name = "House and garden", UrlSlug = "house-and-garden", Image = "HouseAndGarden.png", ParentId = null},
-/*3*/           new(){ Name = "Clothes and shoes", UrlSlug = "clothes-and-shoes", Image = "ClothesAndShoes.png", ParentId = null},
-/*4*/           new(){ Name = "Technology and electronics", UrlSlug = "technology-and-electronics", Image = "TechnologyAndElectronics.png", ParentId = null},
-/*5*/           new(){ Name = "Goods for children", UrlSlug = "goods-for-children", Image = "GoodsForChildren.png", ParentId = null},
-/*6*/           new(){ Name = "Auto", UrlSlug = "auto", Image = "Auto.png", ParentId = null},
-/*7*/           new(){ Name = "Gifts, hobbies, books", UrlSlug = "gifts-hobbies-books", Image = "GiftsHobbiesBooks.png", ParentId = null},
-/*8*/           new(){ Name = "Accessories and decorations", UrlSlug = "accessories-and-decorations", Image = "AccessoriesAndDecorations.png", ParentId = null},
-/*9*/           new(){ Name = "Materials for repair", UrlSlug = "materials-for-repair", Image = "", ParentId = null},
-/*10*/          new(){ Name = "Sports and recreation", UrlSlug = "sports-and-recreation", Image = "SportsAndRecreation.png", ParentId = null},
-/*11*/          new(){ Name = "Medicines and medical products", UrlSlug = "medicines-and-medical-products", Image = "", ParentId = null},
-/*12*/          new(){ Name = "Pets and pet products", UrlSlug = "pets-and-pet-products", Image = "", ParentId = null},
-/*13*/          new(){ Name = "Stationery", UrlSlug = "stationery", Image = "Stationery.png", ParentId = null},
-/*14*/          new(){ Name = "Overalls and shoes", UrlSlug = "overalls-and-shoes", Image = "", ParentId = null},
-/*15*/          new(){ Name = "Wedding goods", UrlSlug = "wedding-goods", Image = "", ParentId = null},
-/*16*/          new(){ Name = "Food products, drinks", UrlSlug = "food-products-drinks", Image = "", ParentId = null},
-/*17*/          new(){ Name = "Tools", UrlSlug = "tools", Image = "Tools.png", ParentId = null},
-/*18*/          new(){ Name = "Antiques and collectibles", UrlSlug = "antiques-and-collectibles", Image = "", ParentId = null},
-/*19*/          new(){ Name = "Construction", UrlSlug = "сonstruction", Image = "Construction.png", ParentId = null},
+/*1*/           new(){ UrlSlug = "beauty-and-health", Image = "BeautyAndHealth.png", ParentId = null,
+                     CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Beauty and health", LanguageId=LanguageId.English },
+                        new(){ Name = "Краса і здоров'я", LanguageId=LanguageId.Ukrainian } } },
+/*2*/           new(){ UrlSlug = "house-and-garden", Image = "HouseAndGarden.png", ParentId = null,
+                     CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "House and garden",  LanguageId=LanguageId.English },
+                        new(){ Name = "Дім і сад", LanguageId=LanguageId.Ukrainian } } },
+/*3*/           new(){ UrlSlug = "clothes-and-shoes", Image = "ClothesAndShoes.png", ParentId = null,
+                     CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Clothes and shoes", LanguageId=LanguageId.English },
+                        new(){ Name = "Одяг та взуття", LanguageId=LanguageId.Ukrainian } } },
+/*4*/           new(){ UrlSlug = "technology-and-electronics", Image = "TechnologyAndElectronics.png", ParentId = null,
+                     CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Technology and electronics", LanguageId=LanguageId.English },
+                        new(){ Name = "Техніка та електроніка", LanguageId=LanguageId.Ukrainian } } },
+/*5*/           new(){ UrlSlug = "goods-for-children", Image = "GoodsForChildren.png", ParentId = null,
+                     CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Goods for children", LanguageId=LanguageId.English },
+                        new(){ Name = "Товари для дітей", LanguageId=LanguageId.Ukrainian } } },
+/*6*/           new(){ UrlSlug = "auto", Image = "Auto.png", ParentId = null,
+                     CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Auto", LanguageId=LanguageId.English },
+                        new(){ Name = "Авто", LanguageId=LanguageId.Ukrainian } } },
+/*7*/           new(){ UrlSlug = "gifts-hobbies-books", Image = "GiftsHobbiesBooks.png", ParentId = null,
+                     CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Gifts, hobbies, books", LanguageId=LanguageId.English },
+                        new(){ Name = "Подарунки, хобі, книги", LanguageId=LanguageId.Ukrainian } } },
+/*8*/           new(){ UrlSlug = "accessories-and-decorations", Image = "AccessoriesAndDecorations.png", ParentId = null,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Accessories and decorations", LanguageId=LanguageId.English },
+                        new(){ Name = "Аксесуари та прикраси", LanguageId=LanguageId.Ukrainian } } },
+/*9*/           new(){ UrlSlug = "materials-for-repair", Image = "", ParentId = null,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Materials for repair", LanguageId=LanguageId.English },
+                        new(){ Name = "Матеріали для ремонту", LanguageId=LanguageId.Ukrainian } } },
+/*10*/          new(){ UrlSlug = "sports-and-recreation", Image = "SportsAndRecreation.png", ParentId = null,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Sports and recreation", LanguageId=LanguageId.English },
+                        new(){ Name = "Спорт і відпочинок", LanguageId=LanguageId.Ukrainian } } },
+/*11*/          new(){ UrlSlug = "medicines-and-medical-products", Image = "", ParentId = null,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Medicines and medical products", LanguageId=LanguageId.English },
+                        new(){ Name = "Медикаменти та медичні товари", LanguageId=LanguageId.Ukrainian } } },
+/*12*/          new(){ UrlSlug = "pets-and-pet-products", Image = "", ParentId = null,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Pets and pet products", LanguageId=LanguageId.English },
+                        new(){ Name = "Домашні тварини та зоотовари", LanguageId=LanguageId.Ukrainian } } },
+/*13*/          new(){ UrlSlug = "stationery", Image = "Stationery.png", ParentId = null,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Stationery",  LanguageId=LanguageId.English },
+                        new(){ Name = "Канцтовари", LanguageId=LanguageId.Ukrainian } } },
+/*14*/          new(){ UrlSlug = "overalls-and-shoes", Image = "", ParentId = null,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Overalls and shoes", LanguageId=LanguageId.English },
+                        new(){ Name = "Спецодяг та взуття", LanguageId=LanguageId.Ukrainian } } },
+/*15*/          new(){ UrlSlug = "wedding-goods", Image = "", ParentId = null,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Wedding goods", LanguageId=LanguageId.English },
+                        new(){ Name = "Весільні товари", LanguageId=LanguageId.Ukrainian } } },
+/*16*/          new(){ UrlSlug = "food-products-drinks", Image = "", ParentId = null,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Food products, drinks", LanguageId=LanguageId.English },
+                        new(){ Name = "Продукти харчування, напої", LanguageId=LanguageId.Ukrainian } } },
+/*17*/          new(){ UrlSlug = "tools", Image = "Tools.png", ParentId = null,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Tools", LanguageId=LanguageId.English },
+                        new(){ Name = "Інструменти", LanguageId=LanguageId.Ukrainian } } },
+/*18*/          new(){ UrlSlug = "antiques-and-collectibles", Image = "", ParentId = null,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Antiques and collectibles", LanguageId=LanguageId.English },
+                        new(){ Name = "Антикваріат і колекціонування", LanguageId=LanguageId.Ukrainian } } },
+/*19*/          new(){ UrlSlug = "сonstruction", Image = "Construction.png", ParentId = null,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Construction", LanguageId=LanguageId.English },
+                        new(){ Name = "Будівництво", LanguageId=LanguageId.Ukrainian } } },
 
-/*20*/          new(){ Name = "Men's clothing", UrlSlug = "mens-clothing", Image = "", ParentId = 3},
-/*21*/          new(){ Name = "Women's clothes", UrlSlug = "womens-clothes", Image = "", ParentId = 3},
-/*22*/          new(){ Name = "Children's clothes, shoes, accessories", UrlSlug = "Childrens-clothes-shoes-accessories", Image = "", ParentId = 3},
-/*23*/          new(){ Name = "Sportswear and footwear", UrlSlug = "sportswear-and-footwear", Image = "", ParentId = 3},
-/*24*/          new(){ Name = "Footwear", UrlSlug = "footwear", Image = "", ParentId = 3},
-/*25*/          new(){ Name = "Overalls and shoes", UrlSlug = "overalls-and-shoes", Image = "", ParentId = 3},
-/*26*/          new(){ Name = "Carnival costumes", UrlSlug = "carnival-costumes", Image = "", ParentId = 3},
-/*27*/          new(){ Name = "Ethnic clothing", UrlSlug = "ethnic-clothing", Image = "", ParentId = 3},
+/*20*/          new(){ UrlSlug = "mens-clothing", Image = "", ParentId = 3,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Men's clothing", LanguageId=LanguageId.English },
+                        new(){ Name = "Чоловічий одяг", LanguageId=LanguageId.Ukrainian } } },
+/*21*/          new(){ UrlSlug = "womens-clothes", Image = "", ParentId = 3,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Women's clothes", LanguageId=LanguageId.English },
+                        new(){ Name = "Жіночий одяг", LanguageId=LanguageId.Ukrainian } } },
+/*22*/          new(){ UrlSlug = "Childrens-clothes-shoes-accessories", Image = "", ParentId = 3,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Children's clothes, shoes, accessories", LanguageId=LanguageId.English },
+                        new(){ Name = "Дитячі одяг, взуття, аксесуари", LanguageId=LanguageId.Ukrainian } } },
+/*23*/          new(){ UrlSlug = "sportswear-and-footwear", Image = "", ParentId = 3,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Sportswear and footwear", LanguageId=LanguageId.English },
+                        new(){ Name = "Спортивний одяг та взуття", LanguageId=LanguageId.Ukrainian } } },
+/*24*/          new(){ UrlSlug = "footwear", Image = "", ParentId = 3,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Footwear", LanguageId=LanguageId.English },
+                        new(){ Name = "Взуття", LanguageId=LanguageId.Ukrainian } } },
+/*25*/          new(){ UrlSlug = "overalls-and-shoes", Image = "", ParentId = 3,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Overalls and shoes", LanguageId=LanguageId.English },
+                        new(){ Name = "Спецодяг та взуття", LanguageId=LanguageId.Ukrainian } } },
+/*26*/          new(){ UrlSlug = "carnival-costumes", Image = "", ParentId = 3,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Carnival costumes", LanguageId=LanguageId.English },
+                        new(){ Name = "Карнавальні костюми", LanguageId=LanguageId.Ukrainian } } },
+/*27*/          new(){ UrlSlug = "ethnic-clothing", Image = "", ParentId = 3,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Ethnic clothing", LanguageId=LanguageId.English },
+                        new(){ Name = "Етнічний одяг", LanguageId=LanguageId.Ukrainian } } },
 
-/*28*/          new(){ Name = "Computer equipment and software", UrlSlug = "computer-equipment-and-software", Image = "", ParentId = 4},
-/*29*/          new(){ Name = "Household appliances", UrlSlug = "household-appliances", Image = "", ParentId = 4},
-/*30*/          new(){ Name = "Phones and accessories", UrlSlug = "phones-and-accessories", Image = "", ParentId = 4},
-/*31*/          new(){ Name = "Audio equipment and accessories", UrlSlug = "audio-equipment-and-accessories", Image = "", ParentId = 4},
-/*32*/          new(){ Name = "Spare parts for machinery and electronics", UrlSlug = "spare-parts-for-machinery-and-electronics", Image = "", ParentId = 4},
-/*33*/          new(){ Name = "TV and video equipment", UrlSlug = "tv-and-video-equipment", Image = "", ParentId = 4},
-/*34*/          new(){ Name = "Car electronics", UrlSlug = "car-electronics", Image = "", ParentId = 4},
-/*35*/          new(){ Name = "Photos, camcorders and accessories", UrlSlug = "photos-camcorders-and-accessories", Image = "", ParentId = 4},
-/*36*/          new(){ Name = "3d devices", UrlSlug = "3d-devices", Image = "", ParentId = 4},
-/*37*/          new(){ Name = "Equipment for satellite internet", UrlSlug = "equipment-for-satellite-internet", Image = "", ParentId = 4},
+/*28*/          new(){ UrlSlug = "computer-equipment-and-software", Image = "", ParentId = 4,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Computer equipment and software", LanguageId=LanguageId.English },
+                        new(){ Name = "Комп'ютерна техніка та ПЗ", LanguageId=LanguageId.Ukrainian } } },
+/*29*/          new(){ UrlSlug = "household-appliances", Image = "", ParentId = 4,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Household appliances", LanguageId=LanguageId.English },
+                        new(){ Name = "Побутова техніка", LanguageId=LanguageId.Ukrainian } } },
+/*30*/          new(){ UrlSlug = "phones-and-accessories", Image = "", ParentId = 4,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Phones and accessories", LanguageId=LanguageId.English },
+                        new(){ Name = "Телефони та аксесуари", LanguageId=LanguageId.Ukrainian } } },
+/*31*/          new(){ UrlSlug = "audio-equipment-and-accessories", Image = "", ParentId = 4,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Audio equipment and accessories", LanguageId=LanguageId.English },
+                        new(){ Name = "Аудіотехніка і аксесуари", LanguageId=LanguageId.Ukrainian } } },
+/*32*/          new(){ UrlSlug = "spare-parts-for-machinery-and-electronics", Image = "", ParentId = 4,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Spare parts for machinery and electronics", LanguageId=LanguageId.English},
+                        new(){ Name = "Запчастини для техніки та електроніки", LanguageId=LanguageId.Ukrainian } } },
+/*33*/          new(){ UrlSlug = "tv-and-video-equipment", Image = "", ParentId = 4,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){  Name = "TV and video equipment", LanguageId=LanguageId.English },
+                        new(){ Name = "TV та відеотехніка", LanguageId=LanguageId.Ukrainian } } },
+/*34*/          new(){ UrlSlug = "car-electronics", Image = "", ParentId = 4,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Car electronics", LanguageId=LanguageId.English },
+                        new(){ Name = "Автомобільна електроніка", LanguageId=LanguageId.Ukrainian } } },
+/*35*/          new(){ UrlSlug = "photos-camcorders-and-accessories", Image = "", ParentId = 4,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Photos, camcorders and accessories", LanguageId=LanguageId.English },
+                        new(){ Name = "Фото, відеокамери та аксесуари", LanguageId=LanguageId.Ukrainian } } },
+/*36*/          new(){ UrlSlug = "3d-devices", Image = "", ParentId = 4,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){Name = "3d devices", LanguageId=LanguageId.English },
+                        new(){ Name = "3d пристрої", LanguageId=LanguageId.Ukrainian } } },
+/*37*/          new(){ UrlSlug = "equipment-for-satellite-internet", Image = "", ParentId = 4,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){Name = "Equipment for satellite internet",  LanguageId=LanguageId.English },
+                        new(){ Name = "Обладнання для супутникового інтернету", LanguageId=LanguageId.Ukrainian } } },
 
-/*38*/          new(){ Name = "Tablet computers", UrlSlug = "tablet-computers", Image = "", ParentId = 28},
-/*39*/          new(){ Name = "Laptops", UrlSlug = "laptops", Image = "", ParentId = 28},
-/*40*/          new(){ Name = "Monitors", UrlSlug = "monitors", Image = "", ParentId = 28},
-/*41*/          new(){ Name = "Components for computer equipment", UrlSlug = "components-for-computer-equipment", Image = "", ParentId = 28},
-/*42*/          new(){ Name = "Computer accessories", UrlSlug = "computer-accessories", Image = "", ParentId = 28},
-/*43*/          new(){ Name = "Smart watches and fitness bracelets", UrlSlug = "smart-watches-and-fitness-bracelets", Image = "", ParentId = 28},
-/*44*/          new(){ Name = "Printers, scanners, MFPs and components", UrlSlug = "printers-scanners-mfps-and-components", Image = "", ParentId = 28},
-/*45*/          new(){ Name = "Information carriers", UrlSlug = "information-carriers", Image = "", ParentId = 28},
-/*46*/          new(){ Name = "Game consoles and components", UrlSlug = "game-consoles-and-components", Image = "", ParentId = 28},
-/*47*/          new(){ Name = "Desktops", UrlSlug = "desktops", Image = "", ParentId = 28},
-/*48*/          new(){ Name = "Software", UrlSlug = "software", Image = "", ParentId = 28},
-/*49*/          new(){ Name = "Server equipment", UrlSlug = "server-equipment", Image = "", ParentId = 28},
-/*50*/          new(){ Name = "Mining equipment", UrlSlug = "mining-equipment", Image = "", ParentId = 28},
-/*51*/          new(){ Name = "E-books", UrlSlug = "e-books", Image = "", ParentId = 28},
-/*52*/          new(){ Name = "Single board computers and nettops", UrlSlug = "single-board-computers-and-nettops", Image = "", ParentId = 28},
-/*53*/          new(){ Name = "Portable electronic translators", UrlSlug = "portable-electronic-translators", Image = "", ParentId = 28},
+/*38*/          new(){ UrlSlug = "tablet-computers", Image = "", ParentId = 28,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Tablet computers", LanguageId=LanguageId.English },
+                        new(){ Name = "Планшетні комп'ютери", LanguageId=LanguageId.Ukrainian } } },
+/*39*/          new(){ UrlSlug = "laptops", Image = "", ParentId = 28,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){  Name = "Laptops", LanguageId=LanguageId.English },
+                        new(){ Name = "Ноутбуки", LanguageId=LanguageId.Ukrainian } } },
+/*40*/          new(){ UrlSlug = "monitors", Image = "", ParentId = 28,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Monitors", LanguageId=LanguageId.English },
+                        new(){ Name = "Монітори", LanguageId=LanguageId.Ukrainian } } },
+/*41*/          new(){ UrlSlug = "components-for-computer-equipment", Image = "", ParentId = 28,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Components for computer equipment",LanguageId=LanguageId.English },
+                        new(){ Name = "Комплектуючі для комп'ютерної техніки", LanguageId=LanguageId.Ukrainian } } },
+/*42*/          new(){ UrlSlug = "computer-accessories", Image = "", ParentId = 28,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Computer accessories", LanguageId=LanguageId.English},
+                        new(){ Name = "Комп'ютерні аксесуари", LanguageId=LanguageId.Ukrainian } } },
+/*43*/          new(){ UrlSlug = "smart-watches-and-fitness-bracelets", Image = "", ParentId = 28,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Smart watches and fitness bracelets", LanguageId=LanguageId.English },
+                        new(){ Name = "Розумні годинники та фітнес браслети", LanguageId=LanguageId.Ukrainian } } },
+/*44*/          new(){ UrlSlug = "printers-scanners-mfps-and-components", Image = "", ParentId = 28,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Printers, scanners, MFPs and components", LanguageId=LanguageId.English },
+                        new(){ Name = "Принтери, сканери, МФУ та комплектуючі", LanguageId=LanguageId.Ukrainian } } },
+/*45*/          new(){ UrlSlug = "information-carriers", Image = "", ParentId = 28,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Information carriers", LanguageId=LanguageId.English },
+                        new(){ Name = "Носії інформації", LanguageId=LanguageId.Ukrainian } } },
+/*46*/          new(){ UrlSlug = "game-consoles-and-components", Image = "", ParentId = 28,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Game consoles and components", LanguageId=LanguageId.English },
+                        new(){ Name = "Ігрові приставки та компоненти", LanguageId=LanguageId.Ukrainian } } },
+/*47*/          new(){ UrlSlug = "desktops", Image = "", ParentId = 28,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Desktops", LanguageId=LanguageId.English },
+                        new(){ Name = "Настільні комп'ютери", LanguageId=LanguageId.Ukrainian } } },
+/*48*/          new(){ UrlSlug = "software", Image = "", ParentId = 28,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Software", LanguageId=LanguageId.English },
+                        new(){ Name = "Програмне забезпечення", LanguageId=LanguageId.Ukrainian } } },
+/*49*/          new(){ UrlSlug = "server-equipment", Image = "", ParentId = 28,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Server equipment", LanguageId=LanguageId.English },
+                        new(){ Name = "Серверне обладнання", LanguageId=LanguageId.Ukrainian } } },
+/*50*/          new(){ UrlSlug = "mining-equipment", Image = "", ParentId = 28,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Mining equipment", LanguageId=LanguageId.English },
+                        new(){ Name = "Обладнання для майнінгу", LanguageId=LanguageId.Ukrainian } } },
+/*51*/          new(){ UrlSlug = "e-books", Image = "", ParentId = 28,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "E-books",  LanguageId=LanguageId.English },
+                        new(){ Name = "Електронні книги (пристрій)", LanguageId=LanguageId.Ukrainian } } },
+/*52*/          new(){ UrlSlug = "single-board-computers-and-nettops", Image = "", ParentId = 28,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Single board computers and nettops", LanguageId=LanguageId.English },
+                        new(){ Name = "Одноплатні комп'ютери та неттопи", LanguageId=LanguageId.Ukrainian } } },
+/*53*/          new(){ UrlSlug = "portable-electronic-translators", Image = "", ParentId = 28,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Portable electronic translators", LanguageId=LanguageId.English },
+                        new(){ Name = "Портативні електронні перекладачі", LanguageId=LanguageId.Ukrainian } } },
 
-                new(){ Name = "Cables for electronics", UrlSlug = "cables-for-electronics", Image = "", ParentId = 41},
-                new(){ Name = "HDD, SSD", UrlSlug = "hdd-ssd", Image = "", ParentId = 41},
-                new(){ Name = "Batteries for laptops, tablets, e-books, translators", UrlSlug = "batteries-for-laptops-tablets-e-books-translators", Image = "", ParentId = 41},
-                new(){ Name = "Laptop chargers", UrlSlug = "laptop-chargers", Image = "", ParentId = 41},
-                new(){ Name = "Laptop body parts", UrlSlug = "laptop-body-parts", Image = "", ParentId = 41},
-                new(){ Name = "Memory modules", UrlSlug = "memory-modules", Image = "", ParentId = 41},
-                new(){ Name = "Processors", UrlSlug = "processors", Image = "", ParentId = 41},
-                new(){ Name = "Coolers and cooling systems", UrlSlug = "coolers-and-cooling-systems", Image = "", ParentId = 41},
-                new(){ Name = "Matrixes for laptops, tablets and monitors", UrlSlug = "matrixes-for-laptops-tablets-and-monitors", Image = "", ParentId = 41},
-                new(){ Name = "Cables and connectors for laptops, computers, tablets", UrlSlug = "cables-and-connectors-for-laptops-computers-tablets", Image = "", ParentId = 41},
-                new(){ Name = "Keyboard blocks for laptops", UrlSlug = "keyboard-blocks-for-laptops", Image = "", ParentId = 41},
-                new(){ Name = "Touchscreen for displays", UrlSlug = "touchscreen-for-displays", Image = "", ParentId = 41},
-                new(){ Name = "Microcircuits", UrlSlug = "microcircuits", Image = "", ParentId = 41},
-                new(){ Name = "Spare parts for TVs and monitors", UrlSlug = "spare-parts-for-tvs-and-monitors", Image = "", ParentId = 41},
-                new(){ Name = "Motherboards", UrlSlug = "motherboards", Image = "", ParentId = 41},
-                new(){ Name = "Video cards", UrlSlug = "video-cards", Image = "", ParentId = 41},
-                new(){ Name = "Enclosures for computers", UrlSlug = "enclosures-for-computers", Image = "", ParentId = 41},
-                new(){ Name = "Power supplies for computers", UrlSlug = "power-supplies-for-computers", Image = "", ParentId = 41},
-                new(){ Name = "Patch cord", UrlSlug = "patch-cord", Image = "", ParentId = 41},
-                new(){ Name = "Pockets for hard drives", UrlSlug = "pockets-for-hard-drives", Image = "", ParentId = 41},
-                new(){ Name = "Adapters and port expansion cards", UrlSlug = "adapters-and-port-expansion-cards", Image = "", ParentId = 41},
-                new(){ Name = "Audio parts for laptops", UrlSlug = "audio-parts-for-laptops", Image = "", ParentId = 41},
-                new(){ Name = "Thermal paste", UrlSlug = "thermal-paste", Image = "", ParentId = 41},
-                new(){ Name = "Sound cards", UrlSlug = "sound-cards", Image = "", ParentId = 41},
-                new(){ Name = "Network cards", UrlSlug = "network-cards", Image = "", ParentId = 41},
-                new(){ Name = "Optical drives", UrlSlug = "optical-drives", Image = "", ParentId = 41},
-                new(){ Name = "Cases for tablets", UrlSlug = "cases-for-tablets", Image = "", ParentId = 41},
-                new(){ Name = "Accessories for matrices and displays", UrlSlug = "accessories-for-matrices-and-displays", Image = "", ParentId = 41},
-                new(){ Name = "Cameras for laptops", UrlSlug = "cameras-for-laptops", Image = "", ParentId = 41},
-                new(){ Name = "Cooling systems for laptops", UrlSlug = "cooling-systems-for-laptops", Image = "", ParentId = 41},
-                new(){ Name = "TV and FM tuners", UrlSlug = "tv-and-fm-tuners", Image = "", ParentId = 41},
-                new(){ Name = "Postcards", UrlSlug = "postcards", Image = "", ParentId = 41},
-                new(){ Name = "Accessories for routers", UrlSlug = "accessories-for-routers", Image = "", ParentId = 41},
-
-
+                new(){ UrlSlug = "cables-for-electronics", Image = "", ParentId = 41,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Cables for electronics", LanguageId=LanguageId.English },
+                        new(){ Name = "Кабелі для електроніки", LanguageId=LanguageId.Ukrainian } } },
+                new(){ UrlSlug = "hdd-ssd", Image = "", ParentId = 41,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "HDD, SSD", LanguageId=LanguageId.English },
+                        new(){ Name = "Внутрішні та зовнішні жорсткі диски, HDD, SSD", LanguageId=LanguageId.Ukrainian } } },
+                new(){ UrlSlug = "batteries-for-laptops-tablets-e-books-translators", Image = "", ParentId = 41,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Batteries for laptops, tablets, e-books, translators", LanguageId=LanguageId.English },
+                        new(){ Name = "Акумулятори для ноутбуків, планшетів, електронних книг, перекладачів", LanguageId=LanguageId.Ukrainian } } },
+                new(){ UrlSlug = "laptop-chargers", Image = "", ParentId = 41,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Laptop chargers", LanguageId=LanguageId.English },
+                        new(){ Name = "Зарядні пристрої для ноутбуків", LanguageId=LanguageId.Ukrainian } } },
+                new(){ UrlSlug = "laptop-body-parts", Image = "", ParentId = 41,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Laptop body parts", LanguageId=LanguageId.English },
+                        new(){ Name = "Частини корпусу ноутбука", LanguageId=LanguageId.Ukrainian } } },
+                new(){ UrlSlug = "memory-modules", Image = "", ParentId = 41,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Memory modules", LanguageId=LanguageId.English },
+                        new(){ Name = "Модулі пам'яті", LanguageId=LanguageId.Ukrainian } } },
+                new(){ UrlSlug = "processors", Image = "", ParentId = 41,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Processors", LanguageId=LanguageId.English },
+                        new(){ Name = "Процесори", LanguageId=LanguageId.Ukrainian } } },
+                new(){ UrlSlug = "coolers-and-cooling-systems", Image = "", ParentId = 41,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Coolers and cooling systems", LanguageId=LanguageId.English },
+                        new(){ Name = "Кулери і системи охолодження", LanguageId=LanguageId.Ukrainian } } },
+                new(){ UrlSlug = "matrixes-for-laptops-tablets-and-monitors", Image = "", ParentId = 41,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Matrixes for laptops, tablets and monitors", LanguageId=LanguageId.English },
+                        new(){ Name = "Матриці для ноутбуків, планшетів і моніторів", LanguageId=LanguageId.Ukrainian } } },
+                new(){ UrlSlug = "cables-and-connectors-for-laptops-computers-tablets", Image = "", ParentId = 41,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Cables and connectors for laptops, computers, tablets", LanguageId=LanguageId.English },
+                        new(){ Name = "Шлейфи та роз'єми для ноутбуків, комп'ютерів, планшетів", LanguageId=LanguageId.Ukrainian } } },
+                new(){ UrlSlug = "keyboard-blocks-for-laptops", Image = "", ParentId = 41,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Keyboard blocks for laptops", LanguageId=LanguageId.English },
+                        new(){ Name = "Клавіатурні блоки для ноутбуків", LanguageId=LanguageId.Ukrainian } } },
+                new(){ UrlSlug = "touchscreen-for-displays", Image = "", ParentId = 41,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Touchscreen for displays", LanguageId=LanguageId.English },
+                        new(){ Name = "Touchscreen для дисплеїв", LanguageId=LanguageId.Ukrainian } } },
+                new(){ UrlSlug = "microcircuits", Image = "", ParentId = 41,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Microcircuits", LanguageId=LanguageId.English },
+                        new(){ Name = "Мікросхеми", LanguageId=LanguageId.Ukrainian } } },
+                new(){ UrlSlug = "spare-parts-for-tvs-and-monitors", Image = "", ParentId = 41,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Spare parts for TVs and monitors", LanguageId=LanguageId.English },
+                        new(){ Name = "Запчастини для телевізорів і моніторів", LanguageId=LanguageId.Ukrainian } } },
+                new(){ UrlSlug = "motherboards", Image = "", ParentId = 41,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Motherboards", LanguageId=LanguageId.English },
+                        new(){ Name = "Материнські плати", LanguageId=LanguageId.Ukrainian } } },
+                new(){ UrlSlug = "video-cards", Image = "", ParentId = 41,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Video cards", LanguageId=LanguageId.English},
+                        new(){ Name = "Відеокарти", LanguageId=LanguageId.Ukrainian } } },
+                new(){ UrlSlug = "enclosures-for-computers", Image = "", ParentId = 41,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Enclosures for computers", LanguageId=LanguageId.English },
+                        new(){ Name = "Корпуси для комп'ютерів", LanguageId=LanguageId.Ukrainian } } },
+                new(){UrlSlug = "power-supplies-for-computers", Image = "", ParentId = 41,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Power supplies for computers", LanguageId=LanguageId.English },
+                        new(){ Name = "Блоки живлення для комп'ютерів", LanguageId=LanguageId.Ukrainian } } },
+                new(){ UrlSlug = "patch-cord", Image = "", ParentId = 41,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Patch cord", LanguageId=LanguageId.English },
+                        new(){ Name = "Патч-корди", LanguageId=LanguageId.Ukrainian } } },
+                new(){ UrlSlug = "pockets-for-hard-drives", Image = "", ParentId = 41,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Pockets for hard drives", LanguageId=LanguageId.English },
+                        new(){ Name = "Кишені для жорстких дисків", LanguageId=LanguageId.Ukrainian } } },
+                new(){ UrlSlug = "adapters-and-port-expansion-cards", Image = "", ParentId = 41,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Adapters and port expansion cards", LanguageId=LanguageId.English },
+                        new(){ Name = "Адаптери і плати розширення портів", LanguageId=LanguageId.Ukrainian } } },
+                new(){ UrlSlug = "audio-parts-for-laptops", Image = "", ParentId = 41,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Audio parts for laptops", LanguageId=LanguageId.English },
+                        new(){ Name = "Звукові запчастини для портативних ПК", LanguageId=LanguageId.Ukrainian } } },
+                new(){ UrlSlug = "thermal-paste", Image = "", ParentId = 41,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Thermal paste", LanguageId=LanguageId.English },
+                        new(){ Name = "Термопаста", LanguageId=LanguageId.Ukrainian } } },
+                new(){ UrlSlug = "sound-cards", Image = "", ParentId = 41,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Sound cards", LanguageId=LanguageId.English },
+                        new(){ Name = "Звукові карти", LanguageId=LanguageId.Ukrainian } } },
+                new(){ UrlSlug = "network-cards", Image = "", ParentId = 41,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Network cards", LanguageId=LanguageId.English },
+                        new(){ Name = "Мережеві карти", LanguageId=LanguageId.Ukrainian } } },
+                new(){ UrlSlug = "optical-drives", Image = "", ParentId = 41,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Optical drives", LanguageId=LanguageId.English },
+                        new(){ Name = "Оптичні приводи", LanguageId=LanguageId.Ukrainian } } },
+                new(){ UrlSlug = "cases-for-tablets", Image = "", ParentId = 41,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Cases for tablets", LanguageId=LanguageId.English },
+                        new(){ Name = "Корпуси для планшетів", LanguageId=LanguageId.Ukrainian } } },
+                new(){ UrlSlug = "accessories-for-matrices-and-displays", Image = "", ParentId = 41,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Accessories for matrices and displays", LanguageId=LanguageId.English },
+                        new(){ Name = "Комплектуючі для матриць та дисплеїв", LanguageId=LanguageId.Ukrainian } } },
+                new(){ UrlSlug = "cameras-for-laptops", Image = "", ParentId = 41,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Cameras for laptops", LanguageId=LanguageId.English },
+                        new(){ Name = "Камери для портативних ПК", LanguageId=LanguageId.Ukrainian } } },
+                new(){ UrlSlug = "cooling-systems-for-laptops", Image = "", ParentId = 41,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Cooling systems for laptops", LanguageId=LanguageId.English },
+                        new(){ Name = "Системи охолодження для ноутбуків", LanguageId=LanguageId.Ukrainian } } },
+                new(){ UrlSlug = "tv-and-fm-tuners", Image = "", ParentId = 41,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "TV and FM tuners", LanguageId=LanguageId.English },
+                        new(){ Name = "TV-тюнери і FM-тюнери", LanguageId=LanguageId.Ukrainian } } },
+                new(){ UrlSlug = "postcards", Image = "", ParentId = 41,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Postcards", LanguageId=LanguageId.English },
+                        new(){ Name = "Post-карти", LanguageId=LanguageId.Ukrainian } } },
+                new(){ UrlSlug = "accessories-for-routers", Image = "", ParentId = 41,
+                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Accessories for routers", LanguageId=LanguageId.English },
+                        new(){ Name = "Комплектуючі для маршрутизаторів", LanguageId=LanguageId.Ukrainian } } },
             };
             return categories;
         }
@@ -529,7 +1081,8 @@ namespace DAL.Data
         {
             var shops = new List<Shop>
             {
-                new(){ Name = "Mall",Description="",Photo="",Email="dg646726@gmail.com",SiteUrl="https://http://mall.novakvova.com/",CityId=1,UserId=userId},
+                new(){ Name = "Mall", Description="", Photo="", Email="dg646726@gmail.com",
+                       SiteUrl="https://http://mall.novakvova.com/", CityId=1, UserId=userId},
             };
             return shops;
         }
@@ -538,7 +1091,9 @@ namespace DAL.Data
         {
             var productStatuses = new List<ProductStatus>
             {
-                new(){ Name = "In stock" },
+                  new(){ ProductStatusTranslations=new List<ProductStatusTranslation>(){
+                        new() {LanguageId=LanguageId.English, Name = "In stock" },
+                        new (){LanguageId=LanguageId.Ukrainian, Name="В наявності"} } },
             };
             return productStatuses;
         }
@@ -638,8 +1193,9 @@ namespace DAL.Data
         {
             var units = new List<Unit>
             {
-/* 1 */         new(){ Measure = "UA"},
-
+/* 1 */         new(){ UnitTranslations= new List<UnitTranslation>(){
+                        new (){LanguageId=LanguageId.English, Measure = "UA" },
+                        new (){LanguageId=LanguageId.Ukrainian, Measure="UA"} } },
             };
             return units;
         }
@@ -647,7 +1203,9 @@ namespace DAL.Data
         {
             var filterGroups = new List<FilterGroup>
             {
-/* 1 */         new(){ Name = "The main"},
+/* 1 */         new(){FilterGroupTranslations= new List<FilterGroupTranslation>(){
+                        new (){LanguageId=LanguageId.English, Name = "The main" },
+                        new (){LanguageId=LanguageId.Ukrainian, Name="Основна"} } },
 
             };
             return filterGroups;
@@ -656,25 +1214,63 @@ namespace DAL.Data
         {
             var filterNames = new List<FilterName>
             {
-/* 1 */         new(){ Name = "Сondition",FilterGroupId=1},
-/* 2 */         new(){ Name = "Purpose",FilterGroupId=1},
-/* 3 */         new(){ Name = "Video memory type",FilterGroupId=1},
-/* 4 */         new(){ Name = "Graphics chipset",FilterGroupId=1},
-/* 5 */         new(){ Name = "Memory bus width", FilterGroupId = 1},
-/* 6 */         new(){ Name = "Producer", FilterGroupId = 1},  
-/* 7 */         new(){ Name = "Connection type", FilterGroupId = 1},
-/* 8 */         new(){ Name = "Interfaces", FilterGroupId = 1},
-/* 9 */         new(){ Name = "Cooling system", FilterGroupId = 1},
-/* 10 */        new(){ Name = "Peculiarities", FilterGroupId = 1},
-/* 11 */        new(){ Name = "Producing country", FilterGroupId = 1},
-/* 12 */        new(){ Name = "Quality class", FilterGroupId = 1},
-/* 13 */        new(){ Name = "Warranty period, months", FilterGroupId = 1},
-/* 14 */        new(){ Name = "Processor frequency, MHz", FilterGroupId = 1},
-/* 15 */        new(){ Name = "Video memory frequency, MHz", FilterGroupId = 1},
-/* 16 */        new(){ Name = "Video memory size, MB", FilterGroupId = 1},
-/* 17 */        new(){ Name = "Color",FilterGroupId=1},
-/* 18 */        new(){ Name = "Women's clothing size",FilterGroupId=1,UnitId=1},
-/* 19 */        new(){ Name = "Brand",FilterGroupId=1},
+/* 1 */         new(){ FilterGroupId=1, FilterNameTranslations=new List<FilterNameTranslation>(){
+                    new() { LanguageId=LanguageId.English, Name = "Сondition"} ,
+                    new() {LanguageId=LanguageId.Ukrainian, Name="Стан" } } },
+/* 2 */         new(){ FilterGroupId=1, FilterNameTranslations=new List<FilterNameTranslation>(){
+                    new() { LanguageId=LanguageId.English, Name = "Purpose" } ,
+                    new() {LanguageId=LanguageId.Ukrainian, Name="Призначення" } } },
+/* 3 */         new(){ FilterGroupId=1, FilterNameTranslations=new List<FilterNameTranslation>(){
+                    new() { LanguageId=LanguageId.English, Name = "Video memory type" } ,
+                    new() {LanguageId=LanguageId.Ukrainian, Name="Тип відеопам'яті" } } },
+/* 4 */         new(){ FilterGroupId=1, FilterNameTranslations=new List<FilterNameTranslation>(){
+                    new() { LanguageId=LanguageId.English, Name = "Graphics chipset"} ,
+                    new() {LanguageId=LanguageId.Ukrainian, Name="Графічний чіпсет" } } },
+/* 5 */         new(){ FilterGroupId = 1, FilterNameTranslations=new List<FilterNameTranslation>(){
+                    new() { LanguageId=LanguageId.English, Name = "Memory bus width" } ,
+                    new() {LanguageId=LanguageId.Ukrainian, Name="Ширина шини пам'яті" } } },
+/* 6 */         new(){ FilterGroupId = 1, FilterNameTranslations=new List<FilterNameTranslation>(){
+                    new() { LanguageId=LanguageId.English, Name = "Producer" } ,
+                    new() {LanguageId=LanguageId.Ukrainian, Name="Виробник" } } },
+/* 7 */         new(){ FilterGroupId = 1, FilterNameTranslations=new List<FilterNameTranslation>(){
+                    new() { LanguageId=LanguageId.English, Name = "Connection type" } ,
+                    new() {LanguageId=LanguageId.Ukrainian, Name="Тип підключення" } } },
+/* 8 */         new(){ FilterGroupId = 1, FilterNameTranslations = new List < FilterNameTranslation >() {
+                    new() { LanguageId = LanguageId.English, Name = "Interfaces" } ,
+                    new() {LanguageId=LanguageId.Ukrainian, Name="Інтерфейси" } } },
+/* 9 */         new(){ FilterGroupId = 1, FilterNameTranslations=new List<FilterNameTranslation>(){
+                    new() { LanguageId=LanguageId.English, Name = "Cooling system" } ,
+                    new() {LanguageId=LanguageId.Ukrainian, Name="Система охолодження" } } },
+/* 10 */        new(){ FilterGroupId = 1, FilterNameTranslations=new List<FilterNameTranslation>(){
+                    new() { LanguageId=LanguageId.English, Name = "Peculiarities" } ,
+                    new() {LanguageId=LanguageId.Ukrainian, Name="Особливості" } } },
+/* 11 */        new(){ FilterGroupId = 1, FilterNameTranslations=new List<FilterNameTranslation>(){
+                    new() { LanguageId=LanguageId.English, Name = "Producing country"} ,
+                    new() {LanguageId=LanguageId.Ukrainian, Name="Країна-виробник" } } },
+/* 12 */        new(){ FilterGroupId = 1, FilterNameTranslations=new List<FilterNameTranslation>(){
+                    new() { LanguageId=LanguageId.English, Name = "Quality class" } ,
+                    new() {LanguageId=LanguageId.Ukrainian, Name="Клас якості" } } },
+/* 13 */        new(){ FilterGroupId = 1, FilterNameTranslations=new List<FilterNameTranslation>(){
+                    new() { LanguageId=LanguageId.English, Name = "Warranty period, months" } ,
+                    new() {LanguageId=LanguageId.Ukrainian, Name="Гарантійний термін, міс" } } },
+/* 14 */        new(){ FilterGroupId = 1, FilterNameTranslations=new List<FilterNameTranslation>(){
+                    new() { LanguageId=LanguageId.English, Name = "Processor frequency, MHz" } ,
+                    new() {LanguageId=LanguageId.Ukrainian, Name="Частота процесора, МГц" } } },
+/* 15 */        new(){ FilterGroupId = 1, FilterNameTranslations=new List<FilterNameTranslation>(){
+                    new() { LanguageId=LanguageId.English, Name = "Video memory frequency, MHz" } ,
+                    new() {LanguageId=LanguageId.Ukrainian, Name="Частота відеопам'яті, МГц" } } },
+/* 16 */        new(){ FilterGroupId = 1, FilterNameTranslations=new List<FilterNameTranslation>(){
+                    new() { LanguageId=LanguageId.English, Name = "Video memory size, MB" } ,
+                    new() {LanguageId=LanguageId.Ukrainian, Name="Обсяг відеопам'яті, Мб" } } },
+/* 17 */        new(){ FilterGroupId=1, FilterNameTranslations=new List<FilterNameTranslation>(){
+                    new() { LanguageId=LanguageId.English, Name = "Color"} ,
+                    new() {LanguageId=LanguageId.Ukrainian, Name="Колір" } } },
+/* 18 */        new(){ FilterGroupId=1, UnitId=1, FilterNameTranslations=new List<FilterNameTranslation>(){
+                    new() { LanguageId=LanguageId.English, Name = "Women's clothing size" } ,
+                    new() {LanguageId=LanguageId.Ukrainian, Name="Розмір жіночого одягу" } } },
+/* 19 */        new(){ FilterGroupId=1, FilterNameTranslations=new List<FilterNameTranslation>(){
+                    new() { LanguageId=LanguageId.English, Name = "Brand" } ,
+                    new() {LanguageId=LanguageId.Ukrainian, Name="Бренд" } } },
 
             };
             return filterNames;
@@ -684,22 +1280,54 @@ namespace DAL.Data
         {
             var filterValues = new List<FilterValue>
             {
-/* 1 */         new(){ Value = "Yellow",FilterNameId=17},
-/* 2 */         new(){ Value = "Black",FilterNameId=17},
-/* 3 */         new(){ Value = "Blue",FilterNameId=17},
-/* 4 */         new(){ Value = "Red",FilterNameId=17},
-/* 5 */         new(){ Value = "Green", FilterNameId = 17},
-/* 6 */         new(){ Value = "34", FilterNameId = 18},  
-/* 7 */         new(){ Value = "36", FilterNameId = 18},
-/* 8 */         new(){ Value = "38", FilterNameId = 18},
-/* 9 */         new(){ Value = "40", FilterNameId = 18},
-/* 10 */        new(){ Value = "40/42", FilterNameId = 18},
-/* 11 */        new(){ Value = "40/44", FilterNameId = 18},
-/* 12 */        new(){ Value = "Nike", FilterNameId = 19},
-/* 13 */        new(){ Value = "Puma", FilterNameId = 19},
-/* 14 */        new(){ Value = "Zara", FilterNameId = 19},
-/* 15 */        new(){ Value = "H&M", FilterNameId = 19},
-/* 16 */        new(){ Value = "AAA", FilterNameId = 19},
+/* 1 */         new(){ FilterNameId=17, FilterValueTranslations=new List<FilterValueTranslation>(){
+                    new(){ LanguageId=LanguageId.English, Value = "Yellow" },
+                    new(){ LanguageId=LanguageId.Ukrainian, Value="Жовтий "} } },
+/* 2 */         new(){ FilterNameId=17, FilterValueTranslations=new List<FilterValueTranslation>(){
+                    new(){ LanguageId=LanguageId.English, Value = "Black" },
+                    new(){ LanguageId=LanguageId.Ukrainian, Value="Чорний"} } },
+/* 3 */         new(){ FilterNameId=17, FilterValueTranslations=new List<FilterValueTranslation>(){
+                    new(){ LanguageId=LanguageId.English, Value = "Blue" },
+                    new(){ LanguageId=LanguageId.Ukrainian, Value="Синій"} } },
+/* 4 */         new(){ FilterNameId=17, FilterValueTranslations=new List<FilterValueTranslation>(){
+                    new(){ LanguageId=LanguageId.English, Value = "Red" },
+                    new(){ LanguageId=LanguageId.Ukrainian, Value="Червоний"} } },
+/* 5 */         new(){ FilterNameId = 17, FilterValueTranslations=new List<FilterValueTranslation>(){
+                    new(){ LanguageId=LanguageId.English, Value = "Green" },
+                    new(){ LanguageId=LanguageId.Ukrainian, Value="Зелений"} } },
+/* 6 */         new(){ FilterNameId = 18, FilterValueTranslations=new List<FilterValueTranslation>(){
+                    new(){ LanguageId=LanguageId.English, Value = "34" },
+                    new(){ LanguageId=LanguageId.Ukrainian, Value="34"} } },
+/* 7 */         new(){ FilterNameId = 18, FilterValueTranslations=new List<FilterValueTranslation>(){
+                    new(){ LanguageId=LanguageId.English, Value = "36" },
+                    new(){ LanguageId=LanguageId.Ukrainian, Value="36"} } },
+/* 8 */         new(){ FilterNameId = 18, FilterValueTranslations=new List<FilterValueTranslation>(){
+                    new(){ LanguageId=LanguageId.English, Value = "38" },
+                    new(){ LanguageId=LanguageId.Ukrainian, Value="38"} } },
+/* 9 */         new(){ FilterNameId = 18, FilterValueTranslations=new List<FilterValueTranslation>(){
+                    new(){ LanguageId=LanguageId.English, Value = "40" },
+                    new(){ LanguageId=LanguageId.Ukrainian, Value="40"} } },
+/* 10 */        new(){ FilterNameId = 18, FilterValueTranslations=new List<FilterValueTranslation>(){
+                    new(){ LanguageId=LanguageId.English, Value = "40/42" },
+                    new(){ LanguageId=LanguageId.Ukrainian, Value="40/42"} } },
+/* 11 */        new(){ FilterNameId = 18, FilterValueTranslations=new List<FilterValueTranslation>(){
+                    new(){ LanguageId=LanguageId.English, Value = "40/44" },
+                    new(){ LanguageId=LanguageId.Ukrainian, Value="40/44"} } },
+/* 12 */        new(){ FilterNameId = 19, FilterValueTranslations=new List<FilterValueTranslation>(){
+                    new(){ LanguageId=LanguageId.English, Value = "Nike" },
+                    new(){ LanguageId=LanguageId.Ukrainian, Value="Nike"} } },
+/* 13 */        new(){ FilterNameId = 19, FilterValueTranslations=new List<FilterValueTranslation>(){
+                    new(){ LanguageId=LanguageId.English, Value = "Puma" },
+                    new(){ LanguageId=LanguageId.Ukrainian, Value="Puma"} } },
+/* 14 */        new(){ FilterNameId = 19, FilterValueTranslations=new List<FilterValueTranslation>(){
+                    new(){ LanguageId=LanguageId.English, Value = "Zara"},
+                    new(){ LanguageId=LanguageId.Ukrainian, Value="Zara"} } },
+/* 15 */        new(){ FilterNameId = 19, FilterValueTranslations=new List<FilterValueTranslation>(){
+                    new(){ LanguageId=LanguageId.English, Value = "H&M" },
+                    new(){ LanguageId=LanguageId.Ukrainian, Value="H&M"} } },
+/* 16 */        new(){ FilterNameId = 19, FilterValueTranslations=new List<FilterValueTranslation>(){
+                    new(){ LanguageId=LanguageId.English, Value = "AAA"},
+                    new(){ LanguageId=LanguageId.Ukrainian, Value="AAA"} } },
             };
 
             var test = new List<Category>
@@ -771,10 +1399,28 @@ namespace DAL.Data
         {
             var statuses = new List<OrderStatus>
             {
-             new(){ Id=OrderStatusId.InProcess, Name="In Process"},
-             new(){ Id=OrderStatusId.PendingPayment, Name="Pending Payment"},
-             new(){ Id=OrderStatusId.Completed, Name="Completed"},
-             new(){ Id=OrderStatusId.Canceled, Name="Canceled"},
+                  new(){ Id=OrderStatusId.InProcess, OrderStatusTranslations=new List<OrderStatusTranslation>(){
+                        new (){ LanguageId=LanguageId.English, Name="In Process" },
+                        new (){LanguageId=LanguageId.Ukrainian, Name="В процесі"} } },
+                  new(){ Id=OrderStatusId.PendingPayment, OrderStatusTranslations=new List<OrderStatusTranslation>(){
+                        new (){ LanguageId=LanguageId.English, Name="Pending Payment"},
+                        new (){LanguageId=LanguageId.Ukrainian, Name="Очікування платежу"} } },
+                  new(){ Id=OrderStatusId.Completed, OrderStatusTranslations=new List<OrderStatusTranslation>(){
+                        new (){ LanguageId=LanguageId.English, Name="Completed"},
+                        new (){LanguageId=LanguageId.Ukrainian, Name="Виконано"} } },
+                  new(){ Id=OrderStatusId.Canceled, OrderStatusTranslations=new List<OrderStatusTranslation>(){
+                        new (){ LanguageId=LanguageId.English, Name="Canceled",},
+                        new (){LanguageId=LanguageId.Ukrainian, Name="Скасовано"} } },
+            };
+            return statuses;
+        }
+
+        static IEnumerable<Language> GetPreconfiguredMarketplaceLanguages()
+        {
+            var statuses = new List<Language>
+            {
+             new(){ Id=LanguageId.Ukrainian, Name="Ukrainian", Culture=LanguageCulture.Ukrainian},
+             new(){ Id=LanguageId.English, Name="English", Culture=LanguageCulture.English},
             };
             return statuses;
         }

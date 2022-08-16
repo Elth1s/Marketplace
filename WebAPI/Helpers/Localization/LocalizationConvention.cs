@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
-namespace WebAPI.Helpers
+namespace WebAPI.Helpers.Localization
 {
     public class LocalizationConvention : IApplicationModelConvention
     {
         public void Apply(ApplicationModel application)
         {
-            var culturePrefix = new AttributeRouteModel(new RouteAttribute("{culture}"));
+            var culturePrefix = new AttributeRouteModel(new RouteAttribute("{culture?}"));
 
             foreach (var controller in application.Controllers)
             {

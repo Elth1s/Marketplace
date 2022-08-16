@@ -121,12 +121,12 @@
     <value>Статус продукту успішно створено</value>
   </data>
   <data name="DeleteListSuccess" xml:space="preserve">
-    <value>Статус продукту успішно оновлено</value>
+    <value>Статуси продуктів успішно видалено</value>
   </data>
   <data name="DeleteSuccess" xml:space="preserve">
     <value>Статус продукту успішно видалено</value>
   </data>
   <data name="UpdateSuccess" xml:space="preserve">
-    <value>Статуси продуктів успішно видалено</value>
+    <value>Статус продукту успішно оновлено</value>
   </data>
 </root>

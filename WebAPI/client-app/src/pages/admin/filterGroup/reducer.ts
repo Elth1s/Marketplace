@@ -6,7 +6,8 @@ import {
 
 const initialState: FilterGroupState = {
     selectedFilterGroup: {
-        name: "",
+        englishName: "",
+        ukrainianName: "",
     },
     count: 0,
     filterGroups: []

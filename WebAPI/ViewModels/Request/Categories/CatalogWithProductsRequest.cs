@@ -49,12 +49,6 @@ namespace WebAPI.ViewModels.Request.Categories
                 .NotEmpty().WithName(_validationResources["PagePropName"])
                 .WithMessage(_validationResources["RequiredMessage"])
                 .GreaterThan(0).WithMessage(_validationResources["GreaterThanMessage"]);
-
-            //RowsPerPage
-            RuleFor(a => a.RowsPerPage).Cascade(CascadeMode.Stop)
-                .NotEmpty().WithName(_validationResources["RowsPerPagePropName"])
-                .WithMessage(_validationResources["PluralRequiredMessage"])
-                .GreaterThan(0).WithMessage(_validationResources["PluralGreaterThanMessage"]);
         }
     }
 }

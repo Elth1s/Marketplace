@@ -20,7 +20,8 @@ const CountryCreate: FC<CreateProps> = ({ afterCreate }) => {
     const { CreateUnit } = useActions();
 
     const item: IUnit = {
-        measure: "",
+        englishMeasure: "",
+        ukrainianMeasure: ""
     };
 
     const handleClickOpen = () => {
@@ -84,13 +85,22 @@ const CountryCreate: FC<CreateProps> = ({ afterCreate }) => {
 
             dialogContent={
                 <Grid container rowSpacing={2}>
-                    <Grid item xs={12} >
+                    <Grid item xs={12}>
                         <TextFieldComponent
                             type="text"
-                            label="Measure"
-                            error={errors.measure}
-                            touched={touched.measure}
-                            getFieldProps={{ ...getFieldProps('measure') }}
+                            label="English Measure"
+                            error={errors.englishMeasure}
+                            touched={touched.englishMeasure}
+                            getFieldProps={{ ...getFieldProps('englishMeasure') }}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextFieldComponent
+                            type="text"
+                            label="Ukrainian Measure"
+                            error={errors.ukrainianMeasure}
+                            touched={touched.ukrainianMeasure}
+                            getFieldProps={{ ...getFieldProps('ukrainianMeasure') }}
                         />
                     </Grid>
                 </Grid>

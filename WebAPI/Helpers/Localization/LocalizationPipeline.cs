@@ -1,4 +1,4 @@
-﻿namespace WebAPI.Helpers
+﻿namespace WebAPI.Helpers.Localization
 {
     public class LocalizationPipeline
     {

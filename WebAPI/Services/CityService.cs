@@ -1,30 +1,28 @@
 ﻿using AutoMapper;
 using DAL;
+using DAL.Constants;
 using DAL.Entities;
-using Microsoft.Extensions.Localization;
-using WebAPI.Exceptions;
 using WebAPI.Extensions;
 using WebAPI.Interfaces;
 using WebAPI.Specifications.Cities;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Response;
+using WebAPI.ViewModels.Response.Cities;
 
 namespace WebAPI.Services
 {
     public class CityService : ICityService
     {
-        private readonly IStringLocalizer<ErrorMessages> _errorMessagesLocalizer;
         private readonly IRepository<City> _cityRepository;
         private readonly IRepository<Country> _countryRepository;
         private readonly IMapper _mapper;
 
-        public CityService(IStringLocalizer<ErrorMessages> errorMessagesLocalizer,
+        public CityService(
             IRepository<City> cityRepository,
             IRepository<Country> countryRepository,
             IMapper mapper
             )
         {
-            _errorMessagesLocalizer = errorMessagesLocalizer;
             _cityRepository = cityRepository;
             _countryRepository = countryRepository;
             _mapper = mapper;
@@ -35,7 +33,7 @@ namespace WebAPI.Services
             var spec = new CityIncludeFullInfoSpecification();
             var cities = await _cityRepository.ListAsync(spec);
 
-            var response = cities.Select(c => _mapper.Map<CityResponse>(c));
+            var response = _mapper.Map<IEnumerable<CityResponse>>(cities);
             return response;
         }
 
@@ -56,13 +54,13 @@ namespace WebAPI.Services
             return response;
         }
 
-        public async Task<CityResponse> GetCityByIdAsync(int cityId)
+        public async Task<CityFullInfoResponse> GetCityByIdAsync(int cityId)
         {
             var spec = new CityIncludeFullInfoSpecification(cityId);
             var city = await _cityRepository.GetBySpecAsync(spec);
             city.CityNullChecking();
 
-            var response = _mapper.Map<CityResponse>(city);
+            var response = _mapper.Map<CityFullInfoResponse>(city);
             return response;
         }
 
@@ -71,10 +69,15 @@ namespace WebAPI.Services
             var country = await _countryRepository.GetByIdAsync(request.CountryId);
             country.CountryNullChecking();
 
-            var spec = new CityGetByNameAndCountryIdSpecification(request.Name, request.CountryId);
-            if (await _cityRepository.GetBySpecAsync(spec) != null)
-                throw new AppValidationException(
-                    new ValidationError(nameof(City.CountryId), _errorMessagesLocalizer["CityCountryNotUnique"]));
+            var specName = new CityGetByNameAndCountryIdSpecification(request.EnglishName, request.CountryId, LanguageId.English);
+            var cityEnNameExist = await _cityRepository.GetBySpecAsync(specName);
+            if (cityEnNameExist != null)
+                cityEnNameExist.CityWithEnglishNameChecking(nameof(CityRequest.EnglishName));
+
+            specName = new CityGetByNameAndCountryIdSpecification(request.UkrainianName, request.CountryId, LanguageId.Ukrainian);
+            var cityUkNameExist = await _cityRepository.GetBySpecAsync(specName);
+            if (cityUkNameExist != null)
+                cityUkNameExist.CityWithUkrainianNameChecking(nameof(CityRequest.UkrainianName));
 
             var city = _mapper.Map<City>(request);
 
@@ -84,16 +87,25 @@ namespace WebAPI.Services
 
         public async Task UpdateCityAsync(int cityId, CityRequest request)
         {
+            var spec = new CityIncludeFullInfoSpecification(cityId);
+            var city = await _cityRepository.GetBySpecAsync(spec);
+            city.CityNullChecking();
+
             var country = await _countryRepository.GetByIdAsync(request.CountryId);
             country.CountryNullChecking();
 
-            var city = await _cityRepository.GetByIdAsync(cityId);
-            city.CityNullChecking();
 
-            var spec = new CityGetByNameAndCountryIdSpecification(request.Name, request.CountryId);
-            if (await _cityRepository.GetBySpecAsync(spec) != null)
-                throw new AppValidationException(
-                    new ValidationError(nameof(City.CountryId), _errorMessagesLocalizer["CityCountryNotUnique"]));
+            var specName = new CityGetByNameAndCountryIdSpecification(request.EnglishName, request.CountryId, LanguageId.English);
+            var cityEnNameExist = await _cityRepository.GetBySpecAsync(specName);
+            if (cityEnNameExist != null && cityEnNameExist.Id != city.Id)
+                cityEnNameExist.CityWithEnglishNameChecking(nameof(CityRequest.EnglishName));
+
+            specName = new CityGetByNameAndCountryIdSpecification(request.UkrainianName, request.CountryId, LanguageId.Ukrainian);
+            var cityUkNameExist = await _cityRepository.GetBySpecAsync(specName);
+            if (cityUkNameExist != null && cityUkNameExist.Id != city.Id)
+                cityUkNameExist.CityWithUkrainianNameChecking(nameof(CityRequest.UkrainianName));
+
+            city.CityTranslations.Clear();
 
             _mapper.Map(request, city);
 

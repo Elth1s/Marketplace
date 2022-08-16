@@ -120,6 +120,9 @@
   <data name="CreateSuccess" xml:space="preserve">
     <value>Статус замовлення успішно створений</value>
   </data>
+  <data name="DeleteListSuccess" xml:space="preserve">
+    <value>Статуси замовлення успішно видалено</value>
+  </data>
   <data name="DeleteSuccess" xml:space="preserve">
     <value>Статус замовлення успішно видалений</value>
   </data>

@@ -7,7 +7,8 @@ export enum ProductStatusActionTypes {
 }
 
 export interface IProductStatus {
-    name: string,
+    englishName: string,
+    ukrainianName: string,
 }
 
 export interface IProductStatusInfo {

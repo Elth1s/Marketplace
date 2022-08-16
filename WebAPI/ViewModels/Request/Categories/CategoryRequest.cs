@@ -10,10 +10,15 @@ namespace WebAPI.ViewModels.Request.Categories
     public class CategoryRequest
     {
         /// <summary>
-        /// Name of category
+        /// English name of the category
         /// </summary>
         /// <example>Technology and electronics</example>
-        public string Name { get; set; }
+        public string EnglishName { get; set; }
+        /// <summary>
+        /// Ukrainian name of the category
+        /// </summary>
+        /// <example>Техніка та електроніка</example>
+        public string UkrainianName { get; set; }
         /// <summary>
         /// Url of category
         /// </summary>
@@ -43,12 +48,14 @@ namespace WebAPI.ViewModels.Request.Categories
         public CategoryRequestValidation(IStringLocalizer<ValidationResourсes> validationResources)
         {
             _validationResources = validationResources;
-
-            //Name
-            RuleFor(x => x.Name).Cascade(CascadeMode.Stop)
-                   .NotEmpty().WithName(_validationResources["NamePropName"])
-                   .Length(2, 50);
-
+            //English Name
+            RuleFor(x => x.EnglishName).Cascade(CascadeMode.Stop)
+               .NotEmpty().WithName(_validationResources["EnglishNamePropName"]).WithMessage(_validationResources["RequiredMessage"])
+               .Length(2, 40);
+            //Ukrainian Name
+            RuleFor(x => x.UkrainianName).Cascade(CascadeMode.Stop)
+               .NotEmpty().WithName(_validationResources["UkrainianNamePropName"]).WithMessage(_validationResources["RequiredMessage"])
+               .Length(2, 40);
             //UrlSlug
             RuleFor(x => x.UrlSlug).Cascade(CascadeMode.Stop)
                    .NotEmpty().WithName(_validationResources["CategoryUrlSlugPropName"]).WithMessage(_validationResources["RequiredMessage"])

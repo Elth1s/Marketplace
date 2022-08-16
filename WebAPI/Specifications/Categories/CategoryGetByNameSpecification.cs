@@ -5,10 +5,10 @@ namespace WebAPI.Specifications.Categories
 {
     public class CategoryGetByNameSpecification : Specification<Category>, ISingleResultSpecification<Category>
     {
-        public CategoryGetByNameSpecification(string name)
+        public CategoryGetByNameSpecification(string name, int languageId)
         {
-            Query.Where(item => name == item.Name)
-                .AsSplitQuery();
+            Query.Include(c => c.CategoryTranslations)
+               .Where(item => item.CategoryTranslations.Any(t => t.LanguageId == languageId && t.Name == name));
         }
     }
 }

@@ -1,8 +1,5 @@
-﻿using DAL;
-using DAL.Entities;
-using FluentValidation;
+﻿using FluentValidation;
 using Microsoft.Extensions.Localization;
-using WebAPI.Specifications.Units;
 
 namespace WebAPI.ViewModels.Request
 {
@@ -12,10 +9,15 @@ namespace WebAPI.ViewModels.Request
     public class UnitRequest
     {
         /// <summary>
-        /// Unit measure
+        /// English unit measure
         /// </summary>
         /// <example>m</example>
-        public string Measure { get; set; }
+        public string EnglishMeasure { get; set; }
+        /// <summary>
+        /// Ukrainian unit measure
+        /// </summary>
+        /// <example>м</example>
+        public string UkrainianMeasure { get; set; }
     }
 
     /// <summary>
@@ -24,24 +26,18 @@ namespace WebAPI.ViewModels.Request
     public class UnitRequestValidator : AbstractValidator<UnitRequest>
     {
         private readonly IStringLocalizer<ValidationResourсes> _validationResources;
-        private readonly IRepository<Unit> _unitRepository;
-        public UnitRequestValidator(IRepository<Unit> unitRepository,
-            IStringLocalizer<ValidationResourсes> validationResources)
+        public UnitRequestValidator(IStringLocalizer<ValidationResourсes> validationResources)
         {
-            _unitRepository = unitRepository;
             _validationResources = validationResources;
 
-            //Measure
-            RuleFor(x => x.Measure).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName(_validationResources["MeasurePropName"]).WithMessage(_validationResources["RequiredMessage"])
-               .Length(1, 30)
-               .Must(IsUniqueMeasure).WithMessage(_validationResources["UnitUniqueMeasureMessage"]);
-        }
-
-        private bool IsUniqueMeasure(string measure)
-        {
-            var spec = new UnitGetByMeasureSpecification(measure);
-            return _unitRepository.GetBySpecAsync(spec).Result == null;
+            //English Measure
+            RuleFor(x => x.EnglishMeasure).Cascade(CascadeMode.Stop)
+               .NotEmpty().WithName(_validationResources["EnglishMeasurePropName"]).WithMessage(_validationResources["RequiredMessage"])
+               .Length(1, 30);
+            //Ukrainian Measure
+            RuleFor(x => x.UkrainianMeasure).Cascade(CascadeMode.Stop)
+               .NotEmpty().WithName(_validationResources["UkrainianMeasurePropName"]).WithMessage(_validationResources["RequiredMessage"])
+               .Length(1, 30);
         }
     }
 }

@@ -4,7 +4,6 @@ namespace DAL.Entities
 {
     public class Category : BaseEntity, IAggregateRoot
     {
-        public string Name { get; set; }
         public string UrlSlug { get; set; }
         public string Image { get; set; }
         public string Icon { get; set; }
@@ -17,5 +16,6 @@ namespace DAL.Entities
         public ICollection<Category> Childrens { get; set; }
         public ICollection<Product> Products { get; set; }
         public ICollection<FilterValue> FilterValues { get; set; }
+        public ICollection<CategoryTranslation> CategoryTranslations { get; set; }
     }
 }

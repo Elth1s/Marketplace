@@ -36,6 +36,7 @@ const Sidebar: FC<IDrawer> = ({ open }) => {
         { lable: 'Country', path: '/admin/country', rotate: undefined },
         { lable: 'City', path: '/admin/city', rotate: undefined },
         { lable: 'Unit', path: '/admin/unit', rotate: undefined },
+        { lable: 'Order status ', path: '/admin/orderStatus', rotate: undefined },
         { lable: 'User ', path: '/admin/user', rotate: undefined },
     ]);
     const [selected, setSelected] = useState<string>("");

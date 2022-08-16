@@ -7,7 +7,8 @@ export enum FilterGroupActionTypes {
 }
 
 export interface IFilterGroup {
-    name: string
+    englishName: string,
+    ukrainianName: string,
 }
 
 export interface IFilterGroupInfo {

@@ -3,8 +3,10 @@ using DAL;
 using DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 using WebAPI.Extensions;
+using WebAPI.Helpers;
 using WebAPI.Interfaces.Products;
 using WebAPI.Specifications;
+using WebAPI.Specifications.Categories;
 using WebAPI.Specifications.Products;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Request.Products;
@@ -68,28 +70,37 @@ namespace WebAPI.Services.Products
 
         public async Task<ProductWithCategoryParentsResponse> GetByUrlSlugAsync(string urlSlug, string userId)
         {
-            var response = new ProductWithCategoryParentsResponse();
 
             var spec = new ProductIncludeFullInfoSpecification(urlSlug);
             var product = await _productRepository.GetBySpecAsync(spec);
             product.ProductNullChecking();
 
-            response.Product = _mapper.Map<ProductPageResponse>(product);
+            var response = new ProductWithCategoryParentsResponse
+            {
+                Product = _mapper.Map<ProductPageResponse>(product)
+            };
 
             response.Product.Filters = product.FilterValueProducts.Select(f => new ProductFilterValue()
             {
-                Value = f.CustomValue == null ? f.FilterValue.Value : f.CustomValue.ToString(),
-                FilterName = f.FilterValue.FilterName.Name,
-                UnitMeasure = f.FilterValue.FilterName.Unit?.Measure
+                Value = f.CustomValue == null ? f.FilterValue.FilterValueTranslations.FirstOrDefault(
+                                                f => f.LanguageId == CurrentLanguage.Id)?.Value : f.CustomValue.ToString(),
+                FilterName = f.FilterValue.FilterName.FilterNameTranslations.FirstOrDefault(
+                                                f => f.LanguageId == CurrentLanguage.Id)?.Name,
+                UnitMeasure = f.FilterValue.FilterName.Unit?.UnitTranslations.FirstOrDefault(
+                                                f => f.LanguageId == CurrentLanguage.Id)?.Measure
             });
 
-            var categories = new List<Category>();
-            categories.Add(new Category() { Name = product.Name });
+            var categories = new List<Category>
+            {
+                new Category() { CategoryTranslations=new List<CategoryTranslation>{
+                    new() { Name = product.Name, LanguageId=CurrentLanguage.Id } } }
+            };
             var category = product.Category;
             do
             {
                 categories.Add(category);
-                category = await _categoryRepository.GetByIdAsync(category.ParentId);
+                var specCategory = new CategoryIncludeFullInfoSpecification(category.ParentId);
+                category = await _categoryRepository.GetBySpecAsync(specCategory);
             } while (category != null);
 
             categories.Reverse();

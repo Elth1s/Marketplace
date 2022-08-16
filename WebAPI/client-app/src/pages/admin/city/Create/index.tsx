@@ -24,7 +24,8 @@ const CityCreate: FC<CreateProps> = ({ afterCreate }) => {
     const { countries } = useTypedSelector((store) => store.country);
 
     const item: ICity = {
-        name: '',
+        englishName: "",
+        ukrainianName: "",
         countryId: 0
     }
 
@@ -93,10 +94,19 @@ const CityCreate: FC<CreateProps> = ({ afterCreate }) => {
                     <Grid item xs={12}>
                         <TextFieldComponent
                             type="text"
-                            label="Name"
-                            error={errors.name}
-                            touched={touched.name}
-                            getFieldProps={{ ...getFieldProps('name') }}
+                            label="English Name"
+                            error={errors.englishName}
+                            touched={touched.englishName}
+                            getFieldProps={{ ...getFieldProps('englishName') }}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextFieldComponent
+                            type="text"
+                            label="Ukrainian Name"
+                            error={errors.ukrainianName}
+                            touched={touched.ukrainianName}
+                            getFieldProps={{ ...getFieldProps('ukrainianName') }}
                         />
                     </Grid>
                     <Grid item xs={12}>
