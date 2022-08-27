@@ -108,8 +108,8 @@ const CategoryCreate = () => {
                 <Box sx={{ mt: 3 }} >
                     <FormikProvider value={formik} >
                         <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-                            <Grid container spacing={2}>
-                                <Grid container item xs={10}>
+                            <Grid container rowSpacing={2}>
+                                <Grid container item xs={10} columnSpacing={2}>
                                     <Grid item xs={6}>
                                         <TextFieldFirstStyle
                                             fullWidth

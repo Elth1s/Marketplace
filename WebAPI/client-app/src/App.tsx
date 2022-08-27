@@ -29,8 +29,8 @@ import HomePage from './pages/default/HomePage';
 import Catalog from './pages/default/Catalog';
 import CatalogWithProducts from './pages/default/Catalog/CatalogWithProducts';
 import Product from './pages/default/product';
-import FAQ from './pages/default/FAQ';
-import ContactInfo from './pages/default/ContactInfo';
+import FAQ from './pages/default/footer/FAQ';
+import ContactInfo from './pages/default/footer/ContactInfo';
 
 import CategoryTable from './pages/admin/category/Table';
 import CategoryCreate from './pages/admin/category/Create';
@@ -64,11 +64,25 @@ import UserTable from './pages/admin/user/Table';
 
 import NotFound from './pages/notfound';
 import ProductCreate from './pages/seller/product/Create';
-import SellerInfo from './pages/seller/Home';
+import SellerInfo from './pages/default/SellerInfo';
 
-function App() {
-  const { isAuth } = useTypedSelector(store => store.auth);
+import darkTheme from './UISettings/darkTheme';
+import lightTheme from './UISettings/lightTheme';
+
+const App = () => {
   const { AuthUser } = useActions();
+  const { isAuth } = useTypedSelector(store => store.auth);
+
+  const { SetTheme } = useActions();
+  const { isDarkTheme } = useTypedSelector((state) => state.ui);
+
+  const darkThemeLS = localStorage.darkTheme == "true";
+
+  useEffect(() => {
+    if (darkThemeLS) {
+      SetTheme(darkThemeLS);
+    }
+  }, []);
 
   useEffect(() => {
     console.log("%c" + "Астанавитесь!", "color:red;font-weight:bold;font-size:64px;");
@@ -76,109 +90,9 @@ function App() {
     console.log("%c" + "Ця функція браузера призначена для розробників. Якщо хтось сказав вам щось скопіювати і сюди вставити, щоб включити функцію Mall або «зламати» чиюсь сторінку, це шахраї. Виконавши ці дії, ви надасте їм доступ до своєї сторінки Mall.", "font-size:22px;");
   }, []);
 
-  const theme = createTheme({
-    breakpoints: {
-      values: {
-        xs: 0,
-        sm: 600,
-        md: 900,
-        lg: 1185,
-        xl: 1560,
-      },
-    },
-    palette: {
-      mode: "light",
-      primary: {
-        main: '#F45626',
-        dark: "#CB2525"
-      },
-      secondary: {
-        main: '#0E7C3A',
-        light: "#30AA61"
-      },
-      error: {
-        main: '#AF0000',
-      },
-      common: {
-        black: "#000",
-        white: "#fff"
-      }
-    },
-    components: {
-      MuiContainer: {
-        defaultProps: {
-          style: {
-            padding: 0
-          }
-        }
-      },
-      MuiIconButton: {
-        defaultProps: {
-          color: "secondary",
-        },
-        styleOverrides: {
-          root: {
-            "&& .MuiTouchRipple-child": { borderRadius: "12px" }
-          }
-        }
-      },
-      MuiTypography: {
-        defaultProps: {
-          color: "#000"
-        },
-      },
-      MuiSwitch: {
-        styleOverrides: {
-          switchBase: {
-            color: "#0E7C3A"
-          },
-        }
-      },
-      MuiAppBar: {
-        defaultProps: {
-          color: "inherit"
-        }
-      }
-    },
-    typography: {
-      h1: {
-        fontSize: "36px",
-        lineHeight: "45px"
-      },
-      h2: {
-        fontSize: "27px",
-        lineHeight: "34px"
-      },
-      h3: {
-        fontSize: "24px",
-        lineHeight: "27px"
-      },
-      h4: {
-        fontSize: "20px",
-        lineHeight: "25px"
-      },
-      h5: {
-        fontSize: "18px",
-        lineHeight: "23px"
-      },
-      h6: {
-        fontSize: "16px",
-        lineHeight: "20px"
-      },
-      subtitle1: {
-        fontSize: "14px",
-        lineHeight: "18px"
-      },
-      fontFamily: [
-        'Mulish',
-        "sans-serif"
-      ].join(',')
-    },
-  });
-
   return (
     <>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={darkThemeLS ? darkTheme : lightTheme}>
         <CssBaseline />
         <ToastContainer
           position="bottom-right"

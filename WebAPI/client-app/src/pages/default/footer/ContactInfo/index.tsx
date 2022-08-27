@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 
 import { useTranslation } from 'react-i18next';
 
-import { outline_shop, shopping_bag_85 } from "../../../assets/icons";
+import { outline_shop, shopping_bag_85 } from "../../../../assets/icons";
 
 const ContactInfo = () => {
     const { t } = useTranslation();

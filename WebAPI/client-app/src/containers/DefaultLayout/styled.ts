@@ -64,7 +64,7 @@ export const ItemBoxStyled = styled(Box)(() => ({
 export const LanguageButtonStyle = styled(Button, {
     shouldForwardProp: (prop) => prop !== 'selected'
 })<{ selected?: boolean; }>(({ theme, selected }) => ({
-    color: selected ? theme.palette.primary.main : theme.palette.common.black,
+    color: selected ? theme.palette.primary.main : "inherit",
     fontSize: "20px",
     lineHeight: "25px",
     fontWeight: "bold",

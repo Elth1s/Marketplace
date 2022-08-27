@@ -1,6 +1,7 @@
 import {
     Toolbar,
     IconButton,
+    useTheme,
 } from '@mui/material';
 import {
     Menu
@@ -9,7 +10,7 @@ import { FC } from 'react';
 
 import { AppBarStyle, LeftBox } from './styled';
 
-import { logo } from '../../../assets/logos';
+import { dark_logo, light_logo } from '../../../assets/logos';
 
 import LinkRouter from '../../../components/LinkRouter';
 import Notification from './Notification'
@@ -21,6 +22,8 @@ interface IHeader {
 }
 
 const Header: FC<IHeader> = ({ handleDrawerToggle }) => {
+    const { palette } = useTheme();
+
     return (
         <AppBarStyle color="transparent" sx={{ zIndex: 1 }}>
             <Toolbar >
@@ -28,7 +31,7 @@ const Header: FC<IHeader> = ({ handleDrawerToggle }) => {
                     <LinkRouter underline="none" color="unset" to="/" >
                         <img
                             style={{ cursor: "pointer", width: "80px" }}
-                            src={logo}
+                            src={palette.mode == "dark" ? dark_logo : light_logo}
                             alt="logo"
                         />
                     </LinkRouter>

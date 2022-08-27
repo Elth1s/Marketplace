@@ -6,6 +6,9 @@ export enum ConfirmEmailActionTypes {
     SEND_CONFIRM_EMAIL = "SEND_CONFIRM_EMAIL",
     IS_EMAIL_CONFIRMED = "IS_EMAIL_CONFIRMED"
 }
+export enum OrderActionTypes {
+    GET_ORDER_PRODUCTS = "GET_ORDER_PRODUCTS"
+}
 
 
 export interface IProfile {
@@ -32,6 +35,38 @@ export interface IProfile {
 
 export interface ProfileState {
     userInfo: IProfile,
+    orderProducts: Array<IOrderProducts>
+
+}
+
+// Create order
+
+
+export interface IOrderItem {
+    products: Array<IBasketOrderItem>
+    deliveryType: string
+}
+
+export interface IOrderCreate {
+    consumerFirstName: string,
+    consumerSecondName: string,
+    consumerPhone: string,
+    consumerEmail: string,
+    orders: Array<IOrderItem>
+}
+
+export interface IBasketOrderItem {
+    productName: string,
+    productImage: string,
+    productPrice: number,
+    productUrlSlug: string,
+    count: number
+}
+
+export interface IOrderProducts {
+    shopName: string,
+    totalPrice: number,
+    basketItems: Array<IBasketOrderItem>
 }
 
 
@@ -57,6 +92,12 @@ export interface GetProfileAction {
     payload: IProfile
 }
 
+export interface GetOrderProductsAction {
+    type: OrderActionTypes.GET_ORDER_PRODUCTS,
+    payload: Array<IOrderProducts>
+}
+
 
 export type ProfileAction = GetProfileAction;
 export type EmailConfirmAction = ConfirmEmailAction | SendConfirmEmailAction | IsEmailConfirmedAction;
+export type OrderAction = GetOrderProductsAction;

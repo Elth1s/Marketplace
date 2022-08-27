@@ -1,26 +1,24 @@
-import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
+import { Box, DialogActions, DialogContent, DialogTitle, IconButton, Typography, Grid, Button, useTheme } from '@mui/material';
+import { Close, StarRounded } from '@mui/icons-material';
+import { LoadingButton } from '@mui/lab';
 
 import { FC, useState } from "react";
 import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { Form, FormikProvider, useFormik } from "formik";
-
-import { useActions } from "../../../../hooks/useActions";
 
 import { reviewValidationFields } from "../validation";
 import { IReview } from "../types";
 import { ServerError } from '../../../../store/types';
 
-import { ReviewDialogStyle } from '../../../../components/Dialog/styled';
-import { Box, DialogActions, DialogContent, DialogTitle, IconButton, Typography } from '@mui/material';
-import { Close, StarRounded } from '@mui/icons-material';
-import { LoadingButton } from '@mui/lab';
+import { ReviewQustionDialogStyle } from '../../../../components/Dialog/styled';
 import { TextFieldSecondStyle } from '../../../../components/TextField/styled';
 import { RatingStyle } from '../../../../components/Rating/styled';
-import { useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { ToastError, ToastWarning } from '../../../../components/ToastComponent';
+
 import { useTypedSelector } from '../../../../hooks/useTypedSelector';
+import { useActions } from "../../../../hooks/useActions";
 
 
 interface Props {
@@ -29,6 +27,7 @@ interface Props {
 
 const AddReview: FC<Props> = ({ getData }) => {
     const { t } = useTranslation();
+    const { palette } = useTheme();
 
     let { urlSlug } = useParams();
 
@@ -105,19 +104,20 @@ const AddReview: FC<Props> = ({ getData }) => {
                     py: "13px",
                     px: "40px",
                     textTransform: "none",
-                    borderRadius: "10px"
+                    borderRadius: "10px",
+                    "&:hover": { background: palette.primary.main }
                 }}
                 onClick={handleClickOpen}
             >
                 {t("pages.product.addReview")}
             </Button>
-            <ReviewDialogStyle
+            <ReviewQustionDialogStyle
                 open={dialogOpen}
                 onClose={handleClickClose}
                 aria-describedby="alert-dialog-slide-description"
             >
-                <DialogTitle sx={{ py: "36px", pl: "32px" }}>
-                    <Typography fontSize="35px" lineHeight="38px">
+                <DialogTitle sx={{ pt: "26px", pb: "20px", px: "30px" }}>
+                    <Typography fontSize="30px">
                         {t("components.reviewDialog.title")}
                     </Typography>
                     <IconButton
@@ -126,7 +126,7 @@ const AddReview: FC<Props> = ({ getData }) => {
                         sx={{
                             position: 'absolute',
                             right: 20,
-                            top: 34,
+                            top: 28,
                             borderRadius: "12px"
                         }}
                     >
@@ -135,7 +135,7 @@ const AddReview: FC<Props> = ({ getData }) => {
                 </DialogTitle>
                 <FormikProvider value={formik} >
                     <Form autoComplete="off" noValidate onSubmit={handleSubmit} >
-                        <DialogContent sx={{ width: "660px", mx: "auto", p: 0 }}>
+                        <DialogContent sx={{ width: "690px", mx: "auto", p: 0 }}>
                             <Box sx={{ display: "flex", mb: "30px" }}>
                                 <Typography variant="h4" sx={{ pr: "18px" }}>
                                     {t("components.reviewDialog.overview")}
@@ -153,7 +153,7 @@ const AddReview: FC<Props> = ({ getData }) => {
 
                                 />
                             </Box>
-                            <Grid container spacing="25px">
+                            <Grid container rowSpacing="20px" columnSpacing="30px">
                                 <Grid item xs={6}>
                                     <TextFieldSecondStyle
                                         fullWidth
@@ -165,7 +165,7 @@ const AddReview: FC<Props> = ({ getData }) => {
                                         helperText={touched.fullName && errors.fullName}
                                     />
                                 </Grid>
-                                <Grid item xs={6} sx={{ pb: "15px" }}>
+                                <Grid item xs={6}>
                                     <TextFieldSecondStyle
                                         disabled={user.isEmailExist}
                                         fullWidth
@@ -226,20 +226,20 @@ const AddReview: FC<Props> = ({ getData }) => {
                                 </Grid>
                             </Grid>
                         </DialogContent>
-                        <DialogActions sx={{ pt: "65px", pb: "26px", px: "32px" }}>
+                        <DialogActions sx={{ pt: "25px", pb: "26px", px: "30px" }}>
                             <LoadingButton
                                 color="secondary"
                                 variant="contained"
                                 loading={isSubmitting}
                                 type="submit"
-                                sx={{ ml: "auto", fontSize: "20px", py: "15px", px: "80px", textTransform: "none" }}
+                                sx={{ height: "55px", ml: "auto", fontSize: "20px", py: "15px", px: "41px", textTransform: "none" }}
                             >
                                 {t("components.reviewDialog.button")}
                             </LoadingButton>
                         </DialogActions>
                     </Form>
                 </FormikProvider>
-            </ReviewDialogStyle>
+            </ReviewQustionDialogStyle>
         </>
     )
 }

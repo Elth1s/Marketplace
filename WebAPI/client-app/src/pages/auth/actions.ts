@@ -14,6 +14,14 @@ import http, { setLocalRefreshToken, setLocalAccessToken } from "../../http_como
 
 import { accessToken, refreshToken, emailClaim, roleClaim, mobilePhoneClaim, isEmailExistClaim, photoClaim, nameClaim } from "./constants"
 
+export const AuthDialogChange = () => {
+    return (dispatch: Dispatch<AuthAction>) => {
+        dispatch({
+            type: AuthActionTypes.AUTH_DIALOG_CHANGE
+        })
+    }
+}
+
 export const LoginUser = (data: ILoginModel, reCaptchaToken: string) => {
     return async (dispatch: Dispatch<AuthAction>) => {
         try {

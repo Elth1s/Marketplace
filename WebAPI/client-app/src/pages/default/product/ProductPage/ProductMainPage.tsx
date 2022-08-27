@@ -22,7 +22,7 @@ import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import { arrow_right, buy_cart, credit_card, dollar_sign, orange_heart, package_delivery, truck_delivery } from "../../../../assets/icons";
 import { useActions } from "../../../../hooks/useActions";
 
-import ShowInfo from "../../ShopInfo"
+import ShowInfo from "../../ShortSellerInfo"
 
 interface Props {
     moveToReview: any
@@ -54,9 +54,21 @@ const ProductMainPage: FC<Props> = ({ addInCart, moveToReview }) => {
         }
     };
 
-    console.log(reviews)
     return (
         <>
+            <Typography variant="h1" sx={{ mt: "30px", mb: "15px" }}>{product.name}</Typography>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+                <Typography variant="h4" fontWeight="bold" display="inline" sx={{ marginRight: "70px" }}>{t("pages.product.seller")}: <Typography fontWeight="normal" display="inline" sx={{ fontSize: "20px" }}>{product.shopName}</Typography></Typography>
+                <Typography variant="h4" fontWeight="bold">{t("pages.product.sellerRating")}: </Typography>
+                <RatingStyle
+                    sx={{ ml: 1, fontSize: "30px", mr: "40px" }}
+                    value={4.5}
+                    precision={0.5}
+                    readOnly
+                    icon={<StarRounded sx={{ fontSize: "30px" }} />}
+                    emptyIcon={<StarRounded sx={{ fontSize: "30px" }} />}
+                />
+            </Box>
             <Grid container sx={{ mb: "80px" }}>
                 <Grid item xs={4} sx={{ mt: "84px" }}>
                     <Swiper

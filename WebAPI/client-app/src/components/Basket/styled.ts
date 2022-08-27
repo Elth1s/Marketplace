@@ -19,6 +19,7 @@ export const TextFieldStyle = styled(TextField)(({ theme }) => ({
         "&>*:nth-of-type(1)": {
             padding: "2.5px 8.5px",
             fontSize: "12px",
+            textAlign: "center"
         },
         "& fieldset": {
             borderRadius: "5px",

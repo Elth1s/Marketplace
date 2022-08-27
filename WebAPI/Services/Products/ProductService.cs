@@ -19,6 +19,7 @@ namespace WebAPI.Services.Products
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly IRepository<Product> _productRepository;
+        private readonly IRepository<ProductImage> _productImageRepository;
         private readonly IRepository<Shop> _shopRepository;
         private readonly IRepository<ProductStatus> _productStatusRepository;
         private readonly IRepository<Category> _categoryRepository;
@@ -31,6 +32,7 @@ namespace WebAPI.Services.Products
             IRepository<Product> productRepository,
             IRepository<Shop> shopRepository,
             IRepository<ProductStatus> productStatusRepository,
+            IRepository<ProductImage> productImageRepository,
             IRepository<Category> categoryRepository,
             IRepository<FilterValue> filterValueRepository,
             IRepository<FilterValueProduct> filterValueProductRepository,
@@ -41,6 +43,7 @@ namespace WebAPI.Services.Products
         {
             _userManager = userManager;
             _productRepository = productRepository;
+            _productImageRepository = productImageRepository;
             _shopRepository = shopRepository;
             _shopRepository = shopRepository;
             _productStatusRepository = productStatusRepository;
@@ -154,13 +157,20 @@ namespace WebAPI.Services.Products
                 await _filterValueProductRepository.AddAsync(
                     new FilterValueProduct()
                     {
-
                         FilterValueId = filterValue.ValueId,
                         ProductId = product.Id,
                         CustomValue = filterValue.CustomValue != null ? filterValue.CustomValue : null
                     });
             }
             await _filterValueProductRepository.SaveChangesAsync();
+
+            foreach (var image in request.Images)
+            {
+                var productImage = await _productImageRepository.GetByIdAsync(image.Id);
+                productImage.ProductId = product.Id;
+                await _productImageRepository.UpdateAsync(productImage);
+            }
+            await _productImageRepository.SaveChangesAsync();
         }
 
         //public async Task UpdateAsync(int id, ProductUpdateRequest request)

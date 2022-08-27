@@ -1,304 +1,278 @@
+import { LoadingButton } from "@mui/lab";
 import {
-  Box,
-  Button,
-  Checkbox,
-  CssBaseline,
-  FormControl,
-  FormControlLabel,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-  Typography,
-  Container
+    Box,
+    Button,
+    Checkbox,
+    CssBaseline,
+    FormControl,
+    FormControlLabel,
+    Grid,
+    InputLabel,
+    MenuItem,
+    Select,
+    TextField,
+    Typography,
+    Container,
+    useTheme
 } from "@mui/material";
-import React from "react";
-import logo from "../../../logo.svg";
-import FmdGoodOutlinedIcon from "@mui/icons-material/FmdGoodOutlined";
+import { Form, FormikProvider, useFormik } from "formik";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { empty } from "../../../assets/backgrounds";
+
 import { black_map_pin } from "../../../assets/icons";
+import { dark_logo, light_logo } from "../../../assets/logos";
+import LinkRouter from "../../../components/LinkRouter";
+import { TextFieldSecondStyle } from "../../../components/TextField/styled";
+import { useActions } from "../../../hooks/useActions";
+import { useTypedSelector } from "../../../hooks/useTypedSelector";
+import { toLowerFirstLetter } from "../../../http_comon";
+import { ServerError } from "../../../store/types";
+import { IOrderCreate } from "../types";
+import { OrderSchema } from "../validation";
 
 const Ordering = () => {
-  return (
-    <Container sx={{ maxWidth: { xl: "xl", lg: "lg", md: "md" } }}>
-      <Box sx={{ mt: 2 }}>
-        <img
-          style={{ cursor: "pointer", width: "150px", height: "93px" }}
-          src={logo}
-          alt="logo"
-        />
-      </Box>
-      <Typography sx={{ mt: 3, fontSize: 36 }}>
-        Оформлення замовлення
-      </Typography>
-      <Box sx={{ mt: 3, mb: 7 }}>
-        <Typography sx={{ fontSize: 27 }}>Контактні дані</Typography>
-        <Grid sx={{ mt: 1 }} container spacing={7}>
-          <Grid item xs={6} md={4}>
-            <TextField
-              sx={{ width: 430, height: 50, borderRadius: 15 }}
-              label="Призвіще"
-            />
-          </Grid>
-          <Grid item xs={6} md={4}>
-            <TextField sx={{ width: 430, height: 50 }} label="Номер телефону" />
-          </Grid>
-          <Grid item xs={6} md={4}>
-            <TextField
-              sx={{ width: 440, height: 50 }}
-              label="Промокод (необов'язково)"
-            />
-          </Grid>
-          <Grid item xs={6} md={4}>
-            <TextField sx={{ width: 430, height: 50 }} label="Ім'я" />
-          </Grid>
-          <Grid item xs={6} md={4}>
-            <TextField sx={{ width: 430, height: 50 }} label="Email-адреса" />
-          </Grid>
-          <Grid item xs={6} md={4}>
-            <TextField
-              sx={{ width: 440, height: 50 }}
-              label="Номер бонусної карти (необов'язково)"
-            />
-          </Grid>
-        </Grid>
-      </Box>
-      <Box sx={{ mt: 3 }}>
-        <Grid sx={{ mt: 4 }} container spacing={2}>
-          <Grid item xs={6} md={8}>
-            {" "}
-            <Typography sx={{ mt: 3, fontSize: 36 }}>Ваше місто</Typography>
-          </Grid>
-          <Grid item xs={6} md={4}>
-            {" "}
-            <Typography sx={{ mt: 3, fontSize: 36, ml: 4 }}>Загалом</Typography>
-          </Grid>
-        </Grid>
-        <Grid sx={{ mt: 4 }} container spacing={2}>
-          <Grid item xs={6} md={8}>
-            <Box sx={{ display: "flex" }}>
-              <Box sx={{ height: 91, width: 268, display: "flex" }}>
-                <img
-                  style={{ width: "30px", height: "30px", marginTop: "27px" }}
-                  src={black_map_pin}
-                  alt="icon"
-                />
-                <Box sx={{ ml: 4 }}>
-                  <Typography sx={{ fontSize: 24 }}>Острог</Typography>
-                  <Typography sx={{ fontSize: 24, mt: 3 }}>
-                    Рівненська обл.
-                  </Typography>
-                </Box>
-              </Box>
-              <Box
-                sx={{
-                  height: 91,
-                  width: 268,
-                  display: "flex",
-                  ml: 15,
-                  justifyContent: "center",
-                }}
-              >
-                <Button
-                  sx={{ height: 80, width: 250, mt: 0.5, border: 4 }}
-                  variant="outlined"
-                  color="success"
-                >
-                  Змінити
-                </Button>
-              </Box>
+    const { t } = useTranslation();
+    const { palette } = useTheme();
+
+    const { orderProducts } = useTypedSelector(state => state.profile);
+    const { GetOrderProducts } = useActions();
+
+    const [amountPayable, setAmountPayable] = useState<number>(0);
+    const [ordersCount, setOrdersCount] = useState<number>(0);
+
+    useEffect(() => {
+        document.title = `${t("pages.ordering.title")}`;
+
+        getData();
+    }, [orderProducts])
+
+    const getData = async () => {
+        try {
+            await GetOrderProducts()
+            await sumAmountPayableWithCount()
+        } catch (ex) {
+        }
+    };
+
+    const orderModel: IOrderCreate = {
+        consumerFirstName: "",
+        consumerSecondName: "",
+        consumerEmail: "",
+        consumerPhone: "",
+        orders: []
+    };
+
+    const formik = useFormik({
+        initialValues: orderModel,
+        validationSchema: OrderSchema,
+        onSubmit: async (values, { setFieldError }) => {
+            try {
+
+            }
+            catch (exception) {
+                const serverErrors = exception as ServerError;
+                if (serverErrors.errors)
+                    Object.entries(serverErrors.errors).forEach(([key, value]) => {
+                        if (Array.isArray(value)) {
+                            let message = "";
+                            value.forEach((item) => {
+                                message += `${item} `;
+                            });
+                            setFieldError(toLowerFirstLetter(key), message);
+                        }
+                    });
+            }
+
+        }
+    });
+
+    const sumAmountPayableWithCount = async () => {
+        let tempAmountPayable = 0;
+        let tempCount = 0;
+
+        orderProducts.forEach(orderItem => {
+            tempAmountPayable += orderItem.totalPrice;
+            orderItem.basketItems.forEach(basketItem => {
+                tempCount += basketItem.count
+            });
+        });
+        setAmountPayable(tempAmountPayable)
+        setOrdersCount(tempCount)
+    }
+
+    const { errors, touched, isSubmitting, handleSubmit, getFieldProps } = formik;
+
+    return (
+        <Container sx={{ maxWidth: { xl: "xl", lg: "lg", md: "md" } }}>
+            <Box sx={{ mt: "26px" }}>
+                <LinkRouter underline="none" color="inherit" to="/" >
+                    <img
+                        style={{ cursor: "pointer", height: "82px" }}
+                        src={palette.mode == "dark" ? dark_logo : light_logo}
+                        alt="logo"
+                    />
+                </LinkRouter>
             </Box>
-          </Grid>
-          <Grid item xs={6} md={4}>
-            <Box sx={{ width: 460 }}>
-              <Box
-                sx={{ display: "flex", justifyContent: "space-between", ml: 4 }}
-              >
-                <Typography sx={{ fontSize: 20 }}>1 товар на суму:</Typography>
-                <Typography sx={{ fontSize: 20 }}>293</Typography>
-              </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  ml: 4,
-                  mt: 4,
-                }}
-              >
-                <Typography sx={{ fontSize: 20 }}>Разом до оплати:</Typography>
-                <Typography sx={{ fontSize: 20 }}>293</Typography>
-              </Box>
-              <Box sx={{ display: "flex" }}>
-                <Button
-                  sx={{ height: 80, width: 440, mt: 4, ml: 4 }}
-                  variant="contained"
-                  color="success"
-                >
-                  Змінити
-                </Button>
-              </Box>
-            </Box>
-          </Grid>
-        </Grid>
-      </Box>
-      <Box sx={{ mt: 10, mb: 10 }}>
-        <Box sx={{ display: "flex" }}>
-          <Typography sx={{ fontSize: 36 }}>Замовлення №1</Typography>
-          <Typography sx={{ fontSize: 27, mt: 0.5, ml: 10 }}>
-            На суму 293
-          </Typography>
-        </Box>
-        <Box sx={{ mt: 5 }}>
-          <Typography sx={{ fontSize: 27 }}>Товар продавця EUROSHOP</Typography>
-        </Box>
-        <Box sx={{ mt: 5, height: 200, width: 1153, display: "flex" }}>
-          <img
-            style={{ cursor: "pointer", width: "200px", height: "200px" }}
-            src={logo}
-            alt="logo"
-          />
-          <Box sx={{ width: 550 }}>
-            <Box sx={{ ml: 10 }}>
-              <Typography sx={{ fontSize: 20, mt: 9 }}>Намисто з коштовностями</Typography>
-              <Typography sx={{ fontSize: 20, mt: 2 }}>Срібло</Typography>
-            </Box>
-          </Box>
-          <Box sx={{ width: 250 }}>
-            <Box sx={{ ml: 10 }}>
-              <Typography sx={{ fontSize: 20, mt: 9 }}>Ціна</Typography>
-              <Typography sx={{ fontSize: 20, mt: 2 }}>293</Typography>
-            </Box>
-          </Box>
-          <Box sx={{ width: 200 }}>
-            <Box sx={{ ml: 10 }}>
-              <Typography sx={{ fontSize: 20, mt: 9 }}>Кількість</Typography>
-              <Typography sx={{ fontSize: 20, mt: 2 }}>1</Typography>
-            </Box>
-          </Box>
-        </Box>
-      </Box>
-      <Typography sx={{ mt: 3, fontSize: 36 }}>Спосіб доставки</Typography>
-      <Box sx={{ mt: 3 }}>
-        <FormControlLabel
-          sx={{ fontSize: 27 }}
-          control={<Checkbox />}
-          label="Самовивіз"
-        />
-        <Box sx={{ mt: 3 }}>
-          <Box sx={{ ml: 3 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={6} md={4}>
-                <FormControl sx={{ width: 430, height: 50, borderRadius: 15 }}>
-                  <InputLabel id="select-label-post">Виберіть пошту</InputLabel>
-                  <Select
-                    labelId="select-label-post"
-                    id="demo-simple-select"
-                    label="Виберіть пошту"
-                  >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={6} md={4}>
-                <FormControl sx={{ width: 430, height: 50, borderRadius: 15 }}>
-                  <InputLabel id="select-label-terminal">
-                    Виберіть відділення
-                  </InputLabel>
-                  <Select
-                    labelId="select-label-terminal"
-                    id="demo-simple-select-0"
-                    label="Виберіть відділення"
-                  >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-            </Grid>
-          </Box>
-        </Box>
-      </Box>
-      <Box sx={{ mt: 10 }}>
-        <FormControlLabel
-          sx={{ fontSize: 27 }}
-          control={<Checkbox defaultChecked />}
-          label="Кур'єр Укрпошта"
-        />
-        <Box sx={{ mt: 3 }}>
-          <Box sx={{ ml: 3 }}>
-            <Grid container spacing={6}>
-              <Grid item xs={6} md={4}>
-                <TextField sx={{ width: 380, height: 50 }} label="Вулиця" />
-              </Grid>
-              <Grid item xs={6} md={4}>
-                <TextField sx={{ width: 380, height: 50 }} label="Дім" />
-              </Grid>
-              <Grid item xs={6} md={4}>
-                <TextField sx={{ width: 380, height: 50 }} label="Квартира" />
-              </Grid>
-            </Grid>
-          </Box>
-        </Box>
-      </Box>
-      <Box sx={{ mt: 3 }}>
-        <FormControlLabel
-          sx={{ fontSize: 27 }}
-          control={<Checkbox />}
-          label="Кур'єр Нова Пошта"
-        />
-        <Box sx={{ mt: 3 }}>
-          <Box sx={{ ml: 3 }}>
-            <Grid container spacing={6}>
-              <Grid item xs={6} md={4}>
-                <TextField sx={{ width: 380, height: 50 }} label="Вулиця" />
-              </Grid>
-              <Grid item xs={6} md={4}>
-                <TextField sx={{ width: 380, height: 50 }} label="Дім" />
-              </Grid>
-              <Grid item xs={6} md={4}>
-                <TextField sx={{ width: 380, height: 50 }} label="Квартира" />
-              </Grid>
-            </Grid>
-          </Box>
-        </Box>
-      </Box>
-      <Box sx={{ mt: 3 }}>
-        <FormControlLabel
-          sx={{ fontSize: 27 }}
-          control={<Checkbox />}
-          label="Кур'єр Mall"
-        />
-        <Box sx={{ mt: 3 }}>
-          <Box sx={{ ml: 3 }}>
-            <Grid container spacing={6}>
-              <Grid item xs={6} md={4}>
-                <TextField sx={{ width: 380, height: 50 }} label="Вулиця" />
-              </Grid>
-              <Grid item xs={6} md={4}>
-                <TextField sx={{ width: 380, height: 50 }} label="Дім" />
-              </Grid>
-              <Grid item xs={6} md={4}>
-                <TextField sx={{ width: 380, height: 50 }} label="Квартира" />
-              </Grid>
-            </Grid>
-          </Box>
-        </Box>
-      </Box>
-      <Box sx={{ mt: 10, mb: 10 }}>
-        <Typography sx={{ fontSize: 27 }}>Оплата</Typography>
-        <Box sx={{ mt: 3 }}>
-          <FormControlLabel
-            sx={{ fontSize: 27 }}
-            control={<Checkbox defaultChecked />}
-            label="Оплата при отриманні товару"
-          />
-        </Box>
-      </Box>
-    </Container>
-  );
+            <FormikProvider value={formik} >
+                <Form autoComplete="off" noValidate onSubmit={handleSubmit} >
+                    <Typography variant="h1" sx={{ mt: "25px" }}>
+                        {t("pages.ordering.title")}
+                    </Typography>
+                    <Grid container sx={{ mt: "35px" }}>
+                        <Grid item container xs={8} rowSpacing="35px">
+                            <Grid item xs={12} sx={{ mt: "15px" }}>
+                                <Typography variant="h2">{t("pages.ordering.contactInfo")}</Typography>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <TextFieldSecondStyle
+                                    fullWidth
+                                    variant="outlined"
+                                    type="text"
+                                    placeholder="First name"
+                                    {...getFieldProps('consumerFirstName')}
+                                    error={Boolean(touched.consumerFirstName && errors.consumerFirstName)}
+                                    helperText={touched.consumerFirstName && errors.consumerFirstName}
+                                />
+                            </Grid>
+                            <Grid item xs={2} />
+                            <Grid item xs={4}>
+                                <TextFieldSecondStyle
+                                    fullWidth
+                                    variant="outlined"
+                                    type="text"
+                                    placeholder="Second name"
+                                    {...getFieldProps('consumerSecondName')}
+                                    error={Boolean(touched.consumerSecondName && errors.consumerSecondName)}
+                                    helperText={touched.consumerSecondName && errors.consumerSecondName}
+                                />
+                            </Grid>
+                            <Grid item xs={4}>
+                                <TextFieldSecondStyle
+                                    fullWidth
+                                    variant="outlined"
+                                    type="text"
+                                    placeholder="Email"
+                                    {...getFieldProps('consumerEmail')}
+                                    error={Boolean(touched.consumerEmail && errors.consumerEmail)}
+                                    helperText={touched.consumerEmail && errors.consumerEmail}
+                                />
+                            </Grid>
+                            <Grid item xs={2} />
+                            <Grid item xs={4}>
+                                <TextFieldSecondStyle
+                                    fullWidth
+                                    variant="outlined"
+                                    type="text"
+                                    placeholder="Phone number"
+                                    {...getFieldProps('consumerPhone')}
+                                    error={Boolean(touched.consumerPhone && errors.consumerPhone)}
+                                    helperText={touched.consumerPhone && errors.consumerPhone}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sx={{ mt: "15px" }}>
+                                {orderProducts.map((item, index) => {
+
+                                    return (
+                                        <Box key={`order_${index}`}>
+                                            <Box sx={{ display: "flex" }}>
+                                                <Typography variant="h2" sx={{ mr: "180px" }}>
+                                                    {t("pages.ordering.order")} №{index + 1}
+                                                </Typography>
+                                                <Typography variant="h4">
+                                                    {t("pages.ordering.forTheSum")} {item.totalPrice} &#8372;
+                                                </Typography>
+                                            </Box>
+                                            <Typography variant="h3" sx={{ mt: "15px" }}>
+                                                {t("pages.ordering.sellerProducts")} {item.shopName}
+                                            </Typography>
+                                            {item.basketItems.map((basketItem, index) => {
+
+                                                return (
+                                                    <Box key={`order_basket_item_${index}`} sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", py: "15px" }}>
+                                                        <Box sx={{ display: "flex", alignItems: "center" }}>
+                                                            <img
+                                                                style={{ width: "120px", height: "120px", objectFit: "contain" }}
+                                                                src={basketItem.productImage != "" ? basketItem.productImage : empty}
+                                                                alt="productImage"
+                                                            />
+                                                            <LinkRouter underline="hover" color="inherit" to={`/product/${basketItem.productUrlSlug}`}>
+                                                                <Typography variant="h4" sx={{ width: "550px" }}>
+                                                                    {basketItem.productName}
+                                                                </Typography>
+                                                            </LinkRouter>
+                                                        </Box>
+                                                        <Box sx={{ display: "flex", flexDirection: "column" }}>
+                                                            <Typography variant="h4">
+                                                                {t("pages.ordering.price")}
+                                                            </Typography>
+                                                            <Typography variant="h4" align="center">
+                                                                {basketItem.productPrice} &#8372;
+                                                            </Typography>
+                                                        </Box>
+                                                        <Box sx={{ display: "flex", flexDirection: "column" }}>
+                                                            <Typography variant="h4">
+                                                                {t("pages.ordering.count")}
+                                                            </Typography>
+                                                            <Typography variant="h4" align="center">
+                                                                {basketItem.count}
+                                                            </Typography>
+                                                        </Box>
+                                                    </Box>
+                                                )
+                                            })}
+                                        </Box>
+                                    )
+                                })}
+                            </Grid>
+                        </Grid>
+                        <Grid item xs={1} />
+                        <Grid item xs={3} >
+                            <Box sx={{ position: "sticky", top: "20px" }}>
+                                <Typography variant="h2">
+                                    {t("pages.ordering.inGeneral")}
+                                </Typography>
+                                <Box sx={{ display: "flex", justifyContent: "space-between", mt: "35px" }}>
+                                    <Typography variant="h4" fontWeight={700}>
+                                        {ordersCount} {t("pages.ordering.countProductsOne")} {t("pages.ordering.forTheSum")}:
+                                    </Typography>
+                                    <Typography variant="h4">
+                                        {amountPayable} &#8372;
+                                    </Typography>
+                                </Box>
+                                <Box sx={{ display: "flex", justifyContent: "space-between", mt: "20px" }}>
+                                    <Typography variant="h4" fontWeight={700} sx={{ height: "25px", my: "auto" }}>
+                                        {t("pages.ordering.shippingCost")}:
+                                    </Typography>
+                                    <Typography variant="h4" align="right" sx={{ width: "200px" }}>
+                                        {t("pages.ordering.accordingCarrierTariffs")}
+                                    </Typography>
+                                </Box>
+                                <Box sx={{ display: "flex", justifyContent: "space-between", mt: "20px" }}>
+                                    <Typography variant="h4" fontWeight={700}>
+                                        {t("pages.ordering.amountPayable")}:
+                                    </Typography>
+                                    <Typography variant="h4">
+                                        {amountPayable} &#8372;
+                                    </Typography>
+                                </Box>
+                                <LoadingButton
+                                    fullWidth
+                                    color="secondary"
+                                    variant="contained"
+                                    loading={isSubmitting}
+                                    type="submit"
+                                    sx={{ height: "60px", fontSize: "24px", py: "20px", mt: "35px", textTransform: "none" }}
+                                >
+                                    {t("pages.ordering.checkout")}
+                                </LoadingButton>
+                            </Box>
+                        </Grid>
+                    </Grid>
+                </Form>
+            </FormikProvider>
+        </Container>
+    );
 };
 
 export default Ordering;

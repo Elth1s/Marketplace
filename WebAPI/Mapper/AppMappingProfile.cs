@@ -230,7 +230,9 @@ namespace WebAPI.Mapper
                 .ForMember(c => c.Value, opt => opt.MapFrom(
                        vm => vm.FilterValueTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).Value));
 
-            CreateMap<FilterValue, FilterValueSellerResponse>();
+            CreateMap<FilterValue, FilterValueSellerResponse>()
+                .ForMember(c => c.Value, opt => opt.MapFrom(
+                       vm => vm.FilterValueTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).Value));
             CreateMap<FilterValue, FilterValueResponse>()
                 .ForMember(c => c.Value, opt => opt.MapFrom(
                        vm => vm.FilterValueTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).Value))
@@ -335,6 +337,12 @@ namespace WebAPI.Mapper
                 .ForMember(u => u.ProductUrlSlug, opt => opt.MapFrom(vm => vm.Product.UrlSlug))
                 .ForMember(u => u.ProductImage, opt => opt.MapFrom(
                     vm => vm.Product.Images.Count != 0 ? Path.Combine(ImagePath.RequestProductsImagePath, vm.Product.Images.FirstOrDefault().Name) : ""));
+            CreateMap<BasketItem, BasketOrderItemResponse>()
+                .ForMember(u => u.ProductName, opt => opt.MapFrom(vm => vm.Product.Name))
+                .ForMember(u => u.ProductPrice, opt => opt.MapFrom(vm => vm.Product.Price))
+                .ForMember(u => u.ProductUrlSlug, opt => opt.MapFrom(vm => vm.Product.UrlSlug))
+                .ForMember(u => u.ProductImage, opt => opt.MapFrom(
+                    vm => vm.Product.Images.Count != 0 ? Path.Combine(ImagePath.RequestProductsImagePath, vm.Product.Images.FirstOrDefault().Name) : ""));
             #endregion
 
             #region Unit
@@ -425,13 +433,13 @@ namespace WebAPI.Mapper
                 .ForMember(r => r.Dislikes, opt => opt.MapFrom(vm => vm.CountDislikes))
                 .ForMember(r => r.Likes, opt => opt.MapFrom(vm => vm.CountLikes))
                 .ForMember(r => r.Replies, opt => opt.MapFrom(vm => vm.Replies.Count))
-                .ForMember(q => q.Date, opt => opt.MapFrom(vm => vm.Date.ToString("d")));
+                .ForMember(q => q.Date, opt => opt.MapFrom(vm => vm.Date.ToString("dd MMMM yyyy")));
 
             //QuestionReply
             CreateMap<QuestionReplyRequest, QuestionReply>()
                 .ForMember(r => r.Date, opt => opt.MapFrom(o => DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc)));
             CreateMap<QuestionReply, QuestionReplyResponse>()
-                .ForMember(q => q.Date, opt => opt.MapFrom(vm => vm.Date.ToString("d")));
+                .ForMember(q => q.Date, opt => opt.MapFrom(vm => vm.Date.ToString("dd MMMM yyyy")));
 
             //Question Image
             CreateMap<QuestionImage, string>()

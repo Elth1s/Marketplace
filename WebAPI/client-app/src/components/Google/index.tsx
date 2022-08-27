@@ -10,12 +10,9 @@ import { google } from "../../assets/icons"
 
 const clientId = "776665906575-0a864tctbrd5t6h6m8j84oktpm75jhng.apps.googleusercontent.com";
 
-interface Props {
-    dialogClose: any
-}
 
-const GoogleExternalLogin: FC<Props> = ({ dialogClose }) => {
-    const { GoogleExternalLogin } = useActions();
+const GoogleExternalLogin = () => {
+    const { GoogleExternalLogin, AuthDialogChange } = useActions();
 
     const navigate = useNavigate();
 
@@ -32,7 +29,7 @@ const GoogleExternalLogin: FC<Props> = ({ dialogClose }) => {
     const handleGoogleSignIn = async (res: GoogleLoginResponse | any) => {
         try {
             await GoogleExternalLogin({ token: res.tokenId });
-            dialogClose();
+            AuthDialogChange();
             navigate("/");
 
         } catch (exception) {

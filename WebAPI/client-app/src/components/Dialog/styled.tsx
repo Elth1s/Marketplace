@@ -16,9 +16,9 @@ export const DialogStyle = styled(Dialog)(({ theme }) => ({
     },
 }));
 
-export const ReviewDialogStyle = styled(Dialog)(({ theme }) => ({
+export const ReviewQustionDialogStyle = styled(Dialog)(({ theme }) => ({
     "& .MuiDialog-paper": {
-        minWidth: "725px",
+        minWidth: "750px",
         borderRadius: "10px"
     },
 }));

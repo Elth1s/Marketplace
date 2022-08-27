@@ -30,7 +30,7 @@ namespace WebAPI.ViewModels.Request.Orders
         /// <example>email@gmail.com</example>
         public string ConsumerEmail { get; set; }
 
-        public IEnumerable<OrderProductCreate> OrderProductsCreate { get; set; }
+        //public IEnumerable<OrderProductCreate> OrderProducts { get; set; }
     }
 
     public class OrderProductCreate
@@ -79,7 +79,6 @@ namespace WebAPI.ViewModels.Request.Orders
 
             //Consumer Email
             RuleFor(x => x.ConsumerEmail).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName(_validationResources["EmailAddressPropName"]).WithMessage(_validationResources["RequiredMessage"])
                .EmailAddress();
 
         }

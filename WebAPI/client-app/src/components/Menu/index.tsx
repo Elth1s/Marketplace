@@ -33,14 +33,15 @@ interface ISettingsMenuItem {
 
 const MainMenu = () => {
     const { t } = useTranslation()
-    const { /*SetTheme,*/ LogoutUser } = useActions();
-    // const { darkTheme } = useTypedSelector((state) => state.ui);
-    const [darkTheme, setDarkTheme] = useState<boolean>(false);
+    const { SetTheme, LogoutUser } = useActions();
+    const { isDarkTheme } = useTypedSelector((state) => state.ui);
+
+    const { AuthDialogChange } = useActions();
     const { user, isAuth } = useTypedSelector((state) => state.auth)
+
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     const open = Boolean(anchorEl);
-    const [authDialogOpen, setAuthDialogOpen] = useState<boolean>(false);
     const [shopDialogOpen, setShopDialogOpen] = useState<boolean>(false);
 
     const navigate = useNavigate();
@@ -63,18 +64,13 @@ const MainMenu = () => {
         setAnchorEl(null);
     };
 
-    const authDialogClose = () => {
-        setAuthDialogOpen(false);
-    };
-
     const shopDialogClose = () => {
         setShopDialogOpen(false);
     };
 
     const handleThemeChange = () => {
-        // SetTheme(!darkTheme)
-        setDarkTheme(!darkTheme)
-        // localStorage.darkTheme = !darkTheme;
+        SetTheme(!isDarkTheme)
+        localStorage.darkTheme = !isDarkTheme;
     };
 
     const handleLogOut = () => {
@@ -184,7 +180,7 @@ const MainMenu = () => {
                             {option.label}
                         </Typography>
                         {option.switchElement &&
-                            <Switch checked={darkTheme} />
+                            <Switch checked={isDarkTheme} />
                         }
                     </MenuItemStyle>
                 ))}
@@ -198,7 +194,7 @@ const MainMenu = () => {
                             {t('containers.default.header.userMenu.logOut')}
                         </Typography>
                     </MenuItemStyle>
-                    : <MenuItemStyle onClick={() => { handleClose(); setAuthDialogOpen(true); }}>
+                    : <MenuItemStyle onClick={() => { handleClose(); AuthDialogChange(); }}>
                         <IconButton sx={{ mr: 2, width: 24, height: 24, color: "secondary" }}>
                             <Login />
                         </IconButton>
@@ -209,7 +205,7 @@ const MainMenu = () => {
                 }
             </Menu>
             <CreateShopDialog dialogOpen={shopDialogOpen} dialogClose={shopDialogClose} />
-            <AuthDialog dialogOpen={authDialogOpen} dialogClose={authDialogClose} />
+            <AuthDialog />
         </>
     )
 }

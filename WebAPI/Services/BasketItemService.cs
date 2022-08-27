@@ -8,6 +8,7 @@ using WebAPI.Specifications;
 using WebAPI.Specifications.Products;
 using WebAPI.ViewModels.Request.Baskets;
 using WebAPI.ViewModels.Response;
+using WebAPI.ViewModels.Response.Orders;
 
 namespace WebAPI.Services
 {
@@ -38,6 +39,26 @@ namespace WebAPI.Services
             var spec = new BasketItemIncludeFullInfoSpecification(userId);
             var baskets = await _basketItemRepository.ListAsync(spec);
             return _mapper.Map<IEnumerable<BasketResponse>>(baskets);
+        }
+
+        public async Task<IEnumerable<OrderItemResponse>> GetBasketItemsForOrderAsync(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            user.UserNullChecking();
+
+            var spec = new BasketItemIncludeFullInfoSpecification(userId);
+            var baskets = await _basketItemRepository.ListAsync(spec);
+
+            var orderItems = baskets.GroupBy(b => b.Product.Shop);
+
+            var result = orderItems.Select(o => new OrderItemResponse()
+            {
+                ShopName = o.Key.Name,
+                TotalPrice = o.Sum(b => b.Product.Price * b.Count),
+                BasketItems = _mapper.Map<IEnumerable<BasketOrderItemResponse>>(o.ToList())
+            });
+
+            return result;
         }
 
         public async Task CreateAsync(BasketCreateRequest request, string userId)
