@@ -13,11 +13,11 @@
 }
 
 .swiper-slide-visible {
-    border: 2px solid #7E7E7E;
+    border: 1px solid #AEAEAE;
 }
 
 .swiper-slide-thumb-active {
-    border: 2px solid #F45626;
+    border: 1px solid #F45626;
 }
 
 /* .swiper-button-prev:hover,

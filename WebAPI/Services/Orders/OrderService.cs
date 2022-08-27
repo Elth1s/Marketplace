@@ -5,7 +5,6 @@ using DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 using WebAPI.Extensions;
 using WebAPI.Interfaces.Orders;
-using WebAPI.Specifications;
 using WebAPI.Specifications.Orders;
 using WebAPI.ViewModels.Request.Orders;
 using WebAPI.ViewModels.Response.Orders;
@@ -42,13 +41,11 @@ namespace WebAPI.Services.Orders
 
         public async Task CreateAsync(OrderCreateRequest request, string userId)
         {
+            var user = await _userManager.FindByIdAsync(userId);
+            user.UserNullChecking();
+
             var order = _mapper.Map<Order>(request);
-            if (!string.IsNullOrEmpty(userId))
-            {
-                var user = await _userManager.FindByIdAsync(userId);
-                user.UserNullChecking();
-                order.User = user;
-            }
+            order.User = user;
 
             var status = await _orderStatusRepository.GetByIdAsync(OrderStatusId.InProcess);
             status.OrderStatusNullChecking();
@@ -57,25 +54,28 @@ namespace WebAPI.Services.Orders
             await _orderRepository.AddAsync(order);
             await _orderRepository.SaveChangesAsync();
 
-            foreach (var item in request.OrderProductsCreate)
-            {
-                var product = await _productRepository.GetByIdAsync(item.ProductId);
-                product.ProductNullChecking();
 
-                var orderProduct = _mapper.Map<OrderProduct>(item);
-                orderProduct.Price = product.Price;
-                orderProduct.OrderId = order.Id;
 
-                if (!string.IsNullOrEmpty(userId))
-                {
-                    var spec = new BasketItemIncludeFullInfoSpecification(userId, product.Id);
-                    var basketItem = await _basketItemRepository.GetBySpecAsync(spec);
-                    basketItem.BasketItemNullChecking();
-                    await _basketItemRepository.DeleteAsync(basketItem);
-                }
 
-                await _orderProductRepository.AddAsync(orderProduct);
-            }
+            //foreach (var item in request.OrderProductsCreate)
+            //{
+            //    var product = await _productRepository.GetByIdAsync(item.ProductId);
+            //    product.ProductNullChecking();
+
+            //    var orderProduct = _mapper.Map<OrderProduct>(item);
+            //    orderProduct.Price = product.Price;
+            //    orderProduct.OrderId = order.Id;
+
+            //    if (!string.IsNullOrEmpty(userId))
+            //    {
+            //        var spec = new BasketItemIncludeFullInfoSpecification(userId, product.Id);
+            //        var basketItem = await _basketItemRepository.GetBySpecAsync(spec);
+            //        basketItem.BasketItemNullChecking();
+            //        await _basketItemRepository.DeleteAsync(basketItem);
+            //    }
+
+            //    await _orderProductRepository.AddAsync(orderProduct);
+            //}
             await _orderProductRepository.SaveChangesAsync();
         }
 

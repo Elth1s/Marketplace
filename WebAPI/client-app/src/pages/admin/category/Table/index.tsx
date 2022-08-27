@@ -77,7 +77,10 @@ const CategoryTable = () => {
 
     const onDelete = async () => {
         await DeleteCategories(selected);
-        await setPage(1);
+        if (page == 1)
+            getData()
+        else
+            await setPage(1);
     }
 
     const handleClick = (event: React.MouseEvent<unknown>, id: number) => {

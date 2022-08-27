@@ -35,12 +35,11 @@ import { black_eye, eye_off } from "../../../assets/icons";
 import { LoadingButtonStyle } from '../../../components/LoadingButton/styled';
 
 interface Props {
-    dialogClose: any,
     changeDialog: any
 }
 
-const SignUpDialog: FC<Props> = ({ dialogClose, changeDialog }) => {
-    const { RegisterUser } = useActions();
+const SignUpDialog: FC<Props> = ({ changeDialog }) => {
+    const { RegisterUser, AuthDialogChange } = useActions();
     const { executeRecaptcha } = useGoogleReCaptcha();
 
     const navigate = useNavigate();
@@ -59,7 +58,7 @@ const SignUpDialog: FC<Props> = ({ dialogClose, changeDialog }) => {
             const reCaptchaToken = await executeRecaptcha();
             try {
                 await RegisterUser(values, reCaptchaToken);
-                dialogClose();
+                AuthDialogChange();
                 navigate("/");
                 //toast.success('Sign up success!');
             }
@@ -72,7 +71,6 @@ const SignUpDialog: FC<Props> = ({ dialogClose, changeDialog }) => {
                             value.forEach((item) => {
                                 message += `${item} `;
                             });
-                            console.log(toLowerFirstLetter(key))
                             setFieldError(toLowerFirstLetter(key), message);
                         }
                     });
@@ -100,7 +98,7 @@ const SignUpDialog: FC<Props> = ({ dialogClose, changeDialog }) => {
                 </Typography>
                 <IconButton
                     color="inherit"
-                    onClick={dialogClose}
+                    onClick={AuthDialogChange}
                     sx={{
                         position: 'absolute',
                         right: 20,
@@ -194,8 +192,8 @@ const SignUpDialog: FC<Props> = ({ dialogClose, changeDialog }) => {
                                 <Box sx={{ width: "98px", height: "14px", borderBottom: "2px solid #000" }} />
                             </Grid>
                             <Grid item xs={12} display="flex" justifyContent="center" >
-                                <GoogleExternalLogin dialogClose={dialogClose} />
-                                <FacebookExternalLogin dialogClose={dialogClose} />
+                                <GoogleExternalLogin />
+                                <FacebookExternalLogin />
                             </Grid>
                         </Grid>
                     </DialogContent>

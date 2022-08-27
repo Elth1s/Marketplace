@@ -8,7 +8,7 @@ import { FC, useState } from 'react';
 
 import { AccordionStyle, AccordionSummaryStyle, TabsStyle, TabStyle } from './styled';
 
-import { info_45, package_45, shopping_bag_45, truck_45 } from '../../../assets/icons';
+import { info_45, package_45, shopping_bag_45, truck_45 } from '../../../../assets/icons';
 
 interface TabPanelProps {
     children?: React.ReactNode;

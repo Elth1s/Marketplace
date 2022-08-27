@@ -1,18 +1,20 @@
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
-import Grid from "@mui/material/Grid";
-import Box from '@mui/material/Box';
-import Slide from '@mui/material/Slide';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
+import {
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    Grid,
+    Box,
+    Slide,
+    Typography,
+    IconButton,
+    Button,
+    TextField
+} from '@mui/material';
 
 import { TransitionProps } from '@mui/material/transitions';
-import { Close } from '@mui/icons-material';
-import { LoadingButton, Rating } from '@mui/lab';
+import { Close, StarRounded } from '@mui/icons-material';
+import { LoadingButton } from '@mui/lab';
 
 import { forwardRef, useState } from 'react';
 import { Form, FormikProvider, useFormik } from "formik";
@@ -86,7 +88,7 @@ const AddReview = () => {
         onSubmit: onHandleSubmit
     });
 
-    const { errors, touched, isSubmitting, handleSubmit, setFieldError, getFieldProps, resetForm } = formik;
+    const { errors, touched, isSubmitting, handleSubmit, setFieldError, setFieldValue, getFieldProps, resetForm } = formik;
 
     return (
         <>
@@ -134,18 +136,51 @@ const AddReview = () => {
                                 <Grid item container xs={12} sx={{ justifyContent: "space-between", textAlig: "center", mb: "45px" }}>
                                     <Grid item sx={{ textAlign: "center" }}>
                                         <Typography variant="h5" sx={{ mb: "10px" }}>{t('pages.seller.addReview.service')}</Typography>
-                                        <RatingStyle sx={{ fontSize: "30px" }} {...getFieldProps("qualityOfService")} />
+                                        <RatingStyle
+                                            sx={{ fontSize: "30px" }}
+                                            value={formik.values.qualityOfService}
+                                            precision={1}
+                                            icon={<StarRounded sx={{ fontSize: "30px" }} />}
+                                            emptyIcon={<StarRounded sx={{ fontSize: "30px" }} />}
+                                            onChange={(event, newValue: number | null) => {
+                                                if (newValue != null)
+                                                    setFieldValue("qualityOfService", newValue);
+                                            }}
+
+                                        />
                                     </Grid>
                                     <Grid item sx={{ textAlign: "center" }}>
                                         <Typography>{t('pages.seller.addReview.terms')}</Typography>
-                                        <RatingStyle sx={{ fontSize: "30px" }} {...getFieldProps("observanceOfTerms")} />
+                                        <RatingStyle
+                                            sx={{ fontSize: "30px" }}
+                                            value={formik.values.observanceOfTerms}
+                                            precision={0.5}
+                                            icon={<StarRounded sx={{ fontSize: "30px" }} />}
+                                            emptyIcon={<StarRounded sx={{ fontSize: "30px" }} />}
+                                            onChange={(event, newValue: number | null) => {
+                                                if (newValue != null)
+                                                    setFieldValue("observanceOfTerms", newValue);
+                                            }}
+
+                                        />
                                     </Grid>
                                     <Grid item sx={{ textAlign: "center" }}>
                                         <Typography>{t('pages.seller.addReview.information')}</Typography>
-                                        <RatingStyle sx={{ fontSize: "30px" }} {...getFieldProps("informationRelevance")} />
+                                        <RatingStyle
+                                            sx={{ fontSize: "30px" }}
+                                            value={formik.values.informationRelevance}
+                                            precision={0.5}
+                                            icon={<StarRounded sx={{ fontSize: "30px" }} />}
+                                            emptyIcon={<StarRounded sx={{ fontSize: "30px" }} />}
+                                            onChange={(event, newValue: number | null) => {
+                                                if (newValue != null)
+                                                    setFieldValue("informationRelevance", newValue);
+                                            }}
+
+                                        />
                                     </Grid>
                                 </Grid>
-                                <Grid xs={12} sx={{ mb: "25px" }}>
+                                <Grid item xs={12} sx={{ mb: "25px" }}>
                                     <TextField
                                         fullWidth
                                         variant="outlined"
@@ -156,7 +191,7 @@ const AddReview = () => {
                                         {...getFieldProps("fullName")}
                                     />
                                 </Grid>
-                                <Grid xs={12} sx={{ mb: "45px" }}>
+                                <Grid item xs={12} sx={{ mb: "45px" }}>
                                     <TextField
                                         fullWidth
                                         variant="outlined"
@@ -167,7 +202,7 @@ const AddReview = () => {
                                         {...getFieldProps("email")}
                                     />
                                 </Grid>
-                                <Grid xs={12} sx={{ mb: "25px" }}>
+                                <Grid item xs={12} sx={{ mb: "25px" }}>
                                     <TextField
                                         fullWidth
                                         multiline

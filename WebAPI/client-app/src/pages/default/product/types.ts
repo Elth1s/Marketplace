@@ -141,7 +141,9 @@ export interface ProductState {
     product: IProductItem,
     similarProducts: Array<ISimilarProduct>,
     reviews: Array<IReviewItem>,
-    reviewsCount: number
+    reviewsCount: number,
+    questions: Array<IQuestionItem>,
+    questionsCount: number
 }
 
 export interface IProductWithParents {
@@ -151,6 +153,11 @@ export interface IProductWithParents {
 
 export interface IReviewWithCount {
     values: Array<IReviewItem>,
+    count: number,
+}
+
+export interface IQuestionWithCount {
+    values: Array<IQuestionItem>,
     count: number,
 }
 
@@ -182,6 +189,18 @@ export interface GetMoreReviewsAction {
     payload: Array<IReviewItem>
 }
 
+//QuestionAction
+
+export interface GetQuestionsAction {
+    type: QuestionActionTypes.GET_QUESTIONS,
+    payload: IQuestionWithCount
+}
+
+export interface GetMoreQuestionsAction {
+    type: QuestionActionTypes.GET_MORE_QUESTIONS,
+    payload: Array<IQuestionItem>
+}
+
 export type ProductAction = GetProductByUrlSlugAction |
     GetSimilarProductsAction |
     UpdateSelectedProductAction;
@@ -189,6 +208,5 @@ export type ProductAction = GetProductByUrlSlugAction |
 export type ReviewAction = GetReviewsAction |
     GetMoreReviewsAction;
 
-// export type QuestionAction = GetProductByUrlSlugAction |
-//     GetSimilarProductsAction |
-//     UpdateSelectedProductAction;
+export type QuestionAction = GetQuestionsAction |
+    GetMoreQuestionsAction;

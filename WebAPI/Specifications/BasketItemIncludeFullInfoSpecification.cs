@@ -11,6 +11,8 @@ namespace WebAPI.Specifications
             Query.Where(x => x.UserId == userId)
                  .Include(p => p.Product)
                  .ThenInclude(p => p.Images)
+                 .Include(p => p.Product)
+                 .ThenInclude(p => p.Shop)
                  .AsSplitQuery();
         }
         public BasketItemIncludeFullInfoSpecification(string userId, int productId)

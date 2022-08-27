@@ -47,7 +47,8 @@
                     "countries": "Countries",
                     "cities": "Cities",
                     "units": "Units",
-                    "users": "Users"
+                    "users": "Users",
+                    "orderStatuses": "Order statuses"
                 },
                 "table": {
                     "rowsPerPage": "Shows"
@@ -86,6 +87,7 @@
         },
         "pages": {
             "home": {
+                "allCategories": "All categories",
                 "novelty": {
                     "title": "Novelty",
                     "button": "All novelties"
@@ -147,7 +149,7 @@
                     "allAboutTheProduct": "All about the product",
                     "characteristics": "Characteristics",
                     "reviews": "Reviews",
-                    "question": "Question"
+                    "questions": "Question"
                 },
                 "seller": "Seller",
                 "sellerRating": "Seller rating",
@@ -161,6 +163,8 @@
                 "reviews": "Reviews",
                 "addReview": "Add review",
                 "moreReviews": "More reviews",
+                "askQuestion": "Ask a question",
+                "moreQuestions": "More qustions",
                 "similarProducts": "Similar products"
             },
             "seller": {
@@ -206,6 +210,21 @@
                     "review": "Review",
                     "dialogActions": "Send"
                 }
+            },
+            "ordering": {
+                "title": "Оформлення замовлення",
+                "contactInfo": "Контактні дані",
+                "city": "Ваше місто",
+                "inGeneral": "Загалом",
+                "countProductsOne": "товар",
+                "countProductsLessFive": "товари",
+                "countProducts": "товарів",
+                "amountPayable": "Разом до оплати",
+                "checkout": "Оформити замовлення",
+                "order": "Замовлення",
+                "sellerProducts": "Товари продавця",
+                "delivery": "Спосіб доставки",
+                "payment": "Оплата"
             }
         },
         "components": {
@@ -233,6 +252,13 @@
                 "exceptions": {
                     "urlSlugError": "Something went wrong",
                     "productRatingWarning": "Set your overview"
+                }
+            },
+            "questionDialog": {
+                "title": "Ask a question",
+                "button": "Send",
+                "exceptions": {
+                    "urlSlugError": "Something went wrong"
                 }
             }
         },

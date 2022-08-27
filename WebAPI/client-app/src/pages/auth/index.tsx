@@ -9,13 +9,14 @@ import SignInDialog from './SignInDialog/SignInDialog';
 import SignUpDialog from './SignUpDialog/SignUpDialog';
 
 import { DialogStyle } from '../../components/Dialog/styled';
+import { useActions } from '../../hooks/useActions';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
 
-interface Props {
-    dialogOpen: boolean,
-    dialogClose: any
-}
 
-const AuthDialog: FC<Props> = ({ dialogOpen, dialogClose }) => {
+const AuthDialog = () => {
+    const { AuthDialogChange } = useActions();
+    const { isAuthDialogOpen } = useTypedSelector(state => state.auth)
+
     const [isSignInDialog, setIsSignInDialog] = useState<boolean>(true)
     const [forgotPasswordDialogOpen, setForgotPasswordDialogOpen] = useState<boolean>(false);
 
@@ -30,14 +31,14 @@ const AuthDialog: FC<Props> = ({ dialogOpen, dialogClose }) => {
     return (
         <>
             <DialogStyle
-                open={dialogOpen}
-                onClose={dialogClose}
+                open={isAuthDialogOpen}
+                onClose={AuthDialogChange}
                 aria-describedby="alert-dialog-slide-description"
             >
                 <GoogleReCaptchaProvider reCaptchaKey="6LeVndYfAAAAAKY8A3dLGIL06JS5KBAeAqpIzlwX">
                     {isSignInDialog
-                        ? <SignInDialog dialogClose={dialogClose} changeDialog={changeDialog} forgotPasswordOpen={() => { setForgotPasswordDialogOpen(true) }} />
-                        : <SignUpDialog dialogClose={dialogClose} changeDialog={changeDialog} />}
+                        ? <SignInDialog changeDialog={changeDialog} forgotPasswordOpen={() => { setForgotPasswordDialogOpen(true) }} />
+                        : <SignUpDialog changeDialog={changeDialog} />}
                 </GoogleReCaptchaProvider>
             </DialogStyle>
             <ForgotPasswordDialog dialogOpen={forgotPasswordDialogOpen} dialogClose={forgotPasswordDialogClose} />

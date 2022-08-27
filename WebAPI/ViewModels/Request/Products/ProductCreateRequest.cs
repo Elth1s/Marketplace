@@ -47,6 +47,10 @@ namespace WebAPI.ViewModels.Request.Products
         /// Product filters value
         /// </summary>
         public IEnumerable<FilterValueProductCreate> FiltersValue { get; set; }
+        /// <summary>
+        /// Product filters value
+        /// </summary>
+        public IEnumerable<ImageProductCreate> Images { get; set; }
     }
 
     /// <summary>
@@ -72,6 +76,16 @@ namespace WebAPI.ViewModels.Request.Products
     }
 
     /// <summary>
+    /// FilterValue class to create a product 
+    /// </summary>
+    public class ImageProductCreate
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public int Priority { get; set; }
+    }
+
+    /// <summary>
     /// Class for <seealso cref="ProductCreateRequest" /> validation
     /// </summary>
     public class ProductCreateRequestValidator : AbstractValidator<ProductCreateRequest>
@@ -84,7 +98,7 @@ namespace WebAPI.ViewModels.Request.Products
             //Name
             RuleFor(x => x.Name).Cascade(CascadeMode.Stop)
                .NotEmpty().WithName(_validationResources["NamePropName"])
-               .Length(2, 60);
+               .Length(2, 120);
 
             //Description
             RuleFor(x => x.Description).Cascade(CascadeMode.Stop)

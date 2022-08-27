@@ -150,20 +150,25 @@ namespace WebAPI.Extensions
             var supportedCultures = new[]
             {
                  new CultureInfo("en-US"),
-                 new CultureInfo("uk-UA"),
+                 new CultureInfo("uk"),
             };
 
             var options = new RequestLocalizationOptions()
             {
-                DefaultRequestCulture = new RequestCulture(culture: "uk-UA", uiCulture: "uk-UA"),
+                DefaultRequestCulture = new RequestCulture(culture: "uk", uiCulture: "uk"),
                 SupportedCultures = supportedCultures,
                 SupportedUICultures = supportedCultures,
                 ApplyCurrentCultureToResponseHeaders = true
             };
+
+            RequestCultureProvider requestProvider = options.RequestCultureProviders.OfType<CookieRequestCultureProvider>().First();
+            options.RequestCultureProviders.Remove(requestProvider);
+
             var provider = new RouteDataRequestCultureProvider() { Options = options };
 
             options.RequestCultureProviders.Insert(
                 0, provider);
+
 
             services.AddSingleton(options);
         }

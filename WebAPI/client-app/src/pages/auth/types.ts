@@ -1,4 +1,5 @@
 export enum AuthActionTypes {
+    AUTH_DIALOG_CHANGE = "AUTH_DIALOG_CHANGE",
     AUTH_SUCCESS = "AUTH_SUCCESS",
     AUTH_LOGOUT = "AUTH_LOGOUT"
 }
@@ -17,6 +18,7 @@ export interface IAuthResponse {
 }
 
 export interface AuthState {
+    isAuthDialogOpen: boolean,
     user: IUser,
     isAuth: boolean,
 }
@@ -37,6 +39,10 @@ export interface IExternalLoginModel {
     token: string
 };
 
+export interface AuthDialogChangeAction {
+    type: AuthActionTypes.AUTH_DIALOG_CHANGE
+}
+
 export interface AuthSuccessAction {
     type: AuthActionTypes.AUTH_SUCCESS,
     payload: IUser
@@ -46,4 +52,4 @@ export interface AuthLogOut {
     type: AuthActionTypes.AUTH_LOGOUT
 }
 
-export type AuthAction = AuthSuccessAction | AuthLogOut;
+export type AuthAction = AuthDialogChangeAction | AuthSuccessAction | AuthLogOut;

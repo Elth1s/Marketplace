@@ -7,7 +7,7 @@ namespace WebAPI.Helpers.Localization
     {
         public void Apply(ApplicationModel application)
         {
-            var culturePrefix = new AttributeRouteModel(new RouteAttribute("{culture?}"));
+            var culturePrefix = new AttributeRouteModel(new RouteAttribute("{culture}"));
 
             foreach (var controller in application.Controllers)
             {

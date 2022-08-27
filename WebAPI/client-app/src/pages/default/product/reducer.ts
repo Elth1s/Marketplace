@@ -1,4 +1,4 @@
-import { ProductAction, ProductActionTypes, ProductState, ReviewAction, ReviewActionTypes } from "./types";
+import { ProductAction, ProductActionTypes, ProductState, QuestionAction, QuestionActionTypes, ReviewAction, ReviewActionTypes } from "./types";
 
 const initialState: ProductState = {
     parents: [],
@@ -14,10 +14,12 @@ const initialState: ProductState = {
     },
     similarProducts: [],
     reviews: [],
-    reviewsCount: 0
+    reviewsCount: 0,
+    questions: [],
+    questionsCount: 0
 }
 
-export const productReducer = (state = initialState, action: ProductAction | ReviewAction): ProductState => {
+export const productReducer = (state = initialState, action: ProductAction | ReviewAction | QuestionAction): ProductState => {
     switch (action.type) {
         case ProductActionTypes.GET_PRODUCT_BY_URLSLUG:
             return {
@@ -48,6 +50,17 @@ export const productReducer = (state = initialState, action: ProductAction | Rev
             return {
                 ...state,
                 reviews: [...state.reviews, ...action.payload]
+            }
+        case QuestionActionTypes.GET_QUESTIONS:
+            return {
+                ...state,
+                questions: action.payload.values,
+                questionsCount: action.payload.count
+            }
+        case QuestionActionTypes.GET_MORE_QUESTIONS:
+            return {
+                ...state,
+                questions: [...state.questions, ...action.payload]
             }
         default:
             return state;

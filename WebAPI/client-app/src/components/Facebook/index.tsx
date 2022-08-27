@@ -10,18 +10,14 @@ import { facebook } from "../../assets/icons";
 import { FC } from 'react';
 const appId = "487664976465559";
 
-interface Props {
-    dialogClose: any
-}
-
-const FacebookExternalLogin: FC<Props> = ({ dialogClose }) => {
-    const { FacebookExternalLogin } = useActions();
+const FacebookExternalLogin = () => {
+    const { FacebookExternalLogin, AuthDialogChange } = useActions();
     const navigate = useNavigate();
 
     const responseFacebook = async (res: ReactFacebookLoginInfo) => {
         try {
             await FacebookExternalLogin({ token: res.accessToken });
-            dialogClose();
+            AuthDialogChange();
             navigate("/");
 
         } catch (exception) {

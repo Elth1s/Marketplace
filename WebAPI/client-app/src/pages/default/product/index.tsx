@@ -19,6 +19,7 @@ import BreadcrumbsComponent from "../../../components/BreadcrumbsComponent";
 
 import ProductMainPage from "./ProductPage/ProductMainPage";
 import ProductReviewsPage from "./ProductPage/ProductReviewsPage";
+import ProductQuestionsPage from "./ProductPage/ProductQuestionsPage";
 import ProductCharacteristicsPage from "./ProductPage/ProductCharacteristicsPage";
 import AddReview from "./AddReview";
 
@@ -33,7 +34,7 @@ const Product = () => {
         { label: `${t("pages.product.menu.allAboutTheProduct")}` },
         { label: `${t("pages.product.menu.characteristics")}` },
         { label: `${t("pages.product.menu.reviews")}` },
-        { label: `${t("pages.product.menu.question")}` },
+        { label: `${t("pages.product.menu.questions")}` },
     ]
 
     const { GetProductByUrlSlug, GetSimilarProducts, AddProductInCart, GetBasketItems, GetReviews } = useActions();
@@ -42,8 +43,6 @@ const Product = () => {
     let { urlSlug, menu } = useParams();
 
     const [valueTab, setValueTab] = useState<string>("0");
-    const [page, setPage] = useState<number>(1);
-    const [rowsPerPage, setRowsPerPage] = useState<number>(4);
 
     const navigate = useNavigate();
 
@@ -86,46 +85,32 @@ const Product = () => {
                     {dataTabs.map((item, index) => (
                         <Tab key={index} label={item.label} value={index.toString()} sx={{ fontSize: "20px", padding: "0px", minWidth: "auto", textTransform: "none", marginRight: "90px", "&& .MuiTouchRipple-child": { backgroundColor: "transparent" } }} />
                     ))}
-                </TabList >
-
-                <Typography variant="h1" sx={{ mt: "30px", mb: "15px" }}>{valueTab === "1" && `${t("pages.product.menu.characteristics")}`}{valueTab === "2" && `${t("pages.product.menu.reviews")}`} {product.name}</Typography>
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Typography variant="h4" fontWeight="bold" display="inline" sx={{ marginRight: "70px" }}>{t("pages.product.seller")}: <Typography fontWeight="normal" display="inline" sx={{ fontSize: "20px" }}>{product.shopName}</Typography></Typography>
-                    <Typography variant="h4" fontWeight="bold">{t("pages.product.sellerRating")}: </Typography>
-                    <RatingStyle
-                        sx={{ ml: 1, fontSize: "30px", mr: "40px" }}
-                        value={4.5}
-                        precision={0.5}
-                        readOnly
-                        icon={<StarRounded sx={{ fontSize: "30px" }} />}
-                        emptyIcon={<StarRounded sx={{ fontSize: "30px" }} />}
-                    />
-                    {valueTab === "2" && <AddReview
-                        getData={async () => {
-                            if (urlSlug) {
-                                await GetReviews(urlSlug, 1, rowsPerPage)
-                                setPage(1);
-                            }
-                        }} />}
-                </Box>
+                </TabList>
 
                 <TabPanel sx={{ p: "0px" }} value="0" >
-                    <ProductMainPage addInCart={addInCart}
-                        moveToReview={() => {
-                            window.scrollTo({
-                                top: 0,
-                                behavior: 'smooth'
-                            });
-                            setValueTab("2");
-                            if (urlSlug)
-                                navigate(`/product/${urlSlug}/2`)
-                        }} />
+                    <ProductMainPage
+                        addInCart={addInCart}
+                        moveToReview={
+                            () => {
+                                window.scrollTo({
+                                    top: 0,
+                                    behavior: 'smooth'
+                                });
+                                setValueTab("2");
+                                if (urlSlug)
+                                    navigate(`/product/${urlSlug}/2`)
+                            }
+                        }
+                    />
                 </TabPanel>
                 <TabPanel sx={{ p: "0px" }} value="1">
                     <ProductCharacteristicsPage addInCart={addInCart} />
                 </TabPanel>
                 <TabPanel sx={{ p: "0px" }} value="2">
-                    <ProductReviewsPage addInCart={addInCart} page={page} rowsPerPage={rowsPerPage} />
+                    <ProductReviewsPage addInCart={addInCart} />
+                </TabPanel>
+                <TabPanel sx={{ p: "0px" }} value="3">
+                    <ProductQuestionsPage addInCart={addInCart} />
                 </TabPanel>
             </TabContext>
 
