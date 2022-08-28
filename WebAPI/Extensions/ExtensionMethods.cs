@@ -496,5 +496,19 @@ namespace WebAPI.Extensions
                     HttpStatusCode.NotFound);
             }
         }
+
+
+        public static void SaleNullChecking(this Sale sale)
+        {
+            if (sale == null)
+            {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
+                throw new AppException(
+                    factory["SaleNotFound"],
+                    HttpStatusCode.NotFound);
+            }
+        }
+
+
     }
 }

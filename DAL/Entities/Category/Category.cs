@@ -17,5 +17,6 @@ namespace DAL.Entities
         public ICollection<Product> Products { get; set; }
         public ICollection<FilterValue> FilterValues { get; set; }
         public ICollection<CategoryTranslation> CategoryTranslations { get; set; }
+        public ICollection<Sale> Sales { get; set; }
     }
 }
