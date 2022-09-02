@@ -17,6 +17,7 @@ export const white_plus = "/assets/icons/white-plus.png";
 export const basket_empty = "/assets/icons/basket-empty.png"
 
 export const upload_cloud = "/assets/icons/upload-cloud.png"
+export const green_upload_cloud = "/assets/icons/green-upload-cloud.png"
 
 export const reply = "/assets/icons/reply.png"
 

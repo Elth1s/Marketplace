@@ -1,24 +1,31 @@
 import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
 
+import * as Yup from 'yup';
 import { FC, useState } from "react";
-import { useFormik } from "formik";
+import { useTranslation } from 'react-i18next';
+import { Form, FormikProvider, useFormik } from "formik";
+
+import { AdminDialogButton } from '../../../../components/Button/style';
+import AutocompleteComponent from '../../../../components/Autocomplete';
+import TextFieldComponent from '../../../../components/TextField';
+import DialogTitleWithButton from '../../../../components/Dialog/DialogTitleWithButton';
+import IconButtonPlus from '../../../../components/Button/IconButtonPlus';
 
 import { useActions } from "../../../../hooks/useActions";
-import { useTypedSelector } from "../../../../hooks/useTypedSelector";
+import { useTypedSelector } from '../../../../hooks/useTypedSelector';
 
-import { validationFields } from "../validation";
-import { ICharacteristicValue } from "../types";
 import { CreateProps, ServerError } from '../../../../store/types';
 
-import DialogComponent from '../../../../components/Dialog';
-import TextFieldComponent from "../../../../components/TextField";
 import { toLowerFirstLetter } from '../../../../http_comon';
-import AutocompleteComponent from '../../../../components/Autocomplete';
-import { IconButton } from '@mui/material';
-import { white_plus } from '../../../../assets/icons';
+
+import { ICharacteristicValue } from "../types";
 
 const CharacteristicValueCreate: FC<CreateProps> = ({ afterCreate }) => {
+    const { t } = useTranslation();
+
     const [open, setOpen] = useState(false);
 
     const { CreateCharacteristicValue, GetCharacteristicNames } = useActions();
@@ -37,13 +44,18 @@ const CharacteristicValueCreate: FC<CreateProps> = ({ afterCreate }) => {
 
     const handleClickClose = () => {
         setOpen(false);
+        resetForm();
     };
+
+    const validationFields = Yup.object().shape({
+        value: Yup.string().min(1).max(30).required().label(t('validationProps.value')),
+        characteristicNameId: Yup.number().required().label(t('validationProps.value')),
+    });
 
     const onHandleSubmit = async (values: ICharacteristicValue) => {
         try {
             await CreateCharacteristicValue(values);
             afterCreate();
-            resetForm();
             handleClickClose();
         } catch (ex) {
             const serverErrors = ex as ServerError;
@@ -69,58 +81,72 @@ const CharacteristicValueCreate: FC<CreateProps> = ({ afterCreate }) => {
     const { errors, touched, isSubmitting, handleSubmit, setFieldError, getFieldProps, resetForm, setFieldValue } = formik;
 
     return (
-        <DialogComponent
-            open={open}
-            handleClickClose={handleClickClose}
-            button={
-                <IconButton
-                    sx={{ borderRadius: '12px', background: "#F45626", "&:hover": { background: "#CB2525" }, "&& .MuiTouchRipple-child": { backgroundColor: "transparent" } }}
-                    size="large"
-                    color="inherit"
-                    onClick={handleClickOpen}
-                >
-                    <img
-                        style={{ width: "30px" }}
-                        src={white_plus}
-                        alt="icon"
-                    />
-                </IconButton>
-            }
-
-            formik={formik}
-            isSubmitting={isSubmitting}
-            handleSubmit={handleSubmit}
-
-            dialogTitle="Create characteristic value"
-            dialogBtnConfirm="Create"
-
-            dialogContent={
-                <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                        <TextFieldComponent
-                            type="text"
-                            label="Value"
-                            error={errors.value}
-                            touched={touched.value}
-                            getFieldProps={{ ...getFieldProps('value') }}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <AutocompleteComponent
-                            label="Characteristic name"
-                            name="characteristicNameId"
-                            error={errors.characteristicNameId}
-                            touched={touched.characteristicNameId}
-                            options={characteristicNames}
-                            getOptionLabel={(option) => option.name}
-                            isOptionEqualToValue={(option, value) => option?.id === value.id}
-                            defaultValue={undefined}
-                            onChange={(e, value) => { setFieldValue("characteristicNameId", value?.id) }}
-                        />
-                    </Grid>
-                </Grid>
-            }
-        />
+        <>
+            <IconButtonPlus onClick={handleClickOpen} />
+            <Dialog
+                open={open}
+                sx={{
+                    "& .MuiDialog-paper": {
+                        maxWidth: "none",
+                        width: "980px",
+                        borderRadius: "10px",
+                    }
+                }}
+            >
+                <DialogTitleWithButton
+                    title={t('pages.seller.characteristicValue.createTitle')}
+                    onClick={handleClickClose}
+                />
+                <FormikProvider value={formik} >
+                    <Form onSubmit={handleSubmit}>
+                        <DialogContent sx={{ padding: "10px 40px 45px" }}>
+                            <Grid container spacing={5.25}>
+                                <Grid item xs={12}>
+                                    <TextFieldComponent
+                                        type="text"
+                                        label={t('validationProps.value')}
+                                        error={errors.value}
+                                        touched={touched.value}
+                                        getFieldProps={{ ...getFieldProps('value') }}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <AutocompleteComponent
+                                        label={t('validationProps.characteristicName')}
+                                        name="characteristicNameId"
+                                        error={errors.characteristicNameId}
+                                        touched={touched.characteristicNameId}
+                                        options={characteristicNames}
+                                        getOptionLabel={(option) => option.name}
+                                        isOptionEqualToValue={(option, value) => option?.id === value.id}
+                                        defaultValue={undefined}
+                                        onChange={(e, value) => { setFieldValue("characteristicNameId", value?.id) }}
+                                    />
+                                </Grid>
+                            </Grid>
+                        </DialogContent>
+                        <DialogActions sx={{ padding: "0 40px 45px" }}>
+                            <AdminDialogButton
+                                type="submit"
+                                variant="outlined"
+                                color="primary"
+                                onClick={handleClickClose}
+                            >
+                                {t('pages.seller.main.btnСancel')}
+                            </AdminDialogButton>
+                            <AdminDialogButton
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                                disabled={isSubmitting}
+                            >
+                                {t('pages.seller.main.btnCreate')}
+                            </AdminDialogButton>
+                        </DialogActions>
+                    </Form>
+                </FormikProvider>
+            </Dialog>
+        </>
     )
 }
 
