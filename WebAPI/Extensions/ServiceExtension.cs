@@ -141,6 +141,8 @@ namespace WebAPI.Extensions
 
             services.AddScoped<PhoneNumberManager>();
 
+            services.AddScoped<ISaleService, SaleService>();
+
             //reCaptcha
             services.AddTransient<IRecaptchaService, RecaptchaService>();
 

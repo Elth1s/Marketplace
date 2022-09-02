@@ -53,6 +53,7 @@ namespace DAL.Data
         public DbSet<ReviewReply> ReviewReplies { get; set; }
         public DbSet<ReviewImage> ReviewImages { get; set; }
 
+        public DbSet<Sale> Sales { get; set; }
         public DbSet<Language> Languages { get; set; }
         public DbSet<CountryTranslation> CountryTranslations { get; set; }
         public DbSet<CityTranslation> CityTranslations { get; set; }

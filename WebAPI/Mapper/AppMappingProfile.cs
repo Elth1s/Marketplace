@@ -506,6 +506,12 @@ namespace WebAPI.Mapper
                     .ForMember(r => r.Name, opt => opt.MapFrom(
                         vm => Path.Combine(ImagePath.RequestQuestionsImagePath, vm.Name)));
             #endregion
+
+            #region Sale
+            //Question
+            CreateMap<SaleRequest, Question>();
+            CreateMap<SaleResponse, Question>();
+            #endregion
         }
     }
 }

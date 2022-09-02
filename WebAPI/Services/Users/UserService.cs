@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DAL.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using System.Drawing.Imaging;
 using WebAPI.Constants;
@@ -157,13 +158,13 @@ namespace WebAPI.Services.Users
 
         public async Task<AdminSearchResponse<UserResponse>> SearchUsersAsync(AdminSearchRequest request)
         {
-            var count = _userManager.UserSearch(request.Name, request.IsAscOrder, request.OrderBy).Count();
-            var users = _userManager.UserSearch(
+            var count = await _userManager.UserSearch(request.Name, request.IsAscOrder, request.OrderBy).CountAsync();
+            var users = await _userManager.UserSearch(
                 request.Name,
                 request.IsAscOrder,
                 request.OrderBy,
                 (request.Page - 1) * request.RowsPerPage,
-                request.RowsPerPage).ToList();
+                request.RowsPerPage).ToListAsync();
 
             var mappedUsers = _mapper.Map<IEnumerable<UserResponse>>(users);
             var response = new AdminSearchResponse<UserResponse>() { Count = count, Values = mappedUsers };
