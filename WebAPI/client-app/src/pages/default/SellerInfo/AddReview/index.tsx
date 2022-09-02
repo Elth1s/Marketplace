@@ -16,14 +16,20 @@ import { TransitionProps } from '@mui/material/transitions';
 import { Close, StarRounded } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 
-import { forwardRef, useState } from 'react';
+import { FC, forwardRef, useState } from 'react';
 import { Form, FormikProvider, useFormik } from "formik";
 import { useTranslation } from 'react-i18next';
 
 import { ServerError } from '../../../../store/types';
 import { RatingStyle } from '../../../../components/Rating/styled';
 
-// import { validationFields } from '../validation';
+import { shopReviewValidationFields } from '../validation';
+import { IShopReview } from '../types';
+import { useParams } from 'react-router-dom';
+import { useActions } from '../../../../hooks/useActions';
+import { useTypedSelector } from '../../../../hooks/useTypedSelector';
+import { ToastError, ToastWarning } from '../../../../components/ToastComponent';
+import { toast } from 'react-toastify';
 
 const Transition = forwardRef(function Transition(
     props: TransitionProps & {
@@ -34,26 +40,27 @@ const Transition = forwardRef(function Transition(
     return <Slide direction="left" ref={ref} {...props} />;
 });
 
-interface IReview {
-    fullName: string,
-    email: string,
-    qualityOfService: number,
-    observanceOfTerms: number,
-    informationRelevance: number,
-    review: string,
+interface Props {
+    getData: any
 }
 
-const AddReview = () => {
+const AddShopReview: FC<Props> = ({ getData }) => {
     const { t } = useTranslation();
     const [open, setOpen] = useState(false);
 
-    const item: IReview = {
+    const { AddShopReview } = useActions();
+    const { user } = useTypedSelector(state => state.auth)
+
+    let { shopId } = useParams();
+
+    const item: IShopReview = {
         fullName: "",
-        email: "",
-        qualityOfService: 0,
-        observanceOfTerms: 0,
-        informationRelevance: 0,
-        review: "",
+        email: user.isEmailExist ? user.emailOrPhone : "",
+        serviceQualityRating: 0,
+        timelinessRating: 0,
+        informationRelevanceRating: 0,
+        comment: "",
+        shopId: 0
     };
 
     const handleClickOpen = () => {
@@ -65,8 +72,21 @@ const AddReview = () => {
         resetForm();
     };
 
-    const onHandleSubmit = async (values: IReview) => {
+    const onHandleSubmit = async (values: IShopReview) => {
         try {
+            if (!shopId) {
+                toast(<ToastError title={t("toastTitles.error")} message={t("pages.seller.addReview.exceptions.shopIdError")} />);
+                return;
+            }
+
+            if (values.timelinessRating == 0 || values.serviceQualityRating == 0 || values.informationRelevanceRating == 0) {
+                toast(<ToastWarning title={t("toastTitles.warning")} message={t("pages.seller.addReview.exceptions.RatingWarning")} />);
+                return;
+            }
+            values.shopId = +shopId;
+
+            await AddShopReview(values);
+            getData();
             handleClickClose();
         } catch (ex) {
             const serverErrors = ex as ServerError;
@@ -84,7 +104,7 @@ const AddReview = () => {
     }
     const formik = useFormik({
         initialValues: item,
-        //  validationSchema: validationFields,
+        validationSchema: shopReviewValidationFields,
         onSubmit: onHandleSubmit
     });
 
@@ -138,13 +158,13 @@ const AddReview = () => {
                                         <Typography variant="h5" sx={{ mb: "10px" }}>{t('pages.seller.addReview.service')}</Typography>
                                         <RatingStyle
                                             sx={{ fontSize: "30px" }}
-                                            value={formik.values.qualityOfService}
+                                            value={formik.values.serviceQualityRating}
                                             precision={1}
                                             icon={<StarRounded sx={{ fontSize: "30px" }} />}
                                             emptyIcon={<StarRounded sx={{ fontSize: "30px" }} />}
                                             onChange={(event, newValue: number | null) => {
                                                 if (newValue != null)
-                                                    setFieldValue("qualityOfService", newValue);
+                                                    setFieldValue("serviceQualityRating", newValue);
                                             }}
 
                                         />
@@ -153,13 +173,13 @@ const AddReview = () => {
                                         <Typography>{t('pages.seller.addReview.terms')}</Typography>
                                         <RatingStyle
                                             sx={{ fontSize: "30px" }}
-                                            value={formik.values.observanceOfTerms}
-                                            precision={0.5}
+                                            value={formik.values.timelinessRating}
+                                            precision={1}
                                             icon={<StarRounded sx={{ fontSize: "30px" }} />}
                                             emptyIcon={<StarRounded sx={{ fontSize: "30px" }} />}
                                             onChange={(event, newValue: number | null) => {
                                                 if (newValue != null)
-                                                    setFieldValue("observanceOfTerms", newValue);
+                                                    setFieldValue("timelinessRating", newValue);
                                             }}
 
                                         />
@@ -168,13 +188,13 @@ const AddReview = () => {
                                         <Typography>{t('pages.seller.addReview.information')}</Typography>
                                         <RatingStyle
                                             sx={{ fontSize: "30px" }}
-                                            value={formik.values.informationRelevance}
-                                            precision={0.5}
+                                            value={formik.values.informationRelevanceRating}
+                                            precision={1}
                                             icon={<StarRounded sx={{ fontSize: "30px" }} />}
                                             emptyIcon={<StarRounded sx={{ fontSize: "30px" }} />}
                                             onChange={(event, newValue: number | null) => {
                                                 if (newValue != null)
-                                                    setFieldValue("informationRelevance", newValue);
+                                                    setFieldValue("informationRelevanceRating", newValue);
                                             }}
 
                                         />
@@ -193,6 +213,7 @@ const AddReview = () => {
                                 </Grid>
                                 <Grid item xs={12} sx={{ mb: "45px" }}>
                                     <TextField
+                                        disabled={user.isEmailExist}
                                         fullWidth
                                         variant="outlined"
                                         type="email"
@@ -209,10 +230,10 @@ const AddReview = () => {
                                         rows={5}
                                         variant="outlined"
                                         type="text"
-                                        label={t('pages.seller.addReview.review')}
-                                        error={Boolean(touched.review && errors.review)}
-                                        helperText={touched.review && errors.review}
-                                        {...getFieldProps("review")}
+                                        label={t('pages.seller.addReview.comment')}
+                                        error={Boolean(touched.comment && errors.comment)}
+                                        helperText={touched.comment && errors.comment}
+                                        {...getFieldProps("comment")}
                                     />
                                 </Grid>
                             </Grid>
@@ -240,4 +261,4 @@ const AddReview = () => {
     )
 }
 
-export default AddReview;
+export default AddShopReview;

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DAL;
+using DAL.Constants;
 using DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 using WebAPI.Extensions;
@@ -47,6 +48,7 @@ namespace WebAPI.Services.Products
             _shopRepository = shopRepository;
             _shopRepository = shopRepository;
             _productStatusRepository = productStatusRepository;
+            _productImageRepository = productImageRepository;
             _categoryRepository = categoryRepository;
             _filterValueRepository = filterValueRepository;
             _filterValueProductRepository = filterValueProductRepository;
@@ -207,18 +209,10 @@ namespace WebAPI.Services.Products
             var product = await _productRepository.GetByIdAsync(id);
             product.ProductNullChecking();
 
-            //var specProductImage = new ProductImageGetByProductSpecification(product.Id);
-            //var productImages = await _productImageRepository.ListAsync(specProductImage);
+            product.IsDeleted = true;
+            product.StatusId = ProductStatusId.NotAvailable;
 
-            //if (productImages != null)
-            //{
-            //    foreach (ProductImage productImage in productImages)
-            //    {
-            //        await _productImageService.DeleteAsync(productImage.Id);
-            //    }
-            //}
-
-            await _productRepository.DeleteAsync(product);
+            await _productRepository.UpdateAsync(product);
             await _productRepository.SaveChangesAsync();
         }
 
@@ -254,7 +248,10 @@ namespace WebAPI.Services.Products
             {
                 var product = await _productRepository.GetByIdAsync(item);
 
-                await _productRepository.DeleteAsync(product);
+                product.IsDeleted = true;
+                product.StatusId = ProductStatusId.NotAvailable;
+
+                await _productRepository.UpdateAsync(product);
             }
             await _productRepository.SaveChangesAsync();
         }

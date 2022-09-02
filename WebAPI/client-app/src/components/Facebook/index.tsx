@@ -8,7 +8,6 @@ import { ServerError } from '../../store/types';
 
 import { facebook } from "../../assets/icons";
 import { FC } from 'react';
-const appId = "487664976465559";
 
 const FacebookExternalLogin = () => {
     const { FacebookExternalLogin, AuthDialogChange } = useActions();
@@ -27,7 +26,7 @@ const FacebookExternalLogin = () => {
 
     return (
         <FacebookLogin
-            appId={appId}
+            appId={process.env.REACT_APP_FACEBOOK_APP_ID as string}
             callback={responseFacebook}
             render={renderProps => (
                 <AuthAvatar onClick={renderProps.onClick} sx={{ cursor: "pointer", marginLeft: "40px" }} src={facebook} ></AuthAvatar>

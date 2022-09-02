@@ -345,6 +345,39 @@ namespace WebAPI.Extensions
         #endregion
 
         #region Order
+
+        //Delivery type
+        public static void DeliveryTypeNullChecking(this DeliveryType deliveryType)
+        {
+            if (deliveryType == null)
+            {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
+                throw new AppException(
+                    factory["DeliveryTypeNotFound"],
+                    HttpStatusCode.NotFound);
+            }
+        }
+        public static void DeliveryTypeWithEnglishNameChecking(this DeliveryType deliveryType, string propName)
+        {
+            if (deliveryType != null)
+            {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
+                throw new AppValidationException(propName,
+                   factory["DeliveryTypeWithEnglishNameExist"]);
+            }
+        }
+
+        public static void DeliveryTypeWithUkrainianNameChecking(this DeliveryType deliveryType, string propName)
+        {
+            if (deliveryType != null)
+            {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
+                throw new AppValidationException(propName,
+                   factory["DeliveryTypeWithUkrainianNameExist"]);
+            }
+        }
+
+        //Order
         public static void OrderNullChecking(this Order order)
         {
             if (order == null)
@@ -355,6 +388,8 @@ namespace WebAPI.Extensions
                     HttpStatusCode.NotFound);
             }
         }
+
+        //Order status
         public static void OrderStatusNullChecking(this OrderStatus orderStatus)
         {
             if (orderStatus == null)
@@ -375,6 +410,7 @@ namespace WebAPI.Extensions
                    factory["OrderStatusWithEnglishNameExist"]);
             }
         }
+
         public static void OrderStatusWithUkrainianNameChecking(this OrderStatus orderStatus, string propName)
         {
             if (orderStatus != null)

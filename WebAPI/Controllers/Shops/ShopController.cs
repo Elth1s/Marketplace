@@ -4,12 +4,14 @@ using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Security.Claims;
 using WebAPI.Helpers;
-using WebAPI.Interfaces;
+using WebAPI.Interfaces.Shops;
 using WebAPI.ViewModels.Request;
+using WebAPI.ViewModels.Request.Shops;
 using WebAPI.ViewModels.Response;
+using WebAPI.ViewModels.Response.Shops;
 using WebAPI.ViewModels.Response.Users;
 
-namespace WebAPI.Controllers
+namespace WebAPI.Controllers.Shops
 {
     /// <summary>
     /// The shop controller class
@@ -72,11 +74,8 @@ namespace WebAPI.Controllers
         /// </summary>
         /// /// <param name="shopId">Shop identifier</param>
         /// <response code="200">Getting shops completed successfully</response>
-        /// <response code="403">You don't have permission</response>
         /// <response code="500">An internal error has occurred</response>
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ShopInfoFromProductResponse))]
-        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
-        [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [HttpGet("ShopInfoFromProduct/{shopId}")]
         public async Task<IActionResult> ShopInfoFromProduct(int shopId)
@@ -84,6 +83,23 @@ namespace WebAPI.Controllers
             var result = await _shopService.ShopInfoFromProductAsync(shopId);
             return Ok(result);
         }
+
+        /// <summary>
+        /// Return shop info
+        /// </summary>
+        /// /// <param name="shopId">Shop identifier</param>
+        /// <response code="200">Getting shop info completed successfully</response>
+        /// <response code="403">You don't have permission</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ShopPageInfoResponse))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [HttpGet("GetShopInfo/{shopId}")]
+        public async Task<IActionResult> GetShopInfo(int shopId)
+        {
+            var result = await _shopService.GetShopInfoAsync(shopId);
+            return Ok(result);
+        }
+
 
         /// <summary>
         /// Returns shop with the given identifier

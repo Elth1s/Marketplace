@@ -43,6 +43,7 @@
                     "filterValues": "Значення фільтрів",
                     "products": "Товари",
                     "productStatuses": "Статуси товарів",
+                    "deliveryTypes": "Типи доставки",
                     "shops": "Магазини",
                     "countries": "Країни",
                     "cities": "Міста",
@@ -60,6 +61,8 @@
                     "urlSlug": "Веб адреса",
                     "image": "Зображення",
                     "icon": "Значок",
+                    "darkIcon": "Темний значок",
+                    "lightIcon": "Світлий значок",
                     "parentCategory": "Батківська категорія",
                     "characteristicGroup": "Група характеристики",
                     "characteristicName": "Назва характеристики",
@@ -207,8 +210,12 @@
                     "information": "Актуальність інформації",
                     "fullName": "Прізвище та ім’я",
                     "email": "Email-адреса",
-                    "review": "Відгук ",
-                    "dialogActions": "Відправити"
+                    "comment": "Коментар",
+                    "dialogActions": "Відправити",
+                    "exceptions": {
+                        "shopIdError": "Щось пішло не так",
+                        "RatingWarning": "Вкажіть ваше враження"
+                    }
                 }
             },
             "ordering": {

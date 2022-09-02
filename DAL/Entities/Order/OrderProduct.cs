@@ -12,6 +12,7 @@ namespace DAL.Entities
 
         [ForeignKey(nameof(OrderId))]
         public Order Order { get; set; }
+
         [ForeignKey(nameof(ProductId))]
         public Product Product { get; set; }
     }

@@ -9,8 +9,9 @@ namespace WebAPI.Specifications.Orders
         public OrderIncludeFullInfoSpecification()
         {
             Query.Include(_ => _.OrderStatus)
-                .Include(_ => _.OrderProducts)
-                .AsSplitQuery();
+                 .Include(_ => _.OrderProducts)
+                 .Include(_ => _.DeliveryType).ThenInclude(_ => _.DeliveryTypeTranslations)
+                 .AsSplitQuery();
         }
 
         public OrderIncludeFullInfoSpecification(int id)
@@ -20,6 +21,7 @@ namespace WebAPI.Specifications.Orders
                  .Include(_ => _.OrderProducts)
                  .ThenInclude(_ => _.Product)
                  .ThenInclude(_ => _.Images)
+                 .Include(_ => _.DeliveryType).ThenInclude(_ => _.DeliveryTypeTranslations)
                  .AsSplitQuery();
         }
 

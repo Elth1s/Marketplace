@@ -1,4 +1,4 @@
-﻿namespace WebAPI.ViewModels.Response
+﻿namespace WebAPI.ViewModels.Response.Shops
 {
     /// <summary>
     /// Shop class returned from the controller

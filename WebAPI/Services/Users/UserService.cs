@@ -19,16 +19,20 @@ namespace WebAPI.Services.Users
     {
         private readonly IStringLocalizer<ErrorMessages> _errorMessagesLocalizer;
         private readonly IMapper _mapper;
+        private readonly IJwtTokenService _jwtTokenService;
         private readonly UserManager<AppUser> _userManager;
         private readonly PhoneNumberManager _phoneNumberManager;
-        public UserService(IStringLocalizer<ErrorMessages> errorMessagesLocalizer,
+        public UserService(
+            IStringLocalizer<ErrorMessages> errorMessagesLocalizer,
             IMapper mapper,
             UserManager<AppUser> userManager,
+            IJwtTokenService jwtTokenService,
             PhoneNumberManager phoneNumberManager)
         {
             _errorMessagesLocalizer = errorMessagesLocalizer;
             _mapper = mapper;
             _userManager = userManager;
+            _jwtTokenService = jwtTokenService;
             _phoneNumberManager = phoneNumberManager;
         }
 
@@ -78,6 +82,11 @@ namespace WebAPI.Services.Users
 
             var response = _mapper.Map<ProfileResponse>(user);
             response.HasPassword = await _userManager.HasPasswordAsync(user);
+
+            var userLogins = await _userManager.GetLoginsAsync(user);
+            response.IsGoogleConnected = userLogins.FirstOrDefault(u => u.LoginProvider == ExternalLoginProviderName.Google) != null;
+            response.IsFacebookConnected = userLogins.FirstOrDefault(u => u.LoginProvider == ExternalLoginProviderName.Facebook) != null;
+
             return response;
         }
 
@@ -166,9 +175,61 @@ namespace WebAPI.Services.Users
         {
             foreach (var item in ids)
             {
-                var user = await _userManager.FindByIdAsync(item);
+                var user = await _userManager.GetByIdWithIncludeInfo(item);
                 await _userManager.DeleteAsync(user);
             }
+        }
+
+        public async Task GoogleConnectAsync(ExternalLoginRequest request, string userId)
+        {
+            var payload = await _jwtTokenService.VerifyGoogleToken(request);
+            if (payload == null)
+                throw new AppException(_errorMessagesLocalizer["InvalidExternalLoginRequest"]);
+
+            var info = new UserLoginInfo(ExternalLoginProviderName.Google, payload.Subject, ExternalLoginProviderName.Google);
+
+            var user = await _userManager.FindByIdAsync(userId);
+            user.UserNullChecking();
+
+            var login = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
+            if (login != null)
+                throw new AppException(_errorMessagesLocalizer["GoogleAccountAlreadyConnected"]);
+
+            var userLogins = await _userManager.GetLoginsAsync(user);
+
+            var userLoginExist = userLogins.FirstOrDefault(u => u.LoginProvider == info.LoginProvider);
+            if (userLoginExist != null)
+                throw new AppException(_errorMessagesLocalizer["GoogleConnected"]);
+
+            var resultAddLogin = await _userManager.AddLoginAsync(user, info);
+            if (!resultAddLogin.Succeeded)
+                throw new AppException(_errorMessagesLocalizer["ExternalLoginAddFail"]);
+        }
+
+        public async Task FacebookConnectAsync(ExternalLoginRequest request, string userId)
+        {
+            var payload = await _jwtTokenService.VerifyFacebookToken(request);
+            if (payload == null)
+                throw new AppException(_errorMessagesLocalizer["InvalidExternalLoginRequest"]);
+
+            var info = new UserLoginInfo(ExternalLoginProviderName.Facebook, payload.Id, ExternalLoginProviderName.Facebook);
+
+            var user = await _userManager.FindByIdAsync(userId);
+            user.UserNullChecking();
+
+            var login = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
+            if (login != null)
+                throw new AppException(_errorMessagesLocalizer["FacebookAccountAlreadyConnectedUser"]);
+
+            var userLogins = await _userManager.GetLoginsAsync(user);
+
+            var userLoginExist = userLogins.FirstOrDefault(u => u.LoginProvider == info.LoginProvider);
+            if (userLoginExist != null)
+                throw new AppException(_errorMessagesLocalizer["FacebookConnected"]);
+
+            var resultAddLogin = await _userManager.AddLoginAsync(user, info);
+            if (!resultAddLogin.Succeeded)
+                throw new AppException(_errorMessagesLocalizer["ExternalLoginAddFail"]);
         }
     }
 }

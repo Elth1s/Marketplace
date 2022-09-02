@@ -121,7 +121,7 @@
     <value>Переваги</value>
   </data>
   <data name="CategoryUrlSlugPropName" xml:space="preserve">
-    <value>Вебадреса категорії</value>
+    <value>Веб-адреса категорії</value>
   </data>
   <data name="CodeExactLengthMessage" xml:space="preserve">
     <value>Код має бути довжиною 2 символи</value>
@@ -183,6 +183,9 @@
   <data name="GreaterThanMessage" xml:space="preserve">
     <value>{PropertyName} має бути більшою за {ComparisonValue}</value>
   </data>
+  <data name="InformationRelevanceRatingPropName" xml:space="preserve">
+    <value>Рейтинг актуальності інформації</value>
+  </data>
   <data name="InvalidFormatMessage" xml:space="preserve">
     <value>{PropertyName} має неправильний формат</value>
   </data>
@@ -235,7 +238,7 @@
     <value>Статус продукта з таким ім'ям вже існує</value>
   </data>
   <data name="ProductUrlSlugPropName" xml:space="preserve">
-    <value>Вебадреса продукта</value>
+    <value>Веб-адреса продукта</value>
   </data>
   <data name="RequiredMessage" xml:space="preserve">
     <value>{PropertyName} є обов'язковою</value>
@@ -246,17 +249,23 @@
   <data name="SecondNamePropName" xml:space="preserve">
     <value>Прізвище</value>
   </data>
+  <data name="ServiceQualityRatingPropName" xml:space="preserve">
+    <value>Рейтинг якості обслуговування</value>
+  </data>
   <data name="ShopUniqueEmailMessage" xml:space="preserve">
     <value>Магазин із цією електронною адресою вже існує</value>
   </data>
   <data name="ShopUniqueSiteURLMessage" xml:space="preserve">
-    <value>Магазин із такою вебадресою сайту вже існує</value>
+    <value>Магазин із такою веб-адресою сайту вже існує</value>
   </data>
   <data name="SiteURLPropName" xml:space="preserve">
-    <value>Вебадреса сайту</value>
+    <value>Веб-адреса сайту</value>
   </data>
   <data name="TextPropName" xml:space="preserve">
     <value>Текст</value>
+  </data>
+  <data name="TimelinessRatingPropName" xml:space="preserve">
+    <value>Рейтинг дотримання термінів</value>
   </data>
   <data name="TokenPropName" xml:space="preserve">
     <value>Токен</value>

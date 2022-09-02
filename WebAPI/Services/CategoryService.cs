@@ -2,7 +2,6 @@
 using DAL;
 using DAL.Constants;
 using DAL.Entities;
-using Microsoft.Extensions.Localization;
 using System.Drawing.Imaging;
 using WebAPI.Constants;
 using WebAPI.Extensions;
@@ -22,19 +21,17 @@ namespace WebAPI.Services
 {
     public class CategoryService : ICategoryService
     {
-        private readonly IStringLocalizer<ErrorMessages> _errorMessagesLocalizer;
         private readonly IRepository<Category> _categoryRepository;
         private readonly IRepository<Product> _productRepository;
         private readonly IRepository<FilterValue> _filterValueRepository;
         private readonly IMapper _mapper;
 
-        public CategoryService(IStringLocalizer<ErrorMessages> errorMessagesLocalizer,
+        public CategoryService(
             IRepository<Category> categorRepository,
             IRepository<Product> productRepository,
             IRepository<FilterValue> filterValueRepository,
             IMapper mapper)
         {
-            _errorMessagesLocalizer = errorMessagesLocalizer;
             _categoryRepository = categorRepository;
             _productRepository = productRepository;
             _filterValueRepository = filterValueRepository;
@@ -280,18 +277,48 @@ namespace WebAPI.Services
                 }
             }
 
-            if (!string.IsNullOrEmpty(request.Icon))
+            if (!string.IsNullOrEmpty(request.LightIcon))
             {
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), request.Icon.Replace(ImagePath.RequestCategoriesImagePath, ImagePath.CategoriesImagePath));
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), request.LightIcon.Replace(ImagePath.RequestCategoriesImagePath, ImagePath.CategoriesImagePath));
 
                 if (!File.Exists(filePath))
                 {
-                    var img = ImageWorker.FromBase64StringToImage(request.Icon);
+                    var img = ImageWorker.FromBase64StringToImage(request.LightIcon);
                     string randomFilename = Guid.NewGuid() + ".png";
                     var dir = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.CategoriesImagePath, randomFilename);
                     img.Save(dir, ImageFormat.Png);
 
-                    category.Icon = randomFilename;
+                    category.LightIcon = randomFilename;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(request.DarkIcon))
+            {
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), request.DarkIcon.Replace(ImagePath.RequestCategoriesImagePath, ImagePath.CategoriesImagePath));
+
+                if (!File.Exists(filePath))
+                {
+                    var img = ImageWorker.FromBase64StringToImage(request.DarkIcon);
+                    string randomFilename = Guid.NewGuid() + ".png";
+                    var dir = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.CategoriesImagePath, randomFilename);
+                    img.Save(dir, ImageFormat.Png);
+
+                    category.DarkIcon = randomFilename;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(request.ActiveIcon))
+            {
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), request.ActiveIcon.Replace(ImagePath.RequestCategoriesImagePath, ImagePath.CategoriesImagePath));
+
+                if (!File.Exists(filePath))
+                {
+                    var img = ImageWorker.FromBase64StringToImage(request.ActiveIcon);
+                    string randomFilename = Guid.NewGuid() + ".png";
+                    var dir = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.CategoriesImagePath, randomFilename);
+                    img.Save(dir, ImageFormat.Png);
+
+                    category.ActiveIcon = randomFilename;
                 }
             }
 
@@ -348,26 +375,71 @@ namespace WebAPI.Services
                     category.Image = randomFilename;
                 }
             }
-            if (!string.IsNullOrEmpty(request.Icon))
+            if (!string.IsNullOrEmpty(request.LightIcon))
             {
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), request.Icon.Replace(ImagePath.RequestCategoriesImagePath, ImagePath.CategoriesImagePath));
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), request.LightIcon.Replace(ImagePath.RequestCategoriesImagePath, ImagePath.CategoriesImagePath));
                 if (!File.Exists(filePath))
                 {
-                    if (category.Icon != null)
+                    if (category.LightIcon != null)
                     {
-                        filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.CategoriesImagePath, category.Icon);
+                        filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.CategoriesImagePath, category.LightIcon);
 
                         if (File.Exists(filePath))
                         {
                             File.Delete(filePath);
                         }
                     }
-                    var img = ImageWorker.FromBase64StringToImage(request.Icon);
+                    var img = ImageWorker.FromBase64StringToImage(request.LightIcon);
                     string randomFilename = Guid.NewGuid() + ".png";
                     var dir = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.CategoriesImagePath, randomFilename);
                     img.Save(dir, ImageFormat.Png);
 
-                    category.Icon = randomFilename;
+                    category.LightIcon = randomFilename;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(request.DarkIcon))
+            {
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), request.DarkIcon.Replace(ImagePath.RequestCategoriesImagePath, ImagePath.CategoriesImagePath));
+                if (!File.Exists(filePath))
+                {
+                    if (category.DarkIcon != null)
+                    {
+                        filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.CategoriesImagePath, category.DarkIcon);
+
+                        if (File.Exists(filePath))
+                        {
+                            File.Delete(filePath);
+                        }
+                    }
+                    var img = ImageWorker.FromBase64StringToImage(request.DarkIcon);
+                    string randomFilename = Guid.NewGuid() + ".png";
+                    var dir = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.CategoriesImagePath, randomFilename);
+                    img.Save(dir, ImageFormat.Png);
+
+                    category.DarkIcon = randomFilename;
+                }
+            }
+            if (!string.IsNullOrEmpty(request.ActiveIcon))
+            {
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), request.ActiveIcon.Replace(ImagePath.RequestCategoriesImagePath, ImagePath.CategoriesImagePath));
+                if (!File.Exists(filePath))
+                {
+                    if (category.ActiveIcon != null)
+                    {
+                        filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.CategoriesImagePath, category.ActiveIcon);
+
+                        if (File.Exists(filePath))
+                        {
+                            File.Delete(filePath);
+                        }
+                    }
+                    var img = ImageWorker.FromBase64StringToImage(request.ActiveIcon);
+                    string randomFilename = Guid.NewGuid() + ".png";
+                    var dir = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.CategoriesImagePath, randomFilename);
+                    img.Save(dir, ImageFormat.Png);
+
+                    category.ActiveIcon = randomFilename;
                 }
             }
 
@@ -393,9 +465,27 @@ namespace WebAPI.Services
                     File.Delete(filePath);
                 }
             }
-            if (!string.IsNullOrEmpty(category.Icon))
+            if (!string.IsNullOrEmpty(category.LightIcon))
             {
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.CategoriesImagePath, category.Icon);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.CategoriesImagePath, category.LightIcon);
+
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                }
+            }
+            if (!string.IsNullOrEmpty(category.DarkIcon))
+            {
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.CategoriesImagePath, category.DarkIcon);
+
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                }
+            }
+            if (!string.IsNullOrEmpty(category.ActiveIcon))
+            {
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.CategoriesImagePath, category.ActiveIcon);
 
                 if (File.Exists(filePath))
                 {
@@ -422,9 +512,27 @@ namespace WebAPI.Services
                         File.Delete(filePath);
                     }
                 }
-                if (!string.IsNullOrEmpty(category.Icon))
+                if (!string.IsNullOrEmpty(category.LightIcon))
                 {
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.CategoriesImagePath, category.Icon);
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.CategoriesImagePath, category.LightIcon);
+
+                    if (File.Exists(filePath))
+                    {
+                        File.Delete(filePath);
+                    }
+                }
+                if (!string.IsNullOrEmpty(category.DarkIcon))
+                {
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.CategoriesImagePath, category.DarkIcon);
+
+                    if (File.Exists(filePath))
+                    {
+                        File.Delete(filePath);
+                    }
+                }
+                if (!string.IsNullOrEmpty(category.ActiveIcon))
+                {
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.CategoriesImagePath, category.ActiveIcon);
 
                     if (File.Exists(filePath))
                     {

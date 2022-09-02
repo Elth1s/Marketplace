@@ -4,7 +4,7 @@ using FluentValidation;
 using Microsoft.Extensions.Localization;
 using WebAPI.Specifications.Shops;
 
-namespace WebAPI.ViewModels.Request
+namespace WebAPI.ViewModels.Request.Shops
 {
     /// <summary>
     /// Shop class to create and update shop

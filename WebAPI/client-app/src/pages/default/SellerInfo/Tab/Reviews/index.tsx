@@ -2,24 +2,54 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/system/Box";
 
-import StarIcon from '@mui/icons-material/Star';
-
 import { useTranslation } from 'react-i18next';
+import { useTypedSelector } from "../../../../../hooks/useTypedSelector";
+import { useActions } from "../../../../../hooks/useActions";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { ShowMoreButton } from "../../../Catalog/styled";
+import { CachedOutlined, StarRounded } from "@mui/icons-material";
 
-const longText = "Нещодавно придбала срібне намисто у продавця EUROSHOP. Ціна дуже вигідна, матеріал якісний і дизайн лаконічний. Все надзвичайно сподобалось."
-
-const data = [
-    { name: "Марина", data: "12/12/2022", rating1: 4, rating2: 4, rating3: 4, desc: longText },
-    { name: "Марина", data: "12/12/2022", rating1: 4, rating2: 4, rating3: 4, desc: longText },
-    { name: "Марина", data: "12/12/2022", rating1: 4, rating2: 4, rating3: 4, desc: longText },
-]
 
 const Reviews = () => {
     const { t } = useTranslation();
 
+    const { shopReviews, shopReviewsCount } = useTypedSelector(state => state.shopPage);
+    const { GetShopReviews, GetMoreShopReviews } = useActions();
+
+    let { shopId } = useParams();
+
+    const [page, setPage] = useState<number>(1);
+    const [rowsPerPage, setRowsPerPage] = useState<number>(4);
+
+    useEffect(() => {
+
+        getData();
+    }, [])
+
+    const getData = async () => {
+        if (!shopId)
+            return;
+        try {
+            await GetShopReviews(shopId, page, rowsPerPage)
+        } catch (ex) {
+        }
+    };
+
+    const showMore = async () => {
+        if (!shopId)
+            return;
+        try {
+            let newPage = page + 1;
+            await GetMoreShopReviews(shopId, newPage, rowsPerPage)
+            setPage(newPage);
+        } catch (ex) {
+
+        }
+    }
     return (
         <>
-            {data.map((item, index) => (
+            {shopReviews.map((item, index) => (
                 <Grid
                     key={index}
                     sx={{
@@ -31,34 +61,39 @@ const Reviews = () => {
                     }}>
                     <Grid item container sx={{ justifyContent: "space-between" }}>
                         <Grid item sx={{ mb: "40px" }}>
-                            <Typography variant="h1" sx={{ mb: "20px" }}>{item.name}</Typography>
+                            <Typography variant="h1" sx={{ mb: "20px" }}>{item.fullName}</Typography>
                             <Box sx={{ display: "flex" }}>
                                 <Typography variant="h4" sx={{ display: "flex", alignItems: "center", mr: "40px" }}>
                                     {t('pages.seller.reviews.service')}
-                                    <StarIcon color="primary" sx={{ fontSize: "30px", mx: "10px" }} />
-                                    {item.rating1}
+                                    <StarRounded color="primary" sx={{ fontSize: "30px", mx: "10px" }} />
+                                    {item.serviceQualityRating}
                                 </Typography>
                                 <Typography variant="h4" sx={{ display: "flex", alignItems: "center", mr: "40px" }}>
                                     {t('pages.seller.reviews.terms')}
-                                    <StarIcon color="primary" sx={{ fontSize: "30px", mx: "10px" }} />
-                                    {item.rating2}
+                                    <StarRounded color="primary" sx={{ fontSize: "30px", mx: "10px" }} />
+                                    {item.timelinessRating}
                                 </Typography>
                                 <Typography variant="h4" sx={{ display: "flex", alignItems: "center" }}>
                                     {t('pages.seller.reviews.information')}
-                                    <StarIcon color="primary" sx={{ fontSize: "30px", mx: "10px" }} />
-                                    {item.rating3}
+                                    <StarRounded color="primary" sx={{ fontSize: "30px", mx: "10px" }} />
+                                    {item.informationRelevanceRating}
                                 </Typography>
                             </Box>
                         </Grid>
                         <Grid item>
-                            <Typography variant="h5">{item.data}</Typography>
+                            <Typography variant="h5">{item.date}</Typography>
                         </Grid>
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="h4">{item.desc}</Typography>
+                        <Typography variant="h4">{item.comment}</Typography>
                     </Grid>
                 </Grid>
             ))}
+            {shopReviews.length != shopReviewsCount && <Box sx={{ display: "flex", justifyContent: "center" }}>
+                <ShowMoreButton onClick={showMore} startIcon={<CachedOutlined />}>
+                    {t("pages.catalog.showMore")}
+                </ShowMoreButton>
+            </Box>}
         </>
     );
 }

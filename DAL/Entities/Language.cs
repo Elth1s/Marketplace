@@ -14,6 +14,7 @@
         public ICollection<FilterNameTranslation> FilterNameTranslations { get; set; }
         public ICollection<FilterValueTranslation> FilterValueTranslations { get; set; }
         public ICollection<CategoryTranslation> CategoryTranslations { get; set; }
-
+        public ICollection<DeliveryTypeTranslation> DeliveryTypeTranslations { get; set; }
+        public ICollection<DayOfWeekTranslation> DayOfWeekTranslations { get; set; }
     }
 }

@@ -123,6 +123,41 @@ namespace WebAPI.Controllers.Users
             return Ok(_userLocalizer["UpdateProfileSuccess"].Value);
         }
 
+        /// <summary>
+        /// Connect Google account
+        /// </summary>
+        /// <param name="request">Data for user for Google external login</param>
+        /// <response code="200">Google external login completed successfully</response>
+        /// <response code="400">Adding external login or Google already connected</response>
+        /// <response code="500">Token validation failed or an internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AuthResponse))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [HttpPost("GoogleConnect")]
+        public async Task<IActionResult> GoogleConnect([FromBody] ExternalLoginRequest request)
+        {
+            await _userService.GoogleConnectAsync(request, UserId);
+            return Ok(_userLocalizer["GoogleConnectSuccess"].Value);
+        }
+
+
+        /// <summary>
+        /// Connect Facebook account
+        /// </summary>
+        /// <param name="request">Data for user facebook external login</param>
+        /// <response code="200">Facebook external login completed successfully</response>
+        /// <response code="400">Token validation failed or adding external login or Facebook already connected</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AuthResponse))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [HttpPost("FacebookConnect")]
+        public async Task<IActionResult> FacebookConnect([FromBody] ExternalLoginRequest request)
+        {
+            await _userService.FacebookConnectAsync(request, UserId);
+            return Ok(_userLocalizer["FacebookConnectSuccess"].Value);
+        }
+
         #endregion
 
         #region Email

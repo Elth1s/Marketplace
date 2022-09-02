@@ -29,6 +29,11 @@ namespace WebAPI.ViewModels.Request.Orders
         /// </summary>
         /// <example>email@gmail.com</example>
         public string ConsumerEmail { get; set; }
+        /// <summary>
+        /// Delivery type identifier
+        /// </summary>
+        /// <example>1</example>
+        public int DeliveryTypeId { get; set; }
 
         //public IEnumerable<OrderProductCreate> OrderProducts { get; set; }
     }

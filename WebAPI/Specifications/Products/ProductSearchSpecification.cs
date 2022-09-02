@@ -9,16 +9,17 @@ namespace WebAPI.Specifications.Products
     {
         public ProductSearchSpecification(string name, bool isAscOrder, string orderBy, bool isSeller, int? shopId, int? skip = null, int? take = null)
         {
+            Query.Include(o => o.Category).ThenInclude(c => c.CategoryTranslations)
+                 .Include(o => o.Status).ThenInclude(s => s.ProductStatusTranslations)
+                 .Include(pi => pi.Images).AsSplitQuery();
+
             if (!string.IsNullOrEmpty(name))
                 if (shopId != null)
                     Query.Where(item => item.Name.Contains(name));
 
             if (isSeller)
-                Query.Where(item => item.ShopId == shopId);
-
-            Query.Include(o => o.Category).ThenInclude(c => c.CategoryTranslations)
-                 .Include(o => o.Status).ThenInclude(s => s.ProductStatusTranslations)
-                 .Include(pi => pi.Images);
+                Query.Where(item => item.ShopId == shopId)
+                     .Where(item => !item.IsDeleted);
 
             if (orderBy == "categoryName")
             {
