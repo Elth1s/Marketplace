@@ -5,14 +5,15 @@ import {
     InputAdornment,
     Box,
     Container,
-    Divider
+    Divider,
+    useTheme
 } from "@mui/material";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 
-import { logo } from "../../assets/logos"
+import { dark_logo, light_logo } from "../../assets/logos"
 
 import { LanguageButtonStyle, TextFieldStyle } from "./styled";
 
@@ -25,16 +26,17 @@ import CatalogMenu from "../../components/CatalogMenu";
 
 const Header = () => {
     const { t, i18n } = useTranslation()
+    const { palette } = useTheme();
     const { isAuth } = useTypedSelector((state) => state.auth)
 
 
-    const [isUaLanguage, setIsUaLanguage] = useState<boolean>(i18n.language == "en" ? false : true);
+    const [isUaLanguage, setIsUaLanguage] = useState<boolean>(i18n.language == "en-US" ? false : true);
 
     const changeLanguage = (isUa: boolean) => {
         if (isUa == isUaLanguage)
             return;
         setIsUaLanguage(isUa);
-        i18n.changeLanguage(isUa ? "ua" : "en")
+        i18n.changeLanguage(isUa ? "uk" : "en-US")
         window.location.reload();
     }
 
@@ -45,7 +47,7 @@ const Header = () => {
                     <LinkRouter underline="none" color="unset" to="/">
                         <img
                             style={{ height: "82px" }}
-                            src={logo}
+                            src={palette.mode == "dark" ? dark_logo : light_logo}
                             alt="logo"
                         />
                     </LinkRouter>
@@ -54,7 +56,7 @@ const Header = () => {
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end" >
-                                    <IconButton sx={{ padding: "3px", borderRadius: '12px' }} edge="start">
+                                    <IconButton sx={{ padding: "3px", borderRadius: '12px', "&:hover": { background: "transparent" }, "&& .MuiTouchRipple-child": { backgroundColor: "transparent" } }} edge="start">
                                         <img
                                             style={{ width: "35px", height: "35px" }}
                                             src={search}
@@ -66,7 +68,7 @@ const Header = () => {
                         }} />
                     <Box sx={{ display: "flex" }}>
                         <LanguageButtonStyle selected={!isUaLanguage} onClick={() => { changeLanguage(false) }}>EN</LanguageButtonStyle>
-                        <Divider sx={{ borderColor: "black", borderRightWidth: "3px", mx: "1px" }} orientation="vertical" flexItem />
+                        <Divider sx={{ borderColor: "inherit", borderRightWidth: "3px", mx: "1px" }} orientation="vertical" flexItem />
                         <LanguageButtonStyle selected={isUaLanguage} onClick={() => { changeLanguage(true) }}>UA</LanguageButtonStyle>
                     </Box>
                     {isAuth &&

@@ -22,7 +22,14 @@ const ProductCreate: FC<Props> = ({ }) => {
 
     const { categories, productStatuses, filters } = useTypedSelector((store) => store.productSeller);
 
-    const [images, setImages] = useState<Array<IProductImage>>([]);
+    const navigate = useNavigate();
+
+    const [imagesLoading, setImagesLoading] = useState<number>(0);
+
+    useEffect(() => {
+        document.title = "Product create";
+        getData();
+    }, [imagesLoading]);
 
     const item: IProductCreate = {
         name: "",
@@ -33,26 +40,6 @@ const ProductCreate: FC<Props> = ({ }) => {
         categoryId: 0,
         images: [],
         filtersValue: []
-    }
-
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        document.title = "Product create";
-        getData();
-    }, []);
-
-    useEffect(() => {
-        console.log(images)
-    }, [images]);
-
-    const getData = async () => {
-        try {
-            await GetCategoriesWithoutChildren();
-            await GetProductStatusesSeller();
-        }
-        catch (ex) {
-        }
     }
 
     const formik = useFormik({
@@ -81,6 +68,15 @@ const ProductCreate: FC<Props> = ({ }) => {
         }
     });
 
+    const getData = async () => {
+        try {
+            await GetCategoriesWithoutChildren();
+            await GetProductStatusesSeller();
+        }
+        catch (ex) {
+        }
+    }
+
     const selectFilterValue = (nameId: number, valueId: number, customValue?: number) => {
         const index = formik.values.filtersValue.map(object => object.nameId).indexOf(nameId);
 
@@ -100,7 +96,8 @@ const ProductCreate: FC<Props> = ({ }) => {
         onDrop: (files) => {
             if (!files || files.length === 0) return;
 
-            let tmp = images.slice();
+            setImagesLoading(files.length)
+            let tmp = formik.values.images.slice();
             files.forEach(element => {
                 let reader = new FileReader();
 
@@ -113,7 +110,8 @@ const ProductCreate: FC<Props> = ({ }) => {
                 };
             });
 
-            setImages(tmp)
+            setFieldValue("images", tmp)
+            setImagesLoading(0)
         }
     });
 
@@ -270,8 +268,8 @@ const ProductCreate: FC<Props> = ({ }) => {
                                         </Box>
                                     </div>
                                 </Box>
-                                {images?.length != 0 &&
-                                    images.map((row, index) => {
+                                {formik.values.images?.length != 0 &&
+                                    formik.values.images.map((row, index) => {
                                         return (
                                             <img
                                                 key={`product_image_${index}`}

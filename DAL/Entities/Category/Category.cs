@@ -6,7 +6,11 @@ namespace DAL.Entities
     {
         public string UrlSlug { get; set; }
         public string Image { get; set; }
-        public string Icon { get; set; }
+
+        public string LightIcon { get; set; }
+        public string DarkIcon { get; set; }
+        public string ActiveIcon { get; set; }
+
 
         public int? ParentId { get; set; }
 

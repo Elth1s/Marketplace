@@ -56,9 +56,9 @@ namespace WebAPI.Services.Reviews
             if (string.IsNullOrEmpty(user.Email))
                 await _userManager.SetEmailAsync(user, request.Email);
 
-            var isOrdered = await _userManager.IsOrderedByUserAsync(userId, product.Id);
-            if (!isOrdered)
-                throw new AppException(_errorMessagesLocalizer["ReviewOrder"]);
+            //var isOrdered = await _userManager.IsOrderedByUserAsync(userId, product.Id);
+            //if (!isOrdered)
+            //    throw new AppException(_errorMessagesLocalizer["ReviewOrder"]);
 
             var review = _mapper.Map<Review>(request);
             review.User = user;

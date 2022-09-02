@@ -68,7 +68,10 @@ const CharacteristicNameTable = () => {
 
     const onDelete = async () => {
         await DeleteCharacteristicNames(selected);
-        setPage(1);
+        if (page == 1)
+            getData()
+        else
+            await setPage(1);
     }
 
     const handleClick = (event: React.MouseEvent<unknown>, id: number) => {

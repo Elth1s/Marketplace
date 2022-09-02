@@ -5,7 +5,6 @@ using DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 using WebAPI.Extensions;
 using WebAPI.Interfaces.Orders;
-using WebAPI.Specifications;
 using WebAPI.Specifications.Orders;
 using WebAPI.ViewModels.Request.Orders;
 using WebAPI.ViewModels.Response.Orders;
@@ -17,6 +16,7 @@ namespace WebAPI.Services.Orders
         private readonly IRepository<Order> _orderRepository;
         private readonly IRepository<OrderStatus> _orderStatusRepository;
         private readonly IRepository<OrderProduct> _orderProductRepository;
+        private readonly IRepository<DeliveryType> _deliveryTypeRepository;
         private readonly IRepository<Product> _productRepository;
         private readonly UserManager<AppUser> _userManager;
         private readonly IRepository<BasketItem> _basketItemRepository;
@@ -26,6 +26,7 @@ namespace WebAPI.Services.Orders
                IRepository<OrderStatus> orderStatusRepository,
                IRepository<OrderProduct> orderProductRepository,
                IRepository<Product> productRepository,
+               IRepository<DeliveryType> deliveryTypeRepository,
                IRepository<BasketItem> basketItemRepository,
                UserManager<AppUser> userManager,
                IMapper mapper
@@ -35,6 +36,7 @@ namespace WebAPI.Services.Orders
             _orderRepository = orderRepository;
             _orderStatusRepository = orderStatusRepository;
             _productRepository = productRepository;
+            _deliveryTypeRepository = deliveryTypeRepository;
             _basketItemRepository = basketItemRepository;
             _userManager = userManager;
             _mapper = mapper;
@@ -42,40 +44,41 @@ namespace WebAPI.Services.Orders
 
         public async Task CreateAsync(OrderCreateRequest request, string userId)
         {
+            var user = await _userManager.FindByIdAsync(userId);
+            user.UserNullChecking();
+
             var order = _mapper.Map<Order>(request);
-            if (!string.IsNullOrEmpty(userId))
-            {
-                var user = await _userManager.FindByIdAsync(userId);
-                user.UserNullChecking();
-                order.User = user;
-            }
+            order.User = user;
 
             var status = await _orderStatusRepository.GetByIdAsync(OrderStatusId.InProcess);
             status.OrderStatusNullChecking();
             order.OrderStatusId = OrderStatusId.InProcess;
 
+            var deliveryType = await _deliveryTypeRepository.GetByIdAsync(request.DeliveryTypeId);
+            deliveryType.DeliveryTypeNullChecking();
+
             await _orderRepository.AddAsync(order);
             await _orderRepository.SaveChangesAsync();
 
-            foreach (var item in request.OrderProductsCreate)
-            {
-                var product = await _productRepository.GetByIdAsync(item.ProductId);
-                product.ProductNullChecking();
+            //foreach (var item in request.OrderProductsCreate)
+            //{
+            //    var product = await _productRepository.GetByIdAsync(item.ProductId);
+            //    product.ProductNullChecking();
 
-                var orderProduct = _mapper.Map<OrderProduct>(item);
-                orderProduct.Price = product.Price;
-                orderProduct.OrderId = order.Id;
+            //    var orderProduct = _mapper.Map<OrderProduct>(item);
+            //    orderProduct.Price = product.Price;
+            //    orderProduct.OrderId = order.Id;
 
-                if (!string.IsNullOrEmpty(userId))
-                {
-                    var spec = new BasketItemIncludeFullInfoSpecification(userId, product.Id);
-                    var basketItem = await _basketItemRepository.GetBySpecAsync(spec);
-                    basketItem.BasketItemNullChecking();
-                    await _basketItemRepository.DeleteAsync(basketItem);
-                }
+            //    if (!string.IsNullOrEmpty(userId))
+            //    {
+            //        var spec = new BasketItemIncludeFullInfoSpecification(userId, product.Id);
+            //        var basketItem = await _basketItemRepository.GetBySpecAsync(spec);
+            //        basketItem.BasketItemNullChecking();
+            //        await _basketItemRepository.DeleteAsync(basketItem);
+            //    }
 
-                await _orderProductRepository.AddAsync(orderProduct);
-            }
+            //    await _orderProductRepository.AddAsync(orderProduct);
+            //}
             await _orderProductRepository.SaveChangesAsync();
         }
 

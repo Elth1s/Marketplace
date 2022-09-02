@@ -17,12 +17,23 @@ import TextFieldComponent from "../../../../components/TextField";
 import Box from "@mui/material/Box";
 import { BlindButton, ButtonStyled, ChangeButton } from "../../styled";
 import { check, icon_color_facebook, icon_color_google } from "../../../../assets/icons";
+import { GoogleLogin, GoogleLoginResponse } from 'react-google-login';
+import { ReactFacebookLoginInfo } from "react-facebook-login";
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
 
 const Change = () => {
-    const { GetProfile, UpdateProfile } = useActions();
+    const { GetProfile, UpdateProfile, GoogleConnect, FacebookConnect } = useActions();
     const { userInfo } = useTypedSelector((store) => store.profile);
 
     useEffect(() => {
+        const start = () => {
+            gapi.client.init({
+                clientId: process.env.REACT_APP_GOOGLE_CLIENT_ID as string,
+                scope: 'Profile',
+            });
+        }
+        gapi.load('client:auth2', start);
+
         getData();
     }, []);
 
@@ -30,6 +41,28 @@ const Change = () => {
         document.title = "Change password and login";
         await GetProfile();
     }
+
+    const responseFacebook = async (res: ReactFacebookLoginInfo) => {
+        try {
+            await FacebookConnect({ token: res.accessToken });
+
+        } catch (exception) {
+            const serverError = exception as ServerError;
+        }
+    }
+
+
+    const handleGoogleSignIn = async (res: GoogleLoginResponse | any) => {
+        try {
+            await GoogleConnect({ token: res.tokenId });
+        } catch (exception) {
+            const serverError = exception as ServerError;
+        }
+    }
+
+    const onGoogleLoginFailure = (res: any) => {
+        console.log('Login Failed:', res);
+    };
 
     const onHandleSubmit = async (values: IProfile) => {
         try {
@@ -74,10 +107,10 @@ const Change = () => {
                                     getFieldProps={{ ...getFieldProps('email') }}
                                 />
                             </Box>
-                            <ChangeButton variant="outlined" color="secondary" sx={{ ml: "20px"}}>
+                            <ChangeButton variant="outlined" color="secondary" sx={{ ml: "20px" }}>
                                 Change email
                             </ChangeButton>
-                            <ChangeButton variant="outlined" color="secondary" sx={{ ml: "30px"}}>
+                            <ChangeButton variant="outlined" color="secondary" sx={{ ml: "30px" }}>
                                 Confirm email
                             </ChangeButton>
                         </Grid>
@@ -91,10 +124,10 @@ const Change = () => {
                                     getFieldProps={{ ...getFieldProps('phone') }}
                                 />
                             </Box>
-                            <ChangeButton variant="outlined" color="secondary" sx={{ ml: "20px"}}>
+                            <ChangeButton variant="outlined" color="secondary" sx={{ ml: "20px" }}>
                                 Change phone
                             </ChangeButton>
-                            <ChangeButton variant="outlined" color="secondary" sx={{ ml: "30px"}}>
+                            <ChangeButton variant="outlined" color="secondary" sx={{ ml: "30px" }}>
                                 Confirm phone
                             </ChangeButton>
                         </Grid>
@@ -120,10 +153,25 @@ const Change = () => {
                                     display: "inline-flex",
                                     alignItems: "center",
                                 }}>
-                                    <img src={icon_color_google} alt="google-icon"/>
+                                    <img src={icon_color_google} alt="google-icon" />
                                     <Typography variant="subtitle1" sx={{ fontWeight: "500", marginLeft: "11px" }}>Google</Typography>
                                 </Box>
-                                <img src={check} alt="check-icon"/>
+                                {userInfo.isGoogleConnected ?
+                                    <img src={check} alt="check-icon" />
+                                    :
+                                    <GoogleLogin
+                                        clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID as string}
+                                        buttonText="Sign In"
+                                        onSuccess={handleGoogleSignIn}
+                                        onFailure={onGoogleLoginFailure}
+                                        cookiePolicy='single_host_origin'
+                                        prompt='select_account'
+                                        render={renderProps => (
+                                            <BlindButton variant="text"
+                                                onClick={renderProps.onClick} color="primary" sx={{ textTransform: "none" }}>Bind</BlindButton>
+                                        )}
+                                    />
+                                }
                             </Box>
                         </Grid>
                         <Grid item xs>
@@ -138,10 +186,20 @@ const Change = () => {
                                     display: "inline-flex",
                                     alignItems: "center",
                                 }}>
-                                    <img src={icon_color_facebook} alt="facebook-icon"/>
+                                    <img src={icon_color_facebook} alt="facebook-icon" />
                                     <Typography variant="subtitle1" sx={{ fontWeight: "500", marginLeft: "11px" }}>Facebook</Typography>
                                 </Box>
-                                <BlindButton variant="text" color="primary" sx={{ textTransform: "none" }}>Bind</BlindButton>
+
+                                {userInfo.isFacebookConnected ?
+                                    <img src={check} alt="check-icon" />
+                                    : <FacebookLogin
+                                        appId={process.env.REACT_APP_FACEBOOK_APP_ID as string}
+                                        callback={responseFacebook}
+                                        render={renderProps => (
+                                            <BlindButton variant="text" onClick={renderProps.onClick} color="primary" sx={{ textTransform: "none" }}>Bind</BlindButton>
+                                        )} />
+
+                                }
                             </Box>
                         </Grid>
                         <ButtonStyled fullWidth variant="outlined" color="secondary" sx={{ mt: "63px" }}>

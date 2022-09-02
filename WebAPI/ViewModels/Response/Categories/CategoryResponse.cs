@@ -26,9 +26,20 @@
         /// <example>https://some_category_image_example.jpg</example>
         public string Image { get; set; }
         /// <summary>
-        /// Category icon
+        /// Category light icon
         /// </summary>
-        public string Icon { get; set; }
+        /// <example>https://some_category_light_icon_example.jpg</example>
+        public string LightIcon { get; set; }
+        /// <summary>
+        /// Category dark icon
+        /// </summary>
+        /// <example>https://some_category_dark_icon_example.jpg</example>
+        public string DarkIcon { get; set; }
+        /// <summary>
+        /// Category active icon
+        /// </summary>
+        /// <example>https://some_category_active_icon_example.jpg</example>
+        public string ActiveIcon { get; set; }
         /// <summary>
         /// Parent category identifier
         /// </summary>

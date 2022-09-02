@@ -17,22 +17,24 @@ import ReviewItem from "../../../../components/ReviewItem";
 import { useParams } from "react-router-dom";
 import { useActions } from "../../../../hooks/useActions";
 
-import ShowInfo from "../../ShopInfo"
-
+import ShowInfo from "../../ShortSellerInfo"
+import AddReview from "../AddReview";
+import ReviewsForm from "../ReviewForm"
 
 interface Props {
     addInCart: any,
-    page: number,
-    rowsPerPage: number
 }
 
-const ProductReviewsPage: FC<Props> = ({ addInCart, page, rowsPerPage }) => {
+const ProductReviewsPage: FC<Props> = ({ addInCart }) => {
     const { t } = useTranslation();
 
     const { product, reviews } = useTypedSelector(state => state.product);
     const { GetReviews, GetMoreReviews } = useActions();
 
     let { urlSlug } = useParams();
+
+    const [page, setPage] = useState<number>(1);
+    const [rowsPerPage, setRowsPerPage] = useState<number>(4);
 
     useEffect(() => {
 
@@ -50,28 +52,59 @@ const ProductReviewsPage: FC<Props> = ({ addInCart, page, rowsPerPage }) => {
 
     return (
         <>
+            <Typography variant="h1" sx={{ mt: "30px", mb: "15px" }}>{t("pages.product.menu.reviews")} {product.name}</Typography>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+                <Typography variant="h4" fontWeight="bold" display="inline" sx={{ marginRight: "70px" }}>{t("pages.product.seller")}: <Typography fontWeight="normal" display="inline" sx={{ fontSize: "20px" }}>{product.shopName}</Typography></Typography>
+                <Typography variant="h4" fontWeight="bold">{t("pages.product.sellerRating")}: </Typography>
+                <RatingStyle
+                    sx={{ ml: 1, fontSize: "30px", mr: "40px" }}
+                    value={4.5}
+                    precision={0.5}
+                    readOnly
+                    icon={<StarRounded sx={{ fontSize: "30px" }} />}
+                    emptyIcon={<StarRounded sx={{ fontSize: "30px" }} />}
+                />
+                <AddReview
+                    getData={async () => {
+                        if (urlSlug) {
+                            await GetReviews(urlSlug, 1, rowsPerPage)
+                            setPage(1);
+                        }
+                    }}
+                />
+            </Box>
             <Grid container sx={{ mt: "79px" }}>
                 <Grid item xs={8}>
-                    {reviews?.length != 0 && reviews.map((item, index) => {
-                        return (
-                            <ReviewItem
-                                fullName={item.fullName}
-                                reviewLink="/"
-                                date={item.date}
-                                productRating={item.productRating}
-                                comment={item.comment}
-                                advantages={item.advantages}
-                                disadvantages={item.disadvantages}
-                                images={item.images}
-                                videoURL={item.videoURL}
-                                isLiked={item.isLiked}
-                                isDisliked={item.isDisliked}
-                                likes={item.likes}
-                                dislikes={item.dislikes}
-                                replies={item.replies}
-                            />
-                        )
-                    })}
+                    {(reviews.length === 0) ? (
+                        <>
+                            <Typography variant="h1">{t("pages.product.reviews")}</Typography>
+                            <ReviewsForm getData={getData} />
+                        </>
+                    ) : (
+                        <>
+                            {reviews?.length != 0 && reviews.map((item, index) => {
+                                return (
+                                    <ReviewItem
+                                        key={index}
+                                        fullName={item.fullName}
+                                        reviewLink="/"
+                                        date={item.date}
+                                        productRating={item.productRating}
+                                        comment={item.comment}
+                                        advantages={item.advantages}
+                                        disadvantages={item.disadvantages}
+                                        images={item.images}
+                                        videoURL={item.videoURL}
+                                        isLiked={item.isLiked}
+                                        isDisliked={item.isDisliked}
+                                        likes={item.likes}
+                                        dislikes={item.dislikes}
+                                        replies={item.replies}
+                                    />
+                                )
+                            })}
+                        </>
+                    )}
                 </Grid>
                 <Grid item xs={4}>
                     <Box sx={{ width: "420px", ml: "auto" }}>

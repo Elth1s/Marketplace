@@ -16,6 +16,8 @@ namespace WebAPI.Interfaces.Users
         Task ChangeEmailAsync(string userId, ChangeEmailRequest request);
 
         Task ChangePhoneAsync(string userId, ChangePhoneRequest request);
+        Task GoogleConnectAsync(ExternalLoginRequest request, string userId);
+        Task FacebookConnectAsync(ExternalLoginRequest request, string userId);
 
         Task<bool> HasPassword(string userId);
 

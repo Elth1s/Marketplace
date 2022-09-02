@@ -7,21 +7,26 @@ import Button from '@mui/material/Button';
 
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import { Form, FormikProvider, useFormik } from "formik";
 
 import { useActions } from "../../../../hooks/useActions";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 
-import { validationFields } from "../validation";
 import { ServerError } from "../../../../store/types";
 
 import CropperDialog from "../../../../components/CropperDialog";
 import AutocompleteComponent from "../../../../components/Autocomplete";
-import { toLowerFirstLetter } from "../../../../http_comon";
 import { TextFieldFirstStyle } from "../../../../components/TextField/styled";
 
+import { toLowerFirstLetter } from "../../../../http_comon";
+
+import { validationFields } from "../validation";
+
 const CategoryUpdate = () => {
+    const { t } = useTranslation();
+
     const { GetCategoryById, GetCategoryForSelect, UpdateCategory } = useActions();
     const { selectedCategory, categoriesForSelect } = useTypedSelector((store) => store.category);
 
@@ -90,7 +95,7 @@ const CategoryUpdate = () => {
 
             <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ py: 1 }}>
                 <Typography variant="h4" gutterBottom sx={{ my: "auto" }}>
-                    Category Update
+                    {t('pages.admin.category.updateTitle')}
                 </Typography>
             </Stack>
 
@@ -103,14 +108,14 @@ const CategoryUpdate = () => {
                     <FormikProvider value={formik} >
                         <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
                             <Grid container spacing={2}>
-                                <Grid container item xs={10}>
+                                <Grid container item xs={10} spacing={2}>
                                     <Grid item xs={6}>
                                         <TextFieldFirstStyle
                                             fullWidth
                                             autoComplete="englishName"
                                             variant="standard"
                                             type="text"
-                                            label="English name"
+                                            label={t('validationProps.englishName')}
                                             {...getFieldProps('englishName')}
                                             error={Boolean(touched.englishName && errors.englishName)}
                                             helperText={touched.englishName && errors.englishName}
@@ -122,7 +127,7 @@ const CategoryUpdate = () => {
                                             autoComplete="ukrainianName"
                                             variant="standard"
                                             type="text"
-                                            label="Ukrainian name"
+                                            label={t('validationProps.englishName')}
                                             {...getFieldProps('ukrainianName')}
                                             error={Boolean(touched.ukrainianName && errors.ukrainianName)}
                                             helperText={touched.ukrainianName && errors.ukrainianName}
@@ -134,7 +139,7 @@ const CategoryUpdate = () => {
                                             variant="standard"
                                             autoComplete="urlSlug"
                                             type="text"
-                                            label="Url slug"
+                                            label={t('validationProps.urlSlug')}
                                             {...getFieldProps('urlSlug')}
                                             error={Boolean(touched.urlSlug && errors.urlSlug)}
                                             helperText={touched.urlSlug && errors.urlSlug}
@@ -142,7 +147,7 @@ const CategoryUpdate = () => {
                                     </Grid>
                                     <Grid item xs={12}>
                                         <AutocompleteComponent
-                                            label="Categoty parent"
+                                            label={t('validationProps.categotyParent')}
                                             name="parentId"
                                             error={errors.parentId}
                                             touched={touched.parentId}
@@ -176,7 +181,7 @@ const CategoryUpdate = () => {
                                 variant="contained"
                                 disabled={isSubmitting}
                             >
-                                Update
+                                {t('pages.admin.main.btnUpdate')}
                             </Button>
                         </Form>
                     </FormikProvider>

@@ -1,6 +1,8 @@
 import {
     ConfirmEmailActionTypes,
     EmailConfirmAction,
+    OrderAction,
+    OrderActionTypes,
     ProfileAction,
     ProfileActionTypes,
     ProfileState,
@@ -25,11 +27,14 @@ const initialState: ProfileState = {
         photo: "",
         isEmailConfirmed: false,
         isPhoneConfirmed: false,
+        isFacebookConnected: false,
+        isGoogleConnected: false,
         hasPassword: false,
-    }
+    },
+    orderProducts: []
 }
 
-export const profileReducer = (state = initialState, action: ProfileAction | EmailConfirmAction): ProfileState => {
+export const profileReducer = (state = initialState, action: ProfileAction | EmailConfirmAction | OrderAction): ProfileState => {
     switch (action.type) {
         case ProfileActionTypes.GET_PROFILE:
             return {
@@ -43,6 +48,27 @@ export const profileReducer = (state = initialState, action: ProfileAction | Ema
                     ...state.userInfo,
                     isEmailConfirmed: action.payload
                 }
+            }
+        case ProfileActionTypes.GOOGLE_CONNECT_SUCCESS:
+            return {
+                ...state,
+                userInfo: {
+                    ...state.userInfo,
+                    isGoogleConnected: true
+                },
+            }
+        case ProfileActionTypes.FACEBOOK_CONNECT_SUCCESS:
+            return {
+                ...state,
+                userInfo: {
+                    ...state.userInfo,
+                    isFacebookConnected: true
+                },
+            }
+        case OrderActionTypes.GET_ORDER_PRODUCTS:
+            return {
+                ...state,
+                orderProducts: action.payload,
             }
         default:
             return state;

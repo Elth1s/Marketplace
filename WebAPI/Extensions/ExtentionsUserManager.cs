@@ -60,6 +60,51 @@ namespace WebAPI.Extensions
                                          cancellationToken);
             return query > 0;
         }
+
+        public static async Task<bool> IsOrderedInShopByUserAsync(
+            this UserManager<AppUser> userManager,
+            string userId,
+            int shopId,
+            CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            var query = await userManager.Users
+                                         .Where(u => u.Id == userId)
+                                         .Include(u => u.Orders)
+                                         .ThenInclude(o => o.OrderProducts)
+                                         .ThenInclude(op => op.Product)
+                                         .CountAsync(u => u.Orders
+                                                           .Any(o => o.OrderProducts
+                                                           .Any(op => op.Product.ShopId == shopId)),
+                                         cancellationToken);
+            return query > 0;
+        }
+
+        public static async Task<AppUser> GetByIdWithIncludeInfo(
+            this UserManager<AppUser> userManager,
+            string userId,
+            CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            var user = await userManager.Users
+                                         .Where(x => x.Id == userId)
+                                         .Include(x => x.Shop)
+                                         .Include(x => x.BasketItems)
+                                         .Include(x => x.RefreshTokens)
+                                         .Include(x => x.CharacteristicGroups)
+                                         .Include(x => x.CharacteristicNames)
+                                         .Include(x => x.CharacteristicValues)
+                                         .Include(x => x.Reviews)
+                                         .Include(x => x.ReviewReplies)
+                                         .Include(x => x.ReviewVotes)
+                                         .Include(x => x.Questions)
+                                         .Include(x => x.QuestionReplies)
+                                         .Include(x => x.QuestionVotes)
+                                         .Include(x => x.Orders)
+                                         .SingleOrDefaultAsync(cancellationToken);
+            return user;
+        }
+
     }
 }
 

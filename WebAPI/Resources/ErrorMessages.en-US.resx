@@ -330,4 +330,25 @@
   <data name="BasketItemExist" xml:space="preserve">
     <value>Product already in basket</value>
   </data>
+  <data name="DeliveryTypeNotFound" xml:space="preserve">
+    <value>Delivery type was not found</value>
+  </data>
+  <data name="DeliveryTypeWithEnglishNameExist" xml:space="preserve">
+    <value>Delivery type  with this english name already exist</value>
+  </data>
+  <data name="DeliveryTypeWithUkrainianNameExist" xml:space="preserve">
+    <value>Delivery type  with this ukrainian name already exist</value>
+  </data>
+  <data name="FacebookAccountAlreadyConnectedUser" xml:space="preserve">
+    <value>This account Facebook already connected to another user</value>
+  </data>
+  <data name="FacebookConnected" xml:space="preserve">
+    <value>You have already connected your Facebook account</value>
+  </data>
+  <data name="GoogleAccountAlreadyConnectedUser" xml:space="preserve">
+    <value>This account Google already connected to another user</value>
+  </data>
+  <data name="GoogleConnected" xml:space="preserve">
+    <value>You have already connected your Google account</value>
+  </data>
 </root>

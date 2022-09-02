@@ -8,21 +8,16 @@ import { AuthAvatar } from '../../pages/auth/styled';
 
 import { google } from "../../assets/icons"
 
-const clientId = "776665906575-0a864tctbrd5t6h6m8j84oktpm75jhng.apps.googleusercontent.com";
 
-interface Props {
-    dialogClose: any
-}
-
-const GoogleExternalLogin: FC<Props> = ({ dialogClose }) => {
-    const { GoogleExternalLogin } = useActions();
+const GoogleExternalLogin = () => {
+    const { GoogleExternalLogin, AuthDialogChange } = useActions();
 
     const navigate = useNavigate();
 
     useEffect(() => {
         const start = () => {
             gapi.client.init({
-                clientId: clientId,
+                clientId: process.env.REACT_APP_GOOGLE_CLIENT_ID,
                 scope: 'Profile',
             });
         }
@@ -32,7 +27,7 @@ const GoogleExternalLogin: FC<Props> = ({ dialogClose }) => {
     const handleGoogleSignIn = async (res: GoogleLoginResponse | any) => {
         try {
             await GoogleExternalLogin({ token: res.tokenId });
-            dialogClose();
+            AuthDialogChange();
             navigate("/");
 
         } catch (exception) {
@@ -46,7 +41,7 @@ const GoogleExternalLogin: FC<Props> = ({ dialogClose }) => {
 
     return (
         <GoogleLogin
-            clientId={clientId}
+            clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID as string}
             buttonText="Sign In"
             onSuccess={handleGoogleSignIn}
             onFailure={onLoginFailure}

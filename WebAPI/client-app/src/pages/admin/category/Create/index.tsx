@@ -6,6 +6,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import { Form, FormikProvider, useFormik } from "formik";
 import { LoadingButton } from "@mui/lab";
@@ -24,6 +25,8 @@ import { TextFieldFirstStyle } from "../../../../components/TextField/styled";
 import { toLowerFirstLetter } from "../../../../http_comon";
 
 const CategoryCreate = () => {
+    const { t } = useTranslation();
+
     const { GetCategoryForSelect, CreateCategory } = useActions();
     const [loading, setLoading] = useState<boolean>(false);
 
@@ -96,7 +99,7 @@ const CategoryCreate = () => {
 
             <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ py: 1 }}>
                 <Typography variant="h4" gutterBottom sx={{ my: "auto" }}>
-                    Create Category
+                    {t('pages.admin.category.createTitle')}
                 </Typography>
             </Stack>
 
@@ -108,14 +111,14 @@ const CategoryCreate = () => {
                 <Box sx={{ mt: 3 }} >
                     <FormikProvider value={formik} >
                         <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-                            <Grid container spacing={2}>
-                                <Grid container item xs={10}>
+                            <Grid container rowSpacing={2}>
+                                <Grid container item xs={10} columnSpacing={2}>
                                     <Grid item xs={6}>
                                         <TextFieldFirstStyle
                                             fullWidth
                                             variant="standard"
                                             type="text"
-                                            label="English name"
+                                            label={t('validationProps.englishName')}
                                             {...getFieldProps('englishName')}
                                             error={Boolean(touched.englishName && errors.englishName)}
                                             helperText={touched.englishName && errors.englishName}
@@ -126,7 +129,7 @@ const CategoryCreate = () => {
                                             fullWidth
                                             variant="standard"
                                             type="text"
-                                            label="Ukrainian name"
+                                            label={t('validationProps.ukrainianName')}
                                             {...getFieldProps('ukrainianName')}
                                             error={Boolean(touched.ukrainianName && errors.ukrainianName)}
                                             helperText={touched.ukrainianName && errors.ukrainianName}
@@ -137,7 +140,7 @@ const CategoryCreate = () => {
                                             fullWidth
                                             variant="standard"
                                             type="text"
-                                            label="Url slug"
+                                            label={t('validationProps.urlSlug')}
                                             {...getFieldProps('urlSlug')}
                                             error={Boolean(touched.urlSlug && errors.urlSlug)}
                                             helperText={touched.urlSlug && errors.urlSlug}
@@ -145,7 +148,7 @@ const CategoryCreate = () => {
                                     </Grid>
                                     <Grid item xs={12}>
                                         <AutocompleteComponent
-                                            label="Categoty parent"
+                                            label={t('validationProps.categotyParent')}
                                             name="parentId"
                                             error={errors.parentId}
                                             touched={touched.parentId}
@@ -181,7 +184,7 @@ const CategoryCreate = () => {
                                 variant="contained"
                                 loading={isSubmitting}
                             >
-                                Create
+                                {t('pages.admin.main.btnCreate')}
                             </LoadingButton>
                         </Form>
                     </FormikProvider>

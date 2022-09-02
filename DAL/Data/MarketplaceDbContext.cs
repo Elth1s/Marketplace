@@ -1,6 +1,7 @@
 ﻿using DAL.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using DayOfWeek = DAL.Entities.DayOfWeek;
 
 namespace DAL.Data
 {
@@ -30,12 +31,15 @@ namespace DAL.Data
         public DbSet<City> Cities { get; set; }
 
         public DbSet<Shop> Shops { get; set; }
+        public DbSet<DayOfWeek> DaysOfWeek { get; set; }
+        public DbSet<ShopScheduleItem> ShopScheduleItems { get; set; }
 
         public DbSet<BasketItem> BasketItems { get; set; }
 
         public DbSet<OrderStatus> OrderStatuses { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderProduct> OrderProducts { get; set; }
+        public DbSet<DeliveryType> DeliveryTypes { get; set; }
 
         public DbSet<Unit> Units { get; set; }
 
@@ -60,6 +64,8 @@ namespace DAL.Data
         public DbSet<FilterNameTranslation> FilterNameTranslations { get; set; }
         public DbSet<FilterValueTranslation> FilterValueTranslations { get; set; }
         public DbSet<CategoryTranslation> CategoryTranslations { get; set; }
+        public DbSet<DeliveryTypeTranslation> DeliveryTypeTranslations { get; set; }
+        public DbSet<DayOfWeekTranslation> DayOfWeekTranslations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -76,6 +82,7 @@ namespace DAL.Data
                       .WithOne(s => s.User)
                       .HasForeignKey<Shop>(s => s.UserId);
             });
+
             builder.Entity<Shop>()
                    .HasOne(s => s.User)
                    .WithOne(ap => ap.Shop)
@@ -90,32 +97,40 @@ namespace DAL.Data
                    .IsUnique();
 
             builder.Entity<UnitTranslation>()
-                  .HasIndex(c => new { c.UnitId, c.LanguageId })
-                  .IsUnique();
+                   .HasIndex(c => new { c.UnitId, c.LanguageId })
+                   .IsUnique();
 
             builder.Entity<OrderStatusTranslation>()
-                              .HasIndex(c => new { c.OrderStatusId, c.LanguageId })
-                              .IsUnique();
+                   .HasIndex(c => new { c.OrderStatusId, c.LanguageId })
+                   .IsUnique();
 
             builder.Entity<ProductStatusTranslation>()
-                  .HasIndex(c => new { c.ProductStatusId, c.LanguageId })
-                  .IsUnique();
+                   .HasIndex(c => new { c.ProductStatusId, c.LanguageId })
+                   .IsUnique();
 
             builder.Entity<FilterGroupTranslation>()
-                  .HasIndex(c => new { c.FilterGroupId, c.LanguageId })
-                  .IsUnique();
+                   .HasIndex(c => new { c.FilterGroupId, c.LanguageId })
+                   .IsUnique();
 
             builder.Entity<FilterNameTranslation>()
-                  .HasIndex(c => new { c.FilterNameId, c.LanguageId })
-                  .IsUnique();
+                   .HasIndex(c => new { c.FilterNameId, c.LanguageId })
+                   .IsUnique();
 
             builder.Entity<FilterValueTranslation>()
-                  .HasIndex(c => new { c.FilterValueId, c.LanguageId })
-                  .IsUnique();
+                   .HasIndex(c => new { c.FilterValueId, c.LanguageId })
+                   .IsUnique();
 
             builder.Entity<CategoryTranslation>()
-                      .HasIndex(c => new { c.CategoryId, c.LanguageId })
-                      .IsUnique();
+                   .HasIndex(c => new { c.CategoryId, c.LanguageId })
+                   .IsUnique();
+
+            builder.Entity<DeliveryTypeTranslation>()
+                   .HasIndex(c => new { c.DeliveryTypeId, c.LanguageId })
+                   .IsUnique();
+
+            builder.Entity<DayOfWeekTranslation>()
+                   .HasIndex(c => new { c.DayOfWeekId, c.LanguageId })
+                   .IsUnique();
 
             builder.Entity<BasketItem>().HasIndex(b => new { b.ProductId, b.UserId }).IsUnique();
         }

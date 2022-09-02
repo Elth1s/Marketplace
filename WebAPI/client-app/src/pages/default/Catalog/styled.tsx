@@ -73,7 +73,8 @@ export const PaginationItemStyle = styled(PaginationItem)(({ theme }) => ({
 
 export const ShowMoreButton = styled(Button)(({ theme }) => ({
     color: "inherit",
-    fontSize: "30px",
+    fontSize: "24px",
+    fontWeight: "bold",
     textTransform: "none",
     "&:hover": {
         background: "transparent"
@@ -82,6 +83,6 @@ export const ShowMoreButton = styled(Button)(({ theme }) => ({
         backgroundColor: "transparent"
     },
     "& .MuiButton-startIcon>*:nth-of-type(1)": {
-        fontSize: "30px"
+        fontSize: "25px"
     }
 }));

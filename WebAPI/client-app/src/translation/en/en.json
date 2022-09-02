@@ -1,5 +1,14 @@
 {
     "common": {
+        "props": {
+            "fullName": "Full name",
+            "name": "Name",
+            "email": "Email",
+            "advantages": "Advantages",
+            "disadvantages": "Disdvantages",
+            "comment": "Review",
+            "videoURL": "Video URL"
+        },
         "containers": {
             "default": {
                 "header": {
@@ -42,12 +51,14 @@
                     "filterNames": "Filter names",
                     "filterValues": "Filter values",
                     "products": "Products",
+                    "deliveryTypes": "Delivery types",
                     "productStatuses": "Product statuses",
                     "shops": "Shops",
                     "countries": "Countries",
                     "cities": "Cities",
                     "units": "Units",
-                    "users": "Users"
+                    "users": "Users",
+                    "orderStatuses": "Order statuses"
                 },
                 "table": {
                     "rowsPerPage": "Shows"
@@ -59,6 +70,8 @@
                     "urlSlug": "URL slug",
                     "image": "Image",
                     "icon": "Icon",
+                    "darkIcon": "Dark icon",
+                    "lightIcon": "Light icon",
                     "parentCategory": "Parent category",
                     "characteristicGroup": "Characteristic group",
                     "characteristicName": "Characteristic name",
@@ -85,7 +98,51 @@
             }
         },
         "pages": {
+            "admin": {
+                "main": {
+                    "btnCreate": "Create",
+                    "btnСancel": "Сancel",
+                    "btnUpdate": "Update"
+                },
+                "category": {
+                    "createTitle": "Create category",
+                    "updateTitle": "Update category"
+                },
+                "city": {
+                    "createTitle": "Create city",
+                    "updateTitle": "Update city"
+                },
+                "country": {
+                    "createTitle": "Create country",
+                    "updateTitle": "Update country"
+                },
+                "filterGroup": {
+                    "createTitle": "Create filter group",
+                    "updateTitle": "Update filter group"
+                },
+                "filterName": {
+                    "createTitle": "Create filter name",
+                    "updateTitle": "Update filter name"
+                },
+                "filterValue": {
+                    "createTitle": "Create filter value",
+                    "updateTitle": "Update filter value"
+                },
+                "orderStatus": {
+                    "createTitle": "Create order status",
+                    "updateTitle": "Update order status"
+                },
+                "productStatus": {
+                    "createTitle": "Create product status",
+                    "updateTitle": "Update product status"
+                },
+                "unit": {
+                    "createTitle": "Create unit",
+                    "updateTitle": "Update unit"
+                }
+            },
             "home": {
+                "allCategories": "All categories",
                 "novelty": {
                     "title": "Novelty",
                     "button": "All novelties"
@@ -147,7 +204,7 @@
                     "allAboutTheProduct": "All about the product",
                     "characteristics": "Characteristics",
                     "reviews": "Reviews",
-                    "question": "Question"
+                    "questions": "Question"
                 },
                 "seller": "Seller",
                 "sellerRating": "Seller rating",
@@ -161,9 +218,33 @@
                 "reviews": "Reviews",
                 "addReview": "Add review",
                 "moreReviews": "More reviews",
-                "similarProducts": "Similar products"
+                "askQuestion": "Ask a question",
+                "moreQuestions": "More qustions",
+                "similarProducts": "Similar products",
+                "reviewForm": {
+                    "generalImpression": "General impression",
+                    "attachPhoto": "Attach photo",
+                    "sendBtn": "Send"
+                } 
             },
             "seller": {
+                "main": {
+                    "btnCreate": "Create",
+                    "btnСancel": "Сancel",
+                    "btnUpdate": "Update"
+                },
+                "characteristicGroup": {
+                    "createTitle": "Create characteristic group",
+                    "updateTitle": "Update characteristic group"
+                },
+                "characteristicName": {
+                    "createTitle": "Create characteristic name",
+                    "updateTitle": "Update characteristic name"
+                },
+                "characteristicValue": {
+                    "createTitle": "Create characteristic value",
+                    "updateTitle": "Update characteristic value"
+                },
                 "title": "Seller",
                 "tabs": {
                     "about": "About",
@@ -203,9 +284,28 @@
                     "information": "Information relevance",
                     "fullName": "Full Name",
                     "email": "Email",
-                    "review": "Review",
-                    "dialogActions": "Send"
+                    "comment": "Comment",
+                    "dialogActions": "Send",
+                    "exceptions": {
+                        "shopIdError": "Something went wrong",
+                        "RatingWarning": "Set your overview"
+                    }
                 }
+            },
+            "ordering": {
+                "title": "Оформлення замовлення",
+                "contactInfo": "Контактні дані",
+                "city": "Ваше місто",
+                "inGeneral": "Загалом",
+                "countProductsOne": "товар",
+                "countProductsLessFive": "товари",
+                "countProducts": "товарів",
+                "amountPayable": "Разом до оплати",
+                "checkout": "Оформити замовлення",
+                "order": "Замовлення",
+                "sellerProducts": "Товари продавця",
+                "delivery": "Спосіб доставки",
+                "payment": "Оплата"
             }
         },
         "components": {
@@ -234,11 +334,44 @@
                     "urlSlugError": "Something went wrong",
                     "productRatingWarning": "Set your overview"
                 }
+            },
+            "questionDialog": {
+                "title": "Ask a question",
+                "button": "Send",
+                "exceptions": {
+                    "urlSlugError": "Something went wrong"
+                }
             }
         },
         "toastTitles": {
             "error": "Error",
             "warning": "Warning"
+        },
+        "validationProps": {
+            "englishName": "English name",
+            "ukrainianName": "Ukrainian name",
+            "englishMeasure": "English measure",
+            "ukrainianMeasure": "Ukrainian measure",
+            "englishValue": "English value",
+            "ukrainianValue": "Ukrainian value",
+            "urlSlug": "URL slug",
+            "categotyParent": "Categoty parent",
+            "min": "Min",
+            "max": "Max",
+            "filterName": "Filter name",
+            "code": "Code",
+            "filterGroup": "Filter group",
+            "unitMeasure": "Unit measure",
+            "country": "Country",
+            "name": "Name",
+            "characteristicGroup": "Characteristic group",
+            "value": "Value",
+            "characteristicName": "Characteristic name",
+            "fullName": "Full Name",
+            "email": "Email",
+            "advantages": "Advantages",
+            "disadvantages": "Disdvantages",
+            "comment": "Ccomment"
         }
     }
 }

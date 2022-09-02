@@ -8,20 +8,15 @@ import { ServerError } from '../../store/types';
 
 import { facebook } from "../../assets/icons";
 import { FC } from 'react';
-const appId = "487664976465559";
 
-interface Props {
-    dialogClose: any
-}
-
-const FacebookExternalLogin: FC<Props> = ({ dialogClose }) => {
-    const { FacebookExternalLogin } = useActions();
+const FacebookExternalLogin = () => {
+    const { FacebookExternalLogin, AuthDialogChange } = useActions();
     const navigate = useNavigate();
 
     const responseFacebook = async (res: ReactFacebookLoginInfo) => {
         try {
             await FacebookExternalLogin({ token: res.accessToken });
-            dialogClose();
+            AuthDialogChange();
             navigate("/");
 
         } catch (exception) {
@@ -31,7 +26,7 @@ const FacebookExternalLogin: FC<Props> = ({ dialogClose }) => {
 
     return (
         <FacebookLogin
-            appId={appId}
+            appId={process.env.REACT_APP_FACEBOOK_APP_ID as string}
             callback={responseFacebook}
             render={renderProps => (
                 <AuthAvatar onClick={renderProps.onClick} sx={{ cursor: "pointer", marginLeft: "40px" }} src={facebook} ></AuthAvatar>

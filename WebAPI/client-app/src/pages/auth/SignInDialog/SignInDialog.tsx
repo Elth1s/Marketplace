@@ -35,13 +35,12 @@ import FacebookExternalLogin from '../../../components/Facebook';
 import { black_eye, eye_off } from "../../../assets/icons";
 
 interface Props {
-    dialogClose: any,
     changeDialog: any,
     forgotPasswordOpen: any
 }
 
-const SignInDialog: FC<Props> = ({ dialogClose, changeDialog, forgotPasswordOpen }) => {
-    const { LoginUser } = useActions();
+const SignInDialog: FC<Props> = ({ changeDialog, forgotPasswordOpen }) => {
+    const { LoginUser, AuthDialogChange } = useActions();
     const { executeRecaptcha } = useGoogleReCaptcha();
 
     const navigate = useNavigate();
@@ -60,7 +59,7 @@ const SignInDialog: FC<Props> = ({ dialogClose, changeDialog, forgotPasswordOpen
             const reCaptchaToken = await executeRecaptcha();
             try {
                 await LoginUser(values, reCaptchaToken);
-                dialogClose();
+                AuthDialogChange();
                 navigate("/");
                 //toast.success('Login Success!');
             }
@@ -101,7 +100,7 @@ const SignInDialog: FC<Props> = ({ dialogClose, changeDialog, forgotPasswordOpen
                 </Typography>
                 <IconButton
                     color="inherit"
-                    onClick={dialogClose}
+                    onClick={AuthDialogChange}
                     sx={{
                         position: 'absolute',
                         right: 20,
@@ -160,7 +159,7 @@ const SignInDialog: FC<Props> = ({ dialogClose, changeDialog, forgotPasswordOpen
                             <Grid item xs={12} sx={{ width: "100%", display: "flex", justifyContent: "space-between" }} >
                                 <Typography variant='subtitle1' lineHeight="25px" color="#7e7e7e" sx={{ cursor: "pointer" }}
                                     onClick={() => {
-                                        dialogClose();
+                                        AuthDialogChange();
                                         forgotPasswordOpen();
                                     }}
                                 >
@@ -178,8 +177,8 @@ const SignInDialog: FC<Props> = ({ dialogClose, changeDialog, forgotPasswordOpen
                                 <Box sx={{ width: "98px", height: "14px", borderBottom: "2px solid #000" }} />
                             </Grid>
                             <Grid item xs={12} display="flex" justifyContent="center" >
-                                <GoogleExternalLogin dialogClose={dialogClose} />
-                                <FacebookExternalLogin dialogClose={dialogClose} />
+                                <GoogleExternalLogin />
+                                <FacebookExternalLogin />
                             </Grid>
                         </Grid>
                     </DialogContent>

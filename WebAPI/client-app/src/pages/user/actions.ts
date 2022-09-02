@@ -1,14 +1,17 @@
 import axios, { AxiosError } from "axios"
 import { Dispatch } from "react"
-import http, { baseURL } from "../../http_comon"
+import http from "../../http_comon"
 import { ServerError } from "../../store/types"
 import { AuthUser } from "../auth/actions"
-import { AuthAction } from "../auth/types"
+import { AuthAction, IExternalLoginModel } from "../auth/types"
 import {
     ConfirmEmailActionTypes,
     EmailConfirmAction,
     IConfirmEmail,
+    IOrderProducts,
     IProfile,
+    OrderAction,
+    OrderActionTypes,
     ProfileAction,
     ProfileActionTypes,
 } from "./types"
@@ -106,10 +109,10 @@ export const SendConfirmEmail = () => {
 export const IsEmailConfirmed = () => {
     return async (dispatch: Dispatch<EmailConfirmAction>) => {
         try {
-            let res = await http.get(`/api/User/IsEmailConfirmed`)
+            let response = await http.get(`/api/User/IsEmailConfirmed`)
             dispatch({
                 type: ConfirmEmailActionTypes.IS_EMAIL_CONFIRMED,
-                payload: res.data
+                payload: response.data
             })
             return Promise.resolve();
         }
@@ -121,6 +124,58 @@ export const IsEmailConfirmed = () => {
                 }
             }
             return Promise.reject(error)
+        }
+    }
+}
+
+export const GetOrderProducts = () => {
+    return async (dispatch: Dispatch<OrderAction>) => {
+        try {
+            let response = await http.get<Array<IOrderProducts>>(`/api/BasketItem/GetBasketItemsForOrder`)
+            dispatch({
+                type: OrderActionTypes.GET_ORDER_PRODUCTS,
+                payload: response.data
+            })
+            return Promise.resolve();
+        }
+        catch (error) {
+            if (axios.isAxiosError(error)) {
+                const serverError = error as AxiosError<ServerError>;
+                if (serverError && serverError.response) {
+                    return Promise.reject(serverError.response.data);
+                }
+            }
+            return Promise.reject(error)
+        }
+    }
+}
+
+export const GoogleConnect = (data: IExternalLoginModel) => {
+    return async (dispatch: Dispatch<ProfileAction>) => {
+        try {
+            await http.post('api/User/GoogleConnect', data)
+            dispatch({
+                type: ProfileActionTypes.GOOGLE_CONNECT_SUCCESS,
+            })
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
+        }
+    }
+}
+
+export const FacebookConnect = (data: IExternalLoginModel) => {
+    return async (dispatch: Dispatch<ProfileAction>) => {
+        try {
+            await http.post('api/User/FacebookConnect', data)
+            dispatch({
+                type: ProfileActionTypes.FACEBOOK_CONNECT_SUCCESS,
+            })
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
         }
     }
 }

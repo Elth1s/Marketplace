@@ -15,7 +15,7 @@ namespace WebAPI.Controllers
     /// <seealso cref="ControllerBase" />
     [Route("api/[controller]")]
     [ApiController]
-    public class SaleController: ControllerBase
+    public class SaleController : ControllerBase
     {
         private string UserId => User?.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -88,7 +88,7 @@ namespace WebAPI.Controllers
         /// <summary>
         /// Delete an existing sale
         /// </summary>
-        /// <param name="id">Sale identifier</param>
+        /// <param name="saleId">Sale identifier</param>
         /// <response code="200">Sale update completed successfully</response>
         /// <response code="401">You are not authorized</response>
         /// <response code="404">Sale not found</response>
@@ -98,7 +98,7 @@ namespace WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize]
-        [HttpDelete("Delete/{id}")]
+        [HttpDelete("Delete/{saleId}")]
         public async Task<IActionResult> DeleteSale(int saleId)
         {
             await _saleService.DeleteSaleAsync(saleId);
@@ -106,6 +106,6 @@ namespace WebAPI.Controllers
         }
 
 
-       
+
     }
 }

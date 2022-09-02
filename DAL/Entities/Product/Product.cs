@@ -9,6 +9,8 @@ namespace DAL.Entities
         public float Price { get; set; }
         public int Count { get; set; }
         public Guid UrlSlug { get; set; }
+        public bool IsDeleted { get; set; }
+
         public int Discount { get; set; }
         public DateTime DiscoundEnd { get; set; }
 

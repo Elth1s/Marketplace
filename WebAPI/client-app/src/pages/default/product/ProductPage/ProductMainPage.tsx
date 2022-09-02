@@ -22,7 +22,8 @@ import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import { arrow_right, buy_cart, credit_card, dollar_sign, orange_heart, package_delivery, truck_delivery } from "../../../../assets/icons";
 import { useActions } from "../../../../hooks/useActions";
 
-import ShowInfo from "../../ShopInfo"
+import ShowInfo from "../../ShortSellerInfo"
+import ReviewsForm from "../ReviewForm"
 
 interface Props {
     moveToReview: any
@@ -54,9 +55,21 @@ const ProductMainPage: FC<Props> = ({ addInCart, moveToReview }) => {
         }
     };
 
-    console.log(reviews)
     return (
         <>
+            <Typography variant="h1" sx={{ mt: "30px", mb: "15px" }}>{product.name}</Typography>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+                <Typography variant="h4" fontWeight="bold" display="inline" sx={{ marginRight: "70px" }}>{t("pages.product.seller")}: <Typography fontWeight="normal" display="inline" sx={{ fontSize: "20px" }}>{product.shopName}</Typography></Typography>
+                <Typography variant="h4" fontWeight="bold">{t("pages.product.sellerRating")}: </Typography>
+                <RatingStyle
+                    sx={{ ml: 1, fontSize: "30px", mr: "40px" }}
+                    value={4.5}
+                    precision={0.5}
+                    readOnly
+                    icon={<StarRounded sx={{ fontSize: "30px" }} />}
+                    emptyIcon={<StarRounded sx={{ fontSize: "30px" }} />}
+                />
+            </Box>
             <Grid container sx={{ mb: "80px" }}>
                 <Grid item xs={4} sx={{ mt: "84px" }}>
                     <Swiper
@@ -241,45 +254,52 @@ const ProductMainPage: FC<Props> = ({ addInCart, moveToReview }) => {
 
                 <Grid item xs={5}>
                     <Box sx={{ width: "590px", ml: "auto" }}>
-                        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: "40px" }}>
-                            <Typography variant="h1">
-                                {t("pages.product.reviews")}
-                            </Typography>
-                            <AddReview getData={getData} />
-                        </Box>
-                        {reviews?.length != 0 && reviews.map((item, index) => {
-                            return (
-                                <Box key={`main_page_review_${index}`} sx={{ border: "1px solid #7e7e7e", borderRadius: "10px", mb: "20px", px: "33px", pt: "35px", pb: "34px" }}>
-                                    <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                                        <Typography variant="h1">{item.fullName}</Typography>
-                                        <Box>
-                                            <Typography variant="h5" align="center">{item.date}</Typography>
-                                            <RatingStyle
-                                                value={item.productRating}
-                                                precision={0.5}
-                                                readOnly
-                                                sx={{ fontSize: "30px" }}
-                                                icon={<StarRounded sx={{ fontSize: "30px" }} />}
-                                                emptyIcon={<StarRounded sx={{ fontSize: "30px" }} />}
-                                            />
-                                        </Box>
-                                    </Box>
-                                    <Typography variant="h4" sx={{ mt: "21px" }}>{item.comment}</Typography>
+                        {(reviews.length === 0) ? (
+                            <>
+                                <Typography variant="h1">{t("pages.product.reviews")}</Typography>
+                                <ReviewsForm getData={getData} />
+                            </>
+                        ) : (
+                            <>
+                                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: "40px" }}>
+                                    <Typography variant="h1">  {t("pages.product.reviews")} </Typography>
+                                    <AddReview getData={getData} />
                                 </Box>
-                            )
-                        })}
-                        <Box sx={{ width: "100%", display: "flex", justifyContent: "end" }} >
-                            <Box sx={{ display: "flex", cursor: "pointer" }} onClick={moveToReview}>
-                                <Typography variant='h4' color="#7e7e7e">
-                                    {t("pages.product.moreReviews")}
-                                </Typography>
-                                <img
-                                    style={{ width: "24px", height: "24px", marginTop: "auto" }}
-                                    src={arrow_right}
-                                    alt="icon"
-                                />
-                            </Box>
-                        </Box>
+                                {reviews?.length != 0 && reviews.map((item, index) => {
+                                    return (
+                                        <Box key={`main_page_review_${index}`} sx={{ border: "1px solid #7e7e7e", borderRadius: "10px", mb: "20px", px: "33px", pt: "35px", pb: "34px" }}>
+                                            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                                                <Typography variant="h1">{item.fullName}</Typography>
+                                                <Box>
+                                                    <Typography variant="h5" align="center">{item.date}</Typography>
+                                                    <RatingStyle
+                                                        value={item.productRating}
+                                                        precision={0.5}
+                                                        readOnly
+                                                        sx={{ fontSize: "30px" }}
+                                                        icon={<StarRounded sx={{ fontSize: "30px" }} />}
+                                                        emptyIcon={<StarRounded sx={{ fontSize: "30px" }} />}
+                                                    />
+                                                </Box>
+                                            </Box>
+                                            <Typography variant="h4" sx={{ mt: "21px" }}>{item.comment}</Typography>
+                                        </Box>
+                                    )
+                                })}
+                                <Box sx={{ width: "100%", display: "flex", justifyContent: "end" }} >
+                                    <Box sx={{ display: "flex", cursor: "pointer" }} onClick={moveToReview}>
+                                        <Typography variant='h4' color="#7e7e7e">
+                                            {t("pages.product.moreReviews")}
+                                        </Typography>
+                                        <img
+                                            style={{ width: "24px", height: "24px", marginTop: "auto" }}
+                                            src={arrow_right}
+                                            alt="icon"
+                                        />
+                                    </Box>
+                                </Box>
+                            </>
+                        )}
                     </Box>
                 </Grid>
             </Grid>

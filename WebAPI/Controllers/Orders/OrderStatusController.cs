@@ -60,7 +60,7 @@ namespace WebAPI.Controllers.Orders
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
         [HttpGet("Search")]
-        public async Task<IActionResult> SearchCountries([FromQuery] AdminSearchRequest request)
+        public async Task<IActionResult> Search([FromQuery] AdminSearchRequest request)
         {
             var result = await _orderStatusService.SearchOrderStatusesAsync(request);
             return Ok(result);
@@ -172,7 +172,7 @@ namespace WebAPI.Controllers.Orders
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
         [HttpDelete("Delete")]
-        public async Task<IActionResult> DeleteProductStatuses([FromQuery] IEnumerable<int> ids)
+        public async Task<IActionResult> DeleteOrderStatuses([FromQuery] IEnumerable<int> ids)
         {
             await _orderStatusService.DeleteOrderStatusesAsync(ids);
             return Ok(_orderStatusLocalizer["DeleteListSuccess"].Value);

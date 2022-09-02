@@ -20,12 +20,13 @@ namespace WebAPI.Services
         public SaleService(
             UserManager<AppUser> userManager,
             IRepository<Sale> saleRepository,
-            IMapper mapper
-            )
+            IMapper mapper,
+            IRepository<Category> categoryRepository)
         {
             _userManager = userManager;
-            _saleRepository = saleRepository; 
+            _saleRepository = saleRepository;
             _mapper = mapper;
+            _categoryRepository = categoryRepository;
         }
 
         public async Task<IEnumerable<SaleResponse>> GetSalesAsync()
@@ -35,7 +36,7 @@ namespace WebAPI.Services
 
             return _mapper.Map<IEnumerable<SaleResponse>>(sales);
 
-           
+
         }
         public async Task<SaleResponse> GetSaleByIdAsync(int saleId)
         {
@@ -52,18 +53,18 @@ namespace WebAPI.Services
             user.UserNullChecking();
 
             var sale = _mapper.Map<Sale>(request);
- 
+
             var categories = new List<Category>();
             foreach (var item in request.Categories)
             {
-               var category = await _categoryRepository.GetByIdAsync(item);
-                
-               categories.Add(category);
+                var category = await _categoryRepository.GetByIdAsync(item);
+
+                categories.Add(category);
             }
             sale.Categories = categories;
             await _saleRepository.AddAsync(sale);
             await _saleRepository.SaveChangesAsync();
-            
+
         }
 
         public async Task DeleteSaleAsync(int saleId)
@@ -73,9 +74,9 @@ namespace WebAPI.Services
 
             await _saleRepository.DeleteAsync(sale);
             await _saleRepository.SaveChangesAsync();
-            
+
         }
 
-       
+
     }
 }

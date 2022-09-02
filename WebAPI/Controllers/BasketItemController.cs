@@ -6,6 +6,7 @@ using System.Security.Claims;
 using WebAPI.Interfaces;
 using WebAPI.ViewModels.Request.Baskets;
 using WebAPI.ViewModels.Response;
+using WebAPI.ViewModels.Response.Orders;
 
 namespace WebAPI.Controllers
 {
@@ -45,6 +46,25 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetAll()
         {
             var result = await _basketItemService.GetAllAsync(UserId);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Returns baskets by user identifier
+        /// </summary>
+        /// <response code="200">Getting basket completed successfully</response>
+        /// <response code="401">You are not authorized</response>
+        /// <response code="404">Basket not found</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<OrderItemResponse>))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [Authorize]
+        [HttpGet("GetBasketItemsForOrder")]
+        public async Task<IActionResult> GetBasketItemsForOrder()
+        {
+            var result = await _basketItemService.GetBasketItemsForOrderAsync(UserId);
             return Ok(result);
         }
 

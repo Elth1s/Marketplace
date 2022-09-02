@@ -10,6 +10,7 @@ import {
 import {
     ArrowBackIosNewOutlined,
     ArrowForwardIosOutlined,
+    PhotoOutlined,
 } from '@mui/icons-material'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
@@ -24,10 +25,16 @@ import LinkRouter from '../../../components/LinkRouter';
 import { toast } from 'react-toastify';
 
 import { ToastSuccess, ToastError, ToastWarning, ToastInfo } from '../../../components/ToastComponent';
+import { useTypedSelector } from '../../../hooks/useTypedSelector';
+
 
 const HomePage = () => {
-    const [sidebarItems, setSidebarItems] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
     const { t } = useTranslation();
+
+    const { fullCatalogItems } = useTypedSelector(state => state.catalog);
+
+    const [selectedCategory, setSelectedCategory] = useState<number>(-1);
+    const [allCategoriesMouseEnter, setAllCategoriesMouseEnter] = useState<boolean>(false);
 
     const featuresData = [
         {
@@ -60,28 +67,45 @@ const HomePage = () => {
         // toast.info(<ToastInfo title="Info" message="Auth complele" />);
     }, [])
 
+    const isSelected = (index: number) => index == selectedCategory;
+
     return (
         <Box >
             <Grid container>
-                <Grid item xl={4}>
-                    {sidebarItems.map((item, index) => (
-                        <LinkRouter key={index} underline="none" color="unset" to={"/"}>
-                            <ListItem disablePadding style={{ height: "51px" }} >
-                                <ListItemButtonStyle>
-                                    <ListItemIcon sx={{ paddingRight: "24px" }}>
-                                        <img
-                                            style={{ width: "25px", height: "20px" }}
-                                            src={gamepad}
-                                            alt="icon"
-                                        />
-                                    </ListItemIcon>
-                                    <Typography color="#000" fontSize="24px" sx={{ height: "auto" }}>Ноутбуки та комп'ютери</Typography>
-                                </ListItemButtonStyle>
-                            </ListItem>
-                        </LinkRouter>
-                    ))}
+                <Grid item xl={3} onMouseOut={() => setSelectedCategory(-1)}>
+                    {fullCatalogItems && fullCatalogItems.map((row, index) => {
+                        const isItemSelected = isSelected(index);
+                        if (index < 12)
+                            return (
+                                <LinkRouter key={`$catalog_${index}`} underline="none" color="inherit" to={`/catalog/${row.urlSlug}`}>
+                                    <Box sx={{ display: "flex", mb: "20px", alignItems: "center" }} onMouseEnter={() => setSelectedCategory(index)}>
+                                        {row.icon != ""
+                                            ? <img
+                                                style={{ width: "20px", height: "20px", objectFit: "contain", marginRight: "15px" }}
+                                                src={row.icon}
+                                                alt="categoryIcon"
+                                            />
+                                            : <PhotoOutlined color={isItemSelected ? "primary" : "inherit"} sx={{ marginRight: "15px" }} />
+                                        }
+                                        <Typography variant="h4" fontWeight="bold" color={isItemSelected ? "primary" : "inherit"}>{row.name}</Typography>
+                                    </Box>
+                                </LinkRouter>
+                            );
+                    })}
+                    <LinkRouter underline="none" color="inherit" to={`/catalog`}>
+                        <Typography
+                            variant="h4"
+                            fontWeight="bold"
+                            color={allCategoriesMouseEnter ? "primary" : "inherit"}
+                            sx={{ cursor: "pointer" }}
+                            onMouseEnter={() => setAllCategoriesMouseEnter(true)}
+                            onMouseOut={() => setAllCategoriesMouseEnter(false)}
+                        >
+                            {t("pages.home.allCategories")}
+                        </Typography>
+                    </LinkRouter>
                 </Grid>
-                <Grid item xl={8}>
+                <Grid item xl={9}>
                     <img
                         style={{ width: "100%" }}
                         src={homepage}

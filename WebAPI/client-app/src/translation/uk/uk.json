@@ -1,0 +1,382 @@
+{
+    "common": {
+        "props": {
+            "fullName": "Прізвище та ім’я",
+            "name": "ім’я",
+            "email": "Електронна пошта",
+            "advantages": "Переваги",
+            "disadvantages": "Недоліки",
+            "comment": "Відгук",
+            "videoURL": "Відео URL"
+        },
+        "containers": {
+            "default": {
+                "header": {
+                    "catalog": "Каталог",
+                    "searchProducts": "Пошук товарів...",
+                    "userMenu": {
+                        "adminPanel": "Панель Адміна",
+                        "createShop": "Створити Магазин",
+                        "sellerPanel": "Панель Продавця",
+                        "darkTheme": "Темна Тема",
+                        "signIn": "Увійти",
+                        "logOut": "Вийти"
+                    }
+                },
+                "footer": {
+                    "join": "Приєднуйтесь",
+                    "about": {
+                        "title": "Про нас",
+                        "mall": "Про Mall",
+                        "contact-info": "Контакна інформація"
+                    },
+                    "partners": {
+                        "title": "Партнери",
+                        "shafa": "Shafa",
+                        "crafta": "Crafta.ua"
+                    },
+                    "help": {
+                        "title": "Допомога",
+                        "FAQ": "Довідка та FAQ"
+                    }
+                }
+            },
+            "admin_seller": {
+                "sideBar": {
+                    "categories": "Категорії",
+                    "characteristicGroups": "Групи характеристик",
+                    "characteristicNames": "Назви характеристик",
+                    "characteristicValues": "Значення характеристик",
+                    "filterGroups": "Групи фільтрів",
+                    "filterNames": "Назви фільтрів",
+                    "filterValues": "Значення фільтрів",
+                    "products": "Товари",
+                    "productStatuses": "Статуси товарів",
+                    "deliveryTypes": "Типи доставки",
+                    "shops": "Магазини",
+                    "countries": "Країни",
+                    "cities": "Міста",
+                    "units": "Одиниці вимірування",
+                    "users": "Користувачі",
+                    "orderStatuses": "Статуси замовлень"
+                },
+                "table": {
+                    "rowsPerPage": "Показати"
+                },
+                "tableHeadCell": {
+                    "identifier": "Ідентифікатор",
+                    "name": "Назва",
+                    "value": "Значення",
+                    "urlSlug": "Веб адреса",
+                    "image": "Зображення",
+                    "icon": "Значок",
+                    "darkIcon": "Темний значок",
+                    "lightIcon": "Світлий значок",
+                    "parentCategory": "Батківська категорія",
+                    "characteristicGroup": "Група характеристики",
+                    "characteristicName": "Назва характеристики",
+                    "filterGroup": "Група фільтру",
+                    "filterName": "Назва фільтру",
+                    "unitMeasure": "Одиниця вимірування",
+                    "min": "Мінімум",
+                    "max": "Максимум",
+                    "price": "Ціна",
+                    "count": "Кількість",
+                    "productStatus": "Статус продукту",
+                    "category": "Категорія",
+                    "photo": "Фото",
+                    "siteURL": "Веб-адреса",
+                    "city": "Місто",
+                    "code": "Код",
+                    "country": "Країна",
+                    "measure": "Міра",
+                    "firstName": "Ім'я",
+                    "secondName": "Прізвище",
+                    "email": "Електронна пошта",
+                    "phone": "Телефон"
+                }
+            }
+        },
+        "pages": {
+            "admin": {
+                "main": {
+                    "btnCreate": "Створити",
+                    "btnСancel": "Скасувати",
+                    "btnUpdate": "Редагувати"
+                },
+                "category": {
+                    "createTitle": "Створити катигорію",
+                    "updateTitle": "Редагувати катигорію"
+                },
+                "city": {
+                    "createTitle": "Створити місто",
+                    "updateTitle": "Редагувати місто"
+                },
+                "country": {
+                    "createTitle": "Створити країну",
+                    "updateTitle": "Редагувати країну"
+                },
+                "filterGroup": {
+                    "createTitle": "Створити групу фільтрів",
+                    "updateTitle": "Редагувати групу фільтрів"
+                },
+                "filterName": {
+                    "createTitle": "Створити назву фільтра",
+                    "updateTitle": "Редагувати назву фільтра"
+                },
+                "filterValue": {
+                    "createTitle": "Створити значення фільтра",
+                    "updateTitle": "Редагувати значення фільтра"
+                },
+                "orderStatus": {
+                    "createTitle": "Створити статус замовлення",
+                    "updateTitle": "Редагувати статус замовлення"
+                },
+                "productStatus": {
+                    "createTitle": "Створити статус продукту",
+                    "updateTitle": "Редагувати статус продукту"
+                },
+                "unit": {
+                    "createTitle": "Створити одиницю вимірування",
+                    "updateTitle": "Редагувати одиницю вимірування"
+                }
+            },
+            "home": {
+                "allCategories": "Усі категорії",
+                "novelty": {
+                    "title": "Новинки",
+                    "button": "Всі новинки"
+                },
+                "features": {
+                    "deliver": {
+                        "title": "Доставка",
+                        "description": "Самовивіз із нашего магазину, доставка за адресою або у віддлення «Нова Пошта»"
+                    },
+                    "guarantee": {
+                        "title": "Гарантія",
+                        "description": "Сертифіковані товари з офіційною гарантією від виробника"
+                    },
+                    "payment": {
+                        "title": "Оплата",
+                        "description": "Оплатити покупку можливо готівкою, картою чи безготівковим розрахунком."
+                    },
+                    "return": {
+                        "title": "Повернення",
+                        "description": "Повернення товару відбувається протягом 14 днів після покупки, у відповідності із діючим законом."
+                    }
+                }
+            },
+            "notFound": {
+                "title": "Сторінка не знайдена",
+                "descriptionTop": "На жаль, сторінку, яку ви запитували, не вдалося знайти.",
+                "descriptionBottom": "Будь ласка, поверніться на головну сторінку.",
+                "button": "Головна"
+            },
+            "catalog": {
+                "showMore": "Показати ще",
+                "find": "Пошук"
+            },
+            "faq": {
+                "tabs": {
+                    "main": "Головні питання",
+                    "order": "Замовлення",
+                    "deliver": "Доставка",
+                    "return": "Повернення та обмін"
+                }
+            },
+            "contactInfo": {
+                "sellers": {
+                    "title": "Продавцям",
+                    "description": "Маркетплейс Mall представляє значну кількість можливостей для людей, що бажають бути продавцями. Почніть продавати товари та розвивати власний бізнес вже зараз!",
+                    "date": "Робочий час:",
+                    "work": "Пн — Пт: c 9:00 до 18:00",
+                    "weekend": "Сб - Нд: вихідний"
+                },
+                "buyers": {
+                    "title": "Покупцям",
+                    "description": " На Mall товари продають десятки тисяч людей з всієї України. Купуючи товар, ви замовляєте його безпосередньо у однієї з них Зв'язатися з компанією можна за контактною інформацією, вказаною на сторінці товару та на сайті компанії-продавця."
+                },
+                "description": "Якщо у вас є скарги, пропозиції чи коментарі на рахунок роботи маркетплейсу Mall - обов'язково повідомте нам про це по телефону!"
+            },
+            "product": {
+                "title": "Продукт",
+                "menu": {
+                    "allAboutTheProduct": "Все про товар",
+                    "characteristics": "Характеристики",
+                    "reviews": "Відгуки",
+                    "questions": "Запитання"
+                },
+                "seller": "Продавець",
+                "sellerRating": "Рейтинг продавця",
+                "ratings": "оцінок",
+                "sellerContacts": "Контакти продавця",
+                "buy": "Купити",
+                "inBasket": "В кошику",
+                "payment": "Оплата",
+                "delivery": "Доставка",
+                "characterictics": "Характеристики",
+                "reviews": "Відгуки",
+                "addReview": "Додати відгук",
+                "moreReviews": "Більше відгуків",
+                "askQuestion": "Задати питання",
+                "moreQuestions": "Більше питань",
+                "similarProducts": "Схожі товари",
+                "reviewForm": {
+                    "generalImpression": "Загальне враження",
+                    "attachPhoto": "Прикріпити фото",
+                    "sendBtn": "Відправити"
+                }
+            },
+            "seller": {
+                "main": {
+                    "btnCreate": "Створити",
+                    "btnСancel": "Скасувати",
+                    "btnUpdate": "Редагувати"
+                },
+                "characteristicGroup": {
+                    "createTitle": "Створити групу характеристик",
+                    "updateTitle": "Редагувати групу характеристик"
+                },
+                "characteristicName": {
+                    "createTitle": "Створити назву характеристики",
+                    "updateTitle": "Редагувати назву характеристики"
+                },
+                "characteristicValue": {
+                    "createTitle": "Створити значення характеристики",
+                    "updateTitle": "Редагувати значення характеристики"
+                },
+                "title": "Продавець",
+                "tabs": {
+                    "about": "Про продавця",
+                    "product": "Товари продавця",
+                    "reviews": "Відгуки"
+                },
+                "about": {
+                    "rating": {
+                        "title": "Загальний рейтинг",
+                        "assessments": "оцінок"
+                    },
+                    "assessment": {
+                        "title": "Оцінки",
+                        "product": "Актуальність інформації про товар",
+                        "delivery": "Дотримання термінів доставки",
+                        "service": "Якість обслуговування"
+                    },
+                    "schedule": {
+                        "title": "Графік роботи",
+                        "work": "Пн - Пт 08:00 - 21:00",
+                        "weekend": "Сб - Нд Вихідні"
+                    },
+                    "description": {
+                        "title": "Опис магазину"
+                    }
+                },
+                "reviews": {
+                    "service": "Якість обслуговування",
+                    "terms": "Дотримання термінів",
+                    "information": "Актуальність інформації"
+                },
+                "addReview": {
+                    "button": "Додати відгук",
+                    "dialogTitle": "Відправити відгук",
+                    "service": "Якість обслуговування",
+                    "terms": "Дотримання термінів",
+                    "information": "Актуальність інформації",
+                    "fullName": "Прізвище та ім’я",
+                    "email": "Email-адреса",
+                    "comment": "Коментар",
+                    "dialogActions": "Відправити",
+                    "exceptions": {
+                        "shopIdError": "Щось пішло не так",
+                        "RatingWarning": "Вкажіть ваше враження"
+                    }
+                }
+            },
+            "ordering": {
+                "title": "Оформлення замовлення",
+                "contactInfo": "Контактні дані",
+                "city": "Ваше місто",
+                "inGeneral": "Загалом",
+                "countProductsOne": "товар",
+                "countProductsLessFive": "товари",
+                "countProducts": "товарів",
+                "shippingCost": "Вартість доставки",
+                "accordingCarrierTariffs": "за тарифами перевізника ",
+                "amountPayable": "Разом до оплати",
+                "checkout": "Оформити замовлення",
+                "forTheSum": "на суму",
+                "order": "Замовлення",
+                "sellerProducts": "Товари продавця",
+                "count": "Кількість",
+                "price": "Ціна",
+                "delivery": "Спосіб доставки",
+                "payment": "Оплата"
+            }
+        },
+        "components": {
+            "breadcrumbs": {
+                "home": "Головна",
+                "catalog": "Каталог"
+            },
+            "basket": {
+                "title": "Кошик",
+                "order": "Оформити замовлення",
+                "shopping": "За покупками",
+                "basketEmpty": "Кошик порожній",
+                "basketEmptyDescription": "Але це ніколи не пізно виправити"
+            },
+            "reviewItem": {
+                "advantages": "Переваги",
+                "disadvantages": "Недоліки",
+                "reply": "Відповісти",
+                "showReply": "Показати відповіді"
+            },
+            "reviewDialog": {
+                "title": "Відправити відгук",
+                "overview": "Загальне враження",
+                "button": "Відправити",
+                "exceptions": {
+                    "urlSlugError": "Щось пішло не так",
+                    "productRatingWarning": "Вкажіть ваше враження"
+                }
+            },
+            "questionDialog": {
+                "title": "Задати питання",
+                "button": "Відправити",
+                "exceptions": {
+                    "urlSlugError": "Щось пішло не так"
+                }
+            }
+        },
+        "toastTitles": {
+            "error": "Помилка",
+            "warning": "Увага"
+        },
+        "validationProps": {
+            "englishName": "Назва англійською",
+            "ukrainianName": "Назва українською",
+            "englishMeasure": "Міра англійською",
+            "ukrainianMeasure": "Міра українською",
+            "englishValue": "Значення англійською",
+            "ukrainianValue": "Значення українською",
+            "urlSlug": "Веб-адреса",
+            "categotyParent": "Батківська категорія",
+            "min": "Мінімум",
+            "max": "Максимум",
+            "filterName": "Назва фільтру",
+            "code": "Код",
+            "filterGroup": "Група фільтру",
+            "unitMeasure": "Одиниця вимірування",
+            "country": "Країна",
+            "name": "Назва",
+            "characteristicGroup": "Група характеристик",
+            "value": "Значення",
+            "characteristicName": "Назва характеристики",
+            "fullName": "Прізвище та ім’я",
+            "email": "Електронна пошта",
+            "advantages": "Переваги",
+            "disadvantages": "Недоліки",
+            "comment": "Відгук"
+        }
+    }
+}

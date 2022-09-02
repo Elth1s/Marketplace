@@ -38,6 +38,12 @@
         /// <example>"In Process</example>
         public string OrderStatusName { get; set; }
 
+        /// <summary>
+        /// Name of delivery type
+        /// </summary>
+        /// <example>By courier</example>
+        public string DeliveryType { get; set; }
+
 
         public IEnumerable<OrderProductResponse> OrderProductsResponse { get; set; }
 
