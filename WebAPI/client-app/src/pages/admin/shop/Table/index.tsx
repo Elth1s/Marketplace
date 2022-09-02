@@ -70,7 +70,10 @@ const ShopTable = () => {
 
     const onDelete = async () => {
         await DeleteShops(selected);
-        setPage(1);
+        if (page == 1)
+            getData()
+        else
+            await setPage(1);
     }
 
     const handleClick = (event: React.MouseEvent<unknown>, id: number) => {

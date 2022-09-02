@@ -159,9 +159,11 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
-
                     b.HasIndex("UserId");
+
+                    b.HasIndex("ProductId", "UserId")
+                        .IsUnique()
+                        .HasFilter("[UserId] IS NOT NULL");
 
                     b.ToTable("BasketItems", (string)null);
                 });
@@ -174,10 +176,16 @@ namespace DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Icon")
+                    b.Property<string>("ActiveIcon")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DarkIcon")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LightIcon")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("ParentId")
@@ -258,11 +266,16 @@ namespace DAL.Migrations
                     b.Property<int?>("UnitId")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CharacteristicGroupId");
 
                     b.HasIndex("UnitId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("CharacteristicNames", (string)null);
                 });
@@ -278,12 +291,17 @@ namespace DAL.Migrations
                     b.Property<int>("CharacteristicNameId")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CharacteristicNameId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("CharacteristicValues", (string)null);
                 });
@@ -374,6 +392,95 @@ namespace DAL.Migrations
                         .IsUnique();
 
                     b.ToTable("CountryTranslations", (string)null);
+                });
+
+            modelBuilder.Entity("DAL.Entities.DayOfWeek", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DaysOfWeek", (string)null);
+                });
+
+            modelBuilder.Entity("DAL.Entities.DayOfWeekTranslation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("DayOfWeekId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LanguageId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ShortName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LanguageId");
+
+                    b.HasIndex("DayOfWeekId", "LanguageId")
+                        .IsUnique();
+
+                    b.ToTable("DayOfWeekTranslations", (string)null);
+                });
+
+            modelBuilder.Entity("DAL.Entities.DeliveryType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("DarkIcon")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LightIcon")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DeliveryTypes", (string)null);
+                });
+
+            modelBuilder.Entity("DAL.Entities.DeliveryTypeTranslation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("DeliveryTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LanguageId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LanguageId");
+
+                    b.HasIndex("DeliveryTypeId", "LanguageId")
+                        .IsUnique();
+
+                    b.ToTable("DeliveryTypeTranslations", (string)null);
                 });
 
             modelBuilder.Entity("DAL.Entities.FilterGroup", b =>
@@ -582,6 +689,9 @@ namespace DAL.Migrations
                     b.Property<string>("ConsumerSecondName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("DeliveryTypeId")
+                        .HasColumnType("int");
+
                     b.Property<int>("OrderStatusId")
                         .HasColumnType("int");
 
@@ -589,6 +699,8 @@ namespace DAL.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DeliveryTypeId");
 
                     b.HasIndex("OrderStatusId");
 
@@ -682,6 +794,9 @@ namespace DAL.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -1085,6 +1200,82 @@ namespace DAL.Migrations
                     b.ToTable("ShopPhone", (string)null);
                 });
 
+            modelBuilder.Entity("DAL.Entities.ShopReview", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FullName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("InformationRelevanceRating")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ServiceQualityRating")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ShopId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TimelinessRating")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ShopId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ShopReview", (string)null);
+                });
+
+            modelBuilder.Entity("DAL.Entities.ShopScheduleItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("DayOfWeekId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("End")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsWeekend")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ShopId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Start")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DayOfWeekId");
+
+                    b.HasIndex("ShopId");
+
+                    b.ToTable("ShopScheduleItems", (string)null);
+                });
+
             modelBuilder.Entity("DAL.Entities.Unit", b =>
                 {
                     b.Property<int>("Id")
@@ -1123,6 +1314,21 @@ namespace DAL.Migrations
                         .IsUnique();
 
                     b.ToTable("UnitTranslations", (string)null);
+                });
+
+            modelBuilder.Entity("DeliveryTypeShop", b =>
+                {
+                    b.Property<int>("DeliveryTypesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ShopsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DeliveryTypesId", "ShopsId");
+
+                    b.HasIndex("ShopsId");
+
+                    b.ToTable("DeliveryTypeShop", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -1362,7 +1568,7 @@ namespace DAL.Migrations
             modelBuilder.Entity("DAL.Entities.Category", b =>
                 {
                     b.HasOne("DAL.Entities.Category", "Parent")
-                        .WithMany("Childrens")
+                        .WithMany("Children")
                         .HasForeignKey("ParentId");
 
                     b.Navigation("Parent");
@@ -1408,9 +1614,15 @@ namespace DAL.Migrations
                         .WithMany("CharacteristicNames")
                         .HasForeignKey("UnitId");
 
+                    b.HasOne("DAL.Entities.AppUser", "User")
+                        .WithMany("CharacteristicNames")
+                        .HasForeignKey("UserId");
+
                     b.Navigation("CharacteristicGroup");
 
                     b.Navigation("Unit");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("DAL.Entities.CharacteristicValue", b =>
@@ -1421,7 +1633,13 @@ namespace DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("DAL.Entities.AppUser", "User")
+                        .WithMany("CharacteristicValues")
+                        .HasForeignKey("UserId");
+
                     b.Navigation("CharacteristicName");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("DAL.Entities.City", b =>
@@ -1469,6 +1687,44 @@ namespace DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("Country");
+
+                    b.Navigation("Language");
+                });
+
+            modelBuilder.Entity("DAL.Entities.DayOfWeekTranslation", b =>
+                {
+                    b.HasOne("DAL.Entities.DayOfWeek", "DayOfWeek")
+                        .WithMany("DayOfWeekTranslations")
+                        .HasForeignKey("DayOfWeekId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DAL.Entities.Language", "Language")
+                        .WithMany()
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DayOfWeek");
+
+                    b.Navigation("Language");
+                });
+
+            modelBuilder.Entity("DAL.Entities.DeliveryTypeTranslation", b =>
+                {
+                    b.HasOne("DAL.Entities.DeliveryType", "DeliveryType")
+                        .WithMany("DeliveryTypeTranslations")
+                        .HasForeignKey("DeliveryTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DAL.Entities.Language", "Language")
+                        .WithMany("DeliveryTypeTranslations")
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DeliveryType");
 
                     b.Navigation("Language");
                 });
@@ -1579,6 +1835,12 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.Order", b =>
                 {
+                    b.HasOne("DAL.Entities.DeliveryType", "DeliveryType")
+                        .WithMany("Orders")
+                        .HasForeignKey("DeliveryTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("DAL.Entities.OrderStatus", "OrderStatus")
                         .WithMany("Orders")
                         .HasForeignKey("OrderStatusId")
@@ -1588,6 +1850,8 @@ namespace DAL.Migrations
                     b.HasOne("DAL.Entities.AppUser", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId");
+
+                    b.Navigation("DeliveryType");
 
                     b.Navigation("OrderStatus");
 
@@ -1827,6 +2091,42 @@ namespace DAL.Migrations
                     b.Navigation("Shop");
                 });
 
+            modelBuilder.Entity("DAL.Entities.ShopReview", b =>
+                {
+                    b.HasOne("DAL.Entities.Shop", "Shop")
+                        .WithMany("ShopReviews")
+                        .HasForeignKey("ShopId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DAL.Entities.AppUser", "User")
+                        .WithMany("ShopReviews")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Shop");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DAL.Entities.ShopScheduleItem", b =>
+                {
+                    b.HasOne("DAL.Entities.DayOfWeek", "DayOfWeek")
+                        .WithMany("ShopScheduleItems")
+                        .HasForeignKey("DayOfWeekId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DAL.Entities.Shop", "Shop")
+                        .WithMany("ShopSchedule")
+                        .HasForeignKey("ShopId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DayOfWeek");
+
+                    b.Navigation("Shop");
+                });
+
             modelBuilder.Entity("DAL.Entities.UnitTranslation", b =>
                 {
                     b.HasOne("DAL.Entities.Language", "Language")
@@ -1844,6 +2144,21 @@ namespace DAL.Migrations
                     b.Navigation("Language");
 
                     b.Navigation("Unit");
+                });
+
+            modelBuilder.Entity("DeliveryTypeShop", b =>
+                {
+                    b.HasOne("DAL.Entities.DeliveryType", null)
+                        .WithMany()
+                        .HasForeignKey("DeliveryTypesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DAL.Entities.Shop", null)
+                        .WithMany()
+                        .HasForeignKey("ShopsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -1903,6 +2218,10 @@ namespace DAL.Migrations
 
                     b.Navigation("CharacteristicGroups");
 
+                    b.Navigation("CharacteristicNames");
+
+                    b.Navigation("CharacteristicValues");
+
                     b.Navigation("Orders");
 
                     b.Navigation("QuestionReplies");
@@ -1916,13 +2235,15 @@ namespace DAL.Migrations
                     b.Navigation("ReviewVotes");
 
                     b.Navigation("Reviews");
+
+                    b.Navigation("ShopReviews");
                 });
 
             modelBuilder.Entity("DAL.Entities.Category", b =>
                 {
                     b.Navigation("CategoryTranslations");
 
-                    b.Navigation("Childrens");
+                    b.Navigation("Children");
 
                     b.Navigation("Products");
                 });
@@ -1949,6 +2270,20 @@ namespace DAL.Migrations
                     b.Navigation("Cities");
 
                     b.Navigation("CountryTranslations");
+                });
+
+            modelBuilder.Entity("DAL.Entities.DayOfWeek", b =>
+                {
+                    b.Navigation("DayOfWeekTranslations");
+
+                    b.Navigation("ShopScheduleItems");
+                });
+
+            modelBuilder.Entity("DAL.Entities.DeliveryType", b =>
+                {
+                    b.Navigation("DeliveryTypeTranslations");
+
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("DAL.Entities.FilterGroup", b =>
@@ -1979,6 +2314,8 @@ namespace DAL.Migrations
                     b.Navigation("CityTranslations");
 
                     b.Navigation("CountryTranslations");
+
+                    b.Navigation("DeliveryTypeTranslations");
 
                     b.Navigation("FilterGroupTranslations");
 
@@ -2050,6 +2387,10 @@ namespace DAL.Migrations
                     b.Navigation("Phones");
 
                     b.Navigation("Products");
+
+                    b.Navigation("ShopReviews");
+
+                    b.Navigation("ShopSchedule");
 
                     b.Navigation("User");
                 });

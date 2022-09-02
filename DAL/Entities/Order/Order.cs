@@ -12,11 +12,17 @@ namespace DAL.Entities
 
         public int OrderStatusId { get; set; }
         public string UserId { get; set; }
+        public int DeliveryTypeId { get; set; }
+
 
         [ForeignKey(nameof(OrderStatusId))]
         public OrderStatus OrderStatus { get; set; }
+
         [ForeignKey(nameof(UserId))]
         public AppUser User { get; set; }
+
+        [ForeignKey(nameof(DeliveryTypeId))]
+        public DeliveryType DeliveryType { get; set; }
 
         public ICollection<OrderProduct> OrderProducts { get; set; }
     }

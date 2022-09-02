@@ -52,6 +52,7 @@ import FilterValueTable from './pages/admin/filterValue/Table';
 
 import AdminProductTable from './pages/admin/product/Table';
 import ProductStatusTable from './pages/admin/productStatus/Table';
+import DeliveryTypeTable from './pages/admin/deliveryType/Table';
 
 import ShopTable from './pages/admin/shop/Table';
 
@@ -117,7 +118,7 @@ const App = () => {
             <Route path="contact-info" element={<ContactInfo />} />
           </Route>
 
-          <Route path="/seller-info/" element={<SellerInfoLayout />}>
+          <Route path="/seller-info/:shopId" element={<SellerInfoLayout />}>
             <Route index element={<SellerInfo />} />
           </Route>
 
@@ -167,6 +168,7 @@ const App = () => {
 
             <Route path="users" element={<UserTable />} />
             <Route path="orderStatuses" element={<OrderStatusTable />} />
+            <Route path="deliveryTypes" element={<DeliveryTypeTable />} />
           </Route>
 
           <Route path="/confirmEmail" element={<ConfirmEmail />} />

@@ -3,6 +3,9 @@ using Microsoft.Extensions.Localization;
 
 namespace WebAPI.ViewModels.Request.Orders
 {
+    /// <summary>
+    /// Order status class to create order status
+    /// </summary>
     public class OrderStatusRequest
     {
         /// <summary>

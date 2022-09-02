@@ -46,5 +46,15 @@
         /// </summary>
         /// <example>true</example>
         public bool HasPassword { get; set; }
+        /// <summary>
+        /// Is Google account connected
+        /// </summary>
+        /// <example>true</example>
+        public bool IsGoogleConnected { get; set; }
+        /// <summary>
+        /// Is Facebook account connected
+        /// </summary>
+        /// <example>false</example>
+        public bool IsFacebookConnected { get; set; }
     }
 }

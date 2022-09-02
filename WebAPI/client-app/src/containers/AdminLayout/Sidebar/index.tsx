@@ -37,7 +37,8 @@ const Sidebar: FC<IDrawer> = ({ open }) => {
         { lable: `${t('containers.admin_seller.sideBar.shops')}`, path: '/admin/shops', rotate: undefined },
         { lable: `${t('containers.admin_seller.sideBar.countries')}`, path: '/admin/countries', rotate: undefined },
         { lable: `${t('containers.admin_seller.sideBar.cities')}`, path: '/admin/cities', rotate: undefined },
-        { lable: `${t('containers.admin_seller.sideBar.units')}`, path: '/admin/units', rotate: undefined },
+        { lable: `${t('containers.admin_seller.sideBar.users')}`, path: '/admin/users', rotate: undefined },
+        { lable: `${t('containers.admin_seller.sideBar.deliveryTypes')}`, path: '/admin/deliveryTypes', rotate: undefined },
         { lable: `${t('containers.admin_seller.sideBar.users')}`, path: '/admin/users', rotate: undefined },
         { lable: `${t('containers.admin_seller.sideBar.orderStatuses')}`, path: '/admin/orderStatuses', rotate: undefined },
     ]);

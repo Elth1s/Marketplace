@@ -1,5 +1,7 @@
 export enum ProfileActionTypes {
     GET_PROFILE = "GET_PROFILE",
+    GOOGLE_CONNECT_SUCCESS = "GOOGLE_CONNECT_SUCCESS",
+    FACEBOOK_CONNECT_SUCCESS = "FACEBOOK_CONNECT_SUCCESS",
 }
 export enum ConfirmEmailActionTypes {
     CONFIRM_EMAIL = "CONFIRM_EMAIL",
@@ -29,6 +31,8 @@ export interface IProfile {
     photo: string,
     isEmailConfirmed: boolean,
     isPhoneConfirmed: boolean,
+    isGoogleConnected: boolean,
+    isFacebookConnected: boolean,
     hasPassword: boolean
 }
 
@@ -91,13 +95,18 @@ export interface GetProfileAction {
     type: ProfileActionTypes.GET_PROFILE,
     payload: IProfile
 }
+export interface GoogleConnectSuccessAction {
+    type: ProfileActionTypes.GOOGLE_CONNECT_SUCCESS,
+}
+export interface FacebookConnectSuccessAction {
+    type: ProfileActionTypes.FACEBOOK_CONNECT_SUCCESS,
+}
 
 export interface GetOrderProductsAction {
     type: OrderActionTypes.GET_ORDER_PRODUCTS,
     payload: Array<IOrderProducts>
 }
 
-
-export type ProfileAction = GetProfileAction;
+export type ProfileAction = GetProfileAction | GoogleConnectSuccessAction | FacebookConnectSuccessAction;
 export type EmailConfirmAction = ConfirmEmailAction | SendConfirmEmailAction | IsEmailConfirmedAction;
 export type OrderAction = GetOrderProductsAction;

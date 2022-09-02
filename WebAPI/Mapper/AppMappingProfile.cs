@@ -12,6 +12,7 @@ using WebAPI.ViewModels.Request.Orders;
 using WebAPI.ViewModels.Request.Products;
 using WebAPI.ViewModels.Request.Questions;
 using WebAPI.ViewModels.Request.Reviews;
+using WebAPI.ViewModels.Request.Shops;
 using WebAPI.ViewModels.Request.Users;
 using WebAPI.ViewModels.Response;
 using WebAPI.ViewModels.Response.Categories;
@@ -23,6 +24,7 @@ using WebAPI.ViewModels.Response.Orders;
 using WebAPI.ViewModels.Response.Products;
 using WebAPI.ViewModels.Response.Questions;
 using WebAPI.ViewModels.Response.Reviews;
+using WebAPI.ViewModels.Response.Shops;
 using WebAPI.ViewModels.Response.Units;
 using WebAPI.ViewModels.Response.Users;
 
@@ -72,8 +74,12 @@ namespace WebAPI.Mapper
                         vm => vm.CategoryTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).Name))
                 .ForMember(u => u.Image, opt => opt.MapFrom(
                     vm => !string.IsNullOrEmpty(vm.Image) ? String.Concat(ImagePath.RequestCategoriesImagePath, "/", vm.Image) : ""))
-                .ForMember(u => u.Icon, opt => opt.MapFrom(
-                        vm => !string.IsNullOrEmpty(vm.Icon) ? String.Concat(ImagePath.RequestCategoriesImagePath, "/", vm.Icon) : ""))
+                .ForMember(u => u.LightIcon, opt => opt.MapFrom(
+                        vm => !string.IsNullOrEmpty(vm.LightIcon) ? String.Concat(ImagePath.RequestCategoriesImagePath, "/", vm.LightIcon) : ""))
+                .ForMember(u => u.DarkIcon, opt => opt.MapFrom(
+                        vm => !string.IsNullOrEmpty(vm.DarkIcon) ? String.Concat(ImagePath.RequestCategoriesImagePath, "/", vm.DarkIcon) : ""))
+                .ForMember(u => u.ActiveIcon, opt => opt.MapFrom(
+                        vm => !string.IsNullOrEmpty(vm.ActiveIcon) ? String.Concat(ImagePath.RequestCategoriesImagePath, "/", vm.ActiveIcon) : ""))
                 .ForMember(c => c.ParentName, opt => opt.MapFrom(
                         vm => vm.Parent.CategoryTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).Name));
 
@@ -86,8 +92,12 @@ namespace WebAPI.Mapper
             CreateMap<Category, FullCatalogItemResponse>()
                 .ForMember(c => c.Name, opt => opt.MapFrom(
                         vm => vm.CategoryTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).Name))
-                .ForMember(u => u.Icon, opt => opt.MapFrom(
-                        vm => !string.IsNullOrEmpty(vm.Icon) ? String.Concat(ImagePath.RequestCategoriesImagePath, "/", vm.Icon) : ""));
+                .ForMember(u => u.LightIcon, opt => opt.MapFrom(
+                        vm => !string.IsNullOrEmpty(vm.LightIcon) ? String.Concat(ImagePath.RequestCategoriesImagePath, "/", vm.LightIcon) : ""))
+                .ForMember(u => u.DarkIcon, opt => opt.MapFrom(
+                        vm => !string.IsNullOrEmpty(vm.DarkIcon) ? String.Concat(ImagePath.RequestCategoriesImagePath, "/", vm.DarkIcon) : ""))
+                .ForMember(u => u.ActiveIcon, opt => opt.MapFrom(
+                        vm => !string.IsNullOrEmpty(vm.ActiveIcon) ? String.Concat(ImagePath.RequestCategoriesImagePath, "/", vm.ActiveIcon) : ""));
 
             CreateMap<Category, CategoryForSelectResponse>()
                 .ForMember(c => c.Name, opt => opt.MapFrom(
@@ -100,8 +110,12 @@ namespace WebAPI.Mapper
                         vm => vm.CategoryTranslations.FirstOrDefault(c => c.LanguageId == LanguageId.Ukrainian).Name))
                 .ForMember(u => u.Image, opt => opt.MapFrom(
                         vm => !string.IsNullOrEmpty(vm.Image) ? String.Concat(ImagePath.RequestCategoriesImagePath, "/", vm.Image) : ""))
-                .ForMember(u => u.Icon, opt => opt.MapFrom(
-                        vm => !string.IsNullOrEmpty(vm.Icon) ? String.Concat(ImagePath.RequestCategoriesImagePath, "/", vm.Icon) : ""))
+                .ForMember(u => u.LightIcon, opt => opt.MapFrom(
+                        vm => !string.IsNullOrEmpty(vm.LightIcon) ? String.Concat(ImagePath.RequestCategoriesImagePath, "/", vm.LightIcon) : ""))
+                .ForMember(u => u.DarkIcon, opt => opt.MapFrom(
+                        vm => !string.IsNullOrEmpty(vm.DarkIcon) ? String.Concat(ImagePath.RequestCategoriesImagePath, "/", vm.DarkIcon) : ""))
+                .ForMember(u => u.ActiveIcon, opt => opt.MapFrom(
+                        vm => !string.IsNullOrEmpty(vm.ActiveIcon) ? String.Concat(ImagePath.RequestCategoriesImagePath, "/", vm.ActiveIcon) : ""))
                 .ForMember(c => c.ParentName, opt => opt.MapFrom(
                         vm => vm.Parent.CategoryTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).Name));
 
@@ -112,7 +126,9 @@ namespace WebAPI.Mapper
                           new(){LanguageId=LanguageId.Ukrainian, Name=vm.UkrainianName}
                     }))
                 .ForMember(u => u.Image, opt => opt.Ignore())
-                .ForMember(u => u.Icon, opt => opt.Ignore());
+                .ForMember(u => u.LightIcon, opt => opt.Ignore())
+                .ForMember(u => u.DarkIcon, opt => opt.Ignore())
+                .ForMember(u => u.ActiveIcon, opt => opt.Ignore());
             #endregion
 
             #region Characteristic
@@ -270,11 +286,25 @@ namespace WebAPI.Mapper
             CreateMap<Shop, ShopInfoFromProductResponse>()
                 .ForMember(u => u.Adress, opt => opt.MapFrom(vm => vm.City.Country.CountryTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).Name + ", " + vm.City.CityTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).Name))
                 .ForMember(u => u.Photo, opt => opt.MapFrom(vm => !string.IsNullOrEmpty(vm.Photo) ? String.Concat(ImagePath.RequestShopsImagePath, "/", vm.Photo) : ""));
+            CreateMap<Shop, ShopPageInfoResponse>()
+                .ForMember(s => s.CountReviews, opt => opt.MapFrom(vm => vm.ShopReviews.Count))
+                .ForMember(s => s.AverageInformationRelevanceRating, opt => opt.MapFrom(vm => Math.Round(vm.ShopReviews.Average(sr => sr.InformationRelevanceRating), 1)))
+                .ForMember(s => s.AverageServiceQualityRating, opt => opt.MapFrom(vm => Math.Round(vm.ShopReviews.Average(sr => sr.ServiceQualityRating), 1)))
+                .ForMember(s => s.AverageTimelinessRating, opt => opt.MapFrom(vm => Math.Round(vm.ShopReviews.Average(sr => sr.TimelinessRating), 1)))
+                .ForMember(s => s.AverageRating, opt => opt.MapFrom(vm =>
+                                Math.Round(vm.ShopReviews.Average(sr => (sr.InformationRelevanceRating + sr.ServiceQualityRating + sr.TimelinessRating) / 3f), 1)));
             CreateMap<ShopRequest, Shop>();
 
             //ShopPhone
             CreateMap<ShopPhone, string>()
                 .ConstructUsing(u => u.Phone);
+
+            //Shop Review
+            CreateMap<ShopReviewRequest, ShopReview>()
+                 .ForMember(r => r.Date, opt => opt.MapFrom(o => DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc)));
+
+            CreateMap<ShopReview, ShopReviewResponse>()
+                 .ForMember(q => q.Date, opt => opt.MapFrom(vm => vm.Date.ToString("dd MMMM yyyy")));
             #endregion
 
             #region Product
@@ -366,6 +396,32 @@ namespace WebAPI.Mapper
             #endregion
 
             #region Order
+
+            //Delivery type
+            CreateMap<DeliveryTypeRequest, DeliveryType>()
+               .ForMember(c => c.DeliveryTypeTranslations, opt => opt.MapFrom(
+                    vm => new List<DeliveryTypeTranslation>() {
+                          new(){LanguageId=LanguageId.English, Name=vm.EnglishName},
+                          new(){LanguageId=LanguageId.Ukrainian, Name=vm.UkrainianName}
+                    }));
+            CreateMap<DeliveryType, DeliveryTypeResponse>()
+                .ForMember(c => c.Name, opt => opt.MapFrom(
+                    vm => vm.DeliveryTypeTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).Name))
+                .ForMember(u => u.DarkIcon, opt => opt.MapFrom(
+                    vm => !string.IsNullOrEmpty(vm.DarkIcon) ? String.Concat(ImagePath.RequestDeliveryTypesImagePath, "/", vm.DarkIcon) : ""))
+                .ForMember(u => u.LightIcon, opt => opt.MapFrom(
+                    vm => !string.IsNullOrEmpty(vm.LightIcon) ? String.Concat(ImagePath.RequestDeliveryTypesImagePath, "/", vm.LightIcon) : ""));
+
+            CreateMap<DeliveryType, DeliveryTypeFullInfoResponse>()
+                .ForMember(c => c.EnglishName, opt => opt.MapFrom(
+                    vm => vm.DeliveryTypeTranslations.FirstOrDefault(c => c.LanguageId == LanguageId.English).Name))
+                .ForMember(c => c.UkrainianName, opt => opt.MapFrom(
+                    vm => vm.DeliveryTypeTranslations.FirstOrDefault(c => c.LanguageId == LanguageId.Ukrainian).Name))
+                .ForMember(u => u.DarkIcon, opt => opt.MapFrom(
+                    vm => !string.IsNullOrEmpty(vm.DarkIcon) ? String.Concat(ImagePath.RequestDeliveryTypesImagePath, "/", vm.DarkIcon) : ""))
+                .ForMember(u => u.LightIcon, opt => opt.MapFrom(
+                    vm => !string.IsNullOrEmpty(vm.LightIcon) ? String.Concat(ImagePath.RequestDeliveryTypesImagePath, "/", vm.LightIcon) : ""));
+
             //Order status
             CreateMap<OrderStatusRequest, OrderStatus>()
                .ForMember(c => c.OrderStatusTranslations, opt => opt.MapFrom(
@@ -388,7 +444,9 @@ namespace WebAPI.Mapper
                 .ForMember(o => o.OrderProducts, opt => opt.Ignore());
             CreateMap<OrderProductCreate, OrderProduct>();
 
-            CreateMap<Order, OrderResponse>();
+            CreateMap<Order, OrderResponse>()
+                .ForMember(o => o.DeliveryType, opt => opt.MapFrom(
+                    vm => vm.DeliveryType.DeliveryTypeTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).Name));
 
             CreateMap<OrderProduct, OrderProductResponse>()
                 .ForMember(r => r.ProductName, opt => opt.MapFrom(o => o.Product.Name))
@@ -406,7 +464,7 @@ namespace WebAPI.Mapper
                  .ForMember(r => r.Dislikes, opt => opt.MapFrom(vm => vm.CountDislikes))
                  .ForMember(r => r.Likes, opt => opt.MapFrom(vm => vm.CountLikes))
                  .ForMember(r => r.Replies, opt => opt.MapFrom(vm => vm.Replies.Count))
-                 .ForMember(q => q.Date, opt => opt.MapFrom(vm => vm.Date.ToString("dd MMMM yyyy"))); ;
+                 .ForMember(q => q.Date, opt => opt.MapFrom(vm => vm.Date.ToString("dd MMMM yyyy")));
 
             //ReviewReply
             CreateMap<ReviewReplyRequest, ReviewReply>()

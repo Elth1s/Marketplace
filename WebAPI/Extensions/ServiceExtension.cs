@@ -18,6 +18,7 @@ using WebAPI.Interfaces.Orders;
 using WebAPI.Interfaces.Products;
 using WebAPI.Interfaces.Questions;
 using WebAPI.Interfaces.Reviews;
+using WebAPI.Interfaces.Shops;
 using WebAPI.Interfaces.Users;
 using WebAPI.Services;
 using WebAPI.Services.Characteristcs;
@@ -27,6 +28,7 @@ using WebAPI.Services.Orders;
 using WebAPI.Services.Products;
 using WebAPI.Services.Questions;
 using WebAPI.Services.Reviews;
+using WebAPI.Services.Shops;
 using WebAPI.Services.Users;
 using WebAPI.Settings;
 
@@ -110,6 +112,7 @@ namespace WebAPI.Extensions
             services.AddScoped<IUnitService, UnitService>();
 
             services.AddScoped<IShopService, ShopService>();
+            services.AddScoped<IShopReviewService, ShopReviewService>();
 
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IProductStatusService, ProductStatusService>();
@@ -130,6 +133,7 @@ namespace WebAPI.Extensions
 
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IOrderStatusService, OrderStatusService>();
+            services.AddScoped<IDeliveryTypeService, DeliveryTypeService>();
 
             services.AddScoped<IReviewService, ReviewService>();
             services.AddScoped<IReviewReplyService, ReviewReplyService>();
@@ -263,6 +267,17 @@ namespace WebAPI.Extensions
                 RequestPath = ImagePath.RequestQuestionsImagePath
             });
 
+            var deliveryTypeImages = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.DeliveryTypesImagePath);
+            if (!Directory.Exists(deliveryTypeImages))
+            {
+                Directory.CreateDirectory(deliveryTypeImages);
+            }
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(deliveryTypeImages),
+                RequestPath = ImagePath.RequestDeliveryTypesImagePath
+            });
+
             var backgroundImages = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.BackgroundImagePath);
             if (!Directory.Exists(backgroundImages))
             {
@@ -290,6 +305,7 @@ namespace WebAPI.Extensions
             {
                 Directory.CreateDirectory(logosImages);
             }
+
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(logosImages),

@@ -132,6 +132,12 @@
   <data name="EmailConfirmSuccess" xml:space="preserve">
     <value>Електронна адреса підтверджена</value>
   </data>
+  <data name="FacebookConnectSuccess" xml:space="preserve">
+    <value>Обліковий запис Facebook успішно підключено</value>
+  </data>
+  <data name="GoogleConnectSuccess" xml:space="preserve">
+    <value>Обліковий запис Google успішно підключено</value>
+  </data>
   <data name="PhoneConfirmSuccess" xml:space="preserve">
     <value>Телефон підтверджено</value>
   </data>

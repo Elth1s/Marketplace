@@ -183,6 +183,9 @@
   <data name="GreaterThanMessage" xml:space="preserve">
     <value>{PropertyName} must be greater than {ComparisonValue}</value>
   </data>
+  <data name="InformationRelevanceRatingPropName" xml:space="preserve">
+    <value>Information relevance rating</value>
+  </data>
   <data name="InvalidFormatMessage" xml:space="preserve">
     <value>{PropertyName} is not in the correct format</value>
   </data>
@@ -246,6 +249,9 @@
   <data name="SecondNamePropName" xml:space="preserve">
     <value>Second name</value>
   </data>
+  <data name="ServiceQualityRatingPropName" xml:space="preserve">
+    <value>Service quality rating</value>
+  </data>
   <data name="ShopUniqueEmailMessage" xml:space="preserve">
     <value>Shop with this email address already exists</value>
   </data>
@@ -257,6 +263,9 @@
   </data>
   <data name="TextPropName" xml:space="preserve">
     <value>Text</value>
+  </data>
+  <data name="TimelinessRatingPropName" xml:space="preserve">
+    <value>Timeliness rating</value>
   </data>
   <data name="TokenPropName" xml:space="preserve">
     <value>Token</value>

@@ -241,7 +241,7 @@
     <value>Категорія з такою назвою вже існує</value>
   </data>
   <data name="CategoryUrlSlugNotUnique" xml:space="preserve">
-    <value>Категорія з цією вебадресою вже існує</value>
+    <value>Категорія з цією веб-адресою вже існує</value>
   </data>
   <data name="OrderNotFound" xml:space="preserve">
     <value>Замовлення не знайдено</value>
@@ -338,5 +338,26 @@
   </data>
   <data name="CharacteristicNameExist" xml:space="preserve">
     <value>Назва характеристики вже існує</value>
+  </data>
+  <data name="DeliveryTypeNotFound" xml:space="preserve">
+    <value>Тип доставки не знайдено</value>
+  </data>
+  <data name="DeliveryTypeWithEnglishNameExist" xml:space="preserve">
+    <value>Тип доставки з такою англійською назвою вже існує</value>
+  </data>
+  <data name="DeliveryTypeWithUkrainianNameExist" xml:space="preserve">
+    <value>Тип доставки з такою українською назвою вже існує</value>
+  </data>
+  <data name="FacebookAccountAlreadyConnectedUser" xml:space="preserve">
+    <value>Цей обліковий запис Facebook уже підключено до іншого користувача</value>
+  </data>
+  <data name="FacebookConnected" xml:space="preserve">
+    <value>Ви вже підключили свій обліковий запис Facebook</value>
+  </data>
+  <data name="GoogleAccountAlreadyConnectedUser" xml:space="preserve">
+    <value>Цей обліковий запис Google уже підключено до іншого користувача</value>
+  </data>
+  <data name="GoogleConnected" xml:space="preserve">
+    <value>Ви вже підключили свій обліковий запис Google</value>
   </data>
 </root>

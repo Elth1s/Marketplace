@@ -2,26 +2,28 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 
-import StarIcon from '@mui/icons-material/Star';
-
 import { useTranslation } from 'react-i18next';
 
 import { RatingStyle } from "../../../../../components/Rating/styled";
 
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { BorderLinearProgress } from "../../styled";
+import { useParams } from "react-router-dom";
+import { useTypedSelector } from "../../../../../hooks/useTypedSelector";
+import { useActions } from "../../../../../hooks/useActions";
+import { StarRounded } from "@mui/icons-material";
 
-interface IRatingProgres {
+interface IRatingProgress {
     ratingValue: number,
     ratingValueCount: number,
     allRatingCount: number
 }
 
-const RatingProgres: FC<IRatingProgres> = ({ ratingValue, ratingValueCount, allRatingCount }) => {
+const RatingProgress: FC<IRatingProgress> = ({ ratingValue, ratingValueCount, allRatingCount }) => {
     return (
         <Box sx={{ display: 'flex', alignItems: 'center', mb: "65px" }}>
             <Box sx={{ display: 'flex', alignItems: 'center', mr: "10px" }}>
-                <StarIcon color="primary" sx={{ fontSize: "30px", mr: "10px" }} />
+                <StarRounded color="primary" sx={{ fontSize: "30px", mr: "10px" }} />
                 <Typography variant="h2">{ratingValue}</Typography>
             </Box>
             <BorderLinearProgress
@@ -37,6 +39,23 @@ const RatingProgres: FC<IRatingProgres> = ({ ratingValue, ratingValueCount, allR
 const About = () => {
     const { t } = useTranslation();
 
+    const { shopPageInfo } = useTypedSelector(state => state.shopPage);
+    const { GetShopInfo } = useActions();
+    let { shopId } = useParams();
+
+    useEffect(() => {
+        getData();
+    }, [shopId])
+
+    const getData = async () => {
+        if (!shopId)
+            return;
+        try {
+            await GetShopInfo(shopId)
+        } catch (ex) {
+        }
+    };
+
     return (
         <Grid
             container
@@ -47,28 +66,54 @@ const About = () => {
             <Grid item>
                 <Typography variant="h1" sx={{ mb: "30px" }}>{t('pages.seller.about.rating.title')}</Typography>
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: "20px" }}>
-                    <RatingStyle readOnly value={5} precision={0.5} sx={{ fontSize: "30px", mr: "10px" }} />
-                    <Typography variant="h2">{5} ({10}  {t('pages.seller.about.rating.assessments')})</Typography>
+                    <RatingStyle
+                        sx={{ fontSize: "30px", mr: "10px" }}
+                        value={shopPageInfo.averageRating}
+                        precision={0.1}
+                        readOnly
+                        icon={<StarRounded sx={{ fontSize: "30px" }} />}
+                        emptyIcon={<StarRounded sx={{ fontSize: "30px" }} />}
+                    />
+                    <Typography variant="h2">{shopPageInfo.averageRating} ({shopPageInfo.countReviews}  {t('pages.seller.about.rating.assessments')})</Typography>
                 </Box>
-                <RatingProgres ratingValue={5} ratingValueCount={8} allRatingCount={10} />
-                <RatingProgres ratingValue={4} ratingValueCount={1} allRatingCount={10} />
-                <RatingProgres ratingValue={3} ratingValueCount={1} allRatingCount={10} />
-                <RatingProgres ratingValue={2} ratingValueCount={0} allRatingCount={10} />
-                <RatingProgres ratingValue={1} ratingValueCount={0} allRatingCount={10} />
+                {shopPageInfo.ratings.map((item, index) => (
+                    <RatingProgress key={index} ratingValue={item.number} ratingValueCount={item.count} allRatingCount={shopPageInfo.countReviews} />
+                ))}
             </Grid>
             <Grid item>
                 <Typography variant="h1" sx={{ mb: "30px" }}>{t('pages.seller.about.assessment.title')}</Typography>
                 <Box sx={{ bm: "65px" }}>
                     <Typography variant="h2" sx={{ mb: "15px" }}>{t('pages.seller.about.assessment.product')}</Typography>
-                    <RatingStyle readOnly value={5} precision={0.5} sx={{ fontSize: "30px" }} />
+                    <RatingStyle
+                        sx={{ fontSize: "30px" }}
+                        value={shopPageInfo.averageInformationRelevanceRating}
+                        precision={0.1}
+                        readOnly
+                        icon={<StarRounded sx={{ fontSize: "30px" }} />}
+                        emptyIcon={<StarRounded sx={{ fontSize: "30px" }} />}
+                    />
                 </Box>
                 <Box sx={{ bm: "65px" }}>
                     <Typography variant="h2" sx={{ mb: "15px" }}>{t('pages.seller.about.assessment.delivery')}</Typography>
-                    <RatingStyle readOnly value={4.5} precision={0.5} sx={{ fontSize: "30px" }} />
+                    <RatingStyle
+                        sx={{ fontSize: "30px" }}
+                        value={shopPageInfo.averageTimelinessRating}
+                        precision={0.1}
+                        readOnly
+                        icon={<StarRounded sx={{ fontSize: "30px" }} />}
+                        emptyIcon={<StarRounded sx={{ fontSize: "30px" }} />}
+                    />
                 </Box>
                 <Box sx={{ bm: "65px" }}>
                     <Typography variant="h2" sx={{ mb: "15px" }}>{t('pages.seller.about.assessment.service')}</Typography>
-                    <RatingStyle readOnly value={4.5} precision={0.5} sx={{ fontSize: "30px" }} />
+                    <RatingStyle
+                        sx={{ fontSize: "30px" }}
+                        value={shopPageInfo.averageServiceQualityRating}
+                        precision={0.1}
+                        readOnly
+                        icon={<StarRounded sx={{ fontSize: "30px" }} />}
+                        emptyIcon={<StarRounded sx={{ fontSize: "30px" }} />}
+                    />
                 </Box>
             </Grid>
             <Grid item>
@@ -78,7 +123,7 @@ const About = () => {
             </Grid>
             <Grid item xs={12}>
                 <Typography variant="h1" sx={{ mb: "30px" }}>{t('pages.seller.about.description.title')}</Typography>
-                <Typography variant="h2">EUROSHOP presents a wide range of children's, women's and men's clothes of European quality, which provides maximum comfort and laconic design</Typography>
+                <Typography variant="h2">{shopPageInfo.description}</Typography>
             </Grid>
         </Grid>
     );

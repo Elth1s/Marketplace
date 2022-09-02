@@ -10,7 +10,10 @@ import About from "./Tab/About";
 import Reviews from "./Tab/Reviews";
 
 import { TabStyle } from './styled';
-import AddReview from './AddReview';
+import AddShopReview from './AddReview';
+import { useParams } from 'react-router-dom';
+import { useActions } from '../../../hooks/useActions';
+import { useTypedSelector } from '../../../hooks/useTypedSelector';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -48,6 +51,12 @@ function a11yProps(index: number) {
 const SellerInfo = () => {
     const { t } = useTranslation();
     const [value, setValue] = useState(0);
+    const { shopPageInfo } = useTypedSelector(state => state.shopPage);
+    const { GetShopReviews } = useActions();
+    const [page, setPage] = useState<number>(1);
+    const [rowsPerPage, setRowsPerPage] = useState<number>(4);
+    let { shopId } = useParams();
+
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
@@ -55,7 +64,7 @@ const SellerInfo = () => {
 
     return (
         <>
-            <Typography variant='h1' sx={{ mb: "30px" }}>{t('pages.seller.title')}</Typography>
+            <Typography variant='h1' sx={{ mb: "30px" }}>{t('pages.seller.title')} {shopPageInfo.name}</Typography>
 
             <Grid container sx={{ justifyContent: "space-between" }}>
                 <Grid item>
@@ -66,7 +75,12 @@ const SellerInfo = () => {
                     </Tabs>
                 </Grid>
                 <Grid item>
-                    {value === 2 ? (<AddReview />) : (<></>)}
+                    {value === 2 ? (<AddShopReview getData={async () => {
+                        if (shopId) {
+                            await GetShopReviews(shopId, 1, rowsPerPage)
+                            setPage(1);
+                        }
+                    }} />) : (<></>)}
                 </Grid>
             </Grid>
 

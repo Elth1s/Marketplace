@@ -17,10 +17,14 @@ namespace DAL.Entities
 
         [ForeignKey(nameof(CityId))]
         public City City { get; set; }
-        // [ForeignKey(nameof(UserId))]
+
         public AppUser User { get; set; }
 
+        public ICollection<DeliveryType> DeliveryTypes { get; set; }
         public ICollection<ShopPhone> Phones { get; set; }
         public ICollection<Product> Products { get; set; }
+        public ICollection<ShopReview> ShopReviews { get; set; }
+        public ICollection<ShopScheduleItem> ShopSchedule { get; set; }
+
     }
 }

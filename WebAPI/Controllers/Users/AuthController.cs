@@ -19,7 +19,6 @@ namespace WebAPI.Controllers.Users
         private readonly IAuthService _authService;
         private readonly IStringLocalizer<AuthController> _authLocalizer;
 
-
         public AuthController(IAuthService authService, IStringLocalizer<AuthController> authLocalizer)
         {
             _authService = authService;
@@ -107,7 +106,7 @@ namespace WebAPI.Controllers.Users
         [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [HttpPost("GoogleExternalLogin")]
-        public async Task<IActionResult> GoogleExternalLoginAsync([FromBody] ExternalLoginRequest request)
+        public async Task<IActionResult> GoogleExternalLogin([FromBody] ExternalLoginRequest request)
         {
             var result = await _authService.GoogleExternalLoginAsync(request, IpUtil.GetIpAddress(Request, HttpContext));
             return Ok(result);
@@ -125,7 +124,7 @@ namespace WebAPI.Controllers.Users
         [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [HttpPost("FacebookExternalLogin")]
-        public async Task<IActionResult> FacebookExternalLoginAsync([FromBody] ExternalLoginRequest request)
+        public async Task<IActionResult> FacebookExternalLogin([FromBody] ExternalLoginRequest request)
         {
             var result = await _authService.FacebookExternalLoginAsync(request, IpUtil.GetIpAddress(Request, HttpContext));
             return Ok(result);

@@ -3,7 +3,7 @@ import { Dispatch } from "react"
 import http from "../../http_comon"
 import { ServerError } from "../../store/types"
 import { AuthUser } from "../auth/actions"
-import { AuthAction } from "../auth/types"
+import { AuthAction, IExternalLoginModel } from "../auth/types"
 import {
     ConfirmEmailActionTypes,
     EmailConfirmAction,
@@ -146,6 +146,36 @@ export const GetOrderProducts = () => {
                 }
             }
             return Promise.reject(error)
+        }
+    }
+}
+
+export const GoogleConnect = (data: IExternalLoginModel) => {
+    return async (dispatch: Dispatch<ProfileAction>) => {
+        try {
+            await http.post('api/User/GoogleConnect', data)
+            dispatch({
+                type: ProfileActionTypes.GOOGLE_CONNECT_SUCCESS,
+            })
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
+        }
+    }
+}
+
+export const FacebookConnect = (data: IExternalLoginModel) => {
+    return async (dispatch: Dispatch<ProfileAction>) => {
+        try {
+            await http.post('api/User/FacebookConnect', data)
+            dispatch({
+                type: ProfileActionTypes.FACEBOOK_CONNECT_SUCCESS,
+            })
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
         }
     }
 }

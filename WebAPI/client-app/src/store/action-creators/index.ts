@@ -21,7 +21,9 @@ import * as ProductActionCreators from "../../pages/default/product/actions"
 import * as BasketActionCreators from "../../components/Basket/actions";
 import * as ShopActionCreators from "../../pages/seller/CreateShopDialog/actions"
 import * as OrderStatusActionCreators from "../../pages/admin/orderStatus/actions"
-import * as ShopInfoActionCreators from "../../pages/default/ShortSellerInfo/action"
+import * as ShopInfoActionCreators from "../../pages/default/ShortSellerInfo/actions"
+import * as ShopPageActionCreators from "../../pages/default/SellerInfo/actions"
+import * as DeliveryTypeActionCreators from "../../pages/admin/deliveryType/actions"
 import * as UIActionCreators from "../../UISettings/actions"
 
 const actions = {
@@ -48,6 +50,8 @@ const actions = {
     ...ShopActionCreators,
     ...OrderStatusActionCreators,
     ...ShopInfoActionCreators,
+    ...ShopPageActionCreators,
+    ...DeliveryTypeActionCreators,
     ...UIActionCreators
 }
 export default actions;

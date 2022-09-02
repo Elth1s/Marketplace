@@ -16,6 +16,7 @@ namespace WebAPI.Services.Orders
         private readonly IRepository<Order> _orderRepository;
         private readonly IRepository<OrderStatus> _orderStatusRepository;
         private readonly IRepository<OrderProduct> _orderProductRepository;
+        private readonly IRepository<DeliveryType> _deliveryTypeRepository;
         private readonly IRepository<Product> _productRepository;
         private readonly UserManager<AppUser> _userManager;
         private readonly IRepository<BasketItem> _basketItemRepository;
@@ -25,6 +26,7 @@ namespace WebAPI.Services.Orders
                IRepository<OrderStatus> orderStatusRepository,
                IRepository<OrderProduct> orderProductRepository,
                IRepository<Product> productRepository,
+               IRepository<DeliveryType> deliveryTypeRepository,
                IRepository<BasketItem> basketItemRepository,
                UserManager<AppUser> userManager,
                IMapper mapper
@@ -34,6 +36,7 @@ namespace WebAPI.Services.Orders
             _orderRepository = orderRepository;
             _orderStatusRepository = orderStatusRepository;
             _productRepository = productRepository;
+            _deliveryTypeRepository = deliveryTypeRepository;
             _basketItemRepository = basketItemRepository;
             _userManager = userManager;
             _mapper = mapper;
@@ -51,11 +54,11 @@ namespace WebAPI.Services.Orders
             status.OrderStatusNullChecking();
             order.OrderStatusId = OrderStatusId.InProcess;
 
+            var deliveryType = await _deliveryTypeRepository.GetByIdAsync(request.DeliveryTypeId);
+            deliveryType.DeliveryTypeNullChecking();
+
             await _orderRepository.AddAsync(order);
             await _orderRepository.SaveChangesAsync();
-
-
-
 
             //foreach (var item in request.OrderProductsCreate)
             //{

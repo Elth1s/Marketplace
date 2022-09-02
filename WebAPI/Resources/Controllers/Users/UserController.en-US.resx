@@ -132,6 +132,12 @@
   <data name="EmailConfirmSuccess" xml:space="preserve">
     <value>Email confirmed</value>
   </data>
+  <data name="FacebookConnectSuccess" xml:space="preserve">
+    <value>Facebook account successfully connected</value>
+  </data>
+  <data name="GoogleConnectSuccess" xml:space="preserve">
+    <value>Google account successfully connected</value>
+  </data>
   <data name="PhoneConfirmSuccess" xml:space="preserve">
     <value>Phone confirmed</value>
   </data>

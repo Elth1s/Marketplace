@@ -42,6 +42,7 @@
                     "filterNames": "Filter names",
                     "filterValues": "Filter values",
                     "products": "Products",
+                    "deliveryTypes": "Delivery types",
                     "productStatuses": "Product statuses",
                     "shops": "Shops",
                     "countries": "Countries",
@@ -60,6 +61,8 @@
                     "urlSlug": "URL slug",
                     "image": "Image",
                     "icon": "Icon",
+                    "darkIcon": "Dark icon",
+                    "lightIcon": "Light icon",
                     "parentCategory": "Parent category",
                     "characteristicGroup": "Characteristic group",
                     "characteristicName": "Characteristic name",
@@ -207,8 +210,12 @@
                     "information": "Information relevance",
                     "fullName": "Full Name",
                     "email": "Email",
-                    "review": "Review",
-                    "dialogActions": "Send"
+                    "comment": "Comment",
+                    "dialogActions": "Send",
+                    "exceptions": {
+                        "shopIdError": "Something went wrong",
+                        "RatingWarning": "Set your overview"
+                    }
                 }
             },
             "ordering": {

@@ -8,14 +8,16 @@ using System.Net;
 using WebAPI.Constants;
 using WebAPI.Exceptions;
 using WebAPI.Extensions;
-using WebAPI.Interfaces;
+using WebAPI.Interfaces.Shops;
 using WebAPI.Interfaces.Users;
 using WebAPI.Specifications.Shops;
 using WebAPI.ViewModels.Request;
+using WebAPI.ViewModels.Request.Shops;
 using WebAPI.ViewModels.Response;
+using WebAPI.ViewModels.Response.Shops;
 using WebAPI.ViewModels.Response.Users;
 
-namespace WebAPI.Services
+namespace WebAPI.Services.Shops
 {
     public class ShopService : IShopService
     {
@@ -29,8 +31,7 @@ namespace WebAPI.Services
             IMapper mapper,
             IRepository<Shop> shopRepository,
             IJwtTokenService jwtTokenService,
-            UserManager<AppUser> userManager
-            )
+            UserManager<AppUser> userManager)
         {
             _errorMessagesLocalizer = errorMessagesLocalizer;
             _shopRepository = shopRepository;
@@ -205,6 +206,35 @@ namespace WebAPI.Services
                 await _shopRepository.DeleteAsync(shop);
             }
             await _shopRepository.SaveChangesAsync();
+        }
+
+        public async Task<ShopPageInfoResponse> GetShopInfoAsync(int shopId)
+        {
+            var spec = new ShopGetWithReviewsSpecification(shopId);
+
+            var shop = await _shopRepository.GetBySpecAsync(spec);
+            shop.ShopNullChecking();
+
+            var result = _mapper.Map<ShopPageInfoResponse>(shop);
+
+            var ratings = new List<Rating>();
+
+            for (int i = 0; i < 5; i++)
+            {
+                ratings.Add(new Rating() { Number = i + 1 });
+
+                if (i == 0)
+                    ratings[i].Count = shop.ShopReviews.Count(s =>
+                                       ((s.ServiceQualityRating + s.TimelinessRating + s.InformationRelevanceRating) / 3f) <= ratings[i].Number);
+                else
+                    ratings[i].Count = shop.ShopReviews.Count(s =>
+                                   ((s.ServiceQualityRating + s.TimelinessRating + s.InformationRelevanceRating) / 3f) <= ratings[i].Number &&
+                                   ((s.ServiceQualityRating + s.TimelinessRating + s.InformationRelevanceRating) / 3f) > ratings[i - 1].Number);
+            }
+            ratings.Reverse();
+            result.Ratings = ratings;
+
+            return result;
         }
     }
 }
