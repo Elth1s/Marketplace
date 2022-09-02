@@ -1,5 +1,14 @@
 {
     "common": {
+        "props": {
+            "fullName": "Прізвище та ім’я",
+            "name": "ім’я",
+            "email": "Електронна пошта",
+            "advantages": "Переваги",
+            "disadvantages": "Недоліки",
+            "comment": "Відгук",
+            "videoURL": "Відео URL"
+        },
         "containers": {
             "default": {
                 "header": {
@@ -89,6 +98,49 @@
             }
         },
         "pages": {
+            "admin": {
+                "main": {
+                    "btnCreate": "Створити",
+                    "btnСancel": "Скасувати",
+                    "btnUpdate": "Редагувати"
+                },
+                "category": {
+                    "createTitle": "Створити катигорію",
+                    "updateTitle": "Редагувати катигорію"
+                },
+                "city": {
+                    "createTitle": "Створити місто",
+                    "updateTitle": "Редагувати місто"
+                },
+                "country": {
+                    "createTitle": "Створити країну",
+                    "updateTitle": "Редагувати країну"
+                },
+                "filterGroup": {
+                    "createTitle": "Створити групу фільтрів",
+                    "updateTitle": "Редагувати групу фільтрів"
+                },
+                "filterName": {
+                    "createTitle": "Створити назву фільтра",
+                    "updateTitle": "Редагувати назву фільтра"
+                },
+                "filterValue": {
+                    "createTitle": "Створити значення фільтра",
+                    "updateTitle": "Редагувати значення фільтра"
+                },
+                "orderStatus": {
+                    "createTitle": "Створити статус замовлення",
+                    "updateTitle": "Редагувати статус замовлення"
+                },
+                "productStatus": {
+                    "createTitle": "Створити статус продукту",
+                    "updateTitle": "Редагувати статус продукту"
+                },
+                "unit": {
+                    "createTitle": "Створити одиницю вимірування",
+                    "updateTitle": "Редагувати одиницю вимірування"
+                }
+            },
             "home": {
                 "allCategories": "Усі категорії",
                 "novelty": {
@@ -168,9 +220,31 @@
                 "moreReviews": "Більше відгуків",
                 "askQuestion": "Задати питання",
                 "moreQuestions": "Більше питань",
-                "similarProducts": "Схожі товари"
+                "similarProducts": "Схожі товари",
+                "reviewForm": {
+                    "generalImpression": "Загальне враження",
+                    "attachPhoto": "Прикріпити фото",
+                    "sendBtn": "Відправити"
+                }
             },
             "seller": {
+                "main": {
+                    "btnCreate": "Створити",
+                    "btnСancel": "Скасувати",
+                    "btnUpdate": "Редагувати"
+                },
+                "characteristicGroup": {
+                    "createTitle": "Створити групу характеристик",
+                    "updateTitle": "Редагувати групу характеристик"
+                },
+                "characteristicName": {
+                    "createTitle": "Створити назву характеристики",
+                    "updateTitle": "Редагувати назву характеристики"
+                },
+                "characteristicValue": {
+                    "createTitle": "Створити значення характеристики",
+                    "updateTitle": "Редагувати значення характеристики"
+                },
                 "title": "Продавець",
                 "tabs": {
                     "about": "Про продавця",
@@ -277,6 +351,32 @@
         "toastTitles": {
             "error": "Помилка",
             "warning": "Увага"
+        },
+        "validationProps": {
+            "englishName": "Назва англійською",
+            "ukrainianName": "Назва українською",
+            "englishMeasure": "Міра англійською",
+            "ukrainianMeasure": "Міра українською",
+            "englishValue": "Значення англійською",
+            "ukrainianValue": "Значення українською",
+            "urlSlug": "Веб-адреса",
+            "categotyParent": "Батківська категорія",
+            "min": "Мінімум",
+            "max": "Максимум",
+            "filterName": "Назва фільтру",
+            "code": "Код",
+            "filterGroup": "Група фільтру",
+            "unitMeasure": "Одиниця вимірування",
+            "country": "Країна",
+            "name": "Назва",
+            "characteristicGroup": "Група характеристик",
+            "value": "Значення",
+            "characteristicName": "Назва характеристики",
+            "fullName": "Прізвище та ім’я",
+            "email": "Електронна пошта",
+            "advantages": "Переваги",
+            "disadvantages": "Недоліки",
+            "comment": "Відгук"
         }
     }
 }

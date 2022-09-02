@@ -1,23 +1,29 @@
 import Grid from '@mui/material/Grid';
-import { Edit } from '@mui/icons-material';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
 
+import Edit from '@mui/icons-material/Edit';
+
+import * as Yup from 'yup';
 import { FC, useState } from "react";
-import { useFormik } from "formik";
+import { useTranslation } from 'react-i18next';
+import { Form, FormikProvider, useFormik } from "formik";
+
+import { AdminDialogButton } from '../../../../components/Button/style';
+import TextFieldComponent from '../../../../components/TextField';
+import DialogTitleWithButton from '../../../../components/Dialog/DialogTitleWithButton';
 
 import { useActions } from "../../../../hooks/useActions";
-import { useTypedSelector } from "../../../../hooks/useTypedSelector";
+import { useTypedSelector } from '../../../../hooks/useTypedSelector';
 
-import { ServerError, UpdateProps } from '../../../../store/types';
+import { UpdateProps, ServerError } from '../../../../store/types';
 
-import DialogComponent from '../../../../components/Dialog';
-import TextFieldComponent from '../../../../components/TextField';
-
-import { validationFields } from "../validation";
-import { IconButton } from '@mui/material';
 import { toLowerFirstLetter } from '../../../../http_comon';
 
-
 const CharacteristicGroupUpdate: FC<UpdateProps> = ({ id, afterUpdate }) => {
+    const { t } = useTranslation();
+
     const [open, setOpen] = useState(false);
 
     const { GetByIdCharacteristicGroup, UpdateCharacteristicGroup } = useActions();
@@ -32,6 +38,10 @@ const CharacteristicGroupUpdate: FC<UpdateProps> = ({ id, afterUpdate }) => {
         setOpen(false);
         resetForm();
     };
+
+    const validationFields = Yup.object().shape({
+        name: Yup.string().min(2).max(30).required().label(t('validationProps.name')),
+    });
 
     const formik = useFormik({
         initialValues: selectedCharacteristicGroup,
@@ -62,34 +72,60 @@ const CharacteristicGroupUpdate: FC<UpdateProps> = ({ id, afterUpdate }) => {
     const { errors, touched, isSubmitting, handleSubmit, getFieldProps, resetForm } = formik;
 
     return (
-        <DialogComponent
-            open={open}
-            handleClickClose={handleClickClose}
-            button={
-                <Edit onClick={() => handleClickOpen()} />
-            }
+        <>
+            <Edit onClick={() => handleClickOpen()} />
 
-            formik={formik}
-            isSubmitting={isSubmitting}
-            handleSubmit={handleSubmit}
-
-            dialogTitle="Update characteristic group"
-            dialogBtnConfirm="Update"
-
-            dialogContent={
-                <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                        <TextFieldComponent
-                            type="text"
-                            label="Name"
-                            error={errors.name}
-                            touched={touched.name}
-                            getFieldProps={{ ...getFieldProps('name') }}
-                        />
-                    </Grid>
-                </Grid>
-            }
-        />
+            <Dialog
+                open={open}
+                sx={{
+                    "& .MuiDialog-paper": {
+                        maxWidth: "none",
+                        width: "980px",
+                        borderRadius: "10px",
+                    }
+                }}
+            >
+                <DialogTitleWithButton
+                    title={t('pages.seller.characteristicGroup.updateTitle')}
+                    onClick={handleClickClose}
+                />
+                <FormikProvider value={formik} >
+                    <Form onSubmit={handleSubmit}>
+                        <DialogContent sx={{ padding: "10px 40px 45px" }}>
+                            <Grid container spacing={5.25}>
+                                <Grid item xs={12}>
+                                    <TextFieldComponent
+                                        type="text"
+                                        label={t('validationProps.name')}
+                                        error={errors.name}
+                                        touched={touched.name}
+                                        getFieldProps={{ ...getFieldProps('name') }}
+                                    />
+                                </Grid>
+                            </Grid>
+                        </DialogContent>
+                        <DialogActions sx={{ padding: "0 40px 45px" }}>
+                            <AdminDialogButton
+                                type="submit"
+                                variant="outlined"
+                                color="primary"
+                                onClick={handleClickClose}
+                            >
+                                {t('pages.seller.main.btnСancel')}
+                            </AdminDialogButton>
+                            <AdminDialogButton
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                                disabled={isSubmitting}
+                            >
+                                {t('pages.seller.main.btnUpdate')}
+                            </AdminDialogButton>
+                        </DialogActions>
+                    </Form>
+                </FormikProvider>
+            </Dialog>
+        </>
     )
 }
 

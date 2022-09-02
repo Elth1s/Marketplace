@@ -26,6 +26,7 @@ import ChangePassword from './pages/user/ChangePassword';
 import Ordering from './pages/user/Ordering';
 
 import HomePage from './pages/default/HomePage';
+import About from './pages/default/About';
 import Catalog from './pages/default/Catalog';
 import CatalogWithProducts from './pages/default/Catalog/CatalogWithProducts';
 import Product from './pages/default/product';
@@ -114,6 +115,7 @@ const App = () => {
             <Route path="/catalog/:urlSlug" element={<CatalogWithProducts />} />
             <Route path="/product/:urlSlug" element={<Product />} />
             <Route path="/product/:urlSlug/:menu" element={<Product />} />
+            <Route path="about" element={<About />} />
             <Route path="faq" element={<FAQ />} />
             <Route path="contact-info" element={<ContactInfo />} />
           </Route>

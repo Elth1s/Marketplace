@@ -5,3 +5,5 @@ export const homepage = "/assets/backgrounds/homepage.png";
 export const catalog_menu = "/assets/backgrounds/catalog-menu.png";
 
 export const empty = "/assets/backgrounds/empty.jpg";
+
+export const about = "/assets/backgrounds/about.jpg";

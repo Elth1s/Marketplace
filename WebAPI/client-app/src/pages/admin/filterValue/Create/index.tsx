@@ -1,24 +1,43 @@
 import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import Slide from '@mui/material/Slide';
 
-import { FC, useState } from "react";
-import { useFormik } from "formik";
+import { TransitionProps } from '@mui/material/transitions/transition';
+
+import * as Yup from 'yup';
+import { FC, forwardRef, useState } from "react";
+import { useTranslation } from 'react-i18next';
+import { Form, FormikProvider, useFormik } from "formik";
+
+import { TextFieldFirstStyle } from '../../../../components/TextField/styled';
+import { AdminDialogButton } from '../../../../components/Button/style';
+import DialogTitleWithButton from '../../../../components/Dialog/DialogTitleWithButton';
+import IconButtonPlus from '../../../../components/Button/IconButtonPlus';
 
 import { useActions } from "../../../../hooks/useActions";
-import { useTypedSelector } from "../../../../hooks/useTypedSelector";
+import { useTypedSelector } from '../../../../hooks/useTypedSelector';
 
-import { validationFields } from "../validation";
-import { IFilterValue } from "../types";
 import { CreateProps, ServerError } from '../../../../store/types';
 
-import DialogComponent from '../../../../components/Dialog';
 import { toLowerFirstLetter } from '../../../../http_comon';
+
+import { IFilterValue } from "../types";
 import AutocompleteComponent from '../../../../components/Autocomplete';
-import { IconButton } from '@mui/material';
-import { white_plus } from '../../../../assets/icons';
-import { TextFieldFirstStyle } from '../../../../components/TextField/styled';
+
+const Transition = forwardRef(function Transition(
+    props: TransitionProps & {
+        children: React.ReactElement<any, any>;
+    },
+    ref: React.Ref<unknown>,
+) {
+    return <Slide direction="left" ref={ref} {...props} />;
+});
 
 const FilterValueCreate: FC<CreateProps> = ({ afterCreate }) => {
+    const { t } = useTranslation();
+
     const [open, setOpen] = useState(false);
 
     const { CreateFilterValue, GetFilterNames } = useActions();
@@ -40,13 +59,21 @@ const FilterValueCreate: FC<CreateProps> = ({ afterCreate }) => {
 
     const handleClickClose = () => {
         setOpen(false);
+        resetForm();
     };
+
+    const validationFields = Yup.object().shape({
+        englishValue: Yup.string().min(2).max(30).required().label(t('validationProps.englishValue')),
+        ukrainianValue: Yup.string().min(2).max(30).required().label(t('validationProps.englishValue')),
+        filterNameId: Yup.number().required().label(t('validationProps.filterName')),
+        min: Yup.number().nullable().label(t('validationProps.min')),
+        max: Yup.number().nullable().label(t('validationProps.max')),
+    });
 
     const onHandleSubmit = async (values: IFilterValue) => {
         try {
             await CreateFilterValue(values);
             afterCreate();
-            resetForm();
             handleClickClose();
         } catch (ex) {
             const serverErrors = ex as ServerError;
@@ -69,101 +96,116 @@ const FilterValueCreate: FC<CreateProps> = ({ afterCreate }) => {
         onSubmit: onHandleSubmit
     });
 
-    const { errors, touched, isSubmitting, handleSubmit, setFieldError, getFieldProps, resetForm, setFieldValue } = formik;
+    const { errors, touched, isSubmitting, handleSubmit, setFieldValue, setFieldError, getFieldProps, resetForm } = formik;
 
     return (
-        <DialogComponent
-            open={open}
-            handleClickClose={handleClickClose}
-            button={
-                <IconButton
-                    sx={{ borderRadius: '12px', background: "#F45626", "&:hover": { background: "#CB2525" }, "&& .MuiTouchRipple-child": { backgroundColor: "transparent" } }}
-                    size="large"
-                    color="inherit"
-                    onClick={handleClickOpen}
-                >
-                    <img
-                        style={{ width: "30px" }}
-                        src={white_plus}
-                        alt="icon"
-                    />
-                </IconButton>
-            }
+        <>
+            <IconButtonPlus onClick={handleClickOpen} />
 
-            formik={formik}
-            isSubmitting={isSubmitting}
-            handleSubmit={handleSubmit}
-
-            dialogTitle="Create filter value"
-            dialogBtnConfirm="Create"
-
-            dialogContent={
-                <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                        <TextFieldFirstStyle
-                            fullWidth
-                            autoComplete="englishValue"
-                            variant="standard"
-                            type="text"
-                            label="English Value"
-                            {...getFieldProps('englishValue')}
-                            error={Boolean(touched.englishValue && errors.englishValue)}
-                            helperText={touched.englishValue && errors.englishValue}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextFieldFirstStyle
-                            fullWidth
-                            autoComplete="ukrainianValue"
-                            variant="standard"
-                            type="text"
-                            label="Ukrainian name"
-                            {...getFieldProps('ukrainianValue')}
-                            error={Boolean(touched.ukrainianValue && errors.ukrainianValue)}
-                            helperText={touched.ukrainianValue && errors.ukrainianValue}
-                        />
-                    </Grid>
-
-                    <Grid item xs={12}>
-                        <TextFieldFirstStyle
-                            fullWidth
-                            variant="standard"
-                            autoComplete="min"
-                            type="text"
-                            label="Min"
-                            {...getFieldProps('min')}
-                            error={Boolean(touched.min && errors.min)}
-                            helperText={touched.min && errors.min}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextFieldFirstStyle
-                            fullWidth
-                            variant="standard"
-                            autoComplete="max"
-                            type="text"
-                            label="Max"
-                            {...getFieldProps('max')}
-                            error={Boolean(touched.max && errors.max)}
-                            helperText={touched.max && errors.max}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <AutocompleteComponent
-                            label="Filter name"
-                            name="filterNameId"
-                            error={errors.filterNameId}
-                            touched={touched.filterNameId}
-                            options={filterNames}
-                            getOptionLabel={(option) => option.name}
-                            isOptionEqualToValue={(option, value) => option?.id === value.id}
-                            defaultValue={undefined}
-                            onChange={(e, value) => { setFieldValue("filterNameId", value?.id) }}
-                        />
-                    </Grid>
-                </Grid>
-            }
-        />
+            <Dialog
+                open={open}
+                TransitionComponent={Transition}
+                sx={{
+                    "& .MuiDialog-paper": {
+                        maxWidth: "none",
+                        width: "980px",
+                        borderRadius: "10px",
+                    }
+                }}
+            >
+                <DialogTitleWithButton
+                    title={t('pages.admin.filterValue.createTitle')}
+                    onClick={handleClickClose}
+                />
+                <FormikProvider value={formik} >
+                    <Form onSubmit={handleSubmit}>
+                        <DialogContent sx={{ padding: "10px 40px 45px" }}>
+                            <Grid container spacing={5.25}>
+                                <Grid item xs={12}>
+                                    <TextFieldFirstStyle
+                                        fullWidth
+                                        autoComplete="englishValue"
+                                        variant="standard"
+                                        type="text"
+                                        label={t('validationProps.englishValue')}
+                                        {...getFieldProps('englishValue')}
+                                        error={Boolean(touched.englishValue && errors.englishValue)}
+                                        helperText={touched.englishValue && errors.englishValue}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextFieldFirstStyle
+                                        fullWidth
+                                        autoComplete="ukrainianValue"
+                                        variant="standard"
+                                        type="text"
+                                        label={t('validationProps.englishValue')}
+                                        {...getFieldProps('ukrainianValue')}
+                                        error={Boolean(touched.ukrainianValue && errors.ukrainianValue)}
+                                        helperText={touched.ukrainianValue && errors.ukrainianValue}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextFieldFirstStyle
+                                        fullWidth
+                                        variant="standard"
+                                        autoComplete="min"
+                                        type="text"
+                                        label={t('validationProps.min')}
+                                        {...getFieldProps('min')}
+                                        error={Boolean(touched.min && errors.min)}
+                                        helperText={touched.min && errors.min}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextFieldFirstStyle
+                                        fullWidth
+                                        variant="standard"
+                                        autoComplete="max"
+                                        type="text"
+                                        label={t('validationProps.max')}
+                                        {...getFieldProps('max')}
+                                        error={Boolean(touched.max && errors.max)}
+                                        helperText={touched.max && errors.max}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <AutocompleteComponent
+                                        label={t('validationProps.filterName')}
+                                        name="filterNameId"
+                                        error={errors.filterNameId}
+                                        touched={touched.filterNameId}
+                                        options={filterNames}
+                                        getOptionLabel={(option) => option.name}
+                                        isOptionEqualToValue={(option, value) => option?.id === value.id}
+                                        defaultValue={undefined}
+                                        onChange={(e, value) => { setFieldValue("filterNameId", value?.id) }}
+                                    />
+                                </Grid>
+                            </Grid>
+                        </DialogContent>
+                        <DialogActions sx={{ padding: "0 40px 45px" }}>
+                            <AdminDialogButton
+                                type="submit"
+                                variant="outlined"
+                                color="primary"
+                                onClick={handleClickClose}
+                            >
+                                {t('pages.admin.main.btnСancel')}
+                            </AdminDialogButton>
+                            <AdminDialogButton
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                                disabled={isSubmitting}
+                            >
+                                {t('pages.admin.main.btnCreate')}
+                            </AdminDialogButton>
+                        </DialogActions>
+                    </Form>
+                </FormikProvider>
+            </Dialog>
+        </>
     )
 }
 

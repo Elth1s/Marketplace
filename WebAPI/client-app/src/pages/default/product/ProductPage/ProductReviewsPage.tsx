@@ -19,7 +19,7 @@ import { useActions } from "../../../../hooks/useActions";
 
 import ShowInfo from "../../ShortSellerInfo"
 import AddReview from "../AddReview";
-
+import ReviewsForm from "../ReviewForm"
 
 interface Props {
     addInCart: any,
@@ -75,27 +75,36 @@ const ProductReviewsPage: FC<Props> = ({ addInCart }) => {
             </Box>
             <Grid container sx={{ mt: "79px" }}>
                 <Grid item xs={8}>
-                    {reviews?.length != 0 && reviews.map((item, index) => {
-                        return (
-                            <ReviewItem
-                                key={`review_item_${item.date}`}
-                                fullName={item.fullName}
-                                reviewLink="/"
-                                date={item.date}
-                                productRating={item.productRating}
-                                comment={item.comment}
-                                advantages={item.advantages}
-                                disadvantages={item.disadvantages}
-                                images={item.images}
-                                videoURL={item.videoURL}
-                                isLiked={item.isLiked}
-                                isDisliked={item.isDisliked}
-                                likes={item.likes}
-                                dislikes={item.dislikes}
-                                replies={item.replies}
-                            />
-                        )
-                    })}
+                    {(reviews.length === 0) ? (
+                        <>
+                            <Typography variant="h1">{t("pages.product.reviews")}</Typography>
+                            <ReviewsForm getData={getData} />
+                        </>
+                    ) : (
+                        <>
+                            {reviews?.length != 0 && reviews.map((item, index) => {
+                                return (
+                                    <ReviewItem
+                                        key={index}
+                                        fullName={item.fullName}
+                                        reviewLink="/"
+                                        date={item.date}
+                                        productRating={item.productRating}
+                                        comment={item.comment}
+                                        advantages={item.advantages}
+                                        disadvantages={item.disadvantages}
+                                        images={item.images}
+                                        videoURL={item.videoURL}
+                                        isLiked={item.isLiked}
+                                        isDisliked={item.isDisliked}
+                                        likes={item.likes}
+                                        dislikes={item.dislikes}
+                                        replies={item.replies}
+                                    />
+                                )
+                            })}
+                        </>
+                    )}
                 </Grid>
                 <Grid item xs={4}>
                     <Box sx={{ width: "420px", ml: "auto" }}>
