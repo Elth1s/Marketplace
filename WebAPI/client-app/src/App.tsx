@@ -27,8 +27,6 @@ import Ordering from './pages/user/Ordering';
 
 import HomePage from './pages/default/HomePage';
 import About from './pages/default/About';
-import FAQ from './pages/default/FAQ';
-import ContactInfo from './pages/default/ContactInfo';
 import Catalog from './pages/default/Catalog';
 import CatalogWithProducts from './pages/default/Catalog/CatalogWithProducts';
 import Product from './pages/default/product';
