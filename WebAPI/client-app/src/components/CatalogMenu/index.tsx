@@ -143,12 +143,12 @@ const CatalogMenu = () => {
                                             {palette.mode == "dark"
                                                 ? <img
                                                     style={{ width: "20px", height: "20px", objectFit: "contain", marginRight: "15px" }}
-                                                    src={isItemSelected ? row.activeIcon : row.lightIcon}
+                                                    src={isItemSelected ? row.activeIcon : row.darkIcon}
                                                     alt="categoryIcon"
                                                 />
                                                 : <img
                                                     style={{ width: "20px", height: "20px", objectFit: "contain", marginRight: "15px" }}
-                                                    src={isItemSelected ? row.activeIcon : row.darkIcon}
+                                                    src={isItemSelected ? row.activeIcon : row.lightIcon}
                                                     alt="categoryIcon"
                                                 />}
                                             <Typography variant="h4" color={isItemSelected ? "primary" : "inherit"}>{row.name}</Typography>
