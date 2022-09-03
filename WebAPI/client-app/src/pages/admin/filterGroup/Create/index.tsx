@@ -23,15 +23,8 @@ import { CreateProps, ServerError } from '../../../../store/types';
 import { toLowerFirstLetter } from '../../../../http_comon';
 
 import { IFilterGroup } from "../types";
-
-const Transition = forwardRef(function Transition(
-    props: TransitionProps & {
-        children: React.ReactElement<any, any>;
-    },
-    ref: React.Ref<unknown>,
-) {
-    return <Slide direction="left" ref={ref} {...props} />;
-});
+import AdminSellerDialog from '../../../../components/Dialog';
+import { AdminSellerDialogContentStyle, AdminSellerDialogActionsStyle } from '../../../../components/Dialog/styled';
 
 const FilterGroupCreate: FC<CreateProps> = ({ afterCreate }) => {
     const { t } = useTranslation();
@@ -90,73 +83,60 @@ const FilterGroupCreate: FC<CreateProps> = ({ afterCreate }) => {
     return (
         <>
             <IconButtonPlus onClick={handleClickOpen} />
-
-            <Dialog
+            <AdminSellerDialog
                 open={open}
-                TransitionComponent={Transition}
-                sx={{
-                    "& .MuiDialog-paper": {
-                        maxWidth: "none",
-                        width: "980px",
-                        borderRadius: "10px",
-                    }
-                }}
-            >
-                <DialogTitleWithButton
-                    title={t('pages.admin.filterGroup.createTitle')}
-                    onClick={handleClickClose}
-                />
-                <FormikProvider value={formik} >
-                    <Form onSubmit={handleSubmit}>
-                        <DialogContent sx={{ padding: "10px 40px 45px" }}>
-                            <Grid container spacing={5.25}>
-                                <Grid item xs={12}>
-                                    <TextFieldFirstStyle
-                                        fullWidth
-                                        autoComplete="englishName"
-                                        variant="standard"
-                                        type="text"
-                                        label={t('validationProps.englishName')}
-                                        {...getFieldProps('englishName')}
-                                        error={Boolean(touched.englishName && errors.englishName)}
-                                        helperText={touched.englishName && errors.englishName}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextFieldFirstStyle
-                                        fullWidth
-                                        autoComplete="ukrainianName"
-                                        variant="standard"
-                                        type="text"
-                                        label={t('validationProps.ukrainianName')}
-                                        {...getFieldProps('ukrainianName')}
-                                        error={Boolean(touched.ukrainianName && errors.ukrainianName)}
-                                        helperText={touched.ukrainianName && errors.ukrainianName}
-                                    />
-                                </Grid>
-                            </Grid>
-                        </DialogContent>
-                        <DialogActions sx={{ padding: "0 40px 45px" }}>
-                            <AdminDialogButton
-                                type="submit"
-                                variant="outlined"
-                                color="primary"
-                                onClick={handleClickClose}
-                            >
-                                {t('pages.admin.main.btnСancel')}
-                            </AdminDialogButton>
-                            <AdminDialogButton
-                                type="submit"
-                                variant="contained"
-                                color="primary"
-                                disabled={isSubmitting}
-                            >
-                                {t('pages.admin.main.btnCreate')}
-                            </AdminDialogButton>
-                        </DialogActions>
-                    </Form>
-                </FormikProvider>
-            </Dialog>
+                onClose={handleClickClose}
+                dialogContent={
+                    <>
+                        <DialogTitleWithButton
+                            title={t('pages.admin.filterGroup.createTitle')}
+                            onClick={handleClickClose}
+                        />
+                        <FormikProvider value={formik} >
+                            <Form onSubmit={handleSubmit}>
+                                <AdminSellerDialogContentStyle>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={12}>
+                                            <TextFieldFirstStyle
+                                                fullWidth
+                                                autoComplete="englishName"
+                                                variant="standard"
+                                                type="text"
+                                                label={t('validationProps.englishName')}
+                                                {...getFieldProps('englishName')}
+                                                error={Boolean(touched.englishName && errors.englishName)}
+                                                helperText={touched.englishName && errors.englishName}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                            <TextFieldFirstStyle
+                                                fullWidth
+                                                autoComplete="ukrainianName"
+                                                variant="standard"
+                                                type="text"
+                                                label={t('validationProps.ukrainianName')}
+                                                {...getFieldProps('ukrainianName')}
+                                                error={Boolean(touched.ukrainianName && errors.ukrainianName)}
+                                                helperText={touched.ukrainianName && errors.ukrainianName}
+                                            />
+                                        </Grid>
+                                    </Grid>
+                                </AdminSellerDialogContentStyle>
+                                <AdminSellerDialogActionsStyle>
+                                    <AdminDialogButton
+                                        type="submit"
+                                        variant="contained"
+                                        color="primary"
+                                        disabled={isSubmitting}
+                                    >
+                                        {t('pages.admin.main.btnCreate')}
+                                    </AdminDialogButton>
+                                </AdminSellerDialogActionsStyle>
+                            </Form>
+                        </FormikProvider>
+                    </>
+                }
+            />
         </>
     )
 }

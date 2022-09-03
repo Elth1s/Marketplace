@@ -32,7 +32,7 @@ namespace WebAPI.Services.Orders
 
             return _mapper.Map<IEnumerable<OrderStatusResponse>>(orderStatus);
         }
-        public async Task<AdminSearchResponse<OrderStatusResponse>> SearchOrderStatusesAsync(AdminSearchRequest request)
+        public async Task<SearchResponse<OrderStatusResponse>> SearchOrderStatusesAsync(AdminSearchRequest request)
         {
             var spec = new OrderStatusSearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
             var count = await _orderStatusRepository.CountAsync(spec);
@@ -44,7 +44,7 @@ namespace WebAPI.Services.Orders
                 request.RowsPerPage);
             var statuses = await _orderStatusRepository.ListAsync(spec);
             var mappedStatuses = _mapper.Map<IEnumerable<OrderStatusResponse>>(statuses);
-            var response = new AdminSearchResponse<OrderStatusResponse>() { Count = count, Values = mappedStatuses };
+            var response = new SearchResponse<OrderStatusResponse>() { Count = count, Values = mappedStatuses };
 
             return response;
         }

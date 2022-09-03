@@ -156,7 +156,7 @@ namespace WebAPI.Services.Users
                 throw new AppException(_errorMessagesLocalizer["PasswordUpdateFail"]);
         }
 
-        public async Task<AdminSearchResponse<UserResponse>> SearchUsersAsync(AdminSearchRequest request)
+        public async Task<SearchResponse<UserResponse>> SearchUsersAsync(AdminSearchRequest request)
         {
             var count = await _userManager.UserSearch(request.Name, request.IsAscOrder, request.OrderBy).CountAsync();
             var users = await _userManager.UserSearch(
@@ -167,7 +167,7 @@ namespace WebAPI.Services.Users
                 request.RowsPerPage).ToListAsync();
 
             var mappedUsers = _mapper.Map<IEnumerable<UserResponse>>(users);
-            var response = new AdminSearchResponse<UserResponse>() { Count = count, Values = mappedUsers };
+            var response = new SearchResponse<UserResponse>() { Count = count, Values = mappedUsers };
 
             return response;
         }

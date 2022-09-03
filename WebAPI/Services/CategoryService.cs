@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
 using DAL;
 using DAL.Constants;
+using DAL.Data;
 using DAL.Entities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using System.Drawing.Imaging;
 using WebAPI.Constants;
 using WebAPI.Extensions;
@@ -12,6 +15,7 @@ using WebAPI.Specifications.Filters;
 using WebAPI.Specifications.Products;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Request.Categories;
+using WebAPI.ViewModels.Request.Products;
 using WebAPI.ViewModels.Response;
 using WebAPI.ViewModels.Response.Categories;
 using WebAPI.ViewModels.Response.Filters;
@@ -24,18 +28,25 @@ namespace WebAPI.Services
         private readonly IRepository<Category> _categoryRepository;
         private readonly IRepository<Product> _productRepository;
         private readonly IRepository<FilterValue> _filterValueRepository;
+        private readonly IRepository<Shop> _shopRepository;
         private readonly IMapper _mapper;
 
-        public CategoryService(
+        private readonly MarketplaceDbContext _context;
+
+        public CategoryService(IStringLocalizer<ErrorMessages> errorMessagesLocalizer,
             IRepository<Category> categorRepository,
             IRepository<Product> productRepository,
             IRepository<FilterValue> filterValueRepository,
-            IMapper mapper)
+            IRepository<Shop> shopRepository,
+            IMapper mapper,
+            MarketplaceDbContext context)
         {
             _categoryRepository = categorRepository;
             _productRepository = productRepository;
             _filterValueRepository = filterValueRepository;
+            _shopRepository = shopRepository;
             _mapper = mapper;
+            _context = context;
         }
 
         public async Task<IEnumerable<CategoryResponse>> GetAsync()
@@ -45,7 +56,7 @@ namespace WebAPI.Services
             return _mapper.Map<IEnumerable<CategoryResponse>>(categories);
         }
 
-        public async Task<AdminSearchResponse<CategoryResponse>> SearchCategoriesAsync(AdminSearchRequest request)
+        public async Task<SearchResponse<CategoryResponse>> SearchCategoriesAsync(AdminSearchRequest request)
         {
             var spec = new CategorySearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
             var count = await _categoryRepository.CountAsync(spec);
@@ -59,7 +70,7 @@ namespace WebAPI.Services
             var categories = await _categoryRepository.ListAsync(spec);
             var mappedCategories = _mapper.Map<IEnumerable<CategoryResponse>>(categories);
 
-            var response = new AdminSearchResponse<CategoryResponse>() { Count = count, Values = mappedCategories };
+            var response = new SearchResponse<CategoryResponse>() { Count = count, Values = mappedCategories };
 
             return response;
         }
@@ -105,7 +116,7 @@ namespace WebAPI.Services
                         filterPredicate = filterPredicate
                             .Or(p => p.Id == item);
                     }
-                    var filterValuesSpec = new FilterValuesGetByIdsSpecification(filterPredicate);
+                    var filterValuesSpec = new FilterValueGetByIdsSpecification(filterPredicate);
                     filters = await _filterValueRepository.ListAsync(filterValuesSpec);
                 }
                 var productCategoryIdSpec = new ProductGetByCategoryIdSpecification(category.Id, request.Filters == null ? null : filters, null, null);
@@ -114,7 +125,7 @@ namespace WebAPI.Services
                 productCategoryIdSpec = new ProductGetByCategoryIdSpecification(category.Id, request.Filters == null ? null : filters, request.Page, request.RowsPerPage);
                 products = await _productRepository.ListAsync(productCategoryIdSpec);
 
-                response.Products = _mapper.Map<IEnumerable<ProductCatalogResponse>>(products); ;
+                response.Products = _mapper.Map<IEnumerable<ProductCatalogResponse>>(products);
             }
             else
             {
@@ -127,6 +138,58 @@ namespace WebAPI.Services
                     products.AddRange(await _productRepository.ListAsync(productCategoryIdSpec));
                 }
                 response.Products = _mapper.Map<IEnumerable<ProductCatalogResponse>>(products);
+            }
+
+            return response;
+        }
+
+        public async Task<IEnumerable<FullCatalogItemResponse>> GetCategoriesByProductsAsync(SearchProductRequest request)
+        {
+            if (request.ShopId != null)
+            {
+                var shop = await _shopRepository.GetByIdAsync(request.ShopId);
+                shop.ShopNullChecking();
+            }
+
+            var query = _context.Products
+                .Include(o => o.Category).ThenInclude(c => c.CategoryTranslations)
+                 .Include(o => o.Status).ThenInclude(s => s.ProductStatusTranslations)
+                 .Include(pi => pi.Images)
+                 .AsQueryable();
+            if (!string.IsNullOrEmpty(request.ProductName))
+                query = query.Where(item => item.Name.Contains(request.ProductName));
+            if (request.ShopId != null)
+                query = query.Where(item => item.ShopId == request.ShopId);
+
+            var categoryQuery = query.GroupBy(p => p.CategoryId).Select(p => p.Key);
+            var categoriesId = await categoryQuery.ToListAsync();
+
+            var response = new List<FullCatalogItemResponse>();
+
+            foreach (var item in categoriesId)
+            {
+                var categories = new List<Category>();
+                var spec = new CategoryIncludeFullInfoSpecification(item);
+                var category = await _categoryRepository.GetBySpecAsync(spec);
+                while (category.Parent != null)
+                {
+                    categories.Add(category);
+                    spec = new CategoryIncludeFullInfoSpecification(category.Parent.Id);
+                    category = await _categoryRepository.GetBySpecAsync(spec);
+                }
+                categories.Add(category);
+
+                var isExist = response.Where(c => c.Id == category.Id).FirstOrDefault();
+                if (isExist == null)
+                {
+                    response.Add(_mapper.Map<FullCatalogItemResponse>(category));
+                    response[response.Count - 1].Children = new List<FullCatalogItemResponse>() { _mapper.Map<FullCatalogItemResponse>(categories.First()) };
+                }
+                else
+                {
+                    var index = response.IndexOf(isExist);
+                    response[index].Children = response[index].Children.Append(_mapper.Map<FullCatalogItemResponse>(categories.First()));
+                }
             }
 
             return response;

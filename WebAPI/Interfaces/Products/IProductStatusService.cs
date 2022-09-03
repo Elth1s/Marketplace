@@ -8,7 +8,7 @@ namespace WebAPI.Interfaces.Products
     public interface IProductStatusService
     {
         Task<IEnumerable<ProductStatusResponse>> GetAsync();
-        Task<AdminSearchResponse<ProductStatusResponse>> SearchProductStatusesAsync(AdminSearchRequest request);
+        Task<SearchResponse<ProductStatusResponse>> SearchProductStatusesAsync(AdminSearchRequest request);
         Task<ProductStatusFullInfoResponse> GetByIdAsync(int id);
         Task CreateAsync(ProductStatusRequest request);
         Task UpdateAsync(int id, ProductStatusRequest request);

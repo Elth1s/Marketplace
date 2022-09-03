@@ -43,7 +43,7 @@ namespace WebAPI.Services.Orders
             return _mapper.Map<DeliveryTypeFullInfoResponse>(type);
         }
 
-        public async Task<AdminSearchResponse<DeliveryTypeResponse>> SearchDeliveryTypesAsync(AdminSearchRequest request)
+        public async Task<SearchResponse<DeliveryTypeResponse>> SearchDeliveryTypesAsync(AdminSearchRequest request)
         {
             var spec = new DeliveryTypeSearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
             var count = await _deliveryTypeRepository.CountAsync(spec);
@@ -55,7 +55,7 @@ namespace WebAPI.Services.Orders
                 request.RowsPerPage);
             var types = await _deliveryTypeRepository.ListAsync(spec);
             var mappedTypes = _mapper.Map<IEnumerable<DeliveryTypeResponse>>(types);
-            var response = new AdminSearchResponse<DeliveryTypeResponse>() { Count = count, Values = mappedTypes };
+            var response = new SearchResponse<DeliveryTypeResponse>() { Count = count, Values = mappedTypes };
 
             return response;
         }

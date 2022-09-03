@@ -6,6 +6,7 @@ import {
     ListItem,
     ListItemIcon,
     Paper,
+    useTheme,
 } from '@mui/material'
 import {
     ArrowBackIosNewOutlined,
@@ -30,6 +31,7 @@ import { useTypedSelector } from '../../../hooks/useTypedSelector';
 
 const HomePage = () => {
     const { t } = useTranslation();
+    const { palette } = useTheme();
 
     const { fullCatalogItems } = useTypedSelector(state => state.catalog);
 
@@ -79,15 +81,21 @@ const HomePage = () => {
                             return (
                                 <LinkRouter key={`$catalog_${index}`} underline="none" color="inherit" to={`/catalog/${row.urlSlug}`}>
                                     <Box sx={{ display: "flex", mb: "20px", alignItems: "center" }} onMouseEnter={() => setSelectedCategory(index)}>
-                                        {row.icon != ""
-                                            ? <img
-                                                style={{ width: "20px", height: "20px", objectFit: "contain", marginRight: "15px" }}
-                                                src={row.icon}
-                                                alt="categoryIcon"
-                                            />
-                                            : <PhotoOutlined color={isItemSelected ? "primary" : "inherit"} sx={{ marginRight: "15px" }} />
+                                        {row.lightIcon == "" || row.darkIcon == ""
+                                            ? <PhotoOutlined color={isItemSelected ? "primary" : "inherit"} sx={{ marginRight: "15px" }} />
+                                            : (palette.mode == "dark"
+                                                ? <img
+                                                    style={{ width: "20px", height: "20px", objectFit: "contain", marginRight: "15px" }}
+                                                    src={isItemSelected ? row.activeIcon : row.darkIcon}
+                                                    alt="categoryIcon"
+                                                />
+                                                : <img
+                                                    style={{ width: "20px", height: "20px", objectFit: "contain", marginRight: "15px" }}
+                                                    src={isItemSelected ? row.activeIcon : row.lightIcon}
+                                                    alt="categoryIcon"
+                                                />)
                                         }
-                                        <Typography variant="h4" fontWeight="bold" color={isItemSelected ? "primary" : "inherit"}>{row.name}</Typography>
+                                        <Typography variant="h4" fontWeight="medium" color={isItemSelected ? "primary" : "inherit"}>{row.name}</Typography>
                                     </Box>
                                 </LinkRouter>
                             );
@@ -95,7 +103,6 @@ const HomePage = () => {
                     <LinkRouter underline="none" color="inherit" to={`/catalog`}>
                         <Typography
                             variant="h4"
-                            fontWeight="bold"
                             color={allCategoriesMouseEnter ? "primary" : "inherit"}
                             sx={{ cursor: "pointer" }}
                             onMouseEnter={() => setAllCategoriesMouseEnter(true)}
@@ -156,20 +163,6 @@ const HomePage = () => {
                     </IconButton>
                 </Box>
             </Box>
-            <Grid container id="ProductOfTheDay" sx={{ height: "510px", marginTop: "190px", borderRadius: "9px", backgroundColor: "#0E7C3A" }}>
-                <Grid item xl={3} sx={{ height: "100%" }}>
-                    <Box sx={{ height: "100%", display: "flex", flexDirection: 'column', justifyContent: "center", alignItems: "center" }}>
-                        <Typography color="#fff" fontSize="38px" sx={{ fontWeight: "500" }}>Product of the day</Typography>
-                        <Typography color="#fff" fontSize="70px" sx={{ fontWeight: "700" }}>25.06</Typography>
-                        <Typography color="#fff" fontSize="15px" sx={{ fontWeight: "500" }}>Limited quantity. The offer is valid only today</Typography>
-                    </Box>
-                </Grid>
-                <Grid item xl={9} sx={{ display: "flex", justifyContent: "end", alignItems: "center" }}>
-                    <BoxProductOfTheDayStyle>
-
-                    </BoxProductOfTheDayStyle>
-                </Grid>
-            </Grid>
             <Box
                 sx={{
                     display: "flex",

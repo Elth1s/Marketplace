@@ -8,7 +8,7 @@ namespace WebAPI.Interfaces.Orders
     public interface IOrderStatusService
     {
         Task<IEnumerable<OrderStatusResponse>> GetAsync();
-        Task<AdminSearchResponse<OrderStatusResponse>> SearchOrderStatusesAsync(AdminSearchRequest request);
+        Task<SearchResponse<OrderStatusResponse>> SearchOrderStatusesAsync(AdminSearchRequest request);
         Task<OrderStatusFullInfoResponse> GetByIdAsync(int id);
         Task CreateAsync(OrderStatusRequest request);
         Task UpdateAsync(int id, OrderStatusRequest request);

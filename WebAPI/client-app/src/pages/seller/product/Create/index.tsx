@@ -50,7 +50,7 @@ const ProductCreate: FC<Props> = ({ }) => {
             try {
                 console.log(values)
                 await CreateProduct(values);
-                navigate("/seller/product");
+                navigate("/seller/products");
             }
             catch (ex) {
                 const serverErrors = ex as ServerError;
@@ -268,16 +268,18 @@ const ProductCreate: FC<Props> = ({ }) => {
                                         </Box>
                                     </div>
                                 </Box>
-                                {formik.values.images?.length != 0 &&
-                                    formik.values.images.map((row, index) => {
-                                        return (
-                                            <img
-                                                key={`product_image_${index}`}
-                                                src={row.name}
-                                                alt="icon"
-                                                style={{ width: "136px", height: "136px", borderRadius: "10px", border: "1px solid #F45626" }} />
-                                        );
-                                    })
+                                {imagesLoading > 0
+                                    ? <div>зоображення завантажуються</div>
+                                    : (formik.values.images?.length != 0 &&
+                                        formik.values.images.map((row, index) => {
+                                            return (
+                                                <img
+                                                    key={`product_image_${index}`}
+                                                    src={row.name}
+                                                    alt="icon"
+                                                    style={{ width: "136px", height: "136px", borderRadius: "10px", border: "1px solid #F45626" }} />
+                                            );
+                                        }))
                                 }
 
                             </Grid>

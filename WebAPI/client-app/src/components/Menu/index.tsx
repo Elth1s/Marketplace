@@ -33,7 +33,7 @@ interface ISettingsMenuItem {
 
 const MainMenu = () => {
     const { t } = useTranslation()
-    const { SetTheme, LogoutUser } = useActions();
+    const { SetTheme, LogoutUser, ResetBasket, UpdateSearch } = useActions();
     const { isDarkTheme } = useTypedSelector((state) => state.ui);
 
     const { AuthDialogChange } = useActions();
@@ -62,6 +62,7 @@ const MainMenu = () => {
 
     const handleClose = () => {
         setAnchorEl(null);
+        UpdateSearch("");
     };
 
     const shopDialogClose = () => {
@@ -76,6 +77,8 @@ const MainMenu = () => {
     const handleLogOut = () => {
         setAnchorEl(null);
         LogoutUser();
+        ResetBasket();
+        UpdateSearch("");
         navigate("/");
     }
 

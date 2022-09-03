@@ -21,14 +21,20 @@ const DialogTitleWithButton: FC<props> = ({ title, onClick }) => {
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                p: "40px"
+                pl: "26px",
+                pr: "16px"
             }}
         >
-            <Typography variant="h1" sx={{ color: "#F45626" }} >
+            <Typography variant="h1" >
                 {title}
             </Typography>
-            <IconButton aria-label="close" onClick={onClick}>
-                <Close sx={{ color: "#000000", fontSize: "20px" }} />
+            <IconButton onClick={onClick}
+                color="inherit"
+                sx={{
+                    borderRadius: "12px"
+                }}
+            >
+                <Close />
             </IconButton>
         </DialogTitle>
     )

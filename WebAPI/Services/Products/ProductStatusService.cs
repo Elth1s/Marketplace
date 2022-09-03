@@ -90,7 +90,7 @@ namespace WebAPI.Services.Products
             await _productStatusRepository.SaveChangesAsync();
         }
 
-        public async Task<AdminSearchResponse<ProductStatusResponse>> SearchProductStatusesAsync(AdminSearchRequest request)
+        public async Task<SearchResponse<ProductStatusResponse>> SearchProductStatusesAsync(AdminSearchRequest request)
         {
             var spec = new ProductStatusSearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
             var count = await _productStatusRepository.CountAsync(spec);
@@ -103,7 +103,7 @@ namespace WebAPI.Services.Products
 
             var statuses = await _productStatusRepository.ListAsync(spec);
             var mappedStatuses = _mapper.Map<IEnumerable<ProductStatusResponse>>(statuses);
-            var response = new AdminSearchResponse<ProductStatusResponse>() { Count = count, Values = mappedStatuses };
+            var response = new SearchResponse<ProductStatusResponse>() { Count = count, Values = mappedStatuses };
 
             return response;
         }

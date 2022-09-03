@@ -1,14 +1,5 @@
 {
     "common": {
-        "props": {
-            "fullName": "Прізвище та ім’я",
-            "name": "ім’я",
-            "email": "Електронна пошта",
-            "advantages": "Переваги",
-            "disadvantages": "Недоліки",
-            "comment": "Відгук",
-            "videoURL": "Відео URL"
-        },
         "containers": {
             "default": {
                 "header": {
@@ -72,7 +63,7 @@
                     "icon": "Значок",
                     "darkIcon": "Темний значок",
                     "lightIcon": "Світлий значок",
-                    "parentCategory": "Батківська категорія",
+                    "parentCategory": "Батьківська категорія",
                     "characteristicGroup": "Група характеристики",
                     "characteristicName": "Назва характеристики",
                     "filterGroup": "Група фільтру",
@@ -174,7 +165,11 @@
             },
             "catalog": {
                 "showMore": "Показати ще",
-                "find": "Пошук"
+                "find": "Пошук",
+                "finded": "Знайдено",
+                "countProductsOne": "товар",
+                "countProductsLessFive": "товари",
+                "countProducts": "товарів"
             },
             "faq": {
                 "tabs": {
@@ -376,7 +371,12 @@
             "email": "Електронна пошта",
             "advantages": "Переваги",
             "disadvantages": "Недоліки",
-            "comment": "Відгук"
+            "comment": "Відгук",
+            "videoURL": "Відео URL",
+            "categoryImage": "Зображення",
+            "categoryLightIcon": "Світлий значок",
+            "categoryDarkIcon": "Темний значок",
+            "categoryActiveIcon": "Активний значок"
         }
     }
 }

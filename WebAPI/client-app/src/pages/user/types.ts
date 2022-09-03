@@ -46,20 +46,17 @@ export interface ProfileState {
 // Create order
 
 
-export interface IOrderItem {
-    products: Array<IBasketOrderItem>
-    deliveryType: string
-}
-
 export interface IOrderCreate {
     consumerFirstName: string,
     consumerSecondName: string,
     consumerPhone: string,
     consumerEmail: string,
-    orders: Array<IOrderItem>
+    basketItems: Array<IBasketOrderItem>
 }
 
 export interface IBasketOrderItem {
+    id: number,
+    productId: number,
     productName: string,
     productImage: string,
     productPrice: number,
@@ -70,6 +67,7 @@ export interface IBasketOrderItem {
 export interface IOrderProducts {
     shopName: string,
     totalPrice: number,
+    totalCount: number,
     basketItems: Array<IBasketOrderItem>
 }
 

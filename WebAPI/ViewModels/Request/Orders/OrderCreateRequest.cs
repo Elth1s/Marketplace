@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.Localization;
 using WebAPI.Helpers;
+using WebAPI.ViewModels.Response.Orders;
 
 namespace WebAPI.ViewModels.Request.Orders
 {
@@ -34,22 +35,10 @@ namespace WebAPI.ViewModels.Request.Orders
         /// </summary>
         /// <example>1</example>
         public int DeliveryTypeId { get; set; }
-
-        //public IEnumerable<OrderProductCreate> OrderProducts { get; set; }
-    }
-
-    public class OrderProductCreate
-    {
         /// <summary>
-        ///  Count Order Product
+        /// List of basket items
         /// </summary>
-        /// <example>1</example>
-        public int Count { get; set; }
-        /// <summary>
-        /// Product Id
-        /// </summary>
-        /// <example>1</example>
-        public int ProductId { get; set; }
+        public IEnumerable<BasketOrderItemResponse> BasketItems { get; set; }
     }
 
 
@@ -84,7 +73,7 @@ namespace WebAPI.ViewModels.Request.Orders
 
             //Consumer Email
             RuleFor(x => x.ConsumerEmail).Cascade(CascadeMode.Stop)
-               .EmailAddress();
+               .EmailAddress().When(c => !string.IsNullOrEmpty(c.ConsumerEmail)).WithName(_validationResources["EmailAddressPropName"]);
 
         }
         private bool IsValidPhone(string phone)

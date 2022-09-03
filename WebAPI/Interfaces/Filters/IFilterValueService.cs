@@ -8,7 +8,7 @@ namespace WebAPI.Interfaces.Filters
     public interface IFilterValueService
     {
         Task<IEnumerable<FilterValueResponse>> GetFiltersValueAsync();
-        Task<AdminSearchResponse<FilterValueResponse>> SearchAsync(AdminSearchRequest request);
+        Task<SearchResponse<FilterValueResponse>> SearchAsync(AdminSearchRequest request);
         Task<FilterValueFullInfoResponse> GetFilterValueByIdAsync(int filterValueId);
         Task CreateFilterValueAsync(FilterValueRequest request);
         Task UpdateFilterValueAsync(int filterValueId, FilterValueRequest request);

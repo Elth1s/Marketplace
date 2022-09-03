@@ -288,11 +288,12 @@ namespace WebAPI.Mapper
                 .ForMember(u => u.Photo, opt => opt.MapFrom(vm => !string.IsNullOrEmpty(vm.Photo) ? String.Concat(ImagePath.RequestShopsImagePath, "/", vm.Photo) : ""));
             CreateMap<Shop, ShopPageInfoResponse>()
                 .ForMember(s => s.CountReviews, opt => opt.MapFrom(vm => vm.ShopReviews.Count))
-                .ForMember(s => s.AverageInformationRelevanceRating, opt => opt.MapFrom(vm => Math.Round(vm.ShopReviews.Average(sr => sr.InformationRelevanceRating), 1)))
-                .ForMember(s => s.AverageServiceQualityRating, opt => opt.MapFrom(vm => Math.Round(vm.ShopReviews.Average(sr => sr.ServiceQualityRating), 1)))
-                .ForMember(s => s.AverageTimelinessRating, opt => opt.MapFrom(vm => Math.Round(vm.ShopReviews.Average(sr => sr.TimelinessRating), 1)))
-                .ForMember(s => s.AverageRating, opt => opt.MapFrom(vm =>
-                                Math.Round(vm.ShopReviews.Average(sr => (sr.InformationRelevanceRating + sr.ServiceQualityRating + sr.TimelinessRating) / 3f), 1)));
+                .ForMember(s => s.AverageInformationRelevanceRating, opt => opt.MapFrom(vm => vm.ShopReviews.Count > 0 ? Math.Round(vm.ShopReviews.Average(sr => sr.InformationRelevanceRating), 1) : 0))
+                .ForMember(s => s.AverageServiceQualityRating, opt => opt.MapFrom(vm => vm.ShopReviews.Count > 0 ? Math.Round(vm.ShopReviews.Average(sr => sr.ServiceQualityRating), 1) : 0))
+                .ForMember(s => s.AverageTimelinessRating, opt => opt.MapFrom(vm => vm.ShopReviews.Count > 0 ? Math.Round(vm.ShopReviews.Average(sr => sr.TimelinessRating), 1) : 0))
+                .ForMember(s => s.AverageRating, opt => opt.MapFrom(vm => vm.ShopReviews.Count > 0 ?
+                                Math.Round(vm.ShopReviews.Average(sr => (sr.InformationRelevanceRating + sr.ServiceQualityRating + sr.TimelinessRating) / 3f), 1) : 0))
+                .ForMember(s => s.ShopScheduleItemResponses, opt => opt.Ignore());
             CreateMap<ShopRequest, Shop>();
 
             //ShopPhone
@@ -368,6 +369,7 @@ namespace WebAPI.Mapper
                 .ForMember(u => u.ProductImage, opt => opt.MapFrom(
                     vm => vm.Product.Images.Count != 0 ? Path.Combine(ImagePath.RequestProductsImagePath, vm.Product.Images.FirstOrDefault().Name) : ""));
             CreateMap<BasketItem, BasketOrderItemResponse>()
+                .ForMember(u => u.ProductId, opt => opt.MapFrom(vm => vm.Product.Id))
                 .ForMember(u => u.ProductName, opt => opt.MapFrom(vm => vm.Product.Name))
                 .ForMember(u => u.ProductPrice, opt => opt.MapFrom(vm => vm.Product.Price))
                 .ForMember(u => u.ProductUrlSlug, opt => opt.MapFrom(vm => vm.Product.UrlSlug))
@@ -442,7 +444,6 @@ namespace WebAPI.Mapper
             //Order
             CreateMap<OrderCreateRequest, Order>()
                 .ForMember(o => o.OrderProducts, opt => opt.Ignore());
-            CreateMap<OrderProductCreate, OrderProduct>();
 
             CreateMap<Order, OrderResponse>()
                 .ForMember(o => o.DeliveryType, opt => opt.MapFrom(

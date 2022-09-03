@@ -11,6 +11,11 @@ export const basketReducer = (state = initialState, action: BasketAction): Baske
                 ...state,
                 basketItems: action.payload,
             }
+        case BasketActionTypes.RESET_BASKET:
+            return {
+                ...state,
+                basketItems: [],
+            }
         default:
             return state;
     }

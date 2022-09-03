@@ -5,6 +5,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using WebAPI.Interfaces;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Request.Categories;
+using WebAPI.ViewModels.Request.Products;
 using WebAPI.ViewModels.Response;
 using WebAPI.ViewModels.Response.Categories;
 using WebAPI.ViewModels.Response.Filters;
@@ -50,7 +51,7 @@ namespace WebAPI.Controllers
         /// <response code="401">You are not authorized</response>
         /// <response code="403">You don't have permission</response>
         /// <response code="500">An internal error has occurred</response>
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AdminSearchResponse<CategoryResponse>))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(SearchResponse<CategoryResponse>))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
@@ -66,16 +67,27 @@ namespace WebAPI.Controllers
         /// Return of catalog with products
         /// </summary>
         /// <response code="200">Getting catalog with products completed successfully</response>
-        /// <response code="401">You are not authorized</response>
-        /// <response code="403">You don't have permission</response>
         /// <response code="500">An internal error has occurred</response>
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(CatalogWithProductsResponse))]
-        [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [HttpGet("GetCatalogWithProducts")]
         public async Task<IActionResult> GetCatalogWithProducts([FromQuery] CatalogWithProductsRequest request)
         {
             var result = await _categoryService.GetCatalogWithProductsAsync(request);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Return of catalog with products
+        /// </summary>
+        /// <response code="200">Getting catalog with products completed successfully</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<FullCatalogItemResponse>))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [HttpGet("GetCategoriesByProducts")]
+        public async Task<IActionResult> GetCategoriesByProducts([FromQuery] SearchProductRequest request)
+        {
+            var result = await _categoryService.GetCategoriesByProductsAsync(request);
             return Ok(result);
         }
 

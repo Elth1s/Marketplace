@@ -6,6 +6,11 @@
     public class FullCatalogItemResponse
     {
         /// <summary>
+        /// Identifier of category
+        /// </summary>
+        /// <example>2</example>
+        public int Id { get; set; }
+        /// <summary>
         /// Name of category
         /// </summary>
         /// <example>Computer equipment and software</example>

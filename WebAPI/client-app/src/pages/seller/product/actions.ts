@@ -18,7 +18,7 @@ import { ServerError } from "../../../store/types"
 export const SearchProducts = (page: number, rowsPerPage: number, name: string, isAscOrder: boolean, orderBy: string, isSeller: boolean) => {
     return async (dispatch: Dispatch<ProductAction>) => {
         try {
-            let response = await http.get<ISearchProducts>(`api/Product/Search`, {
+            let response = await http.get<ISearchProducts>(`api/Product/AdminSellerSearch`, {
                 params: {
                     page: page,
                     rowsPerPage: rowsPerPage,

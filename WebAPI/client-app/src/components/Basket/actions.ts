@@ -43,3 +43,18 @@ export const RemoveFromBasket = (id: number, isInBasket: boolean) => {
         }
     }
 }
+
+export const ResetBasket = () => {
+    return async (dispatch: Dispatch<BasketAction>) => {
+        try {
+            dispatch({
+                type: BasketActionTypes.RESET_BASKET
+            })
+
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
+        }
+    }
+}

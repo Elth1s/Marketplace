@@ -1,5 +1,6 @@
 export enum BasketActionTypes {
     GET_BASKET_ITEMS = "GET_BASKET_ITEMS",
+    RESET_BASKET = "RESET_BASKET"
 }
 
 export interface IBasketItem {
@@ -22,5 +23,9 @@ export interface GetBasketItemsAction {
     payload: Array<IBasketItem>
 }
 
+export interface ResetBasketAction {
+    type: BasketActionTypes.RESET_BASKET
+}
 
-export type BasketAction = GetBasketItemsAction;
+
+export type BasketAction = GetBasketItemsAction | ResetBasketAction;

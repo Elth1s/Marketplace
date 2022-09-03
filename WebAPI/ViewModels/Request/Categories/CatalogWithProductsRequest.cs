@@ -4,7 +4,7 @@ using Microsoft.Extensions.Localization;
 namespace WebAPI.ViewModels.Request.Categories
 {
     /// <summary>
-    /// Category class to create and update category
+    /// Category class to get category with product
     /// </summary>
     public class CatalogWithProductsRequest
     {
@@ -47,6 +47,12 @@ namespace WebAPI.ViewModels.Request.Categories
             //Page
             RuleFor(a => a.Page).Cascade(CascadeMode.Stop)
                 .NotEmpty().WithName(_validationResources["PagePropName"])
+                .WithMessage(_validationResources["RequiredMessage"])
+                .GreaterThan(0).WithMessage(_validationResources["GreaterThanMessage"]);
+
+            //RowsPerPage
+            RuleFor(a => a.RowsPerPage).Cascade(CascadeMode.Stop)
+                .NotEmpty().WithName(_validationResources["RowsPerPagePropName"])
                 .WithMessage(_validationResources["RequiredMessage"])
                 .GreaterThan(0).WithMessage(_validationResources["GreaterThanMessage"]);
         }

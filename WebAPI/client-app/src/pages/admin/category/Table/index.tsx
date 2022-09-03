@@ -12,7 +12,9 @@ import LinkRouter from "../../../../components/LinkRouter";
 import { useActions } from "../../../../hooks/useActions";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import { HeadCell } from "../../../../store/types";
+import Create from "../Create";
 import { ICategoryInfo } from "../types";
+import Update from "../Update";
 
 
 const CategoryTable = () => {
@@ -40,7 +42,7 @@ const CategoryTable = () => {
             label: `${t('containers.admin_seller.tableHeadCell.image')}`,
         },
         {
-            id: 'icon',
+            id: 'activeIcon',
             numeric: false,
             label: `${t('containers.admin_seller.tableHeadCell.icon')}`,
         },
@@ -127,19 +129,7 @@ const CategoryTable = () => {
         <>
             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", my: "30px" }}>
                 <Typography variant="h1">{t('containers.admin_seller.sideBar.categories')}</Typography>
-                <LinkRouter underline="none" to="/admin/categories/create" >
-                    <IconButton
-                        sx={{ borderRadius: '12px', background: "#F45626", "&:hover": { background: "#CB2525" }, "&& .MuiTouchRipple-child": { backgroundColor: "transparent" } }}
-                        size="large"
-                        color="inherit"
-                    >
-                        <img
-                            style={{ width: "30px" }}
-                            src={white_plus}
-                            alt="icon"
-                        />
-                    </IconButton>
-                </LinkRouter>
+                <Create afterCreate={() => { getData() }} />
             </Box>
             <EnhancedTable
                 page={page}
@@ -157,9 +147,7 @@ const CategoryTable = () => {
                 count={count}
                 onDelete={onDelete}
                 update={
-                    <LinkRouter underline="none" color="secondary" to={`/admin/categories/update/${selected[selected.length - 1]}`} >
-                        <Edit />
-                    </LinkRouter>
+                    <Update id={selected[selected.length - 1]} afterUpdate={() => { getData() }} />
                 }
                 tableBody={
                     categories.map((row, index) => {
@@ -205,7 +193,7 @@ const CategoryTable = () => {
                                 <TableCellStyle align="center">
                                     <Avatar
                                         sx={{ mx: "auto" }}
-                                        src={row.icon}
+                                        src={row.activeIcon}
                                         alt="Icon"
                                     />
                                 </TableCellStyle>

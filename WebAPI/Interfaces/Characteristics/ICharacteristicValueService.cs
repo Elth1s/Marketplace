@@ -8,7 +8,7 @@ namespace WebAPI.Interfaces.Characteristics
     public interface ICharacteristicValueService
     {
         Task<IEnumerable<CharacteristicValueResponse>> GetAsync();
-        Task<AdminSearchResponse<CharacteristicValueResponse>> SearchAsync(SellerSearchRequest request, string userId);
+        Task<SearchResponse<CharacteristicValueResponse>> SearchAsync(SellerSearchRequest request, string userId);
         Task<CharacteristicValueResponse> GetByIdAsync(int id);
         Task CreateAsync(CharacteristicValueRequest request, string userId);
         Task UpdateAsync(int id, CharacteristicValueRequest request, string userId);

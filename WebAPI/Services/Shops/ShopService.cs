@@ -168,7 +168,7 @@ namespace WebAPI.Services.Shops
             await _shopRepository.SaveChangesAsync();
         }
 
-        public async Task<AdminSearchResponse<ShopResponse>> SearchShopsAsync(AdminSearchRequest request)
+        public async Task<SearchResponse<ShopResponse>> SearchShopsAsync(AdminSearchRequest request)
         {
             var spec = new ShopSearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
             var count = await _shopRepository.CountAsync(spec);
@@ -180,7 +180,7 @@ namespace WebAPI.Services.Shops
                 request.RowsPerPage);
             var shops = await _shopRepository.ListAsync(spec);
             var mappedShops = _mapper.Map<IEnumerable<ShopResponse>>(shops);
-            var response = new AdminSearchResponse<ShopResponse>() { Count = count, Values = mappedShops };
+            var response = new SearchResponse<ShopResponse>() { Count = count, Values = mappedShops };
 
             return response;
 

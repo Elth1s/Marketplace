@@ -40,7 +40,7 @@ interface Props {
 }
 
 const SignInDialog: FC<Props> = ({ changeDialog, forgotPasswordOpen }) => {
-    const { LoginUser, AuthDialogChange } = useActions();
+    const { LoginUser, AuthDialogChange, GetBasketItems } = useActions();
     const { executeRecaptcha } = useGoogleReCaptcha();
 
     const navigate = useNavigate();
@@ -60,6 +60,7 @@ const SignInDialog: FC<Props> = ({ changeDialog, forgotPasswordOpen }) => {
             try {
                 await LoginUser(values, reCaptchaToken);
                 AuthDialogChange();
+                await GetBasketItems();
                 navigate("/");
                 //toast.success('Login Success!');
             }

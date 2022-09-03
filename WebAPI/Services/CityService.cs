@@ -37,7 +37,7 @@ namespace WebAPI.Services
             return response;
         }
 
-        public async Task<AdminSearchResponse<CityResponse>> SearchCitiesAsync(AdminSearchRequest request)
+        public async Task<SearchResponse<CityResponse>> SearchCitiesAsync(AdminSearchRequest request)
         {
             var spec = new CitySearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
             var count = await _cityRepository.CountAsync(spec);
@@ -49,7 +49,7 @@ namespace WebAPI.Services
                 request.RowsPerPage);
             var cities = await _cityRepository.ListAsync(spec);
             var mappedCities = _mapper.Map<IEnumerable<CityResponse>>(cities);
-            var response = new AdminSearchResponse<CityResponse>() { Count = count, Values = mappedCities };
+            var response = new SearchResponse<CityResponse>() { Count = count, Values = mappedCities };
 
             return response;
         }
