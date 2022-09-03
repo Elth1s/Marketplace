@@ -140,17 +140,20 @@ const CatalogMenu = () => {
                                 return (
                                     <LinkRouter key={`$catalog_${index}`} underline="none" color="inherit" to={`/catalog/${row.urlSlug}`} onClick={handleClose}>
                                         <Box sx={{ display: "flex", mb: "14px", alignItems: "center" }} onMouseEnter={() => changeParentCategory(index)}>
-                                            {palette.mode == "dark"
-                                                ? <img
-                                                    style={{ width: "20px", height: "20px", objectFit: "contain", marginRight: "15px" }}
-                                                    src={isItemSelected ? row.activeIcon : row.darkIcon}
-                                                    alt="categoryIcon"
-                                                />
-                                                : <img
-                                                    style={{ width: "20px", height: "20px", objectFit: "contain", marginRight: "15px" }}
-                                                    src={isItemSelected ? row.activeIcon : row.lightIcon}
-                                                    alt="categoryIcon"
-                                                />}
+                                            {row.lightIcon == "" || row.darkIcon == ""
+                                                ? <PhotoOutlined color={isItemSelected ? "primary" : "inherit"} sx={{ marginRight: "15px" }} />
+                                                : (palette.mode == "dark"
+                                                    ? <img
+                                                        style={{ width: "20px", height: "20px", objectFit: "contain", marginRight: "15px" }}
+                                                        src={isItemSelected ? row.activeIcon : row.darkIcon}
+                                                        alt="categoryIcon"
+                                                    />
+                                                    : <img
+                                                        style={{ width: "20px", height: "20px", objectFit: "contain", marginRight: "15px" }}
+                                                        src={isItemSelected ? row.activeIcon : row.lightIcon}
+                                                        alt="categoryIcon"
+                                                    />)
+                                            }
                                             <Typography variant="h4" color={isItemSelected ? "primary" : "inherit"}>{row.name}</Typography>
                                         </Box>
                                     </LinkRouter>
