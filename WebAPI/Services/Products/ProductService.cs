@@ -8,6 +8,7 @@ using WebAPI.Helpers;
 using WebAPI.Interfaces.Products;
 using WebAPI.Specifications;
 using WebAPI.Specifications.Categories;
+using WebAPI.Specifications.Filters;
 using WebAPI.Specifications.Products;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Request.Products;
@@ -71,6 +72,54 @@ namespace WebAPI.Services.Products
             product.ProductNullChecking();
 
             return _mapper.Map<ProductResponse>(product);
+        }
+
+        public async Task<SearchResponse<ProductCatalogResponse>> SearchProductsAsync(SearchProductRequest request)
+        {
+            if (request.ShopId != null)
+            {
+                var shop = await _shopRepository.GetByIdAsync(request.ShopId);
+                shop.ShopNullChecking();
+            }
+
+            var response = new SearchResponse<ProductCatalogResponse>();
+
+            var products = new List<Product>();
+            var categories = new List<Category>();
+            var filters = new List<FilterValue>();
+            if (request.Categories != null)
+            {
+                var categoryPredicate = PredicateBuilder.False<Category>();
+                foreach (var item in request.Categories)
+                {
+                    categoryPredicate = categoryPredicate
+                        .Or(p => p.Id == item);
+                }
+                var categoriesSpec = new CategoryGetByIdsSpecification(categoryPredicate);
+                categories = await _categoryRepository.ListAsync(categoriesSpec);
+                if (request.Categories.Count() == 1)
+                    if (request.Filters != null)
+                    {
+                        var filterPredicate = PredicateBuilder.False<FilterValue>();
+                        foreach (var item in request.Filters)
+                        {
+                            filterPredicate = filterPredicate
+                                .Or(p => p.Id == item);
+                        }
+                        var filterValuesSpec = new FilterValueGetByIdsSpecification(filterPredicate);
+                        filters = await _filterValueRepository.ListAsync(filterValuesSpec);
+                    }
+            }
+
+            var productSearchSpec = new ProductSearchSpecification(request.ShopId, request.ProductName, request.Categories == null ? null : categories, request.Filters == null ? null : filters, null, null);
+            response.Count = await _productRepository.CountAsync(productSearchSpec);
+
+            productSearchSpec = new ProductSearchSpecification(request.ShopId, request.ProductName, request.Categories == null ? null : categories, request.Filters == null ? null : filters, request.Page, request.RowsPerPage);
+            products = await _productRepository.ListAsync(productSearchSpec);
+
+            response.Values = _mapper.Map<IEnumerable<ProductCatalogResponse>>(products);
+
+            return response;
         }
 
         public async Task<ProductWithCategoryParentsResponse> GetByUrlSlugAsync(string urlSlug, string userId)
@@ -216,7 +265,7 @@ namespace WebAPI.Services.Products
             await _productRepository.SaveChangesAsync();
         }
 
-        public async Task<AdminSearchResponse<ProductResponse>> SearchProductsAsync(SellerSearchRequest request, string userId)
+        public async Task<SearchResponse<ProductResponse>> AdminSellerSearchProductsAsync(SellerSearchRequest request, string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
             user.UserNullChecking();
@@ -237,7 +286,7 @@ namespace WebAPI.Services.Products
 
             var products = await _productRepository.ListAsync(spec);
             var mappedProducts = _mapper.Map<IEnumerable<ProductResponse>>(products);
-            var response = new AdminSearchResponse<ProductResponse>() { Count = count, Values = mappedProducts };
+            var response = new SearchResponse<ProductResponse>() { Count = count, Values = mappedProducts };
 
             return response;
         }

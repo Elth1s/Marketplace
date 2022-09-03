@@ -60,26 +60,22 @@ namespace WebAPI.Services.Orders
             await _orderRepository.AddAsync(order);
             await _orderRepository.SaveChangesAsync();
 
-            //foreach (var item in request.OrderProductsCreate)
-            //{
-            //    var product = await _productRepository.GetByIdAsync(item.ProductId);
-            //    product.ProductNullChecking();
+            foreach (var item in request.BasketItems)
+            {
+                await _orderProductRepository.AddAsync(
+                    new OrderProduct()
+                    {
+                        OrderId = order.Id,
+                        ProductId = item.ProductId,
+                        Count = item.Count,
+                        Price = item.ProductPrice
+                    });
+                await _orderProductRepository.SaveChangesAsync();
 
-            //    var orderProduct = _mapper.Map<OrderProduct>(item);
-            //    orderProduct.Price = product.Price;
-            //    orderProduct.OrderId = order.Id;
-
-            //    if (!string.IsNullOrEmpty(userId))
-            //    {
-            //        var spec = new BasketItemIncludeFullInfoSpecification(userId, product.Id);
-            //        var basketItem = await _basketItemRepository.GetBySpecAsync(spec);
-            //        basketItem.BasketItemNullChecking();
-            //        await _basketItemRepository.DeleteAsync(basketItem);
-            //    }
-
-            //    await _orderProductRepository.AddAsync(orderProduct);
-            //}
-            await _orderProductRepository.SaveChangesAsync();
+                var basketItem = await _basketItemRepository.GetByIdAsync(item.Id);
+                await _basketItemRepository.DeleteAsync(basketItem);
+                await _basketItemRepository.SaveChangesAsync();
+            }
         }
 
         public async Task DeleteAsync(int id)

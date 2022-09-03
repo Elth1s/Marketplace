@@ -1,5 +1,6 @@
 ﻿using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Request.Categories;
+using WebAPI.ViewModels.Request.Products;
 using WebAPI.ViewModels.Response;
 using WebAPI.ViewModels.Response.Categories;
 using WebAPI.ViewModels.Response.Filters;
@@ -10,11 +11,12 @@ namespace WebAPI.Interfaces
     public interface ICategoryService
     {
         Task<IEnumerable<CategoryResponse>> GetAsync();
-        Task<AdminSearchResponse<CategoryResponse>> SearchCategoriesAsync(AdminSearchRequest request);
+        Task<SearchResponse<CategoryResponse>> SearchCategoriesAsync(AdminSearchRequest request);
         Task<IEnumerable<CatalogItemResponse>> GetCatalogAsync();
         Task<IEnumerable<FullCatalogItemResponse>> GetFullCatalogAsync();
         Task<IEnumerable<CatalogItemResponse>> GetParentsAsync(string urlSlug);
         Task<CatalogWithProductsResponse> GetCatalogWithProductsAsync(CatalogWithProductsRequest request);
+        Task<IEnumerable<FullCatalogItemResponse>> GetCategoriesByProductsAsync(SearchProductRequest request);
         Task<IEnumerable<ProductCatalogResponse>> GetMoreProductsAsync(CatalogWithProductsRequest request);
         Task<IEnumerable<FilterNameValuesResponse>> GetFiltersByCategoryAsync(string urlSlug);
         Task<IEnumerable<FilterGroupSellerResponse>> GetFiltersByCategoryIdAsync(int id);

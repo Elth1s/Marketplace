@@ -34,7 +34,7 @@ namespace WebAPI.Services
             return response;
         }
 
-        public async Task<AdminSearchResponse<CountryResponse>> SearchCountriesAsync(AdminSearchRequest request)
+        public async Task<SearchResponse<CountryResponse>> SearchCountriesAsync(AdminSearchRequest request)
         {
             var spec = new CountrySearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
             var count = await _countryRepository.CountAsync(spec);
@@ -46,7 +46,7 @@ namespace WebAPI.Services
                 request.RowsPerPage);
             var countries = await _countryRepository.ListAsync(spec);
             var mappedCountries = _mapper.Map<IEnumerable<CountryResponse>>(countries);
-            var response = new AdminSearchResponse<CountryResponse>() { Count = count, Values = mappedCountries };
+            var response = new SearchResponse<CountryResponse>() { Count = count, Values = mappedCountries };
 
             return response;
         }

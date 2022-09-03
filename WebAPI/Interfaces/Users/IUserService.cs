@@ -7,7 +7,7 @@ namespace WebAPI.Interfaces.Users
 {
     public interface IUserService
     {
-        Task<AdminSearchResponse<UserResponse>> SearchUsersAsync(AdminSearchRequest request);
+        Task<SearchResponse<UserResponse>> SearchUsersAsync(AdminSearchRequest request);
         Task DeleteUsersAsync(IEnumerable<string> ids);
         Task<ProfileResponse> GetProfileAsync(string id);
 

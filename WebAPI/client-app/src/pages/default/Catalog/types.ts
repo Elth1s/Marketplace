@@ -4,7 +4,10 @@ export enum CatalogActionTypes {
     GET_CATALOG_WITH_PRODUCTS = "GET_CATALOG_WITH_PRODUCTS",
     GET_MORE_PRODUCTS = "GET_MORE_PRODUCTS",
     GET_PARENTS = "GET_PARENTS",
-    GET_FILTERS_BY_CATEGORY = "GET_FILTERS_BY_CATEGORY"
+    GET_FILTERS_BY_CATEGORY = "GET_FILTERS_BY_CATEGORY",
+    UPDATE_SEARCH = "UPDATE_SEARCH",
+    SEARCH_PRODUCTS = "SEARCH_PRODUCTS",
+    GET_CATEGORIES_FOR_SEARCH = "GET_CATEGORIES_FOR_SEARCH"
 }
 
 export interface ICatalogItem {
@@ -15,7 +18,9 @@ export interface ICatalogItem {
 
 export interface IFullCatalogItem {
     name: string,
-    icon: string,
+    lightIcon: string,
+    darkIcon: string,
+    activeIcon: string,
     urlSlug: string,
     children: Array<IFullCatalogItem>
 }
@@ -48,7 +53,9 @@ export interface CatalogState {
     fullCatalogItems: Array<IFullCatalogItem>,
     products: Array<IProductItem>,
     countProducts: number,
-    filterNames: Array<IFilterName>
+    filterNames: Array<IFilterName>,
+    searchField: string,
+    searchCatalog: Array<IFullCatalogItem>
 }
 
 export interface ICatalogWithProducts {
@@ -56,6 +63,11 @@ export interface ICatalogWithProducts {
     catalogItems: Array<ICatalogItem>,
     products: Array<IProductItem>,
     countProducts: number
+}
+
+export interface ISearchProducts {
+    count: number,
+    values: Array<IProductItem>
 }
 
 export interface GetCatalogAction {
@@ -88,9 +100,28 @@ export interface GetParentsAction {
     payload: Array<ICatalogItem>
 }
 
+export interface UpdateSearchAction {
+    type: CatalogActionTypes.UPDATE_SEARCH,
+    payload: string
+}
+
+export interface SearchProductsAction {
+    type: CatalogActionTypes.SEARCH_PRODUCTS,
+    payload: ISearchProducts
+}
+
+export interface GetCategoriesForSearchAction {
+    type: CatalogActionTypes.GET_CATEGORIES_FOR_SEARCH,
+    payload: Array<IFullCatalogItem>
+}
+
+
 export type CatalogAction = GetCatalogAction |
     GetFullCatalogAction |
     GetCatalogWithProductsAction |
     GetMoreProductsAction |
     GetFilterByCategoryAction |
-    GetParentsAction;
+    GetParentsAction |
+    UpdateSearchAction |
+    SearchProductsAction |
+    GetCategoriesForSearchAction;

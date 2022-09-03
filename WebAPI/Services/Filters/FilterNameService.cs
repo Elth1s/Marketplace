@@ -125,7 +125,7 @@ namespace WebAPI.Services.Filters
             await _filterNameRepository.SaveChangesAsync();
         }
 
-        public async Task<AdminSearchResponse<FilterNameResponse>> SearchAsync(AdminSearchRequest request)
+        public async Task<SearchResponse<FilterNameResponse>> SearchAsync(AdminSearchRequest request)
         {
             var spec = new FilterNameSearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
             var count = await _filterNameRepository.CountAsync(spec);
@@ -139,7 +139,7 @@ namespace WebAPI.Services.Filters
 
             var filterNames = await _filterNameRepository.ListAsync(spec);
             var mappedFilterNames = _mapper.Map<IEnumerable<FilterNameResponse>>(filterNames);
-            var response = new AdminSearchResponse<FilterNameResponse>() { Count = count, Values = mappedFilterNames };
+            var response = new SearchResponse<FilterNameResponse>() { Count = count, Values = mappedFilterNames };
             return response;
         }
 

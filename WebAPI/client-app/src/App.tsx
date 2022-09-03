@@ -30,12 +30,12 @@ import About from './pages/default/About';
 import Catalog from './pages/default/Catalog';
 import CatalogWithProducts from './pages/default/Catalog/CatalogWithProducts';
 import Product from './pages/default/product';
+import SearchProducts from './pages/default/Catalog/SearchProducts';
+
 import FAQ from './pages/default/footer/FAQ';
 import ContactInfo from './pages/default/footer/ContactInfo';
 
 import CategoryTable from './pages/admin/category/Table';
-import CategoryCreate from './pages/admin/category/Create';
-import CategoryUpdate from './pages/admin/category/Update';
 
 import AdminCharacteristicGroupTable from './pages/admin/characteristicGroup/Table';
 import AdminCharacteristicNameTable from './pages/admin/characteristicName/Table';
@@ -113,8 +113,12 @@ const App = () => {
             <Route index element={<HomePage />} />
             <Route path="/catalog" element={<Catalog />} />
             <Route path="/catalog/:urlSlug" element={<CatalogWithProducts />} />
+
+            <Route path="/search/:productName" element={<SearchProducts />} />
+
             <Route path="/product/:urlSlug" element={<Product />} />
             <Route path="/product/:urlSlug/:menu" element={<Product />} />
+
             <Route path="about" element={<About />} />
             <Route path="faq" element={<FAQ />} />
             <Route path="contact-info" element={<ContactInfo />} />
@@ -147,8 +151,6 @@ const App = () => {
 
           <Route path="/admin/" element={<AdminLayout />}>
             <Route path="categories" element={<CategoryTable />} />
-            <Route path="categories/create" element={<CategoryCreate />} />
-            <Route path="categories/update/:id" element={<CategoryUpdate />} />
 
             <Route path="characteristicGroups" element={<AdminCharacteristicGroupTable />} />
             <Route path="characteristicNames" element={<AdminCharacteristicNameTable />} />

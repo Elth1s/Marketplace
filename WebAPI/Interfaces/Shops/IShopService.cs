@@ -9,7 +9,7 @@ namespace WebAPI.Interfaces.Shops
     public interface IShopService
     {
         Task<IEnumerable<ShopResponse>> GetShopsAsync();
-        Task<AdminSearchResponse<ShopResponse>> SearchShopsAsync(AdminSearchRequest request);
+        Task<SearchResponse<ShopResponse>> SearchShopsAsync(AdminSearchRequest request);
         Task<ShopResponse> GetShopByIdAsync(int shopId);
         Task<ShopInfoFromProductResponse> ShopInfoFromProductAsync(int shopId);
         Task<ShopPageInfoResponse> GetShopInfoAsync(int shopId);

@@ -47,7 +47,7 @@ namespace WebAPI.Services.Characteristcs
             return _mapper.Map<IEnumerable<CharacteristicNameResponse>>(characteristicNames);
         }
 
-        public async Task<AdminSearchResponse<CharacteristicNameResponse>> SearchAsync(SellerSearchRequest request, string userId)
+        public async Task<SearchResponse<CharacteristicNameResponse>> SearchAsync(SellerSearchRequest request, string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
             user.UserNullChecking();
@@ -66,7 +66,7 @@ namespace WebAPI.Services.Characteristcs
 
             var characteristicNames = await _characteristicNameRepository.ListAsync(spec);
             var mappedCharacteristicNames = _mapper.Map<IEnumerable<CharacteristicNameResponse>>(characteristicNames);
-            var response = new AdminSearchResponse<CharacteristicNameResponse>() { Count = count, Values = mappedCharacteristicNames };
+            var response = new SearchResponse<CharacteristicNameResponse>() { Count = count, Values = mappedCharacteristicNames };
 
             return response;
         }

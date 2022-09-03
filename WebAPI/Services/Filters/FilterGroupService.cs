@@ -94,7 +94,7 @@ namespace WebAPI.Services.Filters
             await _filterGroupRepository.SaveChangesAsync();
         }
 
-        public async Task<AdminSearchResponse<FilterGroupResponse>> SearchAsync(AdminSearchRequest request)
+        public async Task<SearchResponse<FilterGroupResponse>> SearchAsync(AdminSearchRequest request)
         {
             var spec = new FilterGroupSearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
             var count = await _filterGroupRepository.CountAsync(spec);
@@ -108,7 +108,7 @@ namespace WebAPI.Services.Filters
             var filterGroups = await _filterGroupRepository.ListAsync(spec);
 
             var mappedGroups = _mapper.Map<IEnumerable<FilterGroupResponse>>(filterGroups);
-            var response = new AdminSearchResponse<FilterGroupResponse>() { Count = count, Values = mappedGroups };
+            var response = new SearchResponse<FilterGroupResponse>() { Count = count, Values = mappedGroups };
 
             return response;
         }

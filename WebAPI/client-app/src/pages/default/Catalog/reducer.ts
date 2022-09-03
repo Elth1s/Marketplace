@@ -7,7 +7,9 @@ const initialState: CatalogState = {
     fullCatalogItems: [],
     products: [],
     countProducts: 0,
-    filterNames: []
+    filterNames: [],
+    searchField: "",
+    searchCatalog: []
 }
 
 export const catalogReducer = (state = initialState, action: CatalogAction): CatalogState => {
@@ -44,6 +46,22 @@ export const catalogReducer = (state = initialState, action: CatalogAction): Cat
             return {
                 ...state,
                 parents: action.payload,
+            }
+        case CatalogActionTypes.UPDATE_SEARCH:
+            return {
+                ...state,
+                searchField: action.payload,
+            }
+        case CatalogActionTypes.SEARCH_PRODUCTS:
+            return {
+                ...state,
+                countProducts: action.payload.count,
+                products: action.payload.values
+            }
+        case CatalogActionTypes.GET_CATEGORIES_FOR_SEARCH:
+            return {
+                ...state,
+                searchCatalog: action.payload,
             }
         default:
             return state;

@@ -8,7 +8,7 @@ namespace WebAPI.Interfaces.Orders
     public interface IDeliveryTypeService
     {
         Task<IEnumerable<DeliveryTypeResponse>> GetAsync();
-        Task<AdminSearchResponse<DeliveryTypeResponse>> SearchDeliveryTypesAsync(AdminSearchRequest request);
+        Task<SearchResponse<DeliveryTypeResponse>> SearchDeliveryTypesAsync(AdminSearchRequest request);
         Task<DeliveryTypeFullInfoResponse> GetByIdAsync(int id);
         Task CreateAsync(DeliveryTypeRequest request);
         Task UpdateAsync(int id, DeliveryTypeRequest request);

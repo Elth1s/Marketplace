@@ -13,7 +13,9 @@ export interface ICategory {
     ukrainianName: string,
     urlSlug: string,
     image: string,
-    icon: string,
+    lightIcon: string,
+    darkIcon: string,
+    activeIcon: string,
     parentId: number | null
 }
 
@@ -22,7 +24,9 @@ export interface ICategoryInfo {
     name: string,
     urlSlug: string,
     image: string,
-    icon: string,
+    lightIcon: string,
+    darkIcon: string,
+    activeIcon: string,
     parentName: string
 }
 

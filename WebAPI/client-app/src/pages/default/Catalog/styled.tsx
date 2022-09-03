@@ -74,7 +74,6 @@ export const PaginationItemStyle = styled(PaginationItem)(({ theme }) => ({
 export const ShowMoreButton = styled(Button)(({ theme }) => ({
     color: "inherit",
     fontSize: "24px",
-    fontWeight: "bold",
     textTransform: "none",
     "&:hover": {
         background: "transparent"

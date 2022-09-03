@@ -119,7 +119,7 @@ const ReviewForm: FC<Props> = ({ getData }) => {
                                 fullWidth
                                 variant="outlined"
                                 type="text"
-                                placeholder={t("props.fullName")}
+                                placeholder={t("validationProps.fullName")}
                                 {...getFieldProps('fullName')}
                                 error={Boolean(touched.fullName && errors.fullName)}
                                 helperText={touched.fullName && errors.fullName}
@@ -131,7 +131,7 @@ const ReviewForm: FC<Props> = ({ getData }) => {
                                 fullWidth
                                 variant="outlined"
                                 type="text"
-                                placeholder={t("props.email")}
+                                placeholder={t("validationProps.email")}
                                 autoComplete="email"
                                 {...getFieldProps('email')}
                                 error={Boolean(touched.email && errors.email)}
@@ -144,7 +144,7 @@ const ReviewForm: FC<Props> = ({ getData }) => {
                             fullWidth
                             variant="outlined"
                             type="text"
-                            placeholder={t("props.advantages")}
+                            placeholder={t("validationProps.advantages")}
                             {...getFieldProps('advantages')}
                             error={Boolean(touched.advantages && errors.advantages)}
                             helperText={touched.advantages && errors.advantages}
@@ -155,7 +155,7 @@ const ReviewForm: FC<Props> = ({ getData }) => {
                             fullWidth
                             variant="outlined"
                             type="text"
-                            placeholder={t("props.disadvantages")}
+                            placeholder={t("validationProps.disadvantages")}
                             {...getFieldProps('disadvantages')}
                             error={Boolean(touched.disadvantages && errors.disadvantages)}
                             helperText={touched.disadvantages && errors.disadvantages}
@@ -166,7 +166,7 @@ const ReviewForm: FC<Props> = ({ getData }) => {
                             fullWidth
                             variant="outlined"
                             type="text"
-                            placeholder={t("props.comment")}
+                            placeholder={t("validationProps.comment")}
                             multiline
                             rows={5}
                             {...getFieldProps('comment')}
@@ -179,7 +179,7 @@ const ReviewForm: FC<Props> = ({ getData }) => {
                             fullWidth
                             variant="outlined"
                             type="text"
-                            placeholder="Відео URL"
+                            placeholder={t("validationProps.videoURL")}
                             {...getFieldProps('videoURL')}
                             error={Boolean(touched.videoURL && errors.videoURL)}
                             helperText={touched.videoURL && errors.videoURL}

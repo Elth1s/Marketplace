@@ -3,7 +3,7 @@ import { Dispatch } from "react"
 
 import http from "../../../http_comon"
 import { ServerError } from "../../../store/types"
-import { CatalogAction, CatalogActionTypes, ICatalogItem, ICatalogWithProducts, IFilterName, IFullCatalogItem, IProductItem } from "./types"
+import { CatalogAction, CatalogActionTypes, ICatalogItem, ICatalogWithProducts, IFilterName, IFullCatalogItem, IProductItem, ISearchProducts } from "./types"
 
 
 export const GetCatalog = () => {
@@ -95,6 +95,36 @@ export const GetCatalogWithProducts = (urlSlug: string, page: number, rowsPerPag
     }
 }
 
+export const SearchProductsForUser = (productName: string, page: number, rowsPerPage: number, categories: Array<number>, filters: Array<number>) => {
+    return async (dispatch: Dispatch<CatalogAction>) => {
+        try {
+            let response = await http.get<ISearchProducts>(`api/Product/Search`, {
+                params: {
+                    productName: productName,
+                    shopId: null,
+                    page: page,
+                    rowsPerPage: rowsPerPage,
+                    categories: categories,
+                    filters: filters
+                },
+                paramsSerializer: params => {
+                    return qs.stringify({ ...params })
+                }
+            });
+
+            dispatch({
+                type: CatalogActionTypes.SEARCH_PRODUCTS,
+                payload: response.data
+            })
+
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
+        }
+    }
+}
+
 export const GetMoreProducts = (urlSlug: string, page: number) => {
     return async (dispatch: Dispatch<CatalogAction>) => {
         try {
@@ -137,6 +167,41 @@ export const GetParents = (urlSlug: string) => {
 
             dispatch({
                 type: CatalogActionTypes.GET_PARENTS,
+                payload: response.data
+            })
+
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
+        }
+    }
+}
+
+export const UpdateSearch = (searchField: string) => {
+    return async (dispatch: Dispatch<CatalogAction>) => {
+        dispatch({
+            type: CatalogActionTypes.UPDATE_SEARCH,
+            payload: searchField
+        })
+    }
+}
+
+export const GetCategoriesForSearch = (productName: string,) => {
+    return async (dispatch: Dispatch<CatalogAction>) => {
+        try {
+            let response = await http.get<Array<IFullCatalogItem>>(`api/Category/GetCategoriesByProducts`, {
+                params: {
+                    productName: productName,
+                    shopId: null
+                },
+                paramsSerializer: params => {
+                    return qs.stringify({ ...params })
+                }
+            });
+
+            dispatch({
+                type: CatalogActionTypes.GET_CATEGORIES_FOR_SEARCH,
                 payload: response.data
             })
 

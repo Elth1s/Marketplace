@@ -990,23 +990,23 @@ namespace DAL.Data
         {
             var categories = new List<Category>
             {
-/*1*/           new(){ UrlSlug = "beauty-and-health", Image = "BeautyAndHealth.png", ParentId = null,
+/*1*/           new(){ UrlSlug = "beauty-and-health", Image = "BeautyAndHealth.png",LightIcon="BeautyAndHealthLight.png",DarkIcon="BeautyAndHealthDark.png",ActiveIcon="BeautyAndHealthActive.png", ParentId = null,
                      CategoryTranslations=new List<CategoryTranslation>(){
                         new(){ Name = "Beauty and health", LanguageId=LanguageId.English },
                         new(){ Name = "Краса і здоров'я", LanguageId=LanguageId.Ukrainian } } },
-/*2*/           new(){ UrlSlug = "house-and-garden", Image = "HouseAndGarden.png", ParentId = null,
+/*2*/           new(){ UrlSlug = "house-and-garden", Image = "HouseAndGarden.png",LightIcon="HouseAndGardenLight.png",DarkIcon="HouseAndGardenDark.png",ActiveIcon="HouseAndGardenActive.png", ParentId = null,
                      CategoryTranslations=new List<CategoryTranslation>(){
                         new(){ Name = "House and garden",  LanguageId=LanguageId.English },
                         new(){ Name = "Дім і сад", LanguageId=LanguageId.Ukrainian } } },
-/*3*/           new(){ UrlSlug = "clothes-and-shoes", Image = "ClothesAndShoes.png", ParentId = null,
+/*3*/           new(){ UrlSlug = "clothes-and-shoes", Image = "ClothesAndShoes.png",LightIcon="ClothesAndShoesLight.png",DarkIcon="ClothesAndShoesDark.png",ActiveIcon="ClothesAndShoesActive.png", ParentId = null,
                      CategoryTranslations=new List<CategoryTranslation>(){
                         new(){ Name = "Clothes and shoes", LanguageId=LanguageId.English },
                         new(){ Name = "Одяг та взуття", LanguageId=LanguageId.Ukrainian } } },
-/*4*/           new(){ UrlSlug = "technology-and-electronics", Image = "TechnologyAndElectronics.png", ParentId = null,
+/*4*/           new(){ UrlSlug = "technology-and-electronics", Image = "TechnologyAndElectronics.png",LightIcon="TechnologyAndElectronicsLight.png",DarkIcon="TechnologyAndElectronicsDark.png",ActiveIcon="TechnologyAndElectronicsActive.png", ParentId = null,
                      CategoryTranslations=new List<CategoryTranslation>(){
                         new(){ Name = "Technology and electronics", LanguageId=LanguageId.English },
                         new(){ Name = "Техніка та електроніка", LanguageId=LanguageId.Ukrainian } } },
-/*5*/           new(){ UrlSlug = "goods-for-children", Image = "GoodsForChildren.png", ParentId = null,
+/*5*/           new(){ UrlSlug = "goods-for-children", Image = "GoodsForChildren.png",LightIcon="GoodsForChildrenLight.png",DarkIcon="GoodsForChildrenDark.png",ActiveIcon="GoodsForChildrenActive.png", ParentId = null,
                      CategoryTranslations=new List<CategoryTranslation>(){
                         new(){ Name = "Goods for children", LanguageId=LanguageId.English },
                         new(){ Name = "Товари для дітей", LanguageId=LanguageId.Ukrainian } } },
@@ -1026,7 +1026,7 @@ namespace DAL.Data
                     CategoryTranslations=new List<CategoryTranslation>(){
                         new(){ Name = "Materials for repair", LanguageId=LanguageId.English },
                         new(){ Name = "Матеріали для ремонту", LanguageId=LanguageId.Ukrainian } } },
-/*10*/          new(){ UrlSlug = "sports-and-recreation", Image = "SportsAndRecreation.png", ParentId = null,
+/*10*/          new(){ UrlSlug = "sports-and-recreation", Image = "SportsAndRecreation.png",LightIcon="SportsAndRecreationLight.png",DarkIcon="SportsAndRecreationDark.png",ActiveIcon="SportsAndRecreationActive.png", ParentId = null,
                     CategoryTranslations=new List<CategoryTranslation>(){
                         new(){ Name = "Sports and recreation", LanguageId=LanguageId.English },
                         new(){ Name = "Спорт і відпочинок", LanguageId=LanguageId.Ukrainian } } },
@@ -1038,7 +1038,7 @@ namespace DAL.Data
                     CategoryTranslations=new List<CategoryTranslation>(){
                         new(){ Name = "Pets and pet products", LanguageId=LanguageId.English },
                         new(){ Name = "Домашні тварини та зоотовари", LanguageId=LanguageId.Ukrainian } } },
-/*13*/          new(){ UrlSlug = "stationery", Image = "Stationery.png", ParentId = null,
+/*13*/          new(){ UrlSlug = "stationery", Image = "Stationery.png",LightIcon="StationeryLight.png",DarkIcon="StationeryDark.png",ActiveIcon="StationeryActive.png", ParentId = null,
                     CategoryTranslations=new List<CategoryTranslation>(){
                         new(){ Name = "Stationery",  LanguageId=LanguageId.English },
                         new(){ Name = "Канцтовари", LanguageId=LanguageId.Ukrainian } } },
@@ -1054,7 +1054,7 @@ namespace DAL.Data
                     CategoryTranslations=new List<CategoryTranslation>(){
                         new(){ Name = "Food products, drinks", LanguageId=LanguageId.English },
                         new(){ Name = "Продукти харчування, напої", LanguageId=LanguageId.Ukrainian } } },
-/*17*/          new(){ UrlSlug = "tools", Image = "Tools.png", ParentId = null,
+/*17*/          new(){ UrlSlug = "tools", Image = "Tools.png",LightIcon="ToolsLight.png",DarkIcon="ToolsDark.png",ActiveIcon="ToolsActive.png", ParentId = null,
                     CategoryTranslations=new List<CategoryTranslation>(){
                         new(){ Name = "Tools", LanguageId=LanguageId.English },
                         new(){ Name = "Інструменти", LanguageId=LanguageId.Ukrainian } } },
@@ -1062,7 +1062,7 @@ namespace DAL.Data
                     CategoryTranslations=new List<CategoryTranslation>(){
                         new(){ Name = "Antiques and collectibles", LanguageId=LanguageId.English },
                         new(){ Name = "Антикваріат і колекціонування", LanguageId=LanguageId.Ukrainian } } },
-/*19*/          new(){ UrlSlug = "сonstruction", Image = "Construction.png", ParentId = null,
+/*19*/          new(){ UrlSlug = "сonstruction", Image = "Construction.png",LightIcon="ConstructionLight.png",DarkIcon="ConstructionDark.png",ActiveIcon="ConstructionActive.png", ParentId = null,
                     CategoryTranslations=new List<CategoryTranslation>(){
                         new(){ Name = "Construction", LanguageId=LanguageId.English },
                         new(){ Name = "Будівництво", LanguageId=LanguageId.Ukrainian } } },

@@ -23,7 +23,7 @@ const CatalogMenu = () => {
     const { t } = useTranslation()
     const { palette } = useTheme();
 
-    const { GetFullCatalog } = useActions();
+    const { GetFullCatalog, UpdateSearch } = useActions();
     const { fullCatalogItems } = useTypedSelector(state => state.catalog);
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -54,6 +54,7 @@ const CatalogMenu = () => {
     };
 
     const handleClose = () => {
+        UpdateSearch("")
         setAnchorEl(null);
     };
 
@@ -139,15 +140,18 @@ const CatalogMenu = () => {
                                 return (
                                     <LinkRouter key={`$catalog_${index}`} underline="none" color="inherit" to={`/catalog/${row.urlSlug}`} onClick={handleClose}>
                                         <Box sx={{ display: "flex", mb: "14px", alignItems: "center" }} onMouseEnter={() => changeParentCategory(index)}>
-                                            {row.icon != ""
+                                            {palette.mode == "dark"
                                                 ? <img
                                                     style={{ width: "20px", height: "20px", objectFit: "contain", marginRight: "15px" }}
-                                                    src={row.icon}
+                                                    src={isItemSelected ? row.activeIcon : row.lightIcon}
                                                     alt="categoryIcon"
                                                 />
-                                                : <PhotoOutlined color={isItemSelected ? "primary" : "inherit"} sx={{ marginRight: "15px" }} />
-                                            }
-                                            <Typography variant="h4" fontWeight="bold" color={isItemSelected ? "primary" : "inherit"}>{row.name}</Typography>
+                                                : <img
+                                                    style={{ width: "20px", height: "20px", objectFit: "contain", marginRight: "15px" }}
+                                                    src={isItemSelected ? row.activeIcon : row.darkIcon}
+                                                    alt="categoryIcon"
+                                                />}
+                                            <Typography variant="h4" color={isItemSelected ? "primary" : "inherit"}>{row.name}</Typography>
                                         </Box>
                                     </LinkRouter>
                                 );

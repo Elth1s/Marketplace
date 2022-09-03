@@ -16,6 +16,11 @@
         /// <example>13945</example>
         public float TotalPrice { get; set; }
         /// <summary>
+        /// Total count
+        /// </summary>
+        /// <example>13</example>
+        public float TotalCount { get; set; }
+        /// <summary>
         /// List of products
         /// </summary>
         public IEnumerable<BasketOrderItemResponse> BasketItems { get; set; }
@@ -28,9 +33,19 @@
     public class BasketOrderItemResponse
     {
         /// <summary>
-        /// Product name
+        /// Basket item identifier
         /// </summary>
         /// <example>2</example>
+        public int Id { get; set; }
+        /// <summary>
+        /// Product identifier
+        /// </summary>
+        /// <example>2</example>
+        public int ProductId { get; set; }
+        /// <summary>
+        /// Product name
+        /// </summary>
+        /// <example>HyperX Kingston SSD</example>
         public string ProductName { get; set; }
         /// <summary>
         /// Product image

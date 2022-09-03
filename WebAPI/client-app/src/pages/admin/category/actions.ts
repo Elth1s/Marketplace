@@ -41,7 +41,7 @@ export const SearchCategories = (page: number, rowsPerPage: number, name: string
     }
 }
 
-export const GetCategoryById = (id: string) => {
+export const GetCategoryById = (id: number) => {
     return async (dispatch: Dispatch<CategoryAction>) => {
         try {
             let response = await http.get<ICategory>(`api/Category/GetById/${id}`)
@@ -107,7 +107,7 @@ export const CreateCategory = (data: ICategory) => {
     }
 }
 
-export const UpdateCategory = (id: string, data: ICategory) => {
+export const UpdateCategory = (id: number, data: ICategory) => {
     return async () => {
         try {
             await http.put<ICategory>(`api/Category/Update/${id}`, data);

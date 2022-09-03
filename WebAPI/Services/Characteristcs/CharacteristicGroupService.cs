@@ -42,7 +42,7 @@ namespace WebAPI.Services.Characteristcs
             return _mapper.Map<IEnumerable<CharacteristicGroupResponse>>(characteristicGroups);
         }
 
-        public async Task<AdminSearchResponse<CharacteristicGroupResponse>> SearchCharacteristicGroupsAsync(SellerSearchRequest request, string userId)
+        public async Task<SearchResponse<CharacteristicGroupResponse>> SearchCharacteristicGroupsAsync(SellerSearchRequest request, string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
             user.UserNullChecking();
@@ -60,7 +60,7 @@ namespace WebAPI.Services.Characteristcs
 
             var characteristicGroups = await _characteristicGroupRepository.ListAsync(spec);
             var mappedCountries = _mapper.Map<IEnumerable<CharacteristicGroupResponse>>(characteristicGroups);
-            var response = new AdminSearchResponse<CharacteristicGroupResponse>() { Count = count, Values = mappedCountries };
+            var response = new SearchResponse<CharacteristicGroupResponse>() { Count = count, Values = mappedCountries };
 
             return response;
         }

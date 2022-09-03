@@ -8,7 +8,7 @@ namespace WebAPI.Interfaces.Filters
     public interface IFilterGroupService
     {
         Task<IEnumerable<FilterGroupResponse>> GetFilterGroupsAsync();
-        Task<AdminSearchResponse<FilterGroupResponse>> SearchAsync(AdminSearchRequest request);
+        Task<SearchResponse<FilterGroupResponse>> SearchAsync(AdminSearchRequest request);
         Task<FilterGroupFullInfoResponse> GetFilterGroupByIdAsync(int filterGroupId);
         Task CreateFilterGroupAsync(FilterGroupRequest request);
         Task UpdateFilterGroupAsync(int filterGroupId, FilterGroupRequest request);

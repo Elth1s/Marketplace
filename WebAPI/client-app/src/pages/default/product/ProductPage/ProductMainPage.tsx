@@ -99,9 +99,9 @@ const ProductMainPage: FC<Props> = ({ addInCart, moveToReview }) => {
                         }}
                     >
                         {product.images.map((item, index) => (
-                            <SwiperSlide key={index}>
+                            <SwiperSlide key={index} style={{ width: "67px", height: "67px" }}>
                                 <img
-                                    style={{ width: "65px", height: "65px", objectFit: "contain" }}
+                                    style={{ width: "64px", height: "64px", objectFit: "contain" }}
                                     src={item.name}
                                     alt="productImage"
                                 />
@@ -111,7 +111,7 @@ const ProductMainPage: FC<Props> = ({ addInCart, moveToReview }) => {
                 </Grid>
                 <Grid item xs={4} sx={{ mt: "84px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "start", pl: "119px" }}>
                     <Box sx={{ display: "flex", alignItems: 'baseline' }}>
-                        <Typography fontSize="64px" lineHeight="74px" sx={{ mr: "35px" }}>{product.price} &#8372;</Typography>
+                        <Typography fontSize="50px" lineHeight="63px" sx={{ mr: "35px" }}>{product.price} &#8372;</Typography>
                         <IconButton color="primary" sx={{ borderRadius: "12px" }}>
                             <img
                                 style={{ width: "50px", height: "50px" }}

@@ -1,3 +1,4 @@
+import { ExpandMore } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 import {
     Box,
@@ -13,11 +14,15 @@ import {
     TextField,
     Typography,
     Container,
-    useTheme
+    useTheme,
+    Accordion,
+    AccordionSummary,
+    AccordionDetails
 } from "@mui/material";
 import { Form, FormikProvider, useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Navigate, useNavigate } from "react-router-dom";
 import { empty } from "../../../assets/backgrounds";
 
 import { black_map_pin } from "../../../assets/icons";
@@ -36,31 +41,34 @@ const Ordering = () => {
     const { palette } = useTheme();
 
     const { orderProducts } = useTypedSelector(state => state.profile);
-    const { GetOrderProducts } = useActions();
+    const { GetOrderProducts, CreateOrder } = useActions();
 
-    const [amountPayable, setAmountPayable] = useState<number>(0);
-    const [ordersCount, setOrdersCount] = useState<number>(0);
+    const navigate = useNavigate();
+
+    const [currentOrder, setCurrentOrder] = useState<number>(1);
 
     useEffect(() => {
         document.title = `${t("pages.ordering.title")}`;
 
         getData();
-    }, [orderProducts])
+    }, [])
+
+    useEffect(() => {
+    }, [currentOrder])
 
     const getData = async () => {
         try {
             await GetOrderProducts()
-            await sumAmountPayableWithCount()
         } catch (ex) {
         }
     };
 
     const orderModel: IOrderCreate = {
-        consumerFirstName: "",
-        consumerSecondName: "",
-        consumerEmail: "",
-        consumerPhone: "",
-        orders: []
+        consumerFirstName: "asd",
+        consumerSecondName: "asd",
+        consumerEmail: "dg64@gmail.com",
+        consumerPhone: "+380976024149",
+        basketItems: []
     };
 
     const formik = useFormik({
@@ -68,7 +76,12 @@ const Ordering = () => {
         validationSchema: OrderSchema,
         onSubmit: async (values, { setFieldError }) => {
             try {
-
+                values.basketItems = orderProducts[currentOrder - 1].basketItems;
+                await CreateOrder(values);
+                if (orderProducts.length == currentOrder)
+                    navigate("/")
+                var tempCurrentOrder = currentOrder + 1;
+                setCurrentOrder(tempCurrentOrder);
             }
             catch (exception) {
                 const serverErrors = exception as ServerError;
@@ -87,19 +100,11 @@ const Ordering = () => {
         }
     });
 
-    const sumAmountPayableWithCount = async () => {
-        let tempAmountPayable = 0;
-        let tempCount = 0;
+    const [expanded, setExpanded] = useState<number | false>(false);
 
-        orderProducts.forEach(orderItem => {
-            tempAmountPayable += orderItem.totalPrice;
-            orderItem.basketItems.forEach(basketItem => {
-                tempCount += basketItem.count
-            });
-        });
-        setAmountPayable(tempAmountPayable)
-        setOrdersCount(tempCount)
-    }
+    const handleChange = (index: number) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+        setExpanded(isExpanded ? index : false);
+    };
 
     const { errors, touched, isSubmitting, handleSubmit, getFieldProps } = formik;
 
@@ -172,56 +177,124 @@ const Ordering = () => {
                             </Grid>
                             <Grid item xs={12} sx={{ mt: "15px" }}>
                                 {orderProducts.map((item, index) => {
-
+                                    let isOpen = (index + 1) == currentOrder;
                                     return (
-                                        <Box key={`order_${index}`}>
-                                            <Box sx={{ display: "flex" }}>
-                                                <Typography variant="h2" sx={{ mr: "180px" }}>
-                                                    {t("pages.ordering.order")} №{index + 1}
-                                                </Typography>
-                                                <Typography variant="h4">
-                                                    {t("pages.ordering.forTheSum")} {item.totalPrice} &#8372;
-                                                </Typography>
-                                            </Box>
-                                            <Typography variant="h3" sx={{ mt: "15px" }}>
-                                                {t("pages.ordering.sellerProducts")} {item.shopName}
-                                            </Typography>
-                                            {item.basketItems.map((basketItem, index) => {
-
-                                                return (
-                                                    <Box key={`order_basket_item_${index}`} sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", py: "15px" }}>
-                                                        <Box sx={{ display: "flex", alignItems: "center" }}>
-                                                            <img
-                                                                style={{ width: "120px", height: "120px", objectFit: "contain" }}
-                                                                src={basketItem.productImage != "" ? basketItem.productImage : empty}
-                                                                alt="productImage"
-                                                            />
-                                                            <LinkRouter underline="hover" color="inherit" to={`/product/${basketItem.productUrlSlug}`}>
-                                                                <Typography variant="h4" sx={{ width: "550px" }}>
-                                                                    {basketItem.productName}
-                                                                </Typography>
-                                                            </LinkRouter>
-                                                        </Box>
-                                                        <Box sx={{ display: "flex", flexDirection: "column" }}>
-                                                            <Typography variant="h4">
-                                                                {t("pages.ordering.price")}
-                                                            </Typography>
-                                                            <Typography variant="h4" align="center">
-                                                                {basketItem.productPrice} &#8372;
-                                                            </Typography>
-                                                        </Box>
-                                                        <Box sx={{ display: "flex", flexDirection: "column" }}>
-                                                            <Typography variant="h4">
-                                                                {t("pages.ordering.count")}
-                                                            </Typography>
-                                                            <Typography variant="h4" align="center">
-                                                                {basketItem.count}
-                                                            </Typography>
-                                                        </Box>
+                                        isOpen
+                                            ? <Accordion expanded={isOpen} key={`order_${index}`}>
+                                                <AccordionSummary expandIcon={<ExpandMore />}>
+                                                    <Box
+                                                        sx={{
+                                                            display: "flex",
+                                                            alignItems: "end"
+                                                        }}
+                                                    >
+                                                        <Typography variant="h2" sx={{ mr: "180px" }}>
+                                                            {t("pages.ordering.order")} №{index + 1}
+                                                        </Typography>
+                                                        <Typography variant="h4">
+                                                            {t("pages.ordering.forTheSum")} {item.totalPrice} &#8372;
+                                                        </Typography>
                                                     </Box>
-                                                )
-                                            })}
-                                        </Box>
+                                                </AccordionSummary>
+                                                <AccordionDetails>
+                                                    <Typography variant="h3" sx={{ mt: "15px" }}>
+                                                        {t("pages.ordering.sellerProducts")} {item.shopName}
+                                                    </Typography>
+                                                    {item.basketItems.map((basketItem, index) => {
+
+                                                        return (
+                                                            <Box key={`order_basket_item_${index}`} sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", py: "15px" }}>
+                                                                <Box sx={{ display: "flex", alignItems: "center" }}>
+                                                                    <img
+                                                                        style={{ width: "120px", height: "120px", objectFit: "contain", marginRight: "10px" }}
+                                                                        src={basketItem.productImage != "" ? basketItem.productImage : empty}
+                                                                        alt="productImage"
+                                                                    />
+                                                                    <LinkRouter underline="hover" color="inherit" to={`/product/${basketItem.productUrlSlug}`}>
+                                                                        <Typography variant="h4" sx={{ width: "550px" }}>
+                                                                            {basketItem.productName}
+                                                                        </Typography>
+                                                                    </LinkRouter>
+                                                                </Box>
+                                                                <Box sx={{ display: "flex", flexDirection: "column" }}>
+                                                                    <Typography variant="h4">
+                                                                        {t("pages.ordering.price")}
+                                                                    </Typography>
+                                                                    <Typography variant="h4" align="center">
+                                                                        {basketItem.productPrice} &#8372;
+                                                                    </Typography>
+                                                                </Box>
+                                                                <Box sx={{ display: "flex", flexDirection: "column" }}>
+                                                                    <Typography variant="h4">
+                                                                        {t("pages.ordering.count")}
+                                                                    </Typography>
+                                                                    <Typography variant="h4" align="center">
+                                                                        {basketItem.count}
+                                                                    </Typography>
+                                                                </Box>
+                                                            </Box>
+                                                        )
+                                                    })}
+                                                </AccordionDetails>
+                                            </Accordion>
+                                            : (index + 1 > currentOrder
+                                                && <Accordion expanded={expanded == index} onChange={handleChange(index)} key={`order_${index}`}>
+                                                    <AccordionSummary expandIcon={<ExpandMore />} >
+                                                        <Box
+                                                            sx={{
+                                                                display: "flex",
+                                                                alignItems: "end"
+                                                            }}
+                                                        >
+                                                            <Typography variant="h2" color="#7e7e7e" sx={{ mr: "180px" }}>
+                                                                {t("pages.ordering.order")} №{index + 1}
+                                                            </Typography>
+                                                            <Typography variant="h4" color="#7e7e7e">
+                                                                {t("pages.ordering.forTheSum")} {item.totalPrice} &#8372;
+                                                            </Typography>
+                                                        </Box>
+                                                    </AccordionSummary>
+                                                    <AccordionDetails>
+                                                        <Typography variant="h3" color="#7e7e7e" sx={{ mt: "15px" }}>
+                                                            {t("pages.ordering.sellerProducts")} {item.shopName}
+                                                        </Typography>
+                                                        {item.basketItems.map((basketItem, index) => {
+
+                                                            return (
+                                                                <Box key={`order_basket_item_${index}`} sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", py: "15px" }}>
+                                                                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                                                                        <img
+                                                                            style={{ width: "120px", height: "120px", objectFit: "contain" }}
+                                                                            src={basketItem.productImage != "" ? basketItem.productImage : empty}
+                                                                            alt="productImage"
+                                                                        />
+                                                                        <LinkRouter underline="hover" color="inherit" to={`/product/${basketItem.productUrlSlug}`}>
+                                                                            <Typography variant="h4" sx={{ width: "550px" }}>
+                                                                                {basketItem.productName}
+                                                                            </Typography>
+                                                                        </LinkRouter>
+                                                                    </Box>
+                                                                    <Box sx={{ display: "flex", flexDirection: "column" }}>
+                                                                        <Typography variant="h4">
+                                                                            {t("pages.ordering.price")}
+                                                                        </Typography>
+                                                                        <Typography variant="h4" align="center">
+                                                                            {basketItem.productPrice} &#8372;
+                                                                        </Typography>
+                                                                    </Box>
+                                                                    <Box sx={{ display: "flex", flexDirection: "column" }}>
+                                                                        <Typography variant="h4">
+                                                                            {t("pages.ordering.count")}
+                                                                        </Typography>
+                                                                        <Typography variant="h4" align="center">
+                                                                            {basketItem.count}
+                                                                        </Typography>
+                                                                    </Box>
+                                                                </Box>
+                                                            )
+                                                        })}
+                                                    </AccordionDetails>
+                                                </Accordion>)
                                     )
                                 })}
                             </Grid>
@@ -234,10 +307,10 @@ const Ordering = () => {
                                 </Typography>
                                 <Box sx={{ display: "flex", justifyContent: "space-between", mt: "35px" }}>
                                     <Typography variant="h4" fontWeight={700}>
-                                        {ordersCount} {t("pages.ordering.countProductsOne")} {t("pages.ordering.forTheSum")}:
+                                        {orderProducts[currentOrder - 1]?.totalCount} {t("pages.ordering.countProductsOne")} {t("pages.ordering.forTheSum")}:
                                     </Typography>
                                     <Typography variant="h4">
-                                        {amountPayable} &#8372;
+                                        {orderProducts[currentOrder - 1]?.totalPrice} &#8372;
                                     </Typography>
                                 </Box>
                                 <Box sx={{ display: "flex", justifyContent: "space-between", mt: "20px" }}>
@@ -253,7 +326,7 @@ const Ordering = () => {
                                         {t("pages.ordering.amountPayable")}:
                                     </Typography>
                                     <Typography variant="h4">
-                                        {amountPayable} &#8372;
+                                        {orderProducts[currentOrder - 1]?.totalPrice} &#8372;
                                     </Typography>
                                 </Box>
                                 <LoadingButton

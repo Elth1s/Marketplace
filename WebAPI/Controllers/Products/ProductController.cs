@@ -56,15 +56,31 @@ namespace WebAPI.Controllers.Products
         /// <response code="401">You are not authorized</response>
         /// <response code="403">You don't have permission</response>
         /// <response code="500">An internal error has occurred</response>
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AdminSearchResponse<ProductResponse>))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(SearchResponse<ProductResponse>))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin,Seller")]
-        [HttpGet("Search")]
-        public async Task<IActionResult> SearchProducts([FromQuery] SellerSearchRequest request)
+        [HttpGet("AdminSellerSearch")]
+        public async Task<IActionResult> AdminSellerSearchProducts([FromQuery] SellerSearchRequest request)
         {
-            var result = await _productService.SearchProductsAsync(request, UserId);
+            var result = await _productService.AdminSellerSearchProductsAsync(request, UserId);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Return of sorted products
+        /// </summary>
+        /// <response code="200">Getting products completed successfully</response>
+        /// <response code="403">You don't have permission</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(SearchResponse<ProductCatalogResponse>))]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [HttpGet("Search")]
+        public async Task<IActionResult> SearchProducts([FromQuery] SearchProductRequest request)
+        {
+            var result = await _productService.SearchProductsAsync(request);
             return Ok(result);
         }
 

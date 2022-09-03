@@ -7,7 +7,9 @@ const initialState: CategoryState = {
         ukrainianName: "",
         urlSlug: "",
         image: "",
-        icon: "",
+        lightIcon: "",
+        darkIcon: "",
+        activeIcon: "",
         parentId: 0
     },
     categories: [],

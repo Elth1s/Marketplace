@@ -54,7 +54,7 @@ namespace WebAPI.Controllers.Filters
         /// <response code="401">You are not authorized</response>
         /// <response code="403">You don't have permission</response>
         /// <response code="500">An internal error has occurred</response>
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AdminSearchResponse<FilterGroupResponse>))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(SearchResponse<FilterGroupResponse>))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]

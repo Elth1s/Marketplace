@@ -8,7 +8,7 @@ namespace WebAPI.Interfaces.Filters
     public interface IFilterNameService
     {
         Task<IEnumerable<FilterNameResponse>> GetFiltersNameAsync();
-        Task<AdminSearchResponse<FilterNameResponse>> SearchAsync(AdminSearchRequest request);
+        Task<SearchResponse<FilterNameResponse>> SearchAsync(AdminSearchRequest request);
         Task<FilterNameFullInfoResponse> GetFilterNameByIdAsync(int filterNameId);
         Task CreateFilterNameAsync(FilterNameRequest request);
         Task UpdateFilterNameAsync(int filterNameId, FilterNameRequest request);

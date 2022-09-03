@@ -7,7 +7,7 @@ namespace WebAPI.Interfaces
     public interface ICountryService
     {
         Task<IEnumerable<CountryResponse>> GetCountriesAsync();
-        Task<AdminSearchResponse<CountryResponse>> SearchCountriesAsync(AdminSearchRequest request);
+        Task<SearchResponse<CountryResponse>> SearchCountriesAsync(AdminSearchRequest request);
         Task<CountryFullInfoResponse> GetCountryByIdAsync(int countryId);
         Task CreateCountryAsync(CountryRequest request);
         Task UpdateCountryAsync(int countryId, CountryRequest request);

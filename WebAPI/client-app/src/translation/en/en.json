@@ -1,14 +1,5 @@
 {
     "common": {
-        "props": {
-            "fullName": "Full name",
-            "name": "Name",
-            "email": "Email",
-            "advantages": "Advantages",
-            "disadvantages": "Disdvantages",
-            "comment": "Review",
-            "videoURL": "Video URL"
-        },
         "containers": {
             "default": {
                 "header": {
@@ -174,7 +165,11 @@
             },
             "catalog": {
                 "showMore": "Show more",
-                "find": "Find"
+                "find": "Find",
+                "finded": "Finded",
+                "countProductsOne": "product",
+                "countProductsLessFive": "products",
+                "countProducts": "products"
             },
             "faq": {
                 "tabs": {
@@ -225,7 +220,7 @@
                     "generalImpression": "General impression",
                     "attachPhoto": "Attach photo",
                     "sendBtn": "Send"
-                } 
+                }
             },
             "seller": {
                 "main": {
@@ -293,19 +288,24 @@
                 }
             },
             "ordering": {
-                "title": "Оформлення замовлення",
-                "contactInfo": "Контактні дані",
-                "city": "Ваше місто",
-                "inGeneral": "Загалом",
-                "countProductsOne": "товар",
-                "countProductsLessFive": "товари",
-                "countProducts": "товарів",
-                "amountPayable": "Разом до оплати",
-                "checkout": "Оформити замовлення",
-                "order": "Замовлення",
-                "sellerProducts": "Товари продавця",
-                "delivery": "Спосіб доставки",
-                "payment": "Оплата"
+                "title": "Place an order",
+                "contactInfo": "Contact info",
+                "city": "City",
+                "inGeneral": "In general",
+                "countProductsOne": "product",
+                "countProductsLessFive": "products",
+                "countProducts": "products",
+                "shippingCost": "Shipping cost",
+                "accordingCarrierTariffs": "at the rates of the carrier",
+                "amountPayable": "Amount payable",
+                "checkout": "Checkout",
+                "forTheSum": "for the sum",
+                "order": "Order",
+                "sellerProducts": "Seller products",
+                "count": "Count",
+                "price": "Price",
+                "delivery": "Delivery",
+                "payment": "Payment"
             }
         },
         "components": {
@@ -371,7 +371,12 @@
             "email": "Email",
             "advantages": "Advantages",
             "disadvantages": "Disdvantages",
-            "comment": "Ccomment"
+            "comment": "Comment",
+            "videoURL": "Video URL",
+            "categoryImage": "Image",
+            "categoryLightIcon": "Light icon",
+            "categoryDarkIcon": "Dark icon",
+            "categoryActiveIcon": "Active icon"
         }
     }
 }

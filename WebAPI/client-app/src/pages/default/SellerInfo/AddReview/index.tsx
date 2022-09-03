@@ -166,7 +166,6 @@ const AddShopReview: FC<Props> = ({ getData }) => {
                                                 if (newValue != null)
                                                     setFieldValue("serviceQualityRating", newValue);
                                             }}
-
                                         />
                                     </Grid>
                                     <Grid item sx={{ textAlign: "center" }}>
@@ -181,7 +180,6 @@ const AddShopReview: FC<Props> = ({ getData }) => {
                                                 if (newValue != null)
                                                     setFieldValue("timelinessRating", newValue);
                                             }}
-
                                         />
                                     </Grid>
                                     <Grid item sx={{ textAlign: "center" }}>
@@ -196,7 +194,6 @@ const AddShopReview: FC<Props> = ({ getData }) => {
                                                 if (newValue != null)
                                                     setFieldValue("informationRelevanceRating", newValue);
                                             }}
-
                                         />
                                     </Grid>
                                 </Grid>

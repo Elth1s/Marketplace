@@ -1,34 +1,32 @@
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
-import CircularProgress from "@mui/material/CircularProgress";
+import { Grid, Typography } from "@mui/material";
 
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { Form, FormikProvider, useFormik } from "formik";
-import { LoadingButton } from "@mui/lab";
+import * as Yup from 'yup';
 
 import { useActions } from "../../../../hooks/useActions";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
-
-import { validationFields } from "../validation";
-import { ICategory } from "../types";
-import { ServerError } from "../../../../store/types";
-
-import CropperDialog from "../../../../components/CropperDialog";
-import AutocompleteComponent from "../../../../components/Autocomplete";
-import { TextFieldFirstStyle } from "../../../../components/TextField/styled";
-
 import { toLowerFirstLetter } from "../../../../http_comon";
 
-const CategoryCreate = () => {
+import { ICategory } from "../types";
+import { CreateProps, ServerError } from "../../../../store/types";
+
+import { AdminSellerDialogActionsStyle, AdminSellerDialogContentStyle } from "../../../../components/Dialog/styled";
+import { AdminDialogButton } from "../../../../components/Button/style";
+import AdminSellerDialog from "../../../../components/Dialog";
+import { TextFieldFirstStyle } from "../../../../components/TextField/styled";
+import AutocompleteComponent from "../../../../components/Autocomplete";
+import IconButtonPlus from "../../../../components/Button/IconButtonPlus";
+import DialogTitleWithButton from "../../../../components/Dialog/DialogTitleWithButton";
+import CropperDialog from "../../../../components/CropperDialog";
+
+const CategoryCreate: FC<CreateProps> = ({ afterCreate }) => {
     const { t } = useTranslation();
 
     const { GetCategoryForSelect, CreateCategory } = useActions();
-    const [loading, setLoading] = useState<boolean>(false);
+    const [open, setOpen] = useState(false);
 
     const { categoriesForSelect } = useTypedSelector((store) => store.category);
 
@@ -38,27 +36,33 @@ const CategoryCreate = () => {
         ukrainianName: "",
         urlSlug: "",
         image: "",
-        icon: "",
+        lightIcon: "",
+        darkIcon: "",
+        activeIcon: "",
         parentId: null
     }
 
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        document.title = "Category create";
-        getData();
-    }, []);
-
-    const getData = async () => {
-        setLoading(true);
+    const handleClickOpen = async () => {
         try {
+            setOpen(true);
             await GetCategoryForSelect();
-            setLoading(false);
         }
         catch (ex) {
-            setLoading(false);
         }
-    }
+    };
+
+    const handleClickClose = () => {
+        setOpen(false);
+        resetForm();
+    };
+
+    const urlSlugRegExp = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
+    const validationFields = Yup.object().shape({
+        englishName: Yup.string().min(2).max(50).label(t('validationProps.englishName')),
+        ukrainianName: Yup.string().min(2).max(50).label(t('validationProps.englishName')),
+        urlSlug: Yup.string().min(2).max(50).matches(urlSlugRegExp, 'Invalid format of  url slug').label(t('validationProps.urlSlug')),
+        parentId: Yup.number().nullable().label(t('validationProps.categotyParent')),
+    });
 
     const formik = useFormik({
         initialValues: item,
@@ -67,7 +71,8 @@ const CategoryCreate = () => {
         onSubmit: async (values, { setFieldError }) => {
             try {
                 await CreateCategory(values);
-                navigate("/admin/category");
+                afterCreate();
+                handleClickClose();
             }
             catch (ex) {
                 const serverErrors = ex as ServerError;
@@ -88,109 +93,122 @@ const CategoryCreate = () => {
     const onSaveImage = async (base64: string) => {
         setFieldValue("image", base64)
     };
-    const onSaveIcon = async (base64: string) => {
-        setFieldValue("icon", base64)
+    const onSaveLightIcon = async (base64: string) => {
+        setFieldValue("lightIcon", base64)
+    };
+    const onSaveDarkIcon = async (base64: string) => {
+        setFieldValue("darkIcon", base64)
+    };
+    const onSaveActiveIcon = async (base64: string) => {
+        setFieldValue("activeIcon", base64)
     };
 
-    const { errors, touched, isSubmitting, handleSubmit, setFieldValue, getFieldProps } = formik;
+    const { errors, touched, isSubmitting, handleSubmit, setFieldValue, getFieldProps, resetForm } = formik;
 
     return (
-        <Box sx={{ flexGrow: 1, m: 1, mx: 3, }}>
-
-            <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ py: 1 }}>
-                <Typography variant="h4" gutterBottom sx={{ my: "auto" }}>
-                    {t('pages.admin.category.createTitle')}
-                </Typography>
-            </Stack>
-
-            {loading ? (
-                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                    <CircularProgress sx={{ color: "#66fcf1", mt: 3 }} />
-                </Box>
-            ) : (
-                <Box sx={{ mt: 3 }} >
-                    <FormikProvider value={formik} >
-                        <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-                            <Grid container rowSpacing={2}>
-                                <Grid container item xs={10} columnSpacing={2}>
-                                    <Grid item xs={6}>
-                                        <TextFieldFirstStyle
-                                            fullWidth
-                                            variant="standard"
-                                            type="text"
-                                            label={t('validationProps.englishName')}
-                                            {...getFieldProps('englishName')}
-                                            error={Boolean(touched.englishName && errors.englishName)}
-                                            helperText={touched.englishName && errors.englishName}
-                                        />
+        <>
+            <IconButtonPlus onClick={handleClickOpen} />
+            <AdminSellerDialog
+                open={open}
+                onClose={handleClickClose}
+                dialogContent={
+                    <>
+                        <DialogTitleWithButton
+                            title={t('pages.admin.filterGroup.createTitle')}
+                            onClick={handleClickClose}
+                        />
+                        <FormikProvider value={formik} >
+                            <Form onSubmit={handleSubmit}>
+                                <AdminSellerDialogContentStyle>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={6}>
+                                            <TextFieldFirstStyle
+                                                fullWidth
+                                                variant="standard"
+                                                type="text"
+                                                label={t('validationProps.englishName')}
+                                                {...getFieldProps('englishName')}
+                                                error={Boolean(touched.englishName && errors.englishName)}
+                                                helperText={touched.englishName && errors.englishName}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={6}>
+                                            <TextFieldFirstStyle
+                                                fullWidth
+                                                variant="standard"
+                                                type="text"
+                                                label={t('validationProps.ukrainianName')}
+                                                {...getFieldProps('ukrainianName')}
+                                                error={Boolean(touched.ukrainianName && errors.ukrainianName)}
+                                                helperText={touched.ukrainianName && errors.ukrainianName}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                            <TextFieldFirstStyle
+                                                fullWidth
+                                                variant="standard"
+                                                type="text"
+                                                label={t('validationProps.urlSlug')}
+                                                {...getFieldProps('urlSlug')}
+                                                error={Boolean(touched.urlSlug && errors.urlSlug)}
+                                                helperText={touched.urlSlug && errors.urlSlug}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                            <AutocompleteComponent
+                                                label={t('validationProps.categotyParent')}
+                                                name="parentId"
+                                                error={errors.parentId}
+                                                touched={touched.parentId}
+                                                options={categoriesForSelect}
+                                                getOptionLabel={(option) => option.name}
+                                                isOptionEqualToValue={(option, value) => option?.id === value.id}
+                                                defaultValue={undefined}
+                                                onChange={(e, value) => { setFieldValue("parentId", value?.id) }}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={3} sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-between" }}>
+                                            <Typography variant="h4" align="center">
+                                                {t("validationProps.categoryImage")}
+                                            </Typography>
+                                            <CropperDialog imgSrc={formik.values.image} onDialogSave={onSaveImage} />
+                                        </Grid>
+                                        <Grid item xs={3} sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-between" }}>
+                                            <Typography variant="h4" align="center">
+                                                {t("validationProps.categoryLightIcon")}
+                                            </Typography>
+                                            <CropperDialog imgSrc={formik.values.lightIcon} onDialogSave={onSaveLightIcon} />
+                                        </Grid>
+                                        <Grid item xs={3} sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-between" }}>
+                                            <Typography variant="h4" align="center">
+                                                {t("validationProps.categoryDarkIcon")}
+                                            </Typography>
+                                            <CropperDialog imgSrc={formik.values.darkIcon} onDialogSave={onSaveDarkIcon} />
+                                        </Grid>
+                                        <Grid item xs={3} sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-between" }}>
+                                            <Typography variant="h4" align="center">
+                                                {t("validationProps.categoryActiveIcon")}
+                                            </Typography>
+                                            <CropperDialog imgSrc={formik.values.activeIcon} onDialogSave={onSaveActiveIcon} />
+                                        </Grid>
                                     </Grid>
-                                    <Grid item xs={6}>
-                                        <TextFieldFirstStyle
-                                            fullWidth
-                                            variant="standard"
-                                            type="text"
-                                            label={t('validationProps.ukrainianName')}
-                                            {...getFieldProps('ukrainianName')}
-                                            error={Boolean(touched.ukrainianName && errors.ukrainianName)}
-                                            helperText={touched.ukrainianName && errors.ukrainianName}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <TextFieldFirstStyle
-                                            fullWidth
-                                            variant="standard"
-                                            type="text"
-                                            label={t('validationProps.urlSlug')}
-                                            {...getFieldProps('urlSlug')}
-                                            error={Boolean(touched.urlSlug && errors.urlSlug)}
-                                            helperText={touched.urlSlug && errors.urlSlug}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <AutocompleteComponent
-                                            label={t('validationProps.categotyParent')}
-                                            name="parentId"
-                                            error={errors.parentId}
-                                            touched={touched.parentId}
-                                            options={categoriesForSelect}
-                                            getOptionLabel={(option) => option.name}
-                                            isOptionEqualToValue={(option, value) => option?.id === value.id}
-                                            defaultValue={undefined}
-                                            onChange={(e, value) => { setFieldValue("parentId", value?.id) }}
-                                        />
-                                    </Grid>
-                                </Grid>
-                                <Grid container item xs={2} rowSpacing={2}>
-                                    <Grid item xs={12}>
-                                        <CropperDialog
-                                            imgSrc={formik.values.image}
-                                            onDialogSave={onSaveImage}
-                                            labelId="Image"
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <CropperDialog
-                                            imgSrc={formik.values.icon}
-                                            onDialogSave={onSaveIcon}
-                                            labelId="Icon"
-                                        />
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-                            <LoadingButton
-                                sx={{ paddingX: "35px" }}
-                                size="large"
-                                type="submit"
-                                variant="contained"
-                                loading={isSubmitting}
-                            >
-                                {t('pages.admin.main.btnCreate')}
-                            </LoadingButton>
-                        </Form>
-                    </FormikProvider>
-                </Box>
-            )}
-        </Box>
+                                </AdminSellerDialogContentStyle>
+                                <AdminSellerDialogActionsStyle>
+                                    <AdminDialogButton
+                                        type="submit"
+                                        variant="contained"
+                                        color="primary"
+                                        loading={isSubmitting}
+                                    >
+                                        {t('pages.admin.main.btnCreate')}
+                                    </AdminDialogButton>
+                                </AdminSellerDialogActionsStyle>
+                            </Form>
+                        </FormikProvider>
+                    </>
+                }
+            />
+        </>
     )
 }
 

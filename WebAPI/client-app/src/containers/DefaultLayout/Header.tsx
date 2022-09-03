@@ -8,7 +8,7 @@ import {
     Divider,
     useTheme
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { useTypedSelector } from "../../hooks/useTypedSelector";
@@ -23,14 +23,27 @@ import Basket from "../../components/Basket";
 
 import { orange_heart, search } from '../../assets/icons';
 import CatalogMenu from "../../components/CatalogMenu";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useActions } from "../../hooks/useActions";
 
 const Header = () => {
     const { t, i18n } = useTranslation()
     const { palette } = useTheme();
-    const { isAuth } = useTypedSelector((state) => state.auth)
 
+    const { isAuth } = useTypedSelector((state) => state.auth)
+    const { searchField } = useTypedSelector((state) => state.catalog)
+    const { UpdateSearch } = useActions();
+
+    const navigate = useNavigate();
 
     const [isUaLanguage, setIsUaLanguage] = useState<boolean>(i18n.language == "en-US" ? false : true);
+
+    let { productName } = useParams();
+
+    useEffect(() => {
+        if (productName)
+            UpdateSearch(productName)
+    }, [])
 
     const changeLanguage = (isUa: boolean) => {
         if (isUa == isUaLanguage)
@@ -40,11 +53,19 @@ const Header = () => {
         window.location.reload();
     }
 
+    const searchProducts = async () => {
+        try {
+            if (searchField != "")
+                navigate(`/search/${searchField}`)
+        } catch (ex) {
+        }
+    }
+
     return (
         <AppBar component="header" sx={{ height: "110px", mb: "30px", mt: "15px" }} elevation={0} position="static" >
             <Container sx={{ height: "100%", maxWidth: { xl: "xl", lg: "lg", md: "md" } }}>
                 <Toolbar disableGutters={true} sx={{ height: "100%", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <LinkRouter underline="none" color="unset" to="/">
+                    <LinkRouter underline="none" color="unset" to="/" onClick={() => UpdateSearch("")}>
                         <img
                             style={{ height: "82px" }}
                             src={palette.mode == "dark" ? dark_logo : light_logo}
@@ -52,11 +73,28 @@ const Header = () => {
                         />
                     </LinkRouter>
                     <CatalogMenu />
-                    <TextFieldStyle placeholder={t('containers.default.header.searchProducts')}
+                    <TextFieldStyle
+                        value={searchField}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => { UpdateSearch(e.target.value) }}
+                        onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                            if (e.code == 'Enter') {
+                                navigate(`/search/${searchField}`)
+                            }
+                        }}
+                        placeholder={t('containers.default.header.searchProducts')}
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end" >
-                                    <IconButton sx={{ padding: "3px", borderRadius: '12px', "&:hover": { background: "transparent" }, "&& .MuiTouchRipple-child": { backgroundColor: "transparent" } }} edge="start">
+                                    <IconButton
+                                        onClick={searchProducts}
+                                        sx={{
+                                            padding: "3px",
+                                            borderRadius: '12px',
+                                            "&:hover": { background: "transparent" },
+                                            "&& .MuiTouchRipple-child": { backgroundColor: "transparent" }
+                                        }}
+                                        edge="start"
+                                    >
                                         <img
                                             style={{ width: "35px", height: "35px" }}
                                             src={search}
@@ -65,11 +103,12 @@ const Header = () => {
                                     </IconButton>
                                 </InputAdornment>
                             )
-                        }} />
+                        }}
+                    />
                     <Box sx={{ display: "flex" }}>
-                        <LanguageButtonStyle selected={!isUaLanguage} onClick={() => { changeLanguage(false) }}>EN</LanguageButtonStyle>
+                        <LanguageButtonStyle selected={!isUaLanguage} onClick={() => { changeLanguage(false) }}>EN&nbsp;</LanguageButtonStyle>
                         <Divider sx={{ borderColor: "inherit", borderRightWidth: "3px", mx: "1px" }} orientation="vertical" flexItem />
-                        <LanguageButtonStyle selected={isUaLanguage} onClick={() => { changeLanguage(true) }}>UA</LanguageButtonStyle>
+                        <LanguageButtonStyle selected={isUaLanguage} onClick={() => { changeLanguage(true) }}>&nbsp;UA</LanguageButtonStyle>
                     </Box>
                     {isAuth &&
                         <>

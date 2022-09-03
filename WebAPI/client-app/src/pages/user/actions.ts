@@ -8,6 +8,7 @@ import {
     ConfirmEmailActionTypes,
     EmailConfirmAction,
     IConfirmEmail,
+    IOrderCreate,
     IOrderProducts,
     IProfile,
     OrderAction,
@@ -176,6 +177,25 @@ export const FacebookConnect = (data: IExternalLoginModel) => {
         }
         catch (error) {
             return Promise.reject(error as ServerError)
+        }
+    }
+}
+
+export const CreateOrder = (values: IOrderCreate) => {
+    return async () => {
+        try {
+            let response = await http.post(`/api/Order/CreateOrder`, values)
+
+            return Promise.resolve();
+        }
+        catch (error) {
+            if (axios.isAxiosError(error)) {
+                const serverError = error as AxiosError<ServerError>;
+                if (serverError && serverError.response) {
+                    return Promise.reject(serverError.response.data);
+                }
+            }
+            return Promise.reject(error)
         }
     }
 }

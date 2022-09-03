@@ -35,10 +35,9 @@ export interface ICropperDialog {
     imgSrc: string,
     aspectRation?: number,
     onDialogSave: any,
-    labelId: string
 }
 
-const CropperDialog: React.FC<ICropperDialog> = ({ imgSrc, aspectRation = 1 / 1, onDialogSave, labelId }) => {
+const CropperDialog: React.FC<ICropperDialog> = ({ imgSrc, aspectRation = 1 / 1, onDialogSave }) => {
     const [cropperObj, setCropperObj] = useState<Cropper>();
     const imgRef = useRef<HTMLImageElement>(null);
     const prevRef = useRef<HTMLDivElement>();
@@ -95,7 +94,7 @@ const CropperDialog: React.FC<ICropperDialog> = ({ imgSrc, aspectRation = 1 / 1,
 
     return (
         <>
-            <BoxStyle imgSrc={imgSrc} sx={{ boxShadow: 4 }}>
+            <BoxStyle imgSrc={imgSrc} >
                 {/* <label htmlFor={labelId}>
                     <img
                         src={imgSrc}

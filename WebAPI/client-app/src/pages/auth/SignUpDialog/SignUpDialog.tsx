@@ -39,7 +39,7 @@ interface Props {
 }
 
 const SignUpDialog: FC<Props> = ({ changeDialog }) => {
-    const { RegisterUser, AuthDialogChange } = useActions();
+    const { RegisterUser, AuthDialogChange, GetBasketItems } = useActions();
     const { executeRecaptcha } = useGoogleReCaptcha();
 
     const navigate = useNavigate();
@@ -59,6 +59,7 @@ const SignUpDialog: FC<Props> = ({ changeDialog }) => {
             try {
                 await RegisterUser(values, reCaptchaToken);
                 AuthDialogChange();
+                await GetBasketItems();
                 navigate("/");
                 //toast.success('Sign up success!');
             }
