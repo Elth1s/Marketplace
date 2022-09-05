@@ -58,8 +58,8 @@ const ProductReviewsPage: FC<Props> = ({ addInCart }) => {
                 <Typography variant="h4" fontWeight="bold">{t("pages.product.sellerRating")}: </Typography>
                 <RatingStyle
                     sx={{ ml: 1, fontSize: "30px", mr: "40px" }}
-                    value={4.5}
-                    precision={0.5}
+                    value={product.shopRating}
+                    precision={0.1}
                     readOnly
                     icon={<StarRounded sx={{ fontSize: "30px" }} />}
                     emptyIcon={<StarRounded sx={{ fontSize: "30px" }} />}
@@ -127,13 +127,13 @@ const ProductReviewsPage: FC<Props> = ({ addInCart }) => {
                             <Box sx={{ display: "flex", mt: "26px", alignItems: "center" }}>
                                 <RatingStyle
                                     sx={{ mr: 1, fontSize: "30px" }}
-                                    value={5}
-                                    precision={0.5}
+                                    value={product.productRating}
+                                    precision={0.1}
                                     readOnly
                                     icon={<StarRounded sx={{ fontSize: "30px" }} />}
                                     emptyIcon={<StarRounded sx={{ fontSize: "30px" }} />}
                                 />
-                                <Typography variant="h4" fontWeight="bold" display="inline">5 <Typography fontWeight="medium" display="inline" sx={{ fontSize: "20px" }}>(10 {t("pages.product.ratings")})</Typography></Typography>
+                                <Typography variant="h4" fontWeight="bold" display="inline">{product.productRating} <Typography fontWeight="medium" display="inline" sx={{ fontSize: "20px" }}>({product.countReviews} {t("pages.product.ratings")})</Typography></Typography>
                             </Box>
                             {product.isInBasket
                                 ? <BuyButtonSecondStyle fullWidth color="secondary" variant="contained" disabled

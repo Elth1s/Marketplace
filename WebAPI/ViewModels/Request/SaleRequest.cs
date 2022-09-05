@@ -1,5 +1,4 @@
-﻿using DAL.Entities;
-using FluentValidation;
+﻿using FluentValidation;
 using Microsoft.Extensions.Localization;
 
 namespace WebAPI.ViewModels.Request
@@ -16,10 +15,15 @@ namespace WebAPI.ViewModels.Request
         public string Name { get; set; }
 
         /// <summary>
-        /// Image of sale
+        /// Horizontal image of sale
         /// </summary>
-        /// <example>""</example>
-        public string Image { get; set; }
+        /// <example>https://some_horizontal_image_example.jpg</example>
+        public string HorizontalImage { get; set; }
+        /// <summary>
+        /// Vertical image of sale
+        /// </summary>
+        /// <example>https://some_vertical_image_example.jpg</example>
+        public string VerticalImage { get; set; }
 
         /// <summary>
         /// Discount Min of sale
@@ -35,12 +39,12 @@ namespace WebAPI.ViewModels.Request
         /// <summary>
         /// Date Start of sale
         /// </summary>
-        /// <example>12.09.2022</example>
+        /// <example>2022-09-22T18:18:18Z</example>
         public DateTime DateStart { get; set; }
         /// <summary>
         /// Date End of sale
         /// </summary>
-        /// <example>12.10.2022</example>
+        /// <example>2022-09-23T18:18:18Z</example>
         public DateTime DateEnd { get; set; }
 
         public IEnumerable<int> Categories { get; set; }
@@ -60,25 +64,27 @@ namespace WebAPI.ViewModels.Request
             //Name
             RuleFor(x => x.Name).Cascade(CascadeMode.Stop)
                .NotEmpty().WithName(_validationResources["NamePropName"])
-               .Length(2, 60);
+               .Length(2, 90);
+
             //DiscountMin
             RuleFor(a => a.DiscountMin).Cascade(CascadeMode.Stop)
                 .NotEmpty().WithName(_validationResources["DiscountMinPropName"]).WithMessage(_validationResources["RequiredMessage"])
                 .InclusiveBetween(1, 99);
+
             //DiscountMax
             RuleFor(a => a.DiscountMax).Cascade(CascadeMode.Stop)
                 .NotEmpty().WithName(_validationResources["DiscountMaxPropName"]).WithMessage(_validationResources["RequiredMessage"])
-                .InclusiveBetween(1, 99);
+                .InclusiveBetween(1, 99)
+                .GreaterThan(a => a.DiscountMin).WithMessage(_validationResources["GreaterThanMessage"]);
+
             //DateStart
             RuleFor(a => a.DateStart).Cascade(CascadeMode.Stop)
-                .NotEmpty().WithName(_validationResources["DateStartPropName"]).WithMessage(_validationResources["RequiredMessage"])
-                .InclusiveBetween(DateTime.Now,DateTime.MaxValue);
+                .NotEmpty().WithName(_validationResources["DateStartPropName"]).WithMessage(_validationResources["RequiredMessage"]);
 
             //DateEnd
             RuleFor(a => a.DateEnd).Cascade(CascadeMode.Stop)
                 .NotEmpty().WithName(_validationResources["DateEndPropName"]).WithMessage(_validationResources["RequiredMessage"])
-                .InclusiveBetween(DateTime.Now, DateTime.MaxValue);
-
+                .GreaterThan(a => a.DateStart).WithMessage(_validationResources["GreaterThanMessage"]);
         }
     }
 

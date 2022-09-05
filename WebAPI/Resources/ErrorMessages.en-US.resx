@@ -351,4 +351,7 @@
   <data name="GoogleConnected" xml:space="preserve">
     <value>You have already connected your Google account</value>
   </data>
+  <data name="SaleNotFound" xml:space="preserve">
+    <value>Sale was not found</value>
+  </data>
 </root>

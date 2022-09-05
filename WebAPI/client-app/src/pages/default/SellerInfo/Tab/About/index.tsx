@@ -28,7 +28,7 @@ const RatingProgress: FC<IRatingProgress> = ({ ratingValue, ratingValueCount, al
             </Box>
             <BorderLinearProgress
                 variant="determinate"
-                value={ratingValueCount / allRatingCount * 100}
+                value={allRatingCount > 0 ? (ratingValueCount / allRatingCount * 100) : 0}
                 sx={{ mr: "14px" }}
             />
             <Typography variant="h2">{ratingValueCount}</Typography>

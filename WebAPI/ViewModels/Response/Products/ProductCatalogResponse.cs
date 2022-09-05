@@ -6,6 +6,16 @@
     public class ProductCatalogResponse
     {
         /// <summary>
+        /// Product identifier
+        /// </summary>
+        /// <example>1</example>
+        public int Id { get; set; }
+        /// <summary>
+        /// Is product selected
+        /// </summary>
+        /// <example>true</example>
+        public bool IsSelected { get; set; }
+        /// <summary>
         /// Name of product
         /// </summary>
         /// <example>Hex Wednesday Dress</example>

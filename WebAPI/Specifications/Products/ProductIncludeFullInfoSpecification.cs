@@ -35,6 +35,7 @@ namespace WebAPI.Specifications.Products
         {
             Query.Where(i => i.UrlSlug.ToString() == urlSlug)
                 .Include(sh => sh.Shop)
+                    .ThenInclude(s => s.ShopReviews)
                 .Include(st => st.Status)
                     .ThenInclude(s => s.ProductStatusTranslations)
                 .Include(c => c.Category)
@@ -53,6 +54,7 @@ namespace WebAPI.Specifications.Products
                             .ThenInclude(p => p.Unit)
                                 .ThenInclude(u => u.UnitTranslations)
                 .Include(pc => pc.CharacteristicValues)
+                .Include(r => r.Reviews)
                 .AsSplitQuery();
         }
     }

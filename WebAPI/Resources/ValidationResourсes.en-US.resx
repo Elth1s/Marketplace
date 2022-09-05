@@ -129,6 +129,9 @@
   <data name="CodePropName" xml:space="preserve">
     <value>Code</value>
   </data>
+  <data name="CommentMaxLengthPropName" xml:space="preserve">
+    <value>Comment</value>
+  </data>
   <data name="CommentPropName" xml:space="preserve">
     <value>Comment</value>
   </data>
@@ -153,11 +156,23 @@
   <data name="CountPropName" xml:space="preserve">
     <value>Count</value>
   </data>
+  <data name="DateEndPropName" xml:space="preserve">
+    <value>End date</value>
+  </data>
+  <data name="DateStartPropName" xml:space="preserve">
+    <value>Start date</value>
+  </data>
   <data name="DescriptionNameProp" xml:space="preserve">
     <value>Description</value>
   </data>
   <data name="DisadvantagesPropName" xml:space="preserve">
     <value>Disadvantages</value>
+  </data>
+  <data name="DiscountMaxPropName" xml:space="preserve">
+    <value>Maximum discount</value>
+  </data>
+  <data name="DiscountMinPropName" xml:space="preserve">
+    <value>Minimum discount</value>
   </data>
   <data name="EmailAddressPropName" xml:space="preserve">
     <value>Email address</value>

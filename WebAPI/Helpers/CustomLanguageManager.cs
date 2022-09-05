@@ -11,8 +11,10 @@
                            "{PropertyName} should be between {MinLength} and {MaxLength} characters");
             AddTranslation("en-US", "EmailValidator",
                            "Invalid format of email address");
-            AddTranslation("en-US", "MinLengthValidator",
-                          "The length of {PropertyName} must be at least {MinLength} characters");
+            AddTranslation("en-US", "MaximumLengthValidator",
+                          "The length of {PropertyName} must be {MaxLength} characters or fewer");
+            AddTranslation("en-US", "MinimumLengthValidator",
+                         "The length of {PropertyName} must be at least {MinLength} characters");
             AddTranslation("en-US", "EqualValidator",
                           "{ComparisonProperty} and {PropertyName} do not match");
             AddTranslation("en-US", "InclusiveBetweenValidator",
@@ -31,8 +33,10 @@
                            "{PropertyName} має бути довжиною від {MinLength} до {MaxLength} символів");
             AddTranslation("uk-UA", "EmailValidator",
                            "Не вірний формат email-адреси");
-            AddTranslation("uk-UA", "MinLengthValidator",
+            AddTranslation("uk-UA", "MinimumLengthValidator",
                            "Довжина {PropertyName} має бути не меншою ніж {MinLength} символів");
+            AddTranslation("uk-UA", "MaximumLengthValidator",
+                           "Довжина {PropertyName} має бути не більшою ніж {MaxLength} символів");
             AddTranslation("uk-UA", "EqualValidator",
                            "{ComparisonValue} та {PropertyName} не співпадають");
             AddTranslation("uk-UA", "InclusiveBetweenValidator",

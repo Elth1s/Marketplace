@@ -3,8 +3,8 @@ using DAL;
 using DAL.Constants;
 using DAL.Data;
 using DAL.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Localization;
 using System.Drawing.Imaging;
 using WebAPI.Constants;
 using WebAPI.Extensions;
@@ -25,6 +25,7 @@ namespace WebAPI.Services
 {
     public class CategoryService : ICategoryService
     {
+        private readonly UserManager<AppUser> _userManager;
         private readonly IRepository<Category> _categoryRepository;
         private readonly IRepository<Product> _productRepository;
         private readonly IRepository<FilterValue> _filterValueRepository;
@@ -33,19 +34,21 @@ namespace WebAPI.Services
 
         private readonly MarketplaceDbContext _context;
 
-        public CategoryService(IStringLocalizer<ErrorMessages> errorMessagesLocalizer,
+        public CategoryService(
             IRepository<Category> categorRepository,
             IRepository<Product> productRepository,
             IRepository<FilterValue> filterValueRepository,
             IRepository<Shop> shopRepository,
             IMapper mapper,
-            MarketplaceDbContext context)
+            MarketplaceDbContext context,
+            UserManager<AppUser> userManager)
         {
             _categoryRepository = categorRepository;
             _productRepository = productRepository;
             _filterValueRepository = filterValueRepository;
             _shopRepository = shopRepository;
             _mapper = mapper;
+            _userManager = userManager;
             _context = context;
         }
 
@@ -88,7 +91,7 @@ namespace WebAPI.Services
             return _mapper.Map<IEnumerable<FullCatalogItemResponse>>(categories);
         }
 
-        public async Task<CatalogWithProductsResponse> GetCatalogWithProductsAsync(CatalogWithProductsRequest request)
+        public async Task<CatalogWithProductsResponse> GetCatalogWithProductsAsync(CatalogWithProductsRequest request, string userId)
         {
 
             var urlSlugSpec = new CategoryGetByUrlSlugSpecification(request.UrlSlug);
@@ -138,6 +141,15 @@ namespace WebAPI.Services
                     products.AddRange(await _productRepository.ListAsync(productCategoryIdSpec));
                 }
                 response.Products = _mapper.Map<IEnumerable<ProductCatalogResponse>>(products);
+            }
+
+            var user = await _userManager.GetUserWithSelectedProductsAsync(userId);
+            if (user != null)
+            {
+                foreach (var item in response.Products)
+                {
+                    item.IsSelected = await _userManager.IsProductSelectedByUserAsync(user.Id, item.Id);
+                }
             }
 
             return response;
@@ -195,7 +207,7 @@ namespace WebAPI.Services
             return response;
         }
 
-        public async Task<IEnumerable<ProductCatalogResponse>> GetMoreProductsAsync(CatalogWithProductsRequest request)
+        public async Task<IEnumerable<ProductCatalogResponse>> GetMoreProductsAsync(CatalogWithProductsRequest request, string userId)
         {
             var urlSlugSpec = new CategoryGetByUrlSlugSpecification(request.UrlSlug);
             var category = await _categoryRepository.GetBySpecAsync(urlSlugSpec);
@@ -209,7 +221,19 @@ namespace WebAPI.Services
                 var productCategoryIdSpec = new ProductGetByCategoryIdSpecification(item.Id, null, request.Page, 5);
                 products.AddRange(await _productRepository.ListAsync(productCategoryIdSpec));
             }
-            return _mapper.Map<IEnumerable<ProductCatalogResponse>>(products);
+
+            var response = _mapper.Map<IEnumerable<ProductCatalogResponse>>(products);
+
+            var user = await _userManager.GetUserWithSelectedProductsAsync(userId);
+            if (user != null)
+            {
+                foreach (var item in response)
+                {
+                    item.IsSelected = await _userManager.IsProductSelectedByUserAsync(user.Id, item.Id);
+                }
+            }
+            return response;
+
         }
 
         public async Task<IEnumerable<FilterNameValuesResponse>> GetFiltersByCategoryAsync(string urlSlug)

@@ -15,9 +15,9 @@ namespace WebAPI.Interfaces
         Task<IEnumerable<CatalogItemResponse>> GetCatalogAsync();
         Task<IEnumerable<FullCatalogItemResponse>> GetFullCatalogAsync();
         Task<IEnumerable<CatalogItemResponse>> GetParentsAsync(string urlSlug);
-        Task<CatalogWithProductsResponse> GetCatalogWithProductsAsync(CatalogWithProductsRequest request);
+        Task<CatalogWithProductsResponse> GetCatalogWithProductsAsync(CatalogWithProductsRequest request, string userId);
         Task<IEnumerable<FullCatalogItemResponse>> GetCategoriesByProductsAsync(SearchProductRequest request);
-        Task<IEnumerable<ProductCatalogResponse>> GetMoreProductsAsync(CatalogWithProductsRequest request);
+        Task<IEnumerable<ProductCatalogResponse>> GetMoreProductsAsync(CatalogWithProductsRequest request, string userId);
         Task<IEnumerable<FilterNameValuesResponse>> GetFiltersByCategoryAsync(string urlSlug);
         Task<IEnumerable<FilterGroupSellerResponse>> GetFiltersByCategoryIdAsync(int id);
         Task<IEnumerable<CategoryForSelectResponse>> GetForSelectAsync();

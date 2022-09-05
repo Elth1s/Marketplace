@@ -1,5 +1,8 @@
 ﻿namespace WebAPI.ViewModels.Response
 {
+    /// <summary>
+    /// Sale class returned from the controller
+    /// </summary>
     public class SaleResponse
     {
         /// <summary>
@@ -9,10 +12,15 @@
         public string Name { get; set; }
 
         /// <summary>
-        /// Image of sale
+        /// Horizontal image of sale
         /// </summary>
-        /// <example>""</example>
-        public string Image { get; set; }
+        /// <example>https://some_horizontal_image_example.jpg</example>
+        public string HorizontalImage { get; set; }
+        /// <summary>
+        /// Vertical image of sale
+        /// </summary>
+        /// <example>https://some_vertical_image_example.jpg</example>
+        public string VerticalImage { get; set; }
 
         /// <summary>
         /// Discount Min of sale
