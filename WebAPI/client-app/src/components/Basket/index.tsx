@@ -1,4 +1,4 @@
-import { Close, ShoppingCartOutlined } from '@mui/icons-material';
+import { Close } from '@mui/icons-material';
 import {
     Menu,
     IconButton,
@@ -10,7 +10,7 @@ import {
     Button,
 } from '@mui/material';
 import React, { useEffect } from 'react'
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 
 import { useActions } from '../../hooks/useActions';
@@ -32,8 +32,6 @@ const Basket = () => {
     const open = Boolean(anchorEl);
 
     let { urlSlug } = useParams();
-
-    const navigate = useNavigate();
 
     useEffect(() => {
         getData();

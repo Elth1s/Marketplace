@@ -62,6 +62,7 @@ export const catalogReducer = (state = initialState, action: CatalogAction): Cat
             return {
                 ...state,
                 searchCatalog: action.payload,
+                filterNames: []
             }
         default:
             return state;

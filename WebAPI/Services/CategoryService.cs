@@ -195,12 +195,18 @@ namespace WebAPI.Services
                 if (isExist == null)
                 {
                     response.Add(_mapper.Map<FullCatalogItemResponse>(category));
-                    response[response.Count - 1].Children = new List<FullCatalogItemResponse>() { _mapper.Map<FullCatalogItemResponse>(categories.First()) };
+                    var newChild = _mapper.Map<FullCatalogItemResponse>(categories.First());
+                    var countProductInCategorySpec = new ProductGetByCategoryIdSpecification(request.ProductName, newChild.Id);
+                    newChild.CountProducts = await _productRepository.CountAsync(countProductInCategorySpec);
+                    response[response.Count - 1].Children = new List<FullCatalogItemResponse>() { newChild };
                 }
                 else
                 {
                     var index = response.IndexOf(isExist);
-                    response[index].Children = response[index].Children.Append(_mapper.Map<FullCatalogItemResponse>(categories.First()));
+                    var newChild = _mapper.Map<FullCatalogItemResponse>(categories.First());
+                    var countProductInCategorySpec = new ProductGetByCategoryIdSpecification(request.ProductName, newChild.Id);
+                    newChild.CountProducts = await _productRepository.CountAsync(countProductInCategorySpec);
+                    response[index].Children = response[index].Children.Append(newChild);
                 }
             }
 
@@ -239,6 +245,25 @@ namespace WebAPI.Services
         public async Task<IEnumerable<FilterNameValuesResponse>> GetFiltersByCategoryAsync(string urlSlug)
         {
             var spec = new CategoryGetWithFilterValues(urlSlug);
+            var category = await _categoryRepository.GetBySpecAsync(spec);
+            category.CategoryNullChecking();
+
+            var filters = category.FilterValues;
+            var gropedFilters = filters.GroupBy(f => f.FilterName);
+            var response = gropedFilters.Select(g => new FilterNameValuesResponse()
+            {
+                Id = g.Key.Id,
+                Name = g.Key.FilterNameTranslations.FirstOrDefault(f => f.LanguageId == CurrentLanguage.Id).Name,
+                UnitMeasure = g.Key.Unit?.UnitTranslations.FirstOrDefault(f => f.LanguageId == CurrentLanguage.Id).Measure,
+                FilterValues = _mapper.Map<IEnumerable<FilterValueCatalogResponse>>(g.Key.FilterValues)
+            });
+
+            return response;
+        }
+
+        public async Task<IEnumerable<FilterNameValuesResponse>> GetFiltersByCategoryAsync(int id)
+        {
+            var spec = new CategoryGetWithFilterValues(id);
             var category = await _categoryRepository.GetBySpecAsync(spec);
             category.CategoryNullChecking();
 

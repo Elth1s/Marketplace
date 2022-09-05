@@ -166,10 +166,7 @@
             "catalog": {
                 "showMore": "Show more",
                 "find": "Find",
-                "finded": "Finded",
-                "countProductsOne": "product",
-                "countProductsLessFive": "products",
-                "countProducts": "products"
+                "finded": "Finded"
             },
             "faq": {
                 "tabs": {

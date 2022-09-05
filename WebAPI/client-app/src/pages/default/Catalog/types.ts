@@ -17,11 +17,13 @@ export interface ICatalogItem {
 }
 
 export interface IFullCatalogItem {
+    id: number,
     name: string,
     lightIcon: string,
     darkIcon: string,
     activeIcon: string,
     urlSlug: string,
+    countProducts: number,
     children: Array<IFullCatalogItem>
 }
 

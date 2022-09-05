@@ -96,8 +96,8 @@
                     "btnUpdate": "Редагувати"
                 },
                 "category": {
-                    "createTitle": "Створити катигорію",
-                    "updateTitle": "Редагувати катигорію"
+                    "createTitle": "Створити категорію",
+                    "updateTitle": "Редагувати категорію"
                 },
                 "city": {
                     "createTitle": "Створити місто",
@@ -112,12 +112,12 @@
                     "updateTitle": "Редагувати групу фільтрів"
                 },
                 "filterName": {
-                    "createTitle": "Створити назву фільтра",
-                    "updateTitle": "Редагувати назву фільтра"
+                    "createTitle": "Створити назву фільтрів",
+                    "updateTitle": "Редагувати назву фільтрів"
                 },
                 "filterValue": {
-                    "createTitle": "Створити значення фільтра",
-                    "updateTitle": "Редагувати значення фільтра"
+                    "createTitle": "Створити значення фільтрів",
+                    "updateTitle": "Редагувати значення фільтрів"
                 },
                 "orderStatus": {
                     "createTitle": "Створити статус замовлення",
@@ -166,10 +166,7 @@
             "catalog": {
                 "showMore": "Показати ще",
                 "find": "Пошук",
-                "finded": "Знайдено",
-                "countProductsOne": "товар",
-                "countProductsLessFive": "товари",
-                "countProducts": "товарів"
+                "finded": "Знайдено"
             },
             "faq": {
                 "tabs": {

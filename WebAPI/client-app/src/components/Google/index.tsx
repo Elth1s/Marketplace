@@ -28,7 +28,6 @@ const GoogleExternalLogin = () => {
         try {
             await GoogleExternalLogin({ token: res.tokenId });
             AuthDialogChange();
-            navigate("/");
 
         } catch (exception) {
             const serverError = exception as ServerError;

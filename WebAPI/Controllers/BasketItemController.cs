@@ -124,9 +124,9 @@ namespace WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize]
         [HttpPut("UpdateBasket/{basketId}")]
-        public async Task<IActionResult> UpdateCity(int basketId, [FromBody] BasketUpdateRequest request)
+        public async Task<IActionResult> UpdateCity(int basketId, [FromBody] int request)
         {
-            await _basketItemService.UpdateAsync(basketId, request, UserId);
+            await _basketItemService.UpdateAsync(basketId, request);
             return Ok(_basketItemLocalizer["UpdateProductSuccess"].Value);
         }
 

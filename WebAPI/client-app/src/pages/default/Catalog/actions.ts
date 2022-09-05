@@ -67,6 +67,31 @@ export const GetFiltersByCategory = (urlSlug: string) => {
     }
 }
 
+export const GetFiltersByCategoryIdForUser = (id: number) => {
+    return async (dispatch: Dispatch<CatalogAction>) => {
+        try {
+            let response = await http.get<Array<IFilterName>>(`api/Category/GetFiltersByCategoryId`, {
+                params: {
+                    id: id,
+                },
+                paramsSerializer: params => {
+                    return qs.stringify({ ...params })
+                }
+            });
+
+            dispatch({
+                type: CatalogActionTypes.GET_FILTERS_BY_CATEGORY,
+                payload: response.data
+            })
+
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
+        }
+    }
+}
+
 export const GetCatalogWithProducts = (urlSlug: string, page: number, rowsPerPage: number, filters: Array<number>) => {
     return async (dispatch: Dispatch<CatalogAction>) => {
         try {
@@ -187,13 +212,69 @@ export const UpdateSearch = (searchField: string) => {
     }
 }
 
-export const GetCategoriesForSearch = (productName: string,) => {
+export const GetCategoriesForSearch = (productName: string) => {
     return async (dispatch: Dispatch<CatalogAction>) => {
         try {
             let response = await http.get<Array<IFullCatalogItem>>(`api/Category/GetCategoriesByProducts`, {
                 params: {
                     productName: productName,
                     shopId: null
+                },
+                paramsSerializer: params => {
+                    return qs.stringify({ ...params })
+                }
+            });
+
+            dispatch({
+                type: CatalogActionTypes.GET_CATEGORIES_FOR_SEARCH,
+                payload: response.data
+            })
+
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
+        }
+    }
+}
+
+export const SearchSellerProducts = (shopId: string, page: number, rowsPerPage: number, categories: Array<number>, filters: Array<number>) => {
+    return async (dispatch: Dispatch<CatalogAction>) => {
+        try {
+            let response = await http.get<ISearchProducts>(`api/Product/Search`, {
+                params: {
+                    productName: "",
+                    shopId: shopId,
+                    page: page,
+                    rowsPerPage: rowsPerPage,
+                    categories: categories,
+                    filters: filters
+                },
+                paramsSerializer: params => {
+                    return qs.stringify({ ...params })
+                }
+            });
+
+            dispatch({
+                type: CatalogActionTypes.SEARCH_PRODUCTS,
+                payload: response.data
+            })
+
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
+        }
+    }
+}
+
+export const GetCategoriesByShopId = (shopId: string) => {
+    return async (dispatch: Dispatch<CatalogAction>) => {
+        try {
+            let response = await http.get<Array<IFullCatalogItem>>(`api/Category/GetCategoriesByProducts`, {
+                params: {
+                    productName: "",
+                    shopId: shopId
                 },
                 paramsSerializer: params => {
                     return qs.stringify({ ...params })

@@ -9,7 +9,8 @@ import {
     IconButton,
     Paper,
     Slide,
-    Typography
+    Typography,
+    useTheme
 } from "@mui/material";
 import { Close } from "@mui/icons-material";
 
@@ -35,9 +36,10 @@ export interface ICropperDialog {
     imgSrc: string,
     aspectRation?: number,
     onDialogSave: any,
+    isDark?: boolean
 }
 
-const CropperDialog: React.FC<ICropperDialog> = ({ imgSrc, aspectRation = 1 / 1, onDialogSave }) => {
+const CropperDialog: React.FC<ICropperDialog> = ({ imgSrc, aspectRation = 1 / 1, onDialogSave, isDark = false }) => {
     const [cropperObj, setCropperObj] = useState<Cropper>();
     const imgRef = useRef<HTMLImageElement>(null);
     const prevRef = useRef<HTMLDivElement>();
@@ -94,7 +96,7 @@ const CropperDialog: React.FC<ICropperDialog> = ({ imgSrc, aspectRation = 1 / 1,
 
     return (
         <>
-            <BoxStyle imgSrc={imgSrc} >
+            <BoxStyle imgSrc={imgSrc} isDark={isDark}>
                 {/* <label htmlFor={labelId}>
                     <img
                         src={imgSrc}
@@ -114,7 +116,7 @@ const CropperDialog: React.FC<ICropperDialog> = ({ imgSrc, aspectRation = 1 / 1,
                                 src={upload_cloud}
                                 alt="icon"
                                 style={{ width: "25px", height: "25px" }} />
-                            <Typography variant="subtitle1" align="center">
+                            <Typography variant="subtitle1" align="center" color={isDark ? "white" : "black"}>
                                 Select photo
                             </Typography>
                         </Box>}

@@ -61,7 +61,6 @@ const SignInDialog: FC<Props> = ({ changeDialog, forgotPasswordOpen }) => {
                 await LoginUser(values, reCaptchaToken);
                 AuthDialogChange();
                 await GetBasketItems();
-                navigate("/");
                 //toast.success('Login Success!');
             }
             catch (exeption) {

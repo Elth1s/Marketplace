@@ -60,7 +60,6 @@ const SignUpDialog: FC<Props> = ({ changeDialog }) => {
                 await RegisterUser(values, reCaptchaToken);
                 AuthDialogChange();
                 await GetBasketItems();
-                navigate("/");
                 //toast.success('Sign up success!');
             }
             catch (exception) {

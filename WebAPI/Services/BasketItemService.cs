@@ -89,12 +89,12 @@ namespace WebAPI.Services
             await _basketItemRepository.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(int basketId, BasketUpdateRequest request, string userId)
+        public async Task UpdateAsync(int basketId, int count)
         {
             var basket = await _basketItemRepository.GetByIdAsync(basketId);
             basket.BasketItemNullChecking();
 
-            _mapper.Map(request, basket);
+            basket.Count = count;
 
             await _basketItemRepository.UpdateAsync(basket);
             await _basketItemRepository.SaveChangesAsync();

@@ -18,7 +18,7 @@ const ProfileLayout = () => {
             }}
         >
             <Header />
-            <Container component="main" sx={{ maxWidth: { xl: "xl", lg: "lg", md: "md" } }}>
+            <Container component="main" sx={{ maxWidth: { xl: "xl", lg: "lg", md: "md" }, mb: 8, mt: "120px" }}>
                 <Grid container>
                     <Grid item xs={3}>
                         <Sitebar />

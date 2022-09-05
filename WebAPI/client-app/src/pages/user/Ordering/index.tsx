@@ -106,6 +106,21 @@ const Ordering = () => {
         setExpanded(isExpanded ? index : false);
     };
 
+    const lastCharOfCountProducts = (countProducts: number) => {
+        if (!countProducts)
+            return;
+
+        let stringCountProducts = countProducts.toString();
+        let lastChar = stringCountProducts[stringCountProducts.length - 1];
+        let twoLastChar = stringCountProducts.slice(-2);
+        if (twoLastChar == "12" || twoLastChar == "13" || twoLastChar == "14")
+            return false
+        else if (lastChar == "2" || lastChar == "3" || lastChar == "4")
+            return true;
+        else
+            return false
+    };
+
     const { errors, touched, isSubmitting, handleSubmit, getFieldProps } = formik;
 
     return (
@@ -307,7 +322,7 @@ const Ordering = () => {
                                 </Typography>
                                 <Box sx={{ display: "flex", justifyContent: "space-between", mt: "35px" }}>
                                     <Typography variant="h4" fontWeight={700}>
-                                        {orderProducts[currentOrder - 1]?.totalCount} {t("pages.ordering.countProductsOne")} {t("pages.ordering.forTheSum")}:
+                                        {orderProducts[currentOrder - 1]?.totalCount} {orderProducts[currentOrder - 1]?.totalCount == 1 ? t("pages.ordering.countProductsOne") : (lastCharOfCountProducts(orderProducts[currentOrder - 1]?.totalCount) ? t("pages.ordering.countProductsLessFive") : t("pages.ordering.countProducts"))} {t("pages.ordering.forTheSum")}:
                                     </Typography>
                                     <Typography variant="h4">
                                         {orderProducts[currentOrder - 1]?.totalPrice} &#8372;

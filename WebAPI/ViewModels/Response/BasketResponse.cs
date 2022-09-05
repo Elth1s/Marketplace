@@ -16,7 +16,7 @@
         /// <example>2</example>
         public int Count { get; set; }
         /// <summary>
-        ///  Name
+        /// Name
         /// </summary>
         /// <example>T-shirt</example>
         public string ProductName { get; set; }
