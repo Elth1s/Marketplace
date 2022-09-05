@@ -161,6 +161,22 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
+        /// Return filters of category
+        /// </summary>
+        /// <response code="200">Getting filters of category completed successfully</response>
+        /// <response code="403">You don't have permission</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<FilterNameValuesResponse>))]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [HttpGet("GetFiltersByCategoryId")]
+        public async Task<IActionResult> GetFiltersByCategory([FromQuery] int id)
+        {
+            var result = await _categoryService.GetFiltersByCategoryAsync(id);
+            return Ok(result);
+        }
+
+        /// <summary>
         /// Return filters of category id
         /// </summary>
         /// <param name="id">Category identifier</param>
@@ -173,8 +189,8 @@ namespace WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin,Seller")]
-        [HttpGet("GetFiltersByCategoryId/{id}")]
-        public async Task<IActionResult> GetFiltersByCategory(int id)
+        [HttpGet("GetFiltersByCategory/{id}")]
+        public async Task<IActionResult> GetFiltersByCategoryId(int id)
         {
             var result = await _categoryService.GetFiltersByCategoryIdAsync(id);
             return Ok(result);

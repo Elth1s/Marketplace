@@ -1,5 +1,5 @@
 import { Box, IconButton, Typography } from "@mui/material"
-import { FC, useState } from "react"
+import { FC, useEffect, useState } from "react"
 
 import { useActions } from "../../hooks/useActions"
 
@@ -21,11 +21,11 @@ interface Props {
 }
 
 const BasketItem: FC<Props> = ({ id, count, image, name, price, productCount, urlSlug, closeBasket, linkUrlSlug }) => {
-    const { GetBasketItems, RemoveFromBasket } = useActions();
+    const { GetBasketItems, UpdateBasketItem, RemoveFromBasket } = useActions();
 
     const [basketItemCount, setBasketItemCount] = useState<number>(count);
 
-    const changeCount = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const changeCount = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const numberRegex = /^[1-9][0-9]*$/;
         let value = e.target.value;
 
@@ -35,11 +35,25 @@ const BasketItem: FC<Props> = ({ id, count, image, name, price, productCount, ur
         }
 
         if (numberRegex.test(value))
-            if (+value > productCount)
+            if (+value > productCount) {
                 setBasketItemCount(productCount);
-            else
+                await UpdateBasketItem(id, productCount);
+            }
+            else {
                 setBasketItemCount(+value);
+                await UpdateBasketItem(id, +value);
+            }
+    }
 
+    const plusMinusCount = async (isPlus: boolean) => {
+        let tempCount = basketItemCount;
+        if (isPlus)
+            tempCount = tempCount + 1;
+        else
+            tempCount = tempCount - 1;
+
+        setBasketItemCount(tempCount);
+        await UpdateBasketItem(id, tempCount);
     }
 
     return (
@@ -56,9 +70,20 @@ const BasketItem: FC<Props> = ({ id, count, image, name, price, productCount, ur
                     </Typography>
                 </LinkRouter>
                 <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <IconButton sx={{ "&:hover": { background: "transparent" }, "&& .MuiTouchRipple-child": { backgroundColor: "transparent" } }}>
+                    <IconButton
+                        sx={{
+                            "&:hover": {
+                                background: "transparent"
+                            },
+                            "&& .MuiTouchRipple-child": {
+                                backgroundColor: "transparent"
+                            }
+                        }}
+                        disabled={basketItemCount == 1}
+                        onClick={() => plusMinusCount(false)}
+                    >
                         <img
-                            style={{ width: "20px", height: "20px" }}
+                            style={{ width: "20px", height: "20px", cursor: "pointer" }}
                             src={minus}
                             alt="minus"
                         />
@@ -68,9 +93,20 @@ const BasketItem: FC<Props> = ({ id, count, image, name, price, productCount, ur
                         sx={{ width: "38px" }}
                         onChange={changeCount}
                     />
-                    <IconButton sx={{ "&:hover": { background: "transparent" }, "&& .MuiTouchRipple-child": { backgroundColor: "transparent" } }}>
+                    <IconButton
+                        sx={{
+                            "&:hover": {
+                                background: "transparent"
+                            },
+                            "&& .MuiTouchRipple-child": {
+                                backgroundColor: "transparent"
+                            }
+                        }}
+                        disabled={basketItemCount == productCount}
+                        onClick={() => plusMinusCount(true)}
+                    >
                         <img
-                            style={{ width: "20px", height: "20px" }}
+                            style={{ width: "20px", height: "20px", cursor: "pointer" }}
                             src={plus}
                             alt="plus"
                         />

@@ -14,6 +14,7 @@ import AddShopReview from './AddReview';
 import { useParams } from 'react-router-dom';
 import { useActions } from '../../../hooks/useActions';
 import { useTypedSelector } from '../../../hooks/useTypedSelector';
+import Products from './Tab/Products';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -33,9 +34,7 @@ function TabPanel(props: TabPanelProps) {
             {...other}
         >
             {value === index && (
-                <Box sx={{ mt: "50px" }}>
-                    {children}
-                </Box>
+                children
             )}
         </div>
     );
@@ -84,15 +83,17 @@ const SellerInfo = () => {
                 </Grid>
             </Grid>
 
-            <TabPanel value={value} index={0}>
-                <About />
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-                {/* <About /> */}
-            </TabPanel>
-            <TabPanel value={value} index={2}>
-                <Reviews />
-            </TabPanel>
+            <Box sx={{ mt: "30px" }}>
+                <TabPanel value={value} index={0}>
+                    <About />
+                </TabPanel>
+                <TabPanel value={value} index={1}>
+                    <Products />
+                </TabPanel>
+                <TabPanel value={value} index={2}>
+                    <Reviews />
+                </TabPanel>
+            </Box>
         </>
     );
 }

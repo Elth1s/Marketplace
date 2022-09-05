@@ -3,19 +3,19 @@ import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Checkbox, P
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
-import ProductItem from "../../../components/ProductItem";
-import { useActions } from "../../../hooks/useActions";
-import { useTypedSelector } from "../../../hooks/useTypedSelector";
-import { BoxFilterStyle, BoxProductStyle, PaginationItemStyle } from "./styled";
+import ProductItem from "../../../../../components/ProductItem";
+import { useActions } from "../../../../../hooks/useActions";
+import { useTypedSelector } from "../../../../../hooks/useTypedSelector";
+import { BoxFilterStyle, BoxProductStyle, PaginationItemStyle } from "../../../Catalog/styled";
 
 
 
 
-const SearchProducts = () => {
+const SellerProducts = () => {
     const { t } = useTranslation();
     const { palette } = useTheme();
 
-    const { GetCategoriesForSearch, GetFiltersByCategoryIdForUser, SearchProductsForUser } = useActions();
+    const { GetCategoriesByShopId, GetFiltersByCategoryIdForUser, SearchSellerProducts } = useActions();
     const { products, countProducts, filterNames, searchCatalog } = useTypedSelector(state => state.catalog);
 
     const [page, setPage] = useState(1);
@@ -23,24 +23,22 @@ const SearchProducts = () => {
     const [filters, setFilters] = useState<Array<number>>([]);
     const [categories, setCategories] = useState<Array<number>>([]);
 
-    let { productName } = useParams();
+    let { shopId } = useParams();
 
     useEffect(() => {
-        if (productName)
-            document.title = productName;
 
         getData();
-    }, [page, productName, categories])
+    }, [page, categories])
 
     const getData = async () => {
-        if (!productName)
+        if (!shopId)
             return;
         try {
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth'
             });
-            await SearchProductsForUser(productName, page, rowsPerPage, categories, filters)
+            await SearchSellerProducts(shopId, page, rowsPerPage, categories, filters)
 
             if (categories?.length == 1)
                 await GetFiltersByCategoryIdForUser(categories[0])
@@ -51,13 +49,13 @@ const SearchProducts = () => {
     useEffect(() => {
 
         getCategories();
-    }, [productName])
+    }, [])
 
     const getCategories = async () => {
-        if (!productName)
+        if (!shopId)
             return;
         try {
-            await GetCategoriesForSearch(productName);
+            await GetCategoriesByShopId(shopId);
         } catch (ex) {
         }
     };
@@ -87,39 +85,17 @@ const SearchProducts = () => {
         setPage(newPage);
     };
 
-    const lastCharOfCountProducts = (countProducts: number) => {
-        let stringCountProducts = countProducts.toString();
-        let lastChar = stringCountProducts[stringCountProducts.length - 1];
-        let twoLastChar = stringCountProducts.slice(-2);
-        if (twoLastChar == "12" || twoLastChar == "13" || twoLastChar == "14")
-            return false
-        else if (lastChar == "2" || lastChar == "3" || lastChar == "4")
-            return true;
-        else
-            return false
-    };
-
     const isSelected = (id: number) => filters.indexOf(id) !== -1;
 
     return (
         <>
-            <Typography variant="h2" display="inline">
-                &laquo;
-                <Typography display="inline" sx={{ fontSize: "30px", lineHeight: "38px" }}>
-                    {productName}
-                </Typography>
-                &raquo;
-            </Typography>
-            <Typography variant="h4">
-                {t("pages.catalog.finded")} {countProducts} {countProducts == 1 ? t("pages.ordering.countProductsOne") : (lastCharOfCountProducts(countProducts) ? t("pages.ordering.countProductsLessFive") : t("pages.ordering.countProducts"))}
-            </Typography>
-            <Box sx={{ display: "flex", mt: "20px" }}>
+            <Box sx={{ display: "flex" }}>
                 <BoxFilterStyle>
                     {searchCatalog?.length != 0
                         && <>
                             {searchCatalog.map((parent, index) => {
                                 return (
-                                    <Accordion key={`parent_category_${index}`} sx={{ pt: "15px", boxShadow: 0, "&:before": { background: "inherit" }, "&.Mui-expanded": { m: 0 } }}>
+                                    <Accordion key={`sc${index}`} sx={{ pt: "15px", boxShadow: 0, "&:before": { background: "inherit" }, "&.Mui-expanded": { m: 0 } }}>
                                         <AccordionSummary
                                             expandIcon={<ExpandMore />}
                                             sx={{
@@ -164,7 +140,6 @@ const SearchProducts = () => {
                                                     {parent.children.map((child, index) => {
                                                         return (
                                                             <Typography
-                                                                key={`child_category_${index}`}
                                                                 variant="h4"
                                                                 sx={{
                                                                     mt: "10px",
@@ -244,15 +219,15 @@ const SearchProducts = () => {
                     })}
                 </BoxProductStyle>
             </Box>
-            {products?.length > 0 && <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
                 <Pagination count={Math.ceil(countProducts / rowsPerPage)} page={page} shape="rounded" size="large" showFirstButton showLastButton
                     onChange={(event: any, value: number) => {
                         handleChangePage(event, value);
                     }}
                     renderItem={(item) => <PaginationItemStyle {...item} />} />
-            </Box>}
+            </Box>
         </>
     )
 }
 
-export default SearchProducts
+export default SellerProducts

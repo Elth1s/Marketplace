@@ -17,7 +17,6 @@ const FacebookExternalLogin = () => {
         try {
             await FacebookExternalLogin({ token: res.accessToken });
             AuthDialogChange();
-            navigate("/");
 
         } catch (exception) {
             const serverError = exception as ServerError;

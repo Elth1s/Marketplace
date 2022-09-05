@@ -79,23 +79,39 @@ const HomePage = () => {
                         const isItemSelected = isSelected(index);
                         if (index < 12)
                             return (
-                                <LinkRouter key={`$catalog_${index}`} underline="none" color="inherit" to={`/catalog/${row.urlSlug}`}>
-                                    <Box sx={{ display: "flex", mb: "20px", alignItems: "center" }} onMouseEnter={() => setSelectedCategory(index)}>
+                                <LinkRouter
+                                    key={`$catalog_${index}`}
+                                    underline="none"
+                                    color="inherit"
+                                    to={`/catalog/${row.urlSlug}`}
+                                >
+                                    <Box sx={{ display: "flex", mb: "20px", alignItems: "center" }} >
                                         {row.lightIcon == "" || row.darkIcon == ""
-                                            ? <PhotoOutlined color={isItemSelected ? "primary" : "inherit"} sx={{ marginRight: "15px" }} />
+                                            ? <PhotoOutlined color={isItemSelected ? "primary" : "inherit"} sx={{ fontSize: "20px" }} onMouseEnter={() => setSelectedCategory(index)} />
                                             : (palette.mode == "dark"
                                                 ? <img
-                                                    style={{ width: "20px", height: "20px", objectFit: "contain", marginRight: "15px" }}
-                                                    src={isItemSelected ? row.activeIcon : row.darkIcon}
-                                                    alt="categoryIcon"
-                                                />
-                                                : <img
-                                                    style={{ width: "20px", height: "20px", objectFit: "contain", marginRight: "15px" }}
+                                                    style={{ width: "20px", height: "20px", objectFit: "contain" }}
                                                     src={isItemSelected ? row.activeIcon : row.lightIcon}
                                                     alt="categoryIcon"
-                                                />)
+                                                    onMouseEnter={() => setSelectedCategory(index)}
+                                                />
+                                                : <img
+                                                    style={{ width: "20px", height: "20px", objectFit: "contain" }}
+                                                    src={isItemSelected ? row.activeIcon : row.darkIcon}
+                                                    alt="categoryIcon"
+                                                    onMouseEnter={() => setSelectedCategory(index)}
+                                                />
+                                            )
                                         }
-                                        <Typography variant="h4" fontWeight="medium" color={isItemSelected ? "primary" : "inherit"}>{row.name}</Typography>
+                                        <Typography
+                                            variant="h4"
+                                            fontWeight="medium"
+                                            color={isItemSelected ? "primary" : "inherit"}
+                                            onMouseEnter={() => setSelectedCategory(index)}
+                                            sx={{ pl: "10px" }}
+                                        >
+                                            {row.name}
+                                        </Typography>
                                     </Box>
                                 </LinkRouter>
                             );

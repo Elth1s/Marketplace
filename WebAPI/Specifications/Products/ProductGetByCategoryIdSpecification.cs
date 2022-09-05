@@ -43,5 +43,18 @@ namespace WebAPI.Specifications.Products
                      .Take(rowsPerPage.Value);
             }
         }
+
+        public ProductGetByCategoryIdSpecification(string productName, int categoryId, int? shopId = null)
+        {
+            Query.Where(item => categoryId == item.CategoryId)
+                 .Where(item => !item.IsDeleted);
+
+            if (!string.IsNullOrEmpty(productName))
+                Query.Where(item => item.Name.Contains(productName));
+
+            if (shopId.HasValue)
+                Query.Where(item => item.ShopId == shopId.Value);
+
+        }
     }
 }

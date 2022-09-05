@@ -36,6 +36,11 @@
         /// <example>https://some_category_active_icon_example.jpg</example>
         public string ActiveIcon { get; set; }
         /// <summary>
+        /// Products count in category
+        /// </summary>
+        /// <example>13</example>
+        public int CountProducts { get; set; }
+        /// <summary>
         /// List of category childs
         /// </summary>
         public IEnumerable<FullCatalogItemResponse> Children { get; set; }

@@ -84,7 +84,7 @@ export const GetCategoriesWithoutChildren = () => {
 export const GetFiltersByCategoryId = (id: number) => {
     return async (dispatch: Dispatch<ProductAction>) => {
         try {
-            let response = await http.get<Array<IFilterGroupSeller>>(`api/Category/GetFiltersByCategoryId/${id}`)
+            let response = await http.get<Array<IFilterGroupSeller>>(`api/Category/GetFiltersByCategory/${id}`)
 
             dispatch({
                 type: ProductActionTypes.GET_FILTERS_BY_CATEGORY_ID,

@@ -10,6 +10,7 @@ export const TabStyle = styled(Tab)(() => ({
     fontSize: "20px",
     lineHeight: "25px",
     marginRight: "90px",
+    textTransform: "none",
     padding: "0 0 15px 0",
     "&:nth-last": {
         marginRight: "0",

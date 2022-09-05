@@ -13,7 +13,6 @@ import AuthLayout from './containers/AuthLayout';
 import AdminLayout from './containers/AdminLayout';
 import ProfileLayout from './containers/ProfileLayout';
 import SellerLayout from './containers/SellerLayout';
-import SellerInfoLayout from './containers/SellerInfoLayout';
 
 import SignIn from './pages/auth/SignInDialog';
 import SignUp from './pages/auth/SignUpDialog';
@@ -122,11 +121,10 @@ const App = () => {
             <Route path="about" element={<About />} />
             <Route path="faq" element={<FAQ />} />
             <Route path="contact-info" element={<ContactInfo />} />
+
+            <Route path="seller-info/:shopId" element={<SellerInfo />} />
           </Route>
 
-          <Route path="/seller-info/:shopId" element={<SellerInfoLayout />}>
-            <Route index element={<SellerInfo />} />
-          </Route>
 
           <Route path="/profile/" element={<ProfileLayout />}>
             <Route path="information" element={<Profile />} />

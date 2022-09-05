@@ -114,7 +114,7 @@ const CategoryCreate: FC<CreateProps> = ({ afterCreate }) => {
                 dialogContent={
                     <>
                         <DialogTitleWithButton
-                            title={t('pages.admin.filterGroup.createTitle')}
+                            title={t('pages.admin.category.createTitle')}
                             onClick={handleClickClose}
                         />
                         <FormikProvider value={formik} >
@@ -177,7 +177,7 @@ const CategoryCreate: FC<CreateProps> = ({ afterCreate }) => {
                                             <Typography variant="h4" align="center">
                                                 {t("validationProps.categoryLightIcon")}
                                             </Typography>
-                                            <CropperDialog imgSrc={formik.values.lightIcon} onDialogSave={onSaveLightIcon} />
+                                            <CropperDialog imgSrc={formik.values.lightIcon} onDialogSave={onSaveLightIcon} isDark={true} />
                                         </Grid>
                                         <Grid item xs={3} sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-between" }}>
                                             <Typography variant="h4" align="center">

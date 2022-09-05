@@ -122,7 +122,7 @@ const ReviewForm: FC<Props> = ({ getData }) => {
                     />
                 </Box>
                 <Grid container rowSpacing={2.5}>
-                    <Grid container item columnSpacing={3.25}>
+                    <Grid container item xs={12} columnSpacing={3.25}>
                         <Grid item xs={6}>
                             <TextFieldStyle
                                 fullWidth
@@ -226,7 +226,6 @@ const ReviewForm: FC<Props> = ({ getData }) => {
                                     {t('pages.product.reviewForm.attachPhoto')}
                                 </Typography>
                             </Box>
-                            {/* </div> */}
                         </Box>
                     </Grid>
                     <Grid item xs={12} sx={{ display: "flex", justifyContent: "flex-end", alignItems: "flex-end", mt: "25px" }}>

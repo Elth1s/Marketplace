@@ -43,7 +43,10 @@ const Header = () => {
     useEffect(() => {
         if (productName)
             UpdateSearch(productName)
-    }, [])
+        else
+            UpdateSearch("")
+
+    }, [productName])
 
     const changeLanguage = (isUa: boolean) => {
         if (isUa == isUaLanguage)
@@ -62,7 +65,7 @@ const Header = () => {
     }
 
     return (
-        <AppBar component="header" sx={{ height: "110px", mb: "30px", mt: "15px" }} elevation={0} position="static" >
+        <AppBar component="header" sx={{ height: "100px", pt: "10px" }} elevation={0} >
             <Container sx={{ height: "100%", maxWidth: { xl: "xl", lg: "lg", md: "md" } }}>
                 <Toolbar disableGutters={true} sx={{ height: "100%", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <LinkRouter underline="none" color="unset" to="/" onClick={() => UpdateSearch("")}>

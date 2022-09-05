@@ -26,6 +26,20 @@ export const GetBasketItems = () => {
     }
 }
 
+export const UpdateBasketItem = (basketId: number, count: number) => {
+    return async () => {
+        try {
+            let response = await http.put(`api/BasketItem/UpdateBasket/${basketId}`, count)
+
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
+        }
+    }
+}
+
+
 export const RemoveFromBasket = (id: number, isInBasket: boolean) => {
     return async (dispatch: Dispatch<ProductAction>) => {
         try {

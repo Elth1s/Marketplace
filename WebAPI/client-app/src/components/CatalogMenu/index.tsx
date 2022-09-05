@@ -23,7 +23,7 @@ const CatalogMenu = () => {
     const { t } = useTranslation()
     const { palette } = useTheme();
 
-    const { GetFullCatalog, UpdateSearch } = useActions();
+    const { GetFullCatalog } = useActions();
     const { fullCatalogItems } = useTypedSelector(state => state.catalog);
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -34,10 +34,6 @@ const CatalogMenu = () => {
     useEffect(() => {
         getData();
     }, []);
-
-    useEffect(() => {
-
-    }, [selectedCategory]);
 
     const getData = async () => {
         try {
@@ -54,7 +50,6 @@ const CatalogMenu = () => {
     };
 
     const handleClose = () => {
-        UpdateSearch("")
         setAnchorEl(null);
     };
 
@@ -81,7 +76,10 @@ const CatalogMenu = () => {
                         marginRight: "15px",
                         marginLeft: "0px"
                     },
-                    "&:hover": { background: palette.primary.main }
+                    "&:hover": {
+                        boxShadow: 1,
+                        background: palette.primary.main
+                    }
                 }}
                 startIcon={
                     <img
@@ -107,14 +105,14 @@ const CatalogMenu = () => {
                     sx: {
                         borderRadius: "10px",
                         overflow: 'visible',
-                        filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.5))',
-                        mt: "135px",
-                        mx: "auto",
+                        mt: "120px",
+                        px: "auto",
                         minWidth: "1560px",
                         maxWidth: "1560px",
                         minHeight: "670px",
                         maxHeight: "670px",
                         position: "static",
+                        mx: "auto"
                     },
                 }}
                 MenuListProps={{
@@ -138,23 +136,30 @@ const CatalogMenu = () => {
                                 const isItemSelected = isSelected(index);
 
                                 return (
-                                    <LinkRouter key={`$catalog_${index}`} underline="none" color="inherit" to={`/catalog/${row.urlSlug}`} onClick={handleClose}>
-                                        <Box sx={{ display: "flex", mb: "14px", alignItems: "center" }} onMouseEnter={() => changeParentCategory(index)}>
+                                    <LinkRouter
+                                        key={`$catalog_${index}`}
+                                        underline="none"
+                                        color="inherit"
+                                        to={`/catalog/${row.urlSlug}`}
+                                        onMouseEnter={() => changeParentCategory(index)}
+                                        onClick={handleClose}
+                                    >
+                                        <Box sx={{ display: "flex", mb: "14px", alignItems: "center" }}>
                                             {row.lightIcon == "" || row.darkIcon == ""
-                                                ? <PhotoOutlined color={isItemSelected ? "primary" : "inherit"} sx={{ marginRight: "15px" }} />
+                                                ? <PhotoOutlined color={isItemSelected ? "primary" : "inherit"} sx={{ fontSize: "20px" }} />
                                                 : (palette.mode == "dark"
                                                     ? <img
-                                                        style={{ width: "20px", height: "20px", objectFit: "contain", marginRight: "15px" }}
-                                                        src={isItemSelected ? row.activeIcon : row.darkIcon}
+                                                        style={{ width: "20px", height: "20px", objectFit: "contain" }}
+                                                        src={isItemSelected ? row.activeIcon : row.lightIcon}
                                                         alt="categoryIcon"
                                                     />
                                                     : <img
-                                                        style={{ width: "20px", height: "20px", objectFit: "contain", marginRight: "15px" }}
-                                                        src={isItemSelected ? row.activeIcon : row.lightIcon}
+                                                        style={{ width: "20px", height: "20px", objectFit: "contain" }}
+                                                        src={isItemSelected ? row.activeIcon : row.darkIcon}
                                                         alt="categoryIcon"
                                                     />)
                                             }
-                                            <Typography variant="h4" color={isItemSelected ? "primary" : "inherit"}>{row.name}</Typography>
+                                            <Typography variant="h4" color={isItemSelected ? "primary" : "inherit"} sx={{ pl: "10px" }}>{row.name}</Typography>
                                         </Box>
                                     </LinkRouter>
                                 );
