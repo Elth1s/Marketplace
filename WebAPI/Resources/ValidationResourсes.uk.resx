@@ -129,6 +129,9 @@
   <data name="CodePropName" xml:space="preserve">
     <value>Код</value>
   </data>
+  <data name="CommentMaxLengthPropName" xml:space="preserve">
+    <value>Коментаря</value>
+  </data>
   <data name="CommentPropName" xml:space="preserve">
     <value>Коментар</value>
   </data>
@@ -153,11 +156,23 @@
   <data name="CountPropName" xml:space="preserve">
     <value>Кількість</value>
   </data>
+  <data name="DateEndPropName" xml:space="preserve">
+    <value>Дата закінчення</value>
+  </data>
+  <data name="DateStartPropName" xml:space="preserve">
+    <value>Дата початку</value>
+  </data>
   <data name="DescriptionNameProp" xml:space="preserve">
     <value>Опис</value>
   </data>
   <data name="DisadvantagesPropName" xml:space="preserve">
     <value>Недоліки</value>
+  </data>
+  <data name="DiscountMaxPropName" xml:space="preserve">
+    <value>Максимальна знижка</value>
+  </data>
+  <data name="DiscountMinPropName" xml:space="preserve">
+    <value>Мінімальна знижка</value>
   </data>
   <data name="EmailAddressPropName" xml:space="preserve">
     <value>Email-адреса</value>

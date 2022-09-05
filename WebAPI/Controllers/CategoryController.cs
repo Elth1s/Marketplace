@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
+using System.Security.Claims;
 using WebAPI.Interfaces;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Request.Categories;
@@ -21,6 +22,7 @@ namespace WebAPI.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
+        private string UserId => User?.FindFirstValue(ClaimTypes.NameIdentifier);
         private readonly ICategoryService _categoryService;
         private readonly IStringLocalizer<CategoryController> _categoryLocalizer;
 
@@ -73,7 +75,7 @@ namespace WebAPI.Controllers
         [HttpGet("GetCatalogWithProducts")]
         public async Task<IActionResult> GetCatalogWithProducts([FromQuery] CatalogWithProductsRequest request)
         {
-            var result = await _categoryService.GetCatalogWithProductsAsync(request);
+            var result = await _categoryService.GetCatalogWithProductsAsync(request, UserId);
             return Ok(result);
         }
 
@@ -104,7 +106,7 @@ namespace WebAPI.Controllers
         [HttpGet("GetMoreProducts")]
         public async Task<IActionResult> GetMoreProducts([FromQuery] CatalogWithProductsRequest request)
         {
-            var result = await _categoryService.GetMoreProductsAsync(request);
+            var result = await _categoryService.GetMoreProductsAsync(request, UserId);
             return Ok(result);
         }
 

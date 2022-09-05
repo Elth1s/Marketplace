@@ -4,10 +4,14 @@ const initialState: ProductState = {
     parents: [],
     product: {
         isInBasket: false,
+        isSelected:false,
         name: "",
         shopId: 0,
         shopName: "",
         productStatus: "",
+        shopRating: 0,
+        productRating: 0,
+        countReviews: 0,
         images: [],
         price: 0,
         filters: []

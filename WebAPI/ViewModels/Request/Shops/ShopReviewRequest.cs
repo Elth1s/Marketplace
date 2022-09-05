@@ -82,8 +82,7 @@ namespace WebAPI.ViewModels.Request.Shops
 
             //Comment
             RuleFor(a => a.Comment).Cascade(CascadeMode.Stop)
-               .NotEmpty().WithName(_validationResources["CommentPropName"])
-               .Length(1, 450);
+               .MaximumLength(450).WithName(_validationResources["CommentMaxLengthPropName"]);
         }
     }
 }

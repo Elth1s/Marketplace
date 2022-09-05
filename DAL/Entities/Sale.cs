@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DAL.Entities
+﻿namespace DAL.Entities
 {
-    public class Sale: BaseEntity, IAggregateRoot
+    public class Sale : BaseEntity, IAggregateRoot
     {
 
         public string Name { get; set; }
-        public string Image { get; set; }
+        public string HorizontalImage { get; set; }
+        public string VerticalImage { get; set; }
 
         public int DiscountMin { get; set; }
         public int DiscountMax { get; set; }

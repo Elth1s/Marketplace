@@ -32,6 +32,7 @@ export interface IFilterItem {
 }
 
 export interface ISimilarProduct {
+    isSelected: number,
     name: string,
     image: string,
     price: number,
@@ -48,10 +49,14 @@ export interface IProductImage {
 
 export interface IProductItem {
     isInBasket: boolean,
+    isSelected: boolean,
     name: string,
     shopId: number,
     shopName: string,
     productStatus: string,
+    shopRating: number,
+    productRating: number,
+    countReviews: number,
     images: Array<IProductImage>,
     price: number,
     filters: Array<IFilterItem>

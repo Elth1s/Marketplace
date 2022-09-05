@@ -117,16 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ChangeSelectSuccess" xml:space="preserve">
-    <value>Change of the selected product completed successfully</value>
-  </data>
   <data name="CreateSuccess" xml:space="preserve">
-    <value>Product created successfully</value>
+    <value>Акцію успішно створено</value>
   </data>
   <data name="DeleteListSuccess" xml:space="preserve">
-    <value>Products deleted successfully</value>
+    <value>Акції успішно видалені</value>
   </data>
   <data name="DeleteSuccess" xml:space="preserve">
-    <value>Product deleted successfully</value>
+    <value>Акцію успішно видалено</value>
+  </data>
+  <data name="UpdateSuccess" xml:space="preserve">
+    <value>Акцію успішно оновлено</value>
   </data>
 </root>

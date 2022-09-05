@@ -280,6 +280,17 @@ namespace WebAPI.Extensions
                 RequestPath = ImagePath.RequestDeliveryTypesImagePath
             });
 
+            var saleImages = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.SalesImagePath);
+            if (!Directory.Exists(saleImages))
+            {
+                Directory.CreateDirectory(saleImages);
+            }
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(saleImages),
+                RequestPath = ImagePath.RequestSalesImagePath
+            });
+
             var backgroundImages = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.BackgroundImagePath);
             if (!Directory.Exists(backgroundImages))
             {
@@ -307,7 +318,6 @@ namespace WebAPI.Extensions
             {
                 Directory.CreateDirectory(logosImages);
             }
-
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(logosImages),

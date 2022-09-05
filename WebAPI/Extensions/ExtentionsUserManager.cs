@@ -105,6 +105,55 @@ namespace WebAPI.Extensions
             return user;
         }
 
+        public static async Task<AppUser> GetUserWithReviewedProductsAsync(
+            this UserManager<AppUser> userManager,
+            string userId,
+            CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            var user = await userManager.Users.Where(u => u.Id == userId)
+                                              .Include(u => u.ReviewedProducts)
+                                                    .ThenInclude(p => p.Shop)
+                                              .Include(u => u.SelectedProducts)
+                                                    .ThenInclude(p => p.Status)
+                                                        .ThenInclude(s => s.ProductStatusTranslations)
+                                              .Include(u => u.SelectedProducts)
+                                                    .ThenInclude(p => p.Images)
+                                              .SingleOrDefaultAsync(cancellationToken);
+            return user;
+        }
+
+        public static async Task<AppUser> GetUserWithSelectedProductsAsync(
+            this UserManager<AppUser> userManager,
+            string userId,
+            CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            var user = await userManager.Users.Where(u => u.Id == userId)
+                                              .Include(u => u.SelectedProducts)
+                                                    .ThenInclude(p => p.Shop)
+                                              .Include(u => u.SelectedProducts)
+                                                    .ThenInclude(p => p.Status)
+                                                        .ThenInclude(s => s.ProductStatusTranslations)
+                                              .Include(u => u.SelectedProducts)
+                                                    .ThenInclude(p => p.Images)
+                                              .SingleOrDefaultAsync(cancellationToken);
+            return user;
+        }
+
+        public static async Task<bool> IsProductSelectedByUserAsync(
+            this UserManager<AppUser> userManager,
+            string userId,
+            int productId,
+            CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            var count = await userManager.Users.Where(u => u.Id == userId)
+                                              .Include(u => u.SelectedProducts)
+                                              .CountAsync(u => u.SelectedProducts.Any(p => p.Id == productId), cancellationToken);
+
+            return count > 0;
+        }
     }
 }
 

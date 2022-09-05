@@ -34,5 +34,8 @@ namespace DAL.Entities
 
         public ICollection<ShopReview> ShopReviews { get; set; }
 
+
+        public ICollection<Product> ReviewedProducts { get; set; }
+        public ICollection<Product> SelectedProducts { get; set; }
     }
 }

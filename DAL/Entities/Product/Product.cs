@@ -36,5 +36,8 @@ namespace DAL.Entities
         public ICollection<OrderProduct> OrderProducts { get; set; }
         public ICollection<Question> Questions { get; set; }
         public ICollection<Review> Reviews { get; set; }
+
+        public ICollection<AppUser> Reviewed { get; set; }
+        public ICollection<AppUser> Selected { get; set; }
     }
 }

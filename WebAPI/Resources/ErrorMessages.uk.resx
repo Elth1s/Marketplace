@@ -360,4 +360,7 @@
   <data name="GoogleConnected" xml:space="preserve">
     <value>Ви вже підключили свій обліковий запис Google</value>
   </data>
+  <data name="SaleNotFound" xml:space="preserve">
+    <value>Акцію не знайдено</value>
+  </data>
 </root>

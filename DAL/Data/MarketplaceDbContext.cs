@@ -81,7 +81,36 @@ namespace DAL.Data
                 entity.HasOne(ap => ap.Shop)
                       .WithOne(s => s.User)
                       .HasForeignKey<Shop>(s => s.UserId);
+
+                entity.HasMany(p => p.ReviewedProducts)
+                      .WithMany(p => p.Reviewed)
+                      .UsingEntity<Dictionary<string, object>>(
+                           "AppUserReviewedProducts",
+                           j => j
+                               .HasOne<Product>()
+                               .WithMany()
+                               .HasForeignKey("ProductId"),
+                           j => j
+                               .HasOne<AppUser>()
+                               .WithMany()
+                               .HasForeignKey("UserId"))
+                      .HasIndex("ProductId", "UserId").IsUnique();
+
+                entity.HasMany(p => p.SelectedProducts)
+                      .WithMany(p => p.Selected)
+                      .UsingEntity<Dictionary<string, object>>(
+                           "AppUserSelectedProducts",
+                            j => j
+                                .HasOne<Product>()
+                                .WithMany()
+                                .HasForeignKey("ProductId"),
+                            j => j
+                                .HasOne<AppUser>()
+                                .WithMany()
+                                .HasForeignKey("UserId"))
+                      .HasIndex("ProductId", "UserId").IsUnique();
             });
+
 
             builder.Entity<Shop>()
                    .HasOne(s => s.User)
@@ -133,6 +162,8 @@ namespace DAL.Data
                    .IsUnique();
 
             builder.Entity<BasketItem>().HasIndex(b => new { b.ProductId, b.UserId }).IsUnique();
+
+
         }
     }
 }

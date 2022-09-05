@@ -326,7 +326,11 @@ namespace WebAPI.Mapper
                            vm.Status.ProductStatusTranslations.FirstOrDefault(s => s.LanguageId == CurrentLanguage.Id).Name))
                 .ForMember(u => u.Images, opt => opt.MapFrom(vm => vm.Images))
                 .ForMember(u => u.ShopName, opt => opt.MapFrom(vm => vm.Shop.Name))
-                //.ForMember(u => u.ShopRating, opt => opt.MapFrom(vm => vm.Shop.Rating))
+                .ForMember(s => s.CountReviews, opt => opt.MapFrom(vm => vm.Reviews.Count))
+                .ForMember(u => u.ShopRating, opt => opt.MapFrom(vm => vm.Shop.ShopReviews.Count > 0 ?
+                                Math.Round(vm.Shop.ShopReviews.Average(sr => (sr.InformationRelevanceRating + sr.ServiceQualityRating + sr.TimelinessRating) / 3f), 1) : 0))
+                .ForMember(u => u.ProductRating, opt => opt.MapFrom(vm => vm.Reviews.Count > 0 ?
+                                Math.Round(vm.Reviews.Average(sr => sr.ProductRating), 1) : 0))
                 ;
             CreateMap<Product, ProductCatalogResponse>()
                 .ForMember(u => u.StatusName, opt => opt.MapFrom(vm =>
@@ -335,6 +339,13 @@ namespace WebAPI.Mapper
                         vm => vm.Images.Count != 0 ? Path.Combine(ImagePath.RequestProductsImagePath, vm.Images.FirstOrDefault().Name) : ""));
             CreateMap<ProductCreateRequest, Product>()
                 .ForMember(u => u.Images, opt => opt.Ignore());
+
+            CreateMap<Product, ProductWithCartResponse>()
+                .ForMember(u => u.StatusName, opt => opt.MapFrom(vm =>
+                        vm.Status.ProductStatusTranslations.FirstOrDefault(s => s.LanguageId == CurrentLanguage.Id).Name))
+                .ForMember(u => u.Image, opt => opt.MapFrom(
+                        vm => vm.Images.Count != 0 ? Path.Combine(ImagePath.RequestProductsImagePath, vm.Images.FirstOrDefault().Name) : ""));
+
 
             //ProductStatus
             CreateMap<ProductStatusRequest, ProductStatus>().ForMember(c => c.ProductStatusTranslations, opt => opt.MapFrom(
@@ -509,9 +520,17 @@ namespace WebAPI.Mapper
             #endregion
 
             #region Sale
-            //Question
-            CreateMap<SaleRequest, Question>();
-            CreateMap<SaleResponse, Question>();
+
+            CreateMap<SaleRequest, Sale>()
+                .ForMember(u => u.HorizontalImage, opt => opt.Ignore())
+                .ForMember(u => u.VerticalImage, opt => opt.Ignore())
+                .ForMember(u => u.Categories, opt => opt.Ignore());
+
+            CreateMap<Sale, SaleResponse>()
+                .ForMember(u => u.VerticalImage, opt => opt.MapFrom(
+                        vm => !string.IsNullOrEmpty(vm.VerticalImage) ? String.Concat(ImagePath.RequestSalesImagePath, "/", vm.VerticalImage) : ""))
+                .ForMember(u => u.HorizontalImage, opt => opt.MapFrom(
+                        vm => !string.IsNullOrEmpty(vm.HorizontalImage) ? String.Concat(ImagePath.RequestSalesImagePath, "/", vm.HorizontalImage) : ""));
             #endregion
         }
     }

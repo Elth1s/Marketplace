@@ -10,6 +10,7 @@
         public const string ReviewsImagePath = "uploads/reviews";
         public const string QuestionsImagePath = "uploads/questions";
         public const string DeliveryTypesImagePath = "uploads/deliveryTypes";
+        public const string SalesImagePath = "uploads/sales";
 
         public const string RequestRootImagePath = "/images";
         public const string RequestUsersImagePath = "/images/users";
@@ -19,6 +20,7 @@
         public const string RequestReviewsImagePath = "/images/reviews";
         public const string RequestQuestionsImagePath = "/images/questions";
         public const string RequestDeliveryTypesImagePath = "/images/deliveryTypes";
+        public const string RequestSalesImagePath = "/images/sales";
 
 
         public const string FrontImagePath = "frontImages";

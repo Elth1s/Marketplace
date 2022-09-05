@@ -40,8 +40,7 @@ namespace WebAPI.Services.Products
             IRepository<FilterValueProduct> filterValueProductRepository,
             IRepository<BasketItem> basketRepository,
             UserManager<AppUser> userManager,
-            IMapper mapper
-            )
+            IMapper mapper)
         {
             _userManager = userManager;
             _productRepository = productRepository;
@@ -74,7 +73,7 @@ namespace WebAPI.Services.Products
             return _mapper.Map<ProductResponse>(product);
         }
 
-        public async Task<SearchResponse<ProductCatalogResponse>> SearchProductsAsync(SearchProductRequest request)
+        public async Task<SearchResponse<ProductCatalogResponse>> SearchProductsAsync(SearchProductRequest request, string userId)
         {
             if (request.ShopId != null)
             {
@@ -119,6 +118,15 @@ namespace WebAPI.Services.Products
 
             response.Values = _mapper.Map<IEnumerable<ProductCatalogResponse>>(products);
 
+            var user = await _userManager.GetUserWithSelectedProductsAsync(userId);
+            if (user != null)
+            {
+                foreach (var item in response.Values)
+                {
+                    item.IsSelected = await _userManager.IsProductSelectedByUserAsync(user.Id, item.Id);
+                }
+            }
+
             return response;
         }
 
@@ -158,19 +166,28 @@ namespace WebAPI.Services.Products
             temp.Add(new CatalogItemResponse() { Name = product.Name });
             response.Parents = temp;
 
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await _userManager.GetUserWithReviewedProductsAsync(userId);
             if (user != null)
             {
                 var basketSpec = new BasketItemIncludeFullInfoSpecification(user.Id, product.Id);
                 var basket = await _basketRepository.GetBySpecAsync(basketSpec);
                 if (basket != null)
                     response.Product.IsInBasket = true;
+
+                response.Product.IsSelected = await _userManager.IsProductSelectedByUserAsync(user.Id, product.Id);
+
+                if (user.ReviewedProducts.FirstOrDefault(p => p.Id == product.Id) == null)
+                {
+                    user.ReviewedProducts.Add(product);
+                    await _userManager.UpdateAsync(user);
+                }
+
             }
 
             return response;
         }
 
-        public async Task<IEnumerable<ProductCatalogResponse>> GetSimilarProductsAsync(string urlSlug)
+        public async Task<IEnumerable<ProductCatalogResponse>> GetSimilarProductsAsync(string urlSlug, string userId)
         {
             var specGetByUrlSlug = new ProductIncludeFullInfoSpecification(urlSlug);
             var product = await _productRepository.GetBySpecAsync(specGetByUrlSlug);
@@ -179,7 +196,18 @@ namespace WebAPI.Services.Products
             var spec = new ProductGetByCategoryIdSpecification(product.CategoryId, null, 1, 20, product.Id);
             var products = await _productRepository.ListAsync(spec);
 
-            return _mapper.Map<IEnumerable<ProductCatalogResponse>>(products);
+            var response = _mapper.Map<IEnumerable<ProductCatalogResponse>>(products);
+
+            var user = await _userManager.GetUserWithSelectedProductsAsync(userId);
+            if (user != null)
+            {
+                foreach (var item in response)
+                {
+                    item.IsSelected = await _userManager.IsProductSelectedByUserAsync(user.Id, item.Id);
+                }
+            }
+
+            return response;
         }
 
         public async Task CreateAsync(ProductCreateRequest request, string userId)
@@ -304,5 +332,68 @@ namespace WebAPI.Services.Products
             }
             await _productRepository.SaveChangesAsync();
         }
+
+
+        #region Selected And Reviewed Products
+
+        public async Task ChangeSelectProductAsync(string productSlug, string userId)
+        {
+            var productSpec = new ProductGetByUrlSlugSpecification(productSlug);
+            var product = await _productRepository.GetBySpecAsync(productSpec);
+            product.ProductNullChecking();
+
+            var user = await _userManager.GetUserWithSelectedProductsAsync(userId);
+            user.UserNullChecking();
+
+            var isExist = user.SelectedProducts.FirstOrDefault(p => p.Id == product.Id);
+            if (isExist != null)
+                user.SelectedProducts.Remove(product);
+            else
+                user.SelectedProducts.Add(product);
+
+            await _userManager.UpdateAsync(user);
+        }
+
+        public async Task<IEnumerable<ProductWithCartResponse>> GetSelectedProductsAsync(string userId)
+        {
+            var user = await _userManager.GetUserWithSelectedProductsAsync(userId);
+            user.UserNullChecking();
+
+            var response = _mapper.Map<IEnumerable<ProductWithCartResponse>>(user.SelectedProducts);
+
+            foreach (var item in response)
+            {
+                var basketSpec = new BasketItemIncludeFullInfoSpecification(user.Id, item.Id);
+                var basket = await _basketRepository.GetBySpecAsync(basketSpec);
+                if (basket != null)
+                    item.IsInBasket = true;
+
+                item.IsSelected = true;
+            }
+
+            return response;
+        }
+
+        public async Task<IEnumerable<ProductWithCartResponse>> GetReviewedProductsAsync(string userId)
+        {
+            var user = await _userManager.GetUserWithReviewedProductsAsync(userId);
+            user.UserNullChecking();
+
+            var response = _mapper.Map<IEnumerable<ProductWithCartResponse>>(user.ReviewedProducts);
+
+            foreach (var item in response)
+            {
+                var basketSpec = new BasketItemIncludeFullInfoSpecification(user.Id, item.Id);
+                var basket = await _basketRepository.GetBySpecAsync(basketSpec);
+                if (basket != null)
+                    item.IsInBasket = true;
+
+                item.IsSelected = await _userManager.IsProductSelectedByUserAsync(user.Id, item.Id);
+            }
+
+            return response;
+        }
+
+        #endregion
     }
 }

@@ -22,6 +22,7 @@ import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import { ServerError } from "../../../../store/types";
 
 import { IReview } from "../types";
+import { StarRounded } from "@mui/icons-material";
 
 interface Props {
     getData: any
@@ -94,7 +95,7 @@ const ReviewForm: FC<Props> = ({ getData }) => {
         onSubmit: onHandleSubmit
     });
 
-    const { errors, touched, isSubmitting, handleSubmit, setFieldError, getFieldProps, resetForm } = formik;
+    const { errors, touched, isSubmitting, handleSubmit, setFieldError, getFieldProps, resetForm, setFieldValue } = formik;
 
     return (
         <FormikProvider value={formik} >
@@ -109,7 +110,15 @@ const ReviewForm: FC<Props> = ({ getData }) => {
                     <Typography sx={{ mr: "18px" }}>{t('pages.product.reviewForm.generalImpression')}</Typography>
                     <RatingStyle
                         sx={{ fontSize: "30px" }}
-                        {...getFieldProps('productRating')}
+                        value={formik.values.productRating}
+                        precision={0.5}
+                        icon={<StarRounded sx={{ fontSize: "30px" }} />}
+                        emptyIcon={<StarRounded sx={{ fontSize: "30px" }} />}
+                        onChange={(event, newValue: number | null) => {
+                            if (newValue != null)
+                                setFieldValue("productRating", newValue);
+                        }}
+
                     />
                 </Box>
                 <Grid container rowSpacing={2.5}>
@@ -185,7 +194,7 @@ const ReviewForm: FC<Props> = ({ getData }) => {
                             helperText={touched.videoURL && errors.videoURL}
                         />
                     </Grid>
-                    <Grid xs={12} sx={{ paddingTop: "24px" }}>
+                    <Grid item xs={12} sx={{ paddingTop: "24px" }}>
                         <Box
                             sx={{
                                 display: "flex",
@@ -220,7 +229,7 @@ const ReviewForm: FC<Props> = ({ getData }) => {
                             {/* </div> */}
                         </Box>
                     </Grid>
-                    <Grid xs={12} sx={{ display: "flex", justifyContent: "flex-end", alignItems: "flex-end", mt: "25px" }}>
+                    <Grid item xs={12} sx={{ display: "flex", justifyContent: "flex-end", alignItems: "flex-end", mt: "25px" }}>
                         <LoadingButton
                             variant="contained"
                             color="secondary"

@@ -80,7 +80,7 @@ namespace WebAPI.Controllers.Products
         [HttpGet("Search")]
         public async Task<IActionResult> SearchProducts([FromQuery] SearchProductRequest request)
         {
-            var result = await _productService.SearchProductsAsync(request);
+            var result = await _productService.SearchProductsAsync(request, UserId);
             return Ok(result);
         }
 
@@ -134,7 +134,7 @@ namespace WebAPI.Controllers.Products
         [HttpGet("GetSimilarProducts")]
         public async Task<IActionResult> GetSimilarProducts([FromQuery] string urlSlug)
         {
-            var result = await _productService.GetSimilarProductsAsync(urlSlug);
+            var result = await _productService.GetSimilarProductsAsync(urlSlug, UserId);
             return Ok(result);
         }
 
@@ -203,12 +203,68 @@ namespace WebAPI.Controllers.Products
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Seller")]
         [HttpDelete("Delete")]
         public async Task<IActionResult> DeleteProducts([FromQuery] IEnumerable<int> ids)
         {
             await _productService.DeleteProductsAsync(ids);
             return Ok(_productLocalizer["DeleteListSuccess"].Value);
+        }
+
+        /// <summary>
+        /// Select product
+        /// </summary>
+        /// <param name="productSlug">Product slug</param>
+        /// <response code="200">The change of the selected product completed successfully</response>
+        /// <response code="404">Product or user not found</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [Authorize]
+        [HttpPut("ChangeSelectProduct/{productSlug}")]
+        public async Task<IActionResult> ChangeSelectProduct(string productSlug)
+        {
+            await _productService.ChangeSelectProductAsync(productSlug, UserId);
+            return Ok(_productLocalizer["ChangeSelectSuccess"].Value);
+        }
+
+        /// <summary>
+        /// Returns user selected products
+        /// </summary>
+        /// <response code="200">Getting product completed successfully</response>
+        /// <response code="404">User not found</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ProductResponse))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [Authorize]
+        [HttpGet("GetSelectedProducts")]
+        public async Task<IActionResult> GetSelectedProducts()
+        {
+            var result = await _productService.GetSelectedProductsAsync(UserId);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Returns user reviewed products
+        /// </summary>
+        /// <response code="200">Getting product completed successfully</response>
+        /// <response code="404">User not found</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ProductResponse))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [Authorize]
+        [HttpGet("GetReviewedProducts")]
+        public async Task<IActionResult> GetReviewedProducts()
+        {
+            var result = await _productService.GetReviewedProductsAsync(UserId);
+            return Ok(result);
         }
     }
 }
