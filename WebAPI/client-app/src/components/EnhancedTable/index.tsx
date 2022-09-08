@@ -95,7 +95,7 @@ interface EnhancedTableToolbarProps {
 
 const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
     const { numSelected, onChangeSearch, onPageChange, update, show, onDelete } = props;
-
+    const { t } = useTranslation();
     return (
         <Toolbar
             sx={{
@@ -110,7 +110,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
                 }),
             }}
         >
-            <TextFieldStyle placeholder="Search..." onChange={(event => { onChangeSearch(event.target.value); onPageChange(event, 1) })}
+            <TextFieldStyle placeholder={t('containers.admin_seller.table.search')} onChange={(event => { onChangeSearch(event.target.value); onPageChange(event, 1) })}
                 InputProps={{
                     startAdornment: (
                         <InputAdornment position="start" >
@@ -189,7 +189,7 @@ const FooterTableToolbar = (props: FooterTableToolbarProps) => {
                         <MenuItem key={`${element}`} value={element}>{element}</MenuItem>
                     ))}
                 </SelectStyle>
-                <Typography sx={{ px: 1 }}>{t('containers.admin_seller.table.rowsPerPage')} {((page - 1) * rowsPerPage) + 1}-{page * rowsPerPage} of {count}</Typography>
+                <Typography sx={{ px: 1 }}>{t('containers.admin_seller.table.rowsPerPage')} {((page - 1) * rowsPerPage) + 1}-{page * rowsPerPage} {t('containers.admin_seller.table.of')} {count}</Typography>
             </Box>
             <Pagination count={Math.ceil(count / rowsPerPage)} page={page} shape="rounded" size="large" showFirstButton showLastButton
                 onChange={(event: any, value: number) => {

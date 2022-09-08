@@ -21,6 +21,7 @@ import { basketReducer } from "../../components/Basket/reducer";
 import { userReducer } from "../../pages/admin/user/reducer";
 import { orderStatusReducer } from "../../pages/admin/orderStatus/reducer";
 import { deliveryTypeReducer } from "../../pages/admin/deliveryType/reducer";
+import { saleReducer } from "../../pages/admin/sale/reducer";
 import { shopPageReducer } from "../../pages/default/SellerInfo/reducer";
 import { uiReducer } from "../../UISettings/reducer";
 import { shopInfoReducer } from "../../pages/default/ShortSellerInfo/reducer";
@@ -50,6 +51,7 @@ export const rootReducer = combineReducers({
     orderStatus: orderStatusReducer,
     deliveryType: deliveryTypeReducer,
     shopPage: shopPageReducer,
+    sale: saleReducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

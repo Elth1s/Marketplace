@@ -1346,8 +1346,8 @@ namespace DAL.Data
                 ShopSchedule=new List<ShopScheduleItem>(){
                     new(){ DayOfWeekId=DayOfWeekId.Monday, Start=new DateTime(1,1,1,8,0,0), End=new DateTime(1,1,1,18,0,0) },
                     new(){ DayOfWeekId=DayOfWeekId.Tuesday, Start=new DateTime(1,1,1,8,0,0), End=new DateTime(1,1,1,18,0,0) },
-                    new(){ DayOfWeekId=DayOfWeekId.Wednesday, Start=new DateTime(1,1,1,9,0,0), End=new DateTime(1,1,1,18,0,0) },
-                    new(){ DayOfWeekId=DayOfWeekId.Thursday, Start=new DateTime(1,1,1,9,0,0), End=new DateTime(1,1,1,18,0,0) },
+                    new(){ DayOfWeekId=DayOfWeekId.Wednesday, Start=new DateTime(1,1,1,9,0,0), End=new DateTime(1,1,1,19,0,0) },
+                    new(){ DayOfWeekId=DayOfWeekId.Thursday, Start=new DateTime(1,1,1,9,0,0), End=new DateTime(1,1,1,19,0,0) },
                     new(){ DayOfWeekId=DayOfWeekId.Friday, Start=new DateTime(1,1,1,8,0,0), End=new DateTime(1,1,1,18,0,0) },
                     new(){ DayOfWeekId=DayOfWeekId.Saturday, IsWeekend=true },
                     new(){ DayOfWeekId=DayOfWeekId.Sunday, IsWeekend=true },

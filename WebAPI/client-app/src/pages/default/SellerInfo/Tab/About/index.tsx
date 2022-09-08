@@ -76,7 +76,7 @@ const About = () => {
                     />
                     <Typography variant="h2">{shopPageInfo.averageRating} ({shopPageInfo.countReviews}  {t('pages.seller.about.rating.assessments')})</Typography>
                 </Box>
-                {shopPageInfo.ratings.map((item, index) => (
+                {shopPageInfo.ratings?.map((item, index) => (
                     <RatingProgress key={index} ratingValue={item.number} ratingValueCount={item.count} allRatingCount={shopPageInfo.countReviews} />
                 ))}
             </Grid>
@@ -118,8 +118,12 @@ const About = () => {
             </Grid>
             <Grid item>
                 <Typography variant="h2" sx={{ mb: "30px" }}>{t('pages.seller.about.schedule.title')}</Typography>
-                <Typography variant="h2" sx={{ mb: "20px" }}>{t('pages.seller.about.schedule.work')}</Typography>
-                <Typography variant="h2">{t('pages.seller.about.schedule.weekend')}</Typography>
+                {shopPageInfo.schedule.map((item, index) => (
+                    (!item.isWeekend ?
+                        <Typography key={index} variant="h2" sx={{ mb: "20px" }}>{item.shortNames} {item.start} - {item.end}</Typography> :
+                        <Typography key={index} variant="h2">{item.shortNames} {t('pages.seller.about.schedule.weekend')}</Typography>
+                    )
+                ))}
             </Grid>
             <Grid item xs={12}>
                 <Typography variant="h1" sx={{ mb: "30px" }}>{t('pages.seller.about.description.title')}</Typography>

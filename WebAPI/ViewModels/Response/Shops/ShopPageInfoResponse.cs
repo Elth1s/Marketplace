@@ -47,15 +47,15 @@
         /// <summary>
         /// List of shop schedule items
         /// </summary>
-        public IEnumerable<ShopScheduleItemResponse> ShopScheduleItemResponses { get; set; }
+        public IEnumerable<ShopScheduleItemResponse> Schedule { get; set; }
     }
 
     public class ShopScheduleItemResponse
     {
-        public DateTime Start { get; set; }
-        public DateTime End { get; set; }
+        public string Start { get; set; }
+        public string End { get; set; }
         public bool IsWeekend { get; set; }
-        public string ShortNamesDayOfWeek { get; set; }
+        public string ShortNames { get; set; }
     }
 
     public class Rating

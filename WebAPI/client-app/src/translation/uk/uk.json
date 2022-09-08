@@ -49,10 +49,13 @@
                     "cities": "Міста",
                     "units": "Одиниці вимірування",
                     "users": "Користувачі",
+                    "sales": "Акції",
                     "orderStatuses": "Статуси замовлень"
                 },
                 "table": {
-                    "rowsPerPage": "Показати"
+                    "rowsPerPage": "Показати",
+                    "of": "з",
+                    "search": "Пошук..."
                 },
                 "tableHeadCell": {
                     "identifier": "Ідентифікатор",
@@ -84,7 +87,13 @@
                     "firstName": "Ім'я",
                     "secondName": "Прізвище",
                     "email": "Електронна пошта",
-                    "phone": "Телефон"
+                    "phone": "Телефон",
+                    "horizontalImage": "Горизонтальне зображення",
+                    "verticalImage": "Вертикальне зображення",
+                    "discountMin": "Мінімальна знижка",
+                    "discountMax": "Максимальна знижка",
+                    "dateStart": "Дата початку",
+                    "dateEnd": "Дата закінчення"
                 }
             }
         },
@@ -130,6 +139,10 @@
                 "unit": {
                     "createTitle": "Створити одиницю вимірування",
                     "updateTitle": "Редагувати одиницю вимірування"
+                },
+                "sale": {
+                    "createTitle": "Створити акцію",
+                    "updateTitle": "Редагувати акцію"
                 }
             },
             "home": {
@@ -256,8 +269,7 @@
                     },
                     "schedule": {
                         "title": "Графік роботи",
-                        "work": "Пн - Пт 08:00 - 21:00",
-                        "weekend": "Сб - Нд Вихідні"
+                        "weekend": "Вихідні"
                     },
                     "description": {
                         "title": "Опис магазину"
@@ -373,7 +385,15 @@
             "categoryImage": "Зображення",
             "categoryLightIcon": "Світлий значок",
             "categoryDarkIcon": "Темний значок",
-            "categoryActiveIcon": "Активний значок"
+            "categoryActiveIcon": "Активний значок",
+            "discountMin": "Мінімальна знижка",
+            "discountMax": "Максимальна знижка",
+            "dateStart": "Дата початку",
+            "dateEnd": "Дата закінчення",
+            "ukrainianVerticalImage": "Українське вертикальне зображення",
+            "ukrainianHorizontalImage": "Українське горизонтальне зображення",
+            "englishHorizontalImage": "Англійське горизонтальне зображення",
+            "englishVerticalImage": "Англійське вертикальне зображення"
         }
     }
 }

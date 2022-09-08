@@ -1,10 +1,15 @@
-﻿namespace WebAPI.ViewModels.Response
+﻿namespace WebAPI.ViewModels.Response.Sales
 {
     /// <summary>
     /// Sale class returned from the controller
     /// </summary>
     public class SaleResponse
     {
+        /// <summary>
+        /// Sale identifier
+        /// </summary>
+        /// <example>1</example>
+        public int Id { get; set; }
         /// <summary>
         /// Name of sale
         /// </summary>
@@ -34,14 +39,14 @@
         public int DiscountMax { get; set; }
 
         /// <summary>
-        /// Date Start of sale
+        /// Date start of sale
         /// </summary>
         /// <example>12.09.2022</example>
-        public DateTime DateStart { get; set; }
+        public string DateStart { get; set; }
         /// <summary>
-        /// Date End of sale
+        /// Date end of sale
         /// </summary>
         /// <example>12.10.2022</example>
-        public DateTime DateEnd { get; set; }
+        public string DateEnd { get; set; }
     }
 }

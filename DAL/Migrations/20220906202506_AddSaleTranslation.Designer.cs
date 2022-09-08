@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(MarketplaceDbContext))]
-    [Migration("20220903202731_UpdateSaleImage")]
-    partial class UpdateSaleImage
+    [Migration("20220906202506_AddSaleTranslation")]
+    partial class AddSaleTranslation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -1224,18 +1224,42 @@ namespace DAL.Migrations
                     b.Property<int>("DiscountMin")
                         .HasColumnType("int");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Sales");
+                });
+
+            modelBuilder.Entity("DAL.Entities.SaleTranslation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
                     b.Property<string>("HorizontalImage")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("LanguageId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SaleId")
+                        .HasColumnType("int");
 
                     b.Property<string>("VerticalImage")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Sales");
+                    b.HasIndex("LanguageId");
+
+                    b.HasIndex("SaleId", "LanguageId")
+                        .IsUnique();
+
+                    b.ToTable("SaleTranslations");
                 });
 
             modelBuilder.Entity("DAL.Entities.Shop", b =>
@@ -2220,6 +2244,25 @@ namespace DAL.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("DAL.Entities.SaleTranslation", b =>
+                {
+                    b.HasOne("DAL.Entities.Language", "Language")
+                        .WithMany()
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DAL.Entities.Sale", "Sale")
+                        .WithMany("SaleTranslations")
+                        .HasForeignKey("SaleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Language");
+
+                    b.Navigation("Sale");
+                });
+
             modelBuilder.Entity("DAL.Entities.Shop", b =>
                 {
                     b.HasOne("DAL.Entities.City", "City")
@@ -2536,6 +2579,8 @@ namespace DAL.Migrations
             modelBuilder.Entity("DAL.Entities.Sale", b =>
                 {
                     b.Navigation("Products");
+
+                    b.Navigation("SaleTranslations");
                 });
 
             modelBuilder.Entity("DAL.Entities.Shop", b =>

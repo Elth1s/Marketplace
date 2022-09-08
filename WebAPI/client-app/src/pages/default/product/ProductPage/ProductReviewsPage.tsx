@@ -28,8 +28,8 @@ interface Props {
 const ProductReviewsPage: FC<Props> = ({ addInCart }) => {
     const { t } = useTranslation();
 
-    const { product, reviews } = useTypedSelector(state => state.product);
-    const { GetReviews, GetMoreReviews } = useActions();
+    const { product, reviews, productRating } = useTypedSelector(state => state.product);
+    const { GetReviews, GetMoreReviews, GetProductRatingByUrlSlug } = useActions();
 
     let { urlSlug } = useParams();
 
@@ -46,6 +46,7 @@ const ProductReviewsPage: FC<Props> = ({ addInCart }) => {
             return;
         try {
             await GetReviews(urlSlug, page, rowsPerPage)
+            await GetProductRatingByUrlSlug(urlSlug);
         } catch (ex) {
         }
     };
@@ -68,6 +69,7 @@ const ProductReviewsPage: FC<Props> = ({ addInCart }) => {
                     getData={async () => {
                         if (urlSlug) {
                             await GetReviews(urlSlug, 1, rowsPerPage)
+                            await GetProductRatingByUrlSlug(urlSlug);
                             setPage(1);
                         }
                     }}
@@ -127,13 +129,13 @@ const ProductReviewsPage: FC<Props> = ({ addInCart }) => {
                             <Box sx={{ display: "flex", mt: "26px", alignItems: "center" }}>
                                 <RatingStyle
                                     sx={{ mr: 1, fontSize: "30px" }}
-                                    value={product.productRating}
+                                    value={productRating.rating}
                                     precision={0.1}
                                     readOnly
                                     icon={<StarRounded sx={{ fontSize: "30px" }} />}
                                     emptyIcon={<StarRounded sx={{ fontSize: "30px" }} />}
                                 />
-                                <Typography variant="h4" fontWeight="bold" display="inline">{product.productRating} <Typography fontWeight="medium" display="inline" sx={{ fontSize: "20px" }}>({product.countReviews} {t("pages.product.ratings")})</Typography></Typography>
+                                <Typography variant="h4" fontWeight="bold" display="inline">{productRating.rating} <Typography fontWeight="medium" display="inline" sx={{ fontSize: "20px" }}>({productRating.countReviews} {t("pages.product.ratings")})</Typography></Typography>
                             </Box>
                             {product.isInBasket
                                 ? <BuyButtonSecondStyle fullWidth color="secondary" variant="contained" disabled

@@ -15,15 +15,25 @@ namespace WebAPI.ViewModels.Request
         public string Name { get; set; }
 
         /// <summary>
-        /// Horizontal image of sale
+        /// Ukrainian horizontal image of sale
         /// </summary>
         /// <example>https://some_horizontal_image_example.jpg</example>
-        public string HorizontalImage { get; set; }
+        public string UkrainianHorizontalImage { get; set; }
         /// <summary>
-        /// Vertical image of sale
+        /// Ukrainian vertical image of sale
         /// </summary>
         /// <example>https://some_vertical_image_example.jpg</example>
-        public string VerticalImage { get; set; }
+        public string UkrainianVerticalImage { get; set; }
+        /// <summary>
+        /// English horizontal image of sale
+        /// </summary>
+        /// <example>https://some_horizontal_image_example.jpg</example>
+        public string EnglishHorizontalImage { get; set; }
+        /// <summary>
+        /// English vertical image of sale
+        /// </summary>
+        /// <example>https://some_vertical_image_example.jpg</example>
+        public string EnglishVerticalImage { get; set; }
 
         /// <summary>
         /// Discount Min of sale
@@ -84,7 +94,7 @@ namespace WebAPI.ViewModels.Request
             //DateEnd
             RuleFor(a => a.DateEnd).Cascade(CascadeMode.Stop)
                 .NotEmpty().WithName(_validationResources["DateEndPropName"]).WithMessage(_validationResources["RequiredMessage"])
-                .GreaterThan(a => a.DateStart).WithMessage(_validationResources["GreaterThanMessage"]);
+                .GreaterThan(a => a.DateStart.Date).WithMessage(_validationResources["GreaterThanMessage"]);
         }
     }
 

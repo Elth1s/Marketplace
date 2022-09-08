@@ -24,6 +24,7 @@ using WebAPI.ViewModels.Response.Orders;
 using WebAPI.ViewModels.Response.Products;
 using WebAPI.ViewModels.Response.Questions;
 using WebAPI.ViewModels.Response.Reviews;
+using WebAPI.ViewModels.Response.Sales;
 using WebAPI.ViewModels.Response.Shops;
 using WebAPI.ViewModels.Response.Units;
 using WebAPI.ViewModels.Response.Users;
@@ -293,7 +294,7 @@ namespace WebAPI.Mapper
                 .ForMember(s => s.AverageTimelinessRating, opt => opt.MapFrom(vm => vm.ShopReviews.Count > 0 ? Math.Round(vm.ShopReviews.Average(sr => sr.TimelinessRating), 1) : 0))
                 .ForMember(s => s.AverageRating, opt => opt.MapFrom(vm => vm.ShopReviews.Count > 0 ?
                                 Math.Round(vm.ShopReviews.Average(sr => (sr.InformationRelevanceRating + sr.ServiceQualityRating + sr.TimelinessRating) / 3f), 1) : 0))
-                .ForMember(s => s.ShopScheduleItemResponses, opt => opt.Ignore());
+                .ForMember(s => s.Schedule, opt => opt.Ignore());
             CreateMap<ShopRequest, Shop>();
 
             //ShopPhone
@@ -326,12 +327,15 @@ namespace WebAPI.Mapper
                            vm.Status.ProductStatusTranslations.FirstOrDefault(s => s.LanguageId == CurrentLanguage.Id).Name))
                 .ForMember(u => u.Images, opt => opt.MapFrom(vm => vm.Images))
                 .ForMember(u => u.ShopName, opt => opt.MapFrom(vm => vm.Shop.Name))
-                .ForMember(s => s.CountReviews, opt => opt.MapFrom(vm => vm.Reviews.Count))
                 .ForMember(u => u.ShopRating, opt => opt.MapFrom(vm => vm.Shop.ShopReviews.Count > 0 ?
-                                Math.Round(vm.Shop.ShopReviews.Average(sr => (sr.InformationRelevanceRating + sr.ServiceQualityRating + sr.TimelinessRating) / 3f), 1) : 0))
-                .ForMember(u => u.ProductRating, opt => opt.MapFrom(vm => vm.Reviews.Count > 0 ?
-                                Math.Round(vm.Reviews.Average(sr => sr.ProductRating), 1) : 0))
-                ;
+                                Math.Round(vm.Shop.ShopReviews.Average(
+                                           sr => (sr.InformationRelevanceRating + sr.ServiceQualityRating + sr.TimelinessRating) / 3f), 1) : 0));
+
+            CreateMap<Product, ProductRatingResponse>()
+                .ForMember(s => s.CountReviews, opt => opt.MapFrom(vm => vm.Reviews.Count))
+                .ForMember(u => u.Rating, opt => opt.MapFrom(vm => vm.Reviews.Count > 0 ?
+                                Math.Round(vm.Reviews.Average(sr => sr.ProductRating), 1) : 0));
+
             CreateMap<Product, ProductCatalogResponse>()
                 .ForMember(u => u.StatusName, opt => opt.MapFrom(vm =>
                         vm.Status.ProductStatusTranslations.FirstOrDefault(s => s.LanguageId == CurrentLanguage.Id).Name))
@@ -522,15 +526,31 @@ namespace WebAPI.Mapper
             #region Sale
 
             CreateMap<SaleRequest, Sale>()
-                .ForMember(u => u.HorizontalImage, opt => opt.Ignore())
-                .ForMember(u => u.VerticalImage, opt => opt.Ignore())
                 .ForMember(u => u.Categories, opt => opt.Ignore());
 
             CreateMap<Sale, SaleResponse>()
-                .ForMember(u => u.VerticalImage, opt => opt.MapFrom(
-                        vm => !string.IsNullOrEmpty(vm.VerticalImage) ? String.Concat(ImagePath.RequestSalesImagePath, "/", vm.VerticalImage) : ""))
                 .ForMember(u => u.HorizontalImage, opt => opt.MapFrom(
-                        vm => !string.IsNullOrEmpty(vm.HorizontalImage) ? String.Concat(ImagePath.RequestSalesImagePath, "/", vm.HorizontalImage) : ""));
+                        vm => !string.IsNullOrEmpty(vm.SaleTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).HorizontalImage) ?
+                        string.Concat(ImagePath.RequestSalesImagePath, "/", vm.SaleTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).HorizontalImage) : ""))
+                .ForMember(u => u.VerticalImage, opt => opt.MapFrom(
+                        vm => !string.IsNullOrEmpty(vm.SaleTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).VerticalImage) ?
+                        string.Concat(ImagePath.RequestSalesImagePath, "/", vm.SaleTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).VerticalImage) : ""))
+                .ForMember(u => u.DateStart, opt => opt.MapFrom(vm => vm.DateStart.ToString("dd.MM.yyyy HH:mm")))
+                .ForMember(u => u.DateEnd, opt => opt.MapFrom(vm => vm.DateEnd.ToString("dd.MM.yyyy HH:mm")));
+
+            CreateMap<Sale, SaleFullInfoResponse>()
+               .ForMember(u => u.UkrainianHorizontalImage, opt => opt.MapFrom(
+                       vm => !string.IsNullOrEmpty(vm.SaleTranslations.FirstOrDefault(c => c.LanguageId == LanguageId.Ukrainian).HorizontalImage) ?
+                       string.Concat(ImagePath.RequestSalesImagePath, "/", vm.SaleTranslations.FirstOrDefault(c => c.LanguageId == LanguageId.Ukrainian).HorizontalImage) : ""))
+               .ForMember(u => u.UkrainianVerticalImage, opt => opt.MapFrom(
+                       vm => !string.IsNullOrEmpty(vm.SaleTranslations.FirstOrDefault(c => c.LanguageId == LanguageId.Ukrainian).VerticalImage) ?
+                       string.Concat(ImagePath.RequestSalesImagePath, "/", vm.SaleTranslations.FirstOrDefault(c => c.LanguageId == LanguageId.Ukrainian).VerticalImage) : ""))
+               .ForMember(u => u.EnglishHorizontalImage, opt => opt.MapFrom(
+                       vm => !string.IsNullOrEmpty(vm.SaleTranslations.FirstOrDefault(c => c.LanguageId == LanguageId.English).HorizontalImage) ?
+                       string.Concat(ImagePath.RequestSalesImagePath, "/", vm.SaleTranslations.FirstOrDefault(c => c.LanguageId == LanguageId.English).HorizontalImage) : ""))
+               .ForMember(u => u.EnglishVerticalImage, opt => opt.MapFrom(
+                       vm => !string.IsNullOrEmpty(vm.SaleTranslations.FirstOrDefault(c => c.LanguageId == LanguageId.English).VerticalImage) ?
+                       string.Concat(ImagePath.RequestSalesImagePath, "/", vm.SaleTranslations.FirstOrDefault(c => c.LanguageId == LanguageId.English).VerticalImage) : ""));
             #endregion
         }
     }

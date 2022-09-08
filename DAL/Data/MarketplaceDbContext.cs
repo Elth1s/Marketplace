@@ -66,6 +66,7 @@ namespace DAL.Data
         public DbSet<CategoryTranslation> CategoryTranslations { get; set; }
         public DbSet<DeliveryTypeTranslation> DeliveryTypeTranslations { get; set; }
         public DbSet<DayOfWeekTranslation> DayOfWeekTranslations { get; set; }
+        public DbSet<SaleTranslation> SaleTranslations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -160,6 +161,10 @@ namespace DAL.Data
             builder.Entity<DayOfWeekTranslation>()
                    .HasIndex(c => new { c.DayOfWeekId, c.LanguageId })
                    .IsUnique();
+
+            builder.Entity<SaleTranslation>()
+                  .HasIndex(c => new { c.SaleId, c.LanguageId })
+                  .IsUnique();
 
             builder.Entity<BasketItem>().HasIndex(b => new { b.ProductId, b.UserId }).IsUnique();
 
