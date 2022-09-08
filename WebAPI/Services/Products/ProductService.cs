@@ -129,7 +129,15 @@ namespace WebAPI.Services.Products
 
             return response;
         }
+        public async Task<ProductRatingResponse> GetProductRatingByUrlSlugAsync(string urlSlug)
+        {
+            var spec = new ProductIncludeFullInfoSpecification(urlSlug);
+            var product = await _productRepository.GetBySpecAsync(spec);
+            product.ProductNullChecking();
 
+            var response = _mapper.Map<ProductRatingResponse>(product);
+            return response;
+        }
         public async Task<ProductWithCategoryParentsResponse> GetByUrlSlugAsync(string urlSlug, string userId)
         {
 

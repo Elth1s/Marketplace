@@ -1,7 +1,7 @@
 ﻿using Ardalis.Specification;
 using DAL.Entities;
 
-namespace WebAPI.Specifications
+namespace WebAPI.Specifications.Sales
 {
     public class SaleIncludeFullInfoSpecification : Specification<Sale>, ISingleResultSpecification<Sale>
     {
@@ -9,6 +9,7 @@ namespace WebAPI.Specifications
         public SaleIncludeFullInfoSpecification()
         {
             Query.Include(p => p.Products)
+                 .Include(s => s.SaleTranslations)
                  .Include(c => c.Categories)
                     .ThenInclude(c => c.CategoryTranslations);
         }
@@ -16,6 +17,7 @@ namespace WebAPI.Specifications
         public SaleIncludeFullInfoSpecification(int id)
         {
             Query.Where(i => i.Id == id)
+                 .Include(s => s.SaleTranslations)
                  .Include(c => c.Categories)
                     .ThenInclude(c => c.CategoryTranslations);
         }

@@ -106,6 +106,23 @@ namespace WebAPI.Controllers.Products
             return Ok(result);
         }
 
+
+        /// <summary>
+        /// Returns the requested product rating
+        /// </summary>
+        /// <response code="200">Getting product rating completed successfully</response>
+        /// <response code="404">Product not found</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ProductRatingResponse))]
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [HttpGet("GetProductRatingByUrlSlug")]
+        public async Task<IActionResult> GetProductRatingByUrlSlug([FromQuery] string urlSlug)
+        {
+            var result = await _productService.GetProductRatingByUrlSlugAsync(urlSlug);
+            return Ok(result);
+        }
+
         /// <summary>
         /// Returns the requested product with category parents identifier
         /// </summary>

@@ -62,6 +62,7 @@ import UnitTable from './pages/admin/unit/Table';
 import OrderStatusTable from './pages/admin/orderStatus/Table';
 
 import UserTable from './pages/admin/user/Table';
+import SaleTable from './pages/admin/sale/Table';
 
 import NotFound from './pages/notfound';
 import ProductCreate from './pages/seller/product/Create';
@@ -167,6 +168,8 @@ const App = () => {
             <Route path="cities" element={<CityTable />} />
 
             <Route path="units" element={<UnitTable />} />
+
+            <Route path="sales" element={<SaleTable />} />
 
             <Route path="users" element={<UserTable />} />
             <Route path="orderStatuses" element={<OrderStatusTable />} />

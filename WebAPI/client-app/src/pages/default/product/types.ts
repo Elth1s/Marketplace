@@ -1,5 +1,6 @@
 export enum ProductActionTypes {
     GET_PRODUCT_BY_URLSLUG = "GET_PRODUCT_BY_URLSLUG",
+    GET_PRODUCT_RATING_BY_URL_SLUG = "GET_PRODUCT_RATING_BY_URL_SLUG",
     GET_SIMILAR_PRODUCTS = "GET_SIMILAR_PRODUCTS",
     UPDATE_SELECTED_PRODUCT = "UPDATE_SELECTED_PRODUCT",
 }
@@ -47,6 +48,11 @@ export interface IProductImage {
     rating: number
 }
 
+export interface IProductRating {
+    rating: number,
+    countReviews: number,
+}
+
 export interface IProductItem {
     isInBasket: boolean,
     isSelected: boolean,
@@ -55,8 +61,6 @@ export interface IProductItem {
     shopName: string,
     productStatus: string,
     shopRating: number,
-    productRating: number,
-    countReviews: number,
     images: Array<IProductImage>,
     price: number,
     filters: Array<IFilterItem>
@@ -144,6 +148,7 @@ export interface IQuestionReply {
 export interface ProductState {
     parents: Array<IParentCategoryItem>,
     product: IProductItem,
+    productRating: IProductRating,
     similarProducts: Array<ISimilarProduct>,
     reviews: Array<IReviewItem>,
     reviewsCount: number,
@@ -171,6 +176,10 @@ export interface IQuestionWithCount {
 export interface GetProductByUrlSlugAction {
     type: ProductActionTypes.GET_PRODUCT_BY_URLSLUG,
     payload: IProductWithParents
+}
+export interface GetProductRatingByUrlSlugAction {
+    type: ProductActionTypes.GET_PRODUCT_RATING_BY_URL_SLUG,
+    payload: IProductRating
 }
 
 export interface GetSimilarProductsAction {
@@ -206,7 +215,7 @@ export interface GetMoreQuestionsAction {
     payload: Array<IQuestionItem>
 }
 
-export type ProductAction = GetProductByUrlSlugAction |
+export type ProductAction = GetProductByUrlSlugAction | GetProductRatingByUrlSlugAction |
     GetSimilarProductsAction |
     UpdateSelectedProductAction;
 

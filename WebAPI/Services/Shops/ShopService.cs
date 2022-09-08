@@ -5,9 +5,11 @@ using DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 using System.Net;
+using System.Text;
 using WebAPI.Constants;
 using WebAPI.Exceptions;
 using WebAPI.Extensions;
+using WebAPI.Helpers;
 using WebAPI.Interfaces.Shops;
 using WebAPI.Interfaces.Users;
 using WebAPI.Specifications.Shops;
@@ -233,8 +235,60 @@ namespace WebAPI.Services.Shops
             }
             ratings.Reverse();
             result.Ratings = ratings;
+            var schedule = new List<ShopScheduleItemResponse>();
+            var sortedWork = shop.ShopSchedule.Where(s => !s.IsWeekend).OrderBy(s => s.DayOfWeekId);
+            var groupedWork = sortedWork.GroupBy(s => new { Start = TimeOnly.FromDateTime(s.Start), End = TimeOnly.FromDateTime(s.End) }).ToList();
+            foreach (var group in groupedWork)
+            {
+                var sh = new ShopScheduleItemResponse
+                {
+                    Start = group.Key.Start.ToString(),
+                    End = group.Key.End.ToString(),
+                    ShortNames = GetShopScheduleItemShortNames(group.ToList())
+                };
+                schedule.Add(sh);
+            }
+            var sortedWeekend = shop.ShopSchedule.Where(s => s.IsWeekend).OrderBy(s => s.DayOfWeekId);
+
+            var item = new ShopScheduleItemResponse
+            {
+                IsWeekend = true,
+                ShortNames = GetShopScheduleItemShortNames(sortedWeekend.ToList())
+            };
+            schedule.Add(item);
+
+            result.Schedule = schedule;
 
             return result;
+        }
+        private static string GetShopScheduleItemShortNames(List<ShopScheduleItem> list)
+        {
+            var result = new StringBuilder();
+            for (int i = 0; i < list.Count; i++)
+            {
+                var index = i;
+                for (int j = i + 1; j < list.Count; j++)
+                {
+                    if (list[index].DayOfWeekId + 1 == list[j].DayOfWeekId)
+                        index++;
+                    else
+                        break;
+                }
+
+                result.Append(list[i].DayOfWeek.DayOfWeekTranslations.FirstOrDefault(d => d.LanguageId == CurrentLanguage.Id).ShortName);
+
+                if (index != i)
+                {
+                    result.Append(" - ");
+                    result.Append(list[index].DayOfWeek.DayOfWeekTranslations.FirstOrDefault(d => d.LanguageId == CurrentLanguage.Id).ShortName);
+                }
+                if (index != list.Count - 1)
+                    result.Append(", ");
+
+                i = index;
+            }
+
+            return result.ToString();
         }
     }
 }

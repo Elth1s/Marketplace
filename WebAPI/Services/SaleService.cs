@@ -1,14 +1,16 @@
 ﻿using AutoMapper;
 using DAL;
+using DAL.Constants;
 using DAL.Entities;
 using System.Drawing.Imaging;
 using WebAPI.Constants;
 using WebAPI.Extensions;
 using WebAPI.Helpers;
 using WebAPI.Interfaces;
-using WebAPI.Specifications;
+using WebAPI.Specifications.Sales;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Response;
+using WebAPI.ViewModels.Response.Sales;
 
 namespace WebAPI.Services
 {
@@ -36,55 +38,106 @@ namespace WebAPI.Services
             return _mapper.Map<IEnumerable<SaleResponse>>(sales);
 
         }
-        public async Task<SaleResponse> GetSaleByIdAsync(int saleId)
+        public async Task<SaleFullInfoResponse> GetSaleByIdAsync(int saleId)
         {
             var spec = new SaleIncludeFullInfoSpecification(saleId);
             var sale = await _saleRepository.GetBySpecAsync(spec);
             sale.SaleNullChecking();
 
-            return _mapper.Map<SaleResponse>(sale);
+            return _mapper.Map<SaleFullInfoResponse>(sale);
+        }
+
+        public async Task<SearchResponse<SaleResponse>> SearchSalesAsync(AdminSearchRequest request)
+        {
+            var spec = new SaleSearchSpecification(request.Name, request.IsAscOrder, request.OrderBy);
+            var count = await _saleRepository.CountAsync(spec);
+            spec = new SaleSearchSpecification(
+                request.Name,
+                request.IsAscOrder,
+                request.OrderBy,
+                (request.Page - 1) * request.RowsPerPage,
+                request.RowsPerPage);
+            var sales = await _saleRepository.ListAsync(spec);
+            var mappedSales = _mapper.Map<IEnumerable<SaleResponse>>(sales);
+            var response = new SearchResponse<SaleResponse>() { Count = count, Values = mappedSales };
+
+            return response;
         }
 
         public async Task CreateAsync(SaleRequest request)
         {
             var sale = _mapper.Map<Sale>(request);
-
-            if (!string.IsNullOrEmpty(request.HorizontalImage))
+            var engTranslation = new SaleTranslation() { LanguageId = LanguageId.English };
+            if (!string.IsNullOrEmpty(request.EnglishHorizontalImage))
             {
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), request.HorizontalImage.Replace(ImagePath.RequestSalesImagePath, ImagePath.SalesImagePath));
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), request.EnglishHorizontalImage.Replace(ImagePath.RequestSalesImagePath, ImagePath.SalesImagePath));
 
                 if (!File.Exists(filePath))
                 {
-                    var img = ImageWorker.FromBase64StringToImage(request.HorizontalImage);
+                    var img = ImageWorker.FromBase64StringToImage(request.EnglishHorizontalImage);
                     string randomFilename = Guid.NewGuid() + ".png";
                     var dir = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.SalesImagePath, randomFilename);
                     img.Save(dir, ImageFormat.Png);
 
-                    sale.HorizontalImage = randomFilename;
+                    engTranslation.HorizontalImage = randomFilename;
                 }
             }
 
-            if (!string.IsNullOrEmpty(request.VerticalImage))
+            if (!string.IsNullOrEmpty(request.EnglishVerticalImage))
             {
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), request.VerticalImage.Replace(ImagePath.RequestSalesImagePath, ImagePath.SalesImagePath));
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), request.EnglishVerticalImage.Replace(ImagePath.RequestSalesImagePath, ImagePath.SalesImagePath));
 
                 if (!File.Exists(filePath))
                 {
-                    var img = ImageWorker.FromBase64StringToImage(request.VerticalImage);
+                    var img = ImageWorker.FromBase64StringToImage(request.EnglishVerticalImage);
                     string randomFilename = Guid.NewGuid() + ".png";
                     var dir = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.SalesImagePath, randomFilename);
                     img.Save(dir, ImageFormat.Png);
 
-                    sale.VerticalImage = randomFilename;
+                    engTranslation.VerticalImage = randomFilename;
                 }
             }
+            var ukTranslation = new SaleTranslation() { LanguageId = LanguageId.Ukrainian };
+            if (!string.IsNullOrEmpty(request.UkrainianHorizontalImage))
+            {
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), request.UkrainianHorizontalImage.Replace(ImagePath.RequestSalesImagePath, ImagePath.SalesImagePath));
+
+                if (!File.Exists(filePath))
+                {
+                    var img = ImageWorker.FromBase64StringToImage(request.UkrainianHorizontalImage);
+                    string randomFilename = Guid.NewGuid() + ".png";
+                    var dir = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.SalesImagePath, randomFilename);
+                    img.Save(dir, ImageFormat.Png);
+
+                    ukTranslation.HorizontalImage = randomFilename;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(request.UkrainianVerticalImage))
+            {
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), request.UkrainianVerticalImage.Replace(ImagePath.RequestSalesImagePath, ImagePath.SalesImagePath));
+
+                if (!File.Exists(filePath))
+                {
+                    var img = ImageWorker.FromBase64StringToImage(request.UkrainianVerticalImage);
+                    string randomFilename = Guid.NewGuid() + ".png";
+                    var dir = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.SalesImagePath, randomFilename);
+                    img.Save(dir, ImageFormat.Png);
+
+                    ukTranslation.VerticalImage = randomFilename;
+                }
+            }
+            sale.SaleTranslations = new List<SaleTranslation>() { engTranslation, ukTranslation };
 
             var categories = new List<Category>();
-            foreach (var item in request.Categories)
+            if (request.Categories != null)
             {
-                var category = await _categoryRepository.GetByIdAsync(item);
-                if (category != null)
-                    categories.Add(category);
+                foreach (var item in request.Categories)
+                {
+                    var category = await _categoryRepository.GetByIdAsync(item);
+                    if (category != null)
+                        categories.Add(category);
+                }
             }
             sale.Categories = categories;
             await _saleRepository.AddAsync(sale);
@@ -100,44 +153,79 @@ namespace WebAPI.Services
 
             _mapper.Map(request, sale);
 
-            if (!string.IsNullOrEmpty(request.HorizontalImage))
+            var engTranslation = sale.SaleTranslations.FirstOrDefault(s => s.LanguageId == LanguageId.English);
+            if (!string.IsNullOrEmpty(request.EnglishHorizontalImage))
             {
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), request.HorizontalImage.Replace(ImagePath.RequestSalesImagePath, ImagePath.SalesImagePath));
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), request.EnglishHorizontalImage.Replace(ImagePath.RequestSalesImagePath, ImagePath.SalesImagePath));
 
                 if (!File.Exists(filePath))
                 {
-                    var img = ImageWorker.FromBase64StringToImage(request.HorizontalImage);
+                    var img = ImageWorker.FromBase64StringToImage(request.EnglishHorizontalImage);
                     string randomFilename = Guid.NewGuid() + ".png";
                     var dir = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.SalesImagePath, randomFilename);
                     img.Save(dir, ImageFormat.Png);
 
-                    sale.HorizontalImage = randomFilename;
+                    engTranslation.HorizontalImage = randomFilename;
                 }
             }
 
-            if (!string.IsNullOrEmpty(request.VerticalImage))
+            if (!string.IsNullOrEmpty(request.EnglishVerticalImage))
             {
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), request.VerticalImage.Replace(ImagePath.RequestSalesImagePath, ImagePath.SalesImagePath));
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), request.EnglishVerticalImage.Replace(ImagePath.RequestSalesImagePath, ImagePath.SalesImagePath));
 
                 if (!File.Exists(filePath))
                 {
-                    var img = ImageWorker.FromBase64StringToImage(request.VerticalImage);
+                    var img = ImageWorker.FromBase64StringToImage(request.EnglishVerticalImage);
                     string randomFilename = Guid.NewGuid() + ".png";
                     var dir = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.SalesImagePath, randomFilename);
                     img.Save(dir, ImageFormat.Png);
 
-                    sale.VerticalImage = randomFilename;
+                    engTranslation.VerticalImage = randomFilename;
                 }
             }
+            var ukTranslation = sale.SaleTranslations.FirstOrDefault(s => s.LanguageId == LanguageId.Ukrainian);
+            if (!string.IsNullOrEmpty(request.UkrainianHorizontalImage))
+            {
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), request.UkrainianHorizontalImage.Replace(ImagePath.RequestSalesImagePath, ImagePath.SalesImagePath));
+
+                if (!File.Exists(filePath))
+                {
+                    var img = ImageWorker.FromBase64StringToImage(request.UkrainianHorizontalImage);
+                    string randomFilename = Guid.NewGuid() + ".png";
+                    var dir = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.SalesImagePath, randomFilename);
+                    img.Save(dir, ImageFormat.Png);
+
+                    ukTranslation.HorizontalImage = randomFilename;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(request.UkrainianVerticalImage))
+            {
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), request.UkrainianVerticalImage.Replace(ImagePath.RequestSalesImagePath, ImagePath.SalesImagePath));
+
+                if (!File.Exists(filePath))
+                {
+                    var img = ImageWorker.FromBase64StringToImage(request.UkrainianVerticalImage);
+                    string randomFilename = Guid.NewGuid() + ".png";
+                    var dir = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.SalesImagePath, randomFilename);
+                    img.Save(dir, ImageFormat.Png);
+
+                    ukTranslation.VerticalImage = randomFilename;
+                }
+            }
+            sale.SaleTranslations.Clear();
+            sale.SaleTranslations = new List<SaleTranslation>() { engTranslation, ukTranslation };
 
             sale.Categories.Clear();
-            foreach (var item in request.Categories)
+            if (request.Categories != null)
             {
-                var category = await _categoryRepository.GetByIdAsync(item);
-                if (category != null)
-                    sale.Categories.Add(category);
+                foreach (var item in request.Categories)
+                {
+                    var category = await _categoryRepository.GetByIdAsync(item);
+                    if (category != null)
+                        sale.Categories.Add(category);
+                }
             }
-
             await _saleRepository.UpdateAsync(sale);
 
             await _saleRepository.SaveChangesAsync();
@@ -148,19 +236,38 @@ namespace WebAPI.Services
             var sale = await _saleRepository.GetByIdAsync(saleId);
             sale.SaleNullChecking();
 
-            if (!string.IsNullOrEmpty(sale.VerticalImage))
+            var engTranslation = sale.SaleTranslations.FirstOrDefault(s => s.LanguageId == LanguageId.English);
+            var ukTranslation = sale.SaleTranslations.FirstOrDefault(s => s.LanguageId == LanguageId.Ukrainian);
+            if (!string.IsNullOrEmpty(engTranslation.HorizontalImage))
             {
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.SalesImagePath, sale.VerticalImage);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.SalesImagePath, engTranslation.HorizontalImage);
 
                 if (File.Exists(filePath))
                 {
                     File.Delete(filePath);
                 }
             }
-
-            if (!string.IsNullOrEmpty(sale.HorizontalImage))
+            if (!string.IsNullOrEmpty(engTranslation.VerticalImage))
             {
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.SalesImagePath, sale.HorizontalImage);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.SalesImagePath, engTranslation.VerticalImage);
+
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                }
+            }
+            if (!string.IsNullOrEmpty(ukTranslation.HorizontalImage))
+            {
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.SalesImagePath, ukTranslation.HorizontalImage);
+
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                }
+            }
+            if (!string.IsNullOrEmpty(ukTranslation.VerticalImage))
+            {
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.SalesImagePath, ukTranslation.VerticalImage);
 
                 if (File.Exists(filePath))
                 {
@@ -178,19 +285,38 @@ namespace WebAPI.Services
             foreach (var item in ids)
             {
                 var sale = await _saleRepository.GetByIdAsync(item);
-
-                if (!string.IsNullOrEmpty(sale.HorizontalImage))
+                var engTranslation = sale.SaleTranslations.FirstOrDefault(s => s.LanguageId == LanguageId.English);
+                var ukTranslation = sale.SaleTranslations.FirstOrDefault(s => s.LanguageId == LanguageId.Ukrainian);
+                if (!string.IsNullOrEmpty(engTranslation.HorizontalImage))
                 {
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.SalesImagePath, sale.HorizontalImage);
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.SalesImagePath, engTranslation.HorizontalImage);
 
                     if (File.Exists(filePath))
                     {
                         File.Delete(filePath);
                     }
                 }
-                if (!string.IsNullOrEmpty(sale.VerticalImage))
+                if (!string.IsNullOrEmpty(engTranslation.VerticalImage))
                 {
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.SalesImagePath, sale.VerticalImage);
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.SalesImagePath, engTranslation.VerticalImage);
+
+                    if (File.Exists(filePath))
+                    {
+                        File.Delete(filePath);
+                    }
+                }
+                if (!string.IsNullOrEmpty(ukTranslation.HorizontalImage))
+                {
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.SalesImagePath, ukTranslation.HorizontalImage);
+
+                    if (File.Exists(filePath))
+                    {
+                        File.Delete(filePath);
+                    }
+                }
+                if (!string.IsNullOrEmpty(ukTranslation.VerticalImage))
+                {
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.SalesImagePath, ukTranslation.VerticalImage);
 
                     if (File.Exists(filePath))
                     {

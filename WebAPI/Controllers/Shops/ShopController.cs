@@ -142,8 +142,7 @@ namespace WebAPI.Controllers.Shops
         public async Task<IActionResult> CreateShop([FromBody] ShopRequest request)
         {
             var response = await _shopService.CreateShopAsync(request, UserId, IpUtil.GetIpAddress(Request, HttpContext));
-            //return Created(_shopLocalizer["CreateSuccess"].Value, response);
-            return Created("", response);
+            return Ok(response);
         }
 
         /// <summary>

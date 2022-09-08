@@ -33,12 +33,18 @@ export interface IShopPageInfo {
     countReviews: number,
     averageRating: number,
     ratings: Array<IRating>
-
+    schedule: Array<IScheduleItem>
 }
 
 export interface IRating {
     number: number,
     count: number
+}
+export interface IScheduleItem {
+    start: string,
+    end: string,
+    isWeekend: boolean,
+    shortNames: string
 }
 
 export interface ShopPageState {

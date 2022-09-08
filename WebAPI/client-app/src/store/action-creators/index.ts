@@ -24,6 +24,7 @@ import * as OrderStatusActionCreators from "../../pages/admin/orderStatus/action
 import * as ShopInfoActionCreators from "../../pages/default/ShortSellerInfo/actions"
 import * as ShopPageActionCreators from "../../pages/default/SellerInfo/actions"
 import * as DeliveryTypeActionCreators from "../../pages/admin/deliveryType/actions"
+import * as SaleActionCreators from "../../pages/admin/sale/actions"
 import * as UIActionCreators from "../../UISettings/actions"
 
 const actions = {
@@ -51,6 +52,7 @@ const actions = {
     ...OrderStatusActionCreators,
     ...ShopInfoActionCreators,
     ...ShopPageActionCreators,
+    ...SaleActionCreators,
     ...DeliveryTypeActionCreators,
     ...UIActionCreators
 }

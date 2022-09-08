@@ -11,6 +11,7 @@ namespace WebAPI.Interfaces.Products
         Task<SearchResponse<ProductResponse>> AdminSellerSearchProductsAsync(SellerSearchRequest request, string userId);
         Task<SearchResponse<ProductCatalogResponse>> SearchProductsAsync(SearchProductRequest request, string userId);
         Task<ProductResponse> GetByIdAsync(int id);
+        Task<ProductRatingResponse> GetProductRatingByUrlSlugAsync(string urlSlug);
         Task<ProductWithCategoryParentsResponse> GetByUrlSlugAsync(string urlSlug, string userId);
         Task<IEnumerable<ProductCatalogResponse>> GetSimilarProductsAsync(string urlSlug, string userId);
         Task CreateAsync(ProductCreateRequest request, string userId);

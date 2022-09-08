@@ -2,16 +2,18 @@ import { ProductAction, ProductActionTypes, ProductState, QuestionAction, Questi
 
 const initialState: ProductState = {
     parents: [],
+    productRating: {
+        rating: 0,
+        countReviews: 0,
+    },
     product: {
         isInBasket: false,
-        isSelected:false,
+        isSelected: false,
         name: "",
         shopId: 0,
         shopName: "",
         productStatus: "",
         shopRating: 0,
-        productRating: 0,
-        countReviews: 0,
         images: [],
         price: 0,
         filters: []
@@ -30,6 +32,11 @@ export const productReducer = (state = initialState, action: ProductAction | Rev
                 ...state,
                 parents: action.payload.parents,
                 product: action.payload.product,
+            }
+        case ProductActionTypes.GET_PRODUCT_RATING_BY_URL_SLUG:
+            return {
+                ...state,
+                productRating: action.payload,
             }
         case ProductActionTypes.GET_SIMILAR_PRODUCTS:
             return {

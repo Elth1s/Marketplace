@@ -5,6 +5,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using WebAPI.Interfaces;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Response;
+using WebAPI.ViewModels.Response.Sales;
 
 namespace WebAPI.Controllers
 {
@@ -52,12 +53,13 @@ namespace WebAPI.Controllers
         /// <summary>
         /// Returns sales by ID
         /// </summary>
+        /// <param name="saleId">Category identifier</param>
         /// <response code="200">Getting sales completed successfully</response>
         /// <response code="401">You are not authorized</response>
         /// <response code="403">You don't have permission</response>
         /// <response code="404">Sales not found</response>
         /// <response code="500">An internal error has occurred</response>
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(SaleResponse))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(SaleFullInfoResponse))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
@@ -67,6 +69,25 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetById(int saleId)
         {
             var result = await _saleService.GetSaleByIdAsync(saleId);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Return of sorted sales
+        /// </summary>
+        /// <response code="200">Getting sales completed successfully</response>
+        /// <response code="401">You are not authorized</response>
+        /// <response code="403">You don't have permission</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(SearchResponse<SaleResponse>))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = "Admin")]
+        [HttpGet("Search")]
+        public async Task<IActionResult> SearchSales([FromQuery] AdminSearchRequest request)
+        {
+            var result = await _saleService.SearchSalesAsync(request);
             return Ok(result);
         }
 
@@ -106,7 +127,7 @@ namespace WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin")]
-        [HttpPost("Update/{id}")]
+        [HttpPut("Update/{id}")]
         public async Task<IActionResult> UpdateSale(int id, [FromBody] SaleRequest request)
         {
             await _saleService.UpdateAsync(id, request);

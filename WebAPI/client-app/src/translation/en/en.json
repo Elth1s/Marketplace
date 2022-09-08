@@ -49,10 +49,13 @@
                     "cities": "Cities",
                     "units": "Units",
                     "users": "Users",
+                    "sales": "Sales",
                     "orderStatuses": "Order statuses"
                 },
                 "table": {
-                    "rowsPerPage": "Shows"
+                    "rowsPerPage": "Shows",
+                    "of": "of",
+                    "search": "Search..."
                 },
                 "tableHeadCell": {
                     "identifier": "Identifier",
@@ -84,7 +87,13 @@
                     "firstName": "First name",
                     "secondName": "Second name",
                     "email": "Email",
-                    "phone": "Phone"
+                    "phone": "Phone",
+                    "horizontalImage": "Horizontal image",
+                    "verticalImage": "Vertical image",
+                    "discountMin": "Minimum discount",
+                    "discountMax": "Maximum discount",
+                    "dateStart": "Start date",
+                    "dateEnd": "End date"
                 }
             }
         },
@@ -130,6 +139,10 @@
                 "unit": {
                     "createTitle": "Create unit",
                     "updateTitle": "Update unit"
+                },
+                "sale": {
+                    "createTitle": "Create sale",
+                    "updateTitle": "Update sale"
                 }
             },
             "home": {
@@ -256,8 +269,7 @@
                     },
                     "schedule": {
                         "title": "Schedule of work",
-                        "work": "Mon - Fri 08:00 - 21:00",
-                        "weekend": "Sat - NA weekend"
+                        "weekend": "Weekend"
                     },
                     "description": {
                         "title": "Store description"
@@ -373,7 +385,15 @@
             "categoryImage": "Image",
             "categoryLightIcon": "Light icon",
             "categoryDarkIcon": "Dark icon",
-            "categoryActiveIcon": "Active icon"
+            "categoryActiveIcon": "Active icon",
+            "discountMin": "Minimum discount",
+            "discountMax": "Maximum discount",
+            "dateStart": "Start date",
+            "dateEnd": "End date",
+            "ukrainianVerticalImage": "Ukrainian vertical image",
+            "ukrainianHorizontalImage": "Ukrainian horizontal image",
+            "englishHorizontalImage": "English horizontal image",
+            "englishVerticalImage": "English vertical image"
         }
     }
 }

@@ -41,16 +41,6 @@
         /// <example>3</example>
         public float ShopRating { get; set; }
         /// <summary>
-        /// Rating of product
-        /// </summary>
-        /// <example>5</example>
-        public float ProductRating { get; set; }
-        /// <summary>
-        /// Count of reviews
-        /// </summary>
-        /// <example>10</example>
-        public int CountReviews { get; set; }
-        /// <summary>
         /// List of product images
         /// </summary>
         public IEnumerable<ProductImageResponse> Images { get; set; }

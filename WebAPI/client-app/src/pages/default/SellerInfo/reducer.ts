@@ -11,7 +11,8 @@ const initialState: ShopPageState = {
         averageInformationRelevanceRating: 0,
         countReviews: 0,
         averageRating: 0,
-        ratings: []
+        ratings: [],
+        schedule: []
     }
 }
 

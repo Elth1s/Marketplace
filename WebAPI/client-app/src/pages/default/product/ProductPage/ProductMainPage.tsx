@@ -33,8 +33,8 @@ interface Props {
 const ProductMainPage: FC<Props> = ({ addInCart, moveToReview }) => {
     const { t } = useTranslation();
 
-    const { GetReviews } = useActions();
-    const { product, reviews } = useTypedSelector(state => state.product);
+    const { GetReviews, GetProductRatingByUrlSlug } = useActions();
+    const { product, reviews, productRating } = useTypedSelector(state => state.product);
 
     let { urlSlug } = useParams();
 
@@ -51,6 +51,7 @@ const ProductMainPage: FC<Props> = ({ addInCart, moveToReview }) => {
             return;
         try {
             await GetReviews(urlSlug, 1, 3)
+            await GetProductRatingByUrlSlug(urlSlug);
         } catch (ex) {
         }
     };
@@ -123,13 +124,13 @@ const ProductMainPage: FC<Props> = ({ addInCart, moveToReview }) => {
                     <Box sx={{ display: "flex", mt: "26px", alignItems: "center" }}>
                         <RatingStyle
                             sx={{ mr: 1, fontSize: "30px" }}
-                            value={product.productRating}
+                            value={productRating.rating}
                             precision={0.1}
                             readOnly
                             icon={<StarRounded sx={{ fontSize: "30px" }} />}
                             emptyIcon={<StarRounded sx={{ fontSize: "30px" }} />}
                         />
-                        <Typography variant="h4" fontWeight="bold" display="inline">{product.productRating} <Typography fontWeight="medium" display="inline" sx={{ fontSize: "20px" }}>({product.countReviews} {t("pages.product.ratings")})</Typography></Typography>
+                        <Typography variant="h4" fontWeight="bold" display="inline">{productRating.rating} <Typography fontWeight="medium" display="inline" sx={{ fontSize: "20px" }}>({productRating.countReviews} {t("pages.product.ratings")})</Typography></Typography>
                     </Box>
                     <ShowInfo isMainPage={true} id={product.shopId} />
                     {product.isInBasket

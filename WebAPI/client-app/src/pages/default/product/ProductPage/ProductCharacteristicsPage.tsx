@@ -29,7 +29,7 @@ interface Props {
 const ProductCharacteristicsPage: FC<Props> = ({ addInCart }) => {
     const { t } = useTranslation();
 
-    const { product } = useTypedSelector(state => state.product);
+    const { product, productRating } = useTypedSelector(state => state.product);
 
     return (
         <>
@@ -82,13 +82,13 @@ const ProductCharacteristicsPage: FC<Props> = ({ addInCart }) => {
                             <Box sx={{ display: "flex", mt: "26px", alignItems: "center" }}>
                                 <RatingStyle
                                     sx={{ mr: 1, fontSize: "30px" }}
-                                    value={product.productRating}
+                                    value={productRating.rating}
                                     precision={0.1}
                                     readOnly
                                     icon={<StarRounded sx={{ fontSize: "30px" }} />}
                                     emptyIcon={<StarRounded sx={{ fontSize: "30px" }} />}
                                 />
-                                <Typography variant="h4" fontWeight="bold" display="inline">{product.productRating} <Typography fontWeight="medium" display="inline" sx={{ fontSize: "20px" }}>({product.countReviews} {t("pages.product.ratings")})</Typography></Typography>
+                                <Typography variant="h4" fontWeight="bold" display="inline">{productRating.rating} <Typography fontWeight="medium" display="inline" sx={{ fontSize: "20px" }}>({productRating.countReviews} {t("pages.product.ratings")})</Typography></Typography>
                             </Box>
                             {product.isInBasket
                                 ? <BuyButtonSecondStyle fullWidth color="secondary" variant="contained" disabled

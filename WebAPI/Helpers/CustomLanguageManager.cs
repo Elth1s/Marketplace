@@ -27,25 +27,25 @@
                            "{PropertyName} must be {MaxLength} characters in length");
 
             //uk-UA
-            AddTranslation("uk-UA", "NotEmptyValidator",
+            AddTranslation("uk", "NotEmptyValidator",
                            "{PropertyName} є обов'язковим");
-            AddTranslation("uk-UA", "LengthValidator",
+            AddTranslation("uk", "LengthValidator",
                            "{PropertyName} має бути довжиною від {MinLength} до {MaxLength} символів");
-            AddTranslation("uk-UA", "EmailValidator",
+            AddTranslation("uk", "EmailValidator",
                            "Не вірний формат email-адреси");
-            AddTranslation("uk-UA", "MinimumLengthValidator",
+            AddTranslation("uk", "MinimumLengthValidator",
                            "Довжина {PropertyName} має бути не меншою ніж {MinLength} символів");
-            AddTranslation("uk-UA", "MaximumLengthValidator",
+            AddTranslation("uk", "MaximumLengthValidator",
                            "Довжина {PropertyName} має бути не більшою ніж {MaxLength} символів");
-            AddTranslation("uk-UA", "EqualValidator",
+            AddTranslation("uk", "EqualValidator",
                            "{ComparisonValue} та {PropertyName} не співпадають");
-            AddTranslation("uk-UA", "InclusiveBetweenValidator",
+            AddTranslation("uk", "InclusiveBetweenValidator",
                            "{PropertyName} має бути між {From} та {To}");
-            AddTranslation("uk-UA", "GreaterThanValidator",
+            AddTranslation("uk", "GreaterThanValidator",
                            "{PropertyName} має бути більшим за {ComparisonValue}");
-            AddTranslation("uk-UA", "GreaterThanOrEqualValidator",
+            AddTranslation("uk", "GreaterThanOrEqualValidator",
                            "{PropertyName} має бути більшим, або дорівнювати {ComparisonValue}");
-            AddTranslation("uk-UA", "ExactLengthValidator",
+            AddTranslation("uk", "ExactLengthValidator",
                           "{PropertyName} має бути довжиною {MaxLength} символів");
 
         }
