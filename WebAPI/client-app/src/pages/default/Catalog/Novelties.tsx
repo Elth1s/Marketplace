@@ -11,11 +11,11 @@ import { BoxFilterStyle, BoxProductStyle, PaginationItemStyle } from "./styled";
 
 
 
-const SearchProducts = () => {
+const Novelties = () => {
     const { t } = useTranslation();
     const { palette } = useTheme();
 
-    const { GetCategoriesForSearch, GetFiltersByCategoryIdForUser, SearchProductsForUser } = useActions();
+    const { GetCategoriesForSearch, GetFiltersByCategoryIdForUser, GetNovelties } = useActions();
     const { products, countProducts, filterNames, searchCatalog } = useTypedSelector(state => state.catalog);
 
     const [page, setPage] = useState(1);
@@ -23,24 +23,19 @@ const SearchProducts = () => {
     const [filters, setFilters] = useState<Array<number>>([]);
     const [categories, setCategories] = useState<Array<number>>([]);
 
-    let { productName } = useParams();
-
     useEffect(() => {
-        if (productName)
-            document.title = productName;
+        document.title = `${t("pages.home.novelty.title")}`;
 
         getData();
-    }, [page, productName, categories])
+    }, [page, categories])
 
     const getData = async () => {
-        if (!productName)
-            return;
         try {
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth'
             });
-            await SearchProductsForUser(productName, page, rowsPerPage, categories, filters)
+            await GetNovelties(page, rowsPerPage, categories, filters)
 
             if (categories?.length == 1)
                 await GetFiltersByCategoryIdForUser(categories[0])
@@ -51,13 +46,11 @@ const SearchProducts = () => {
     useEffect(() => {
 
         getCategories();
-    }, [productName])
+    }, [])
 
     const getCategories = async () => {
-        if (!productName)
-            return;
         try {
-            await GetCategoriesForSearch(productName);
+            await GetCategoriesForSearch("");
         } catch (ex) {
         }
     };
@@ -103,15 +96,8 @@ const SearchProducts = () => {
 
     return (
         <>
-            <Typography variant="h2" display="inline">
-                &laquo;
-                <Typography display="inline" sx={{ fontSize: "30px", lineHeight: "38px" }}>
-                    {productName}
-                </Typography>
-                &raquo;
-            </Typography>
-            <Typography variant="h4">
-                {t("pages.catalog.finded")} {countProducts} {countProducts == 1 ? t("pages.ordering.countProductsOne") : (lastCharOfCountProducts(countProducts) ? t("pages.ordering.countProductsLessFive") : t("pages.ordering.countProducts"))}
+            <Typography variant="h1">
+                {t("pages.home.novelty.title")}
             </Typography>
             <Box sx={{ display: "flex", mt: "20px" }}>
                 <BoxFilterStyle>
@@ -255,4 +241,4 @@ const SearchProducts = () => {
     )
 }
 
-export default SearchProducts
+export default Novelties

@@ -55,22 +55,13 @@ export const GetProductRatingByUrlSlug = (urlSlug: string) => {
     }
 }
 
-
-export const GetSimilarProducts = (urlSlug: string) => {
+export const AddProductInCart = (urlSlug: string) => {
     return async (dispatch: Dispatch<ProductAction>) => {
         try {
-            let response = await http.get<Array<ISimilarProduct>>(`api/Product/GetSimilarProducts`, {
-                params: {
-                    urlSlug: urlSlug,
-                },
-                paramsSerializer: params => {
-                    return qs.stringify({ ...params })
-                }
-            });
+            let response = await http.post(`api/BasketItem/Create`, { urlSlug: urlSlug });
 
             dispatch({
-                type: ProductActionTypes.GET_SIMILAR_PRODUCTS,
-                payload: response.data
+                type: ProductActionTypes.UPDATE_IS_IN_CART,
             })
 
             return Promise.resolve();
@@ -81,13 +72,13 @@ export const GetSimilarProducts = (urlSlug: string) => {
     }
 }
 
-export const AddProductInCart = (urlSlug: string) => {
+export const AddProductInSelected = (urlSlug: string) => {
     return async (dispatch: Dispatch<ProductAction>) => {
         try {
-            let response = await http.post(`api/BasketItem/Create`, { urlSlug: urlSlug });
+            let response = await http.put(`api/Product/ChangeSelectProduct/${urlSlug}`);
 
             dispatch({
-                type: ProductActionTypes.UPDATE_SELECTED_PRODUCT,
+                type: ProductActionTypes.UPDATE_IS_SELECTED,
             })
 
             return Promise.resolve();

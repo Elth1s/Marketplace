@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from "react"
 
 import { useActions } from "../../hooks/useActions"
 
-import { empty } from "../../assets/backgrounds"
+import { small_empty } from "../../assets/backgrounds"
 import { basket_trash, minus, plus } from "../../assets/icons"
 import LinkRouter from "../LinkRouter"
 import { TextFieldStyle } from "./styled"
@@ -60,7 +60,7 @@ const BasketItem: FC<Props> = ({ id, count, image, name, price, productCount, ur
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", my: "15px" }}>
             <img
                 style={{ width: "90px", height: "90px", objectFit: "contain" }}
-                src={image != "" ? image : empty}
+                src={image != "" ? image : small_empty}
                 alt="productImage"
             />
             <Box>

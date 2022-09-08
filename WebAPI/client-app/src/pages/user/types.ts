@@ -18,7 +18,7 @@ export interface IProfile {
     secondName: string,
 
     gender: string,
-    birthDate: Date | null,
+    birthDate: Date | string,
     languageOfCommunication: number,
     region: number,
     address: string,
@@ -60,6 +60,7 @@ export interface IBasketOrderItem {
     productName: string,
     productImage: string,
     productPrice: number,
+    productPriceSum: number,
     productUrlSlug: string,
     count: number
 }

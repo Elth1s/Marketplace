@@ -7,7 +7,10 @@ export enum CatalogActionTypes {
     GET_FILTERS_BY_CATEGORY = "GET_FILTERS_BY_CATEGORY",
     UPDATE_SEARCH = "UPDATE_SEARCH",
     SEARCH_PRODUCTS = "SEARCH_PRODUCTS",
-    GET_CATEGORIES_FOR_SEARCH = "GET_CATEGORIES_FOR_SEARCH"
+    GET_CATEGORIES_FOR_SEARCH = "GET_CATEGORIES_FOR_SEARCH",
+    GET_NOVELTIES = "GET_NOVELTIES",
+    CHANGE_IS_SELECTED_PRODUCTS = "CHANGE_IS_SELECTED_PRODUCTS",
+    GET_SIMILAR_PRODUCTS = "GET_SIMILAR_PRODUCTS"
 }
 
 export interface ICatalogItem {
@@ -28,6 +31,8 @@ export interface IFullCatalogItem {
 }
 
 export interface IProductItem {
+    id: number,
+    isSelected: boolean,
     name: string,
     image: string,
     price: number,
@@ -67,7 +72,7 @@ export interface ICatalogWithProducts {
     countProducts: number
 }
 
-export interface ISearchProducts {
+export interface IProductResponse {
     count: number,
     values: Array<IProductItem>
 }
@@ -109,12 +114,28 @@ export interface UpdateSearchAction {
 
 export interface SearchProductsAction {
     type: CatalogActionTypes.SEARCH_PRODUCTS,
-    payload: ISearchProducts
+    payload: IProductResponse
 }
 
 export interface GetCategoriesForSearchAction {
     type: CatalogActionTypes.GET_CATEGORIES_FOR_SEARCH,
     payload: Array<IFullCatalogItem>
+}
+
+export interface GetNoveltiesAction {
+    type: CatalogActionTypes.GET_NOVELTIES,
+    payload: IProductResponse
+}
+
+export interface ChangeIsSelectedProductsAction {
+    type: CatalogActionTypes.CHANGE_IS_SELECTED_PRODUCTS,
+    payload: string
+}
+
+
+export interface GetSimilarProductsAction {
+    type: CatalogActionTypes.GET_SIMILAR_PRODUCTS,
+    payload: Array<IProductItem>
 }
 
 
@@ -126,4 +147,7 @@ export type CatalogAction = GetCatalogAction |
     GetParentsAction |
     UpdateSearchAction |
     SearchProductsAction |
-    GetCategoriesForSearchAction;
+    GetCategoriesForSearchAction |
+    GetNoveltiesAction |
+    ChangeIsSelectedProductsAction |
+    GetSimilarProductsAction;

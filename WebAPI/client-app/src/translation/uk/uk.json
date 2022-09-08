@@ -209,7 +209,9 @@
                     "allAboutTheProduct": "Все про товар",
                     "characteristics": "Характеристики",
                     "reviews": "Відгуки",
-                    "questions": "Запитання"
+                    "leaveReview": "Залишити відгук",
+                    "questions": "Запитання",
+                    "leaveQuestions": "Залишити питання"
                 },
                 "seller": "Продавець",
                 "sellerRating": "Рейтинг продавця",
@@ -313,6 +315,7 @@
                 "sellerProducts": "Товари продавця",
                 "count": "Кількість",
                 "price": "Ціна",
+                "sum": "Сума",
                 "delivery": "Спосіб доставки",
                 "payment": "Оплата"
             }

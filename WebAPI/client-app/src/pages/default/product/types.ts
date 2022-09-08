@@ -1,8 +1,8 @@
 export enum ProductActionTypes {
     GET_PRODUCT_BY_URLSLUG = "GET_PRODUCT_BY_URLSLUG",
     GET_PRODUCT_RATING_BY_URL_SLUG = "GET_PRODUCT_RATING_BY_URL_SLUG",
-    GET_SIMILAR_PRODUCTS = "GET_SIMILAR_PRODUCTS",
-    UPDATE_SELECTED_PRODUCT = "UPDATE_SELECTED_PRODUCT",
+    UPDATE_IS_IN_CART = "UPDATE_IS_IN_CART",
+    UPDATE_IS_SELECTED = "UPDATE_IS_SELECTED",
 }
 
 export enum ReviewActionTypes {
@@ -33,7 +33,7 @@ export interface IFilterItem {
 }
 
 export interface ISimilarProduct {
-    isSelected: number,
+    isSelected: boolean,
     name: string,
     image: string,
     price: number,
@@ -149,7 +149,6 @@ export interface ProductState {
     parents: Array<IParentCategoryItem>,
     product: IProductItem,
     productRating: IProductRating,
-    similarProducts: Array<ISimilarProduct>,
     reviews: Array<IReviewItem>,
     reviewsCount: number,
     questions: Array<IQuestionItem>,
@@ -182,13 +181,12 @@ export interface GetProductRatingByUrlSlugAction {
     payload: IProductRating
 }
 
-export interface GetSimilarProductsAction {
-    type: ProductActionTypes.GET_SIMILAR_PRODUCTS,
-    payload: Array<ISimilarProduct>
+export interface UpdateIsInCartAction {
+    type: ProductActionTypes.UPDATE_IS_IN_CART,
 }
 
-export interface UpdateSelectedProductAction {
-    type: ProductActionTypes.UPDATE_SELECTED_PRODUCT,
+export interface UpdateIsSelectedAction {
+    type: ProductActionTypes.UPDATE_IS_SELECTED,
 }
 
 //ReviewAction
@@ -215,9 +213,10 @@ export interface GetMoreQuestionsAction {
     payload: Array<IQuestionItem>
 }
 
-export type ProductAction = GetProductByUrlSlugAction | GetProductRatingByUrlSlugAction |
-    GetSimilarProductsAction |
-    UpdateSelectedProductAction;
+export type ProductAction = GetProductByUrlSlugAction |
+    GetProductRatingByUrlSlugAction |
+    UpdateIsInCartAction |
+    UpdateIsSelectedAction;
 
 export type ReviewAction = GetReviewsAction |
     GetMoreReviewsAction;

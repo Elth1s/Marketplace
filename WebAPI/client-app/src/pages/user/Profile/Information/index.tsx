@@ -92,13 +92,18 @@ const Information = () => {
                             />
                         </Grid>
                         <Grid item xs>
-                            <DatePickerComponent
+                            {/* <DatePickerComponent
                                 label={"birthDate"}
-                                value={userInfo.birthDate}
                                 error={errors.birthDate}
                                 touched={touched.birthDate}
                                 onChange={(value) => { setFieldValue('birthDate', value) }}
-                            />
+                                {...getFieldProps('birthDate')}
+                                label={t('validationProps.dateStart')}
+                                {...getFieldProps('dateStart')}
+                                error={errors.dateStart}
+                                touched={touched.dateStart}
+                                onChange={(value) => { setFieldValue('dateStart', value) }}
+                            /> */}
                         </Grid>
                         <Grid item xs>
                             <SelectComponent

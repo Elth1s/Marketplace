@@ -58,8 +58,6 @@ const SaleCreate: FC<CreateProps> = ({ afterCreate }) => {
         name: Yup.string().required().min(2).max(90).label(t('validationProps.name')),
         discountMin: Yup.number().min(1).max(99).label(t('validationProps.discountMin')),
         discountMax: Yup.number().min(1).max(99).label(t('validationProps.discountMax')),
-        dateStart: Yup.date().required().label(t('validationProps.dateStart')),
-        dateEnd: Yup.date().required().label(t('validationProps.dateEnd')),
     });
 
     const formik = useFormik({
@@ -156,7 +154,7 @@ const SaleCreate: FC<CreateProps> = ({ afterCreate }) => {
                                             <DatePickerComponent
                                                 label={t('validationProps.dateStart')}
                                                 {...getFieldProps('dateStart')}
-                                                error={errors.dateStart}
+                                                // error={errors.dateStart}
                                                 touched={touched.dateStart}
                                                 onChange={(value) => { setFieldValue('dateStart', value) }}
                                             />
@@ -165,7 +163,7 @@ const SaleCreate: FC<CreateProps> = ({ afterCreate }) => {
                                             <DatePickerComponent
                                                 label={t('validationProps.dateEnd')}
                                                 {...getFieldProps('dateEnd')}
-                                                error={errors.dateEnd}
+                                                // error={errors.dateEnd}
                                                 touched={touched.dateEnd}
                                                 onChange={(value) => { setFieldValue('dateEnd', value) }}
                                             />

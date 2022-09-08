@@ -164,7 +164,6 @@ namespace DAL.Data
                 marketplaceDbContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT OrderStatuses OFF");
                 transaction.Commit();
             }
-
         }
 
         static IEnumerable<Country> GetPreconfiguredCountries()
@@ -1729,6 +1728,5 @@ namespace DAL.Data
 
             return daysOfWeek;
         }
-
     }
 }

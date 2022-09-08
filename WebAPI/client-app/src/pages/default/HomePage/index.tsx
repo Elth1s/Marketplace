@@ -16,6 +16,9 @@ import {
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation } from "swiper";
+
 import { ListItemButtonStyle, ButtonNoveltyStyle, BoxProductOfTheDayStyle } from './styled';
 
 import { gamepad, btn_arrow, arrow_right, arrow_left, deliver_car, shield, cash, arrow_return } from '../../../assets/icons';
@@ -27,13 +30,19 @@ import { toast } from 'react-toastify';
 
 import { ToastSuccess, ToastError, ToastWarning, ToastInfo } from '../../../components/ToastComponent';
 import { useTypedSelector } from '../../../hooks/useTypedSelector';
+import ProductItem from '../../../components/ProductItem';
+import { useActions } from '../../../hooks/useActions';
+import { useNavigate } from 'react-router-dom';
 
 
 const HomePage = () => {
     const { t } = useTranslation();
     const { palette } = useTheme();
 
-    const { fullCatalogItems } = useTypedSelector(state => state.catalog);
+    const { GetNovelties } = useActions();
+    const { fullCatalogItems, products } = useTypedSelector(state => state.catalog);
+
+    const navigate = useNavigate();
 
     const [selectedCategory, setSelectedCategory] = useState<number>(-1);
     const [allCategoriesMouseEnter, setAllCategoriesMouseEnter] = useState<boolean>(false);
@@ -67,7 +76,15 @@ const HomePage = () => {
         // toast.error(<ToastError title="Error" message="Somethings went wrong" />);
         // toast.warning(<ToastWarning title="Warning" message="Select category" />);
         // toast.info(<ToastInfo title="Info" message="Auth complele" />);
+        getData();
     }, [])
+
+    const getData = async () => {
+        try {
+            await GetNovelties(1, 20, [], [])
+        } catch (ex) {
+        }
+    };
 
     const isSelected = (index: number) => index == selectedCategory;
 
@@ -137,47 +154,35 @@ const HomePage = () => {
                 </Grid>
             </Grid>
             <Box id="NewProducts" sx={{ marginTop: "100px" }}>
-                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                <Box sx={{ display: "flex", justifyContent: "space-between", mb: "40px" }}>
                     <Typography fontSize="27px">{t('pages.home.novelty.title')}</Typography>
-                    <ButtonNoveltyStyle variant="outlined"
+                    <ButtonNoveltyStyle
+                        variant="outlined"
                         endIcon={<img
                             style={{ width: "16px", height: "16px" }}
                             src={btn_arrow}
                             alt="icon"
                         />}
+                        onClick={() => navigate("/novelties")}
                     >
                         {t('pages.home.novelty.button')}
                     </ButtonNoveltyStyle>
                 </Box>
-                <Box sx={{ width: "100%", height: "366px", marginTop: "75px", display: "flex", justifyContent: "space-between", alignContent: "center" }}>
-                    <IconButton
-                        sx={{ color: "#7e7e7e", borderRadius: '12px', p: 0, "&:hover": { background: "transparent" }, "&& .MuiTouchRipple-child": { backgroundColor: "transparent" } }}
-                        size="large"
-                        aria-label="search"
-                    >
-                        <img
-                            style={{ width: "35px", height: "35px" }}
-                            src={arrow_left}
-                            alt="icon"
-                        />
-                    </IconButton>
-                    <Box sx={{ width: "269px", height: "100%", backgroundColor: "#0E7C3A", borderRadius: "9px" }}></Box>
-                    <Box sx={{ width: "269px", height: "100%", backgroundColor: "#0E7C3A", borderRadius: "9px" }}></Box>
-                    <Box sx={{ width: "269px", height: "100%", backgroundColor: "#0E7C3A", borderRadius: "9px" }}></Box>
-                    <Box sx={{ width: "269px", height: "100%", backgroundColor: "#0E7C3A", borderRadius: "9px" }}></Box>
-                    <Box sx={{ width: "269px", height: "100%", backgroundColor: "#0E7C3A", borderRadius: "9px" }}></Box>
-                    <IconButton
-                        sx={{ color: "#7e7e7e", borderRadius: '12px', p: 0, "&:hover": { background: "transparent" }, "&& .MuiTouchRipple-child": { backgroundColor: "transparent" } }}
-                        size="large"
-                        aria-label="search"
-                    >
-                        <img
-                            style={{ width: "35px", height: "35px" }}
-                            src={arrow_right}
-                            alt="icon"
-                        />
-                    </IconButton>
-                </Box>
+                <Swiper
+                    modules={[Navigation]}
+                    navigation={true}
+                    slidesPerView={5}
+                    slidesPerGroup={5}
+                    spaceBetween={15}
+                >
+                    {products.map((row, index) => {
+                        return (
+                            <SwiperSlide key={index}>
+                                <ProductItem isSelected={row.isSelected} name={row.name} image={row.image} statusName={row.statusName} price={row.price} urlSlug={row.urlSlug} />
+                            </SwiperSlide>
+                        );
+                    })}
+                </Swiper>
             </Box>
             <Box
                 sx={{

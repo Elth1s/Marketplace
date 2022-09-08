@@ -387,6 +387,7 @@ namespace WebAPI.Mapper
                 .ForMember(u => u.ProductId, opt => opt.MapFrom(vm => vm.Product.Id))
                 .ForMember(u => u.ProductName, opt => opt.MapFrom(vm => vm.Product.Name))
                 .ForMember(u => u.ProductPrice, opt => opt.MapFrom(vm => vm.Product.Price))
+                .ForMember(u => u.ProductPriceSum, opt => opt.MapFrom(vm => vm.Product.Price * vm.Count))
                 .ForMember(u => u.ProductUrlSlug, opt => opt.MapFrom(vm => vm.Product.UrlSlug))
                 .ForMember(u => u.ProductImage, opt => opt.MapFrom(
                     vm => vm.Product.Images.Count != 0 ? Path.Combine(ImagePath.RequestProductsImagePath, vm.Product.Images.FirstOrDefault().Name) : ""));

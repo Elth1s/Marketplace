@@ -58,6 +58,11 @@
         /// <example>13945</example>
         public float ProductPrice { get; set; }
         /// <summary>
+        /// Product sum
+        /// </summary>
+        /// <example>13945</example>
+        public float ProductPriceSum { get; set; }
+        /// <summary>
         /// Product url slug
         /// </summary>
         /// <example>13945</example>

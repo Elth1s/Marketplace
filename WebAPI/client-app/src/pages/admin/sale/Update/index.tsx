@@ -50,13 +50,11 @@ const SaleUpdate: FC<UpdateProps> = ({ id, afterUpdate }) => {
         name: Yup.string().required().min(2).max(90).label(t('validationProps.name')),
         discountMin: Yup.number().min(1).max(99).label(t('validationProps.discountMin')),
         discountMax: Yup.number().min(1).max(99).label(t('validationProps.discountMax')),
-        dateStart: Yup.date().required().label(t('validationProps.dateStart')),
-        dateEnd: Yup.date().required().label(t('validationProps.dateEnd')),
     });
 
     const formik = useFormik({
         initialValues: selectedSale,
-        validationSchema: validationFields,
+        // validationSchema: validationFields,
         enableReinitialize: true,
         onSubmit: async (values, { setFieldError }) => {
             try {

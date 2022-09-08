@@ -25,6 +25,7 @@ export interface IMenuItem {
 const Sidebar: FC<IDrawer> = ({ open }) => {
     const { t } = useTranslation()
     const [menuItems, setMenuItems] = useState<Array<IMenuItem>>([
+        { lable: `${t('containers.admin_seller.sideBar.sales')}`, path: '/admin/sales', rotate: undefined },
         { lable: `${t('containers.admin_seller.sideBar.categories')}`, path: '/admin/categories', rotate: undefined },
         { lable: `${t('containers.admin_seller.sideBar.characteristicGroups')}`, path: '/admin/characteristicGroups', rotate: undefined },
         { lable: `${t('containers.admin_seller.sideBar.characteristicNames')}`, path: '/admin/characteristicNames', rotate: undefined },
@@ -37,7 +38,6 @@ const Sidebar: FC<IDrawer> = ({ open }) => {
         { lable: `${t('containers.admin_seller.sideBar.shops')}`, path: '/admin/shops', rotate: undefined },
         { lable: `${t('containers.admin_seller.sideBar.countries')}`, path: '/admin/countries', rotate: undefined },
         { lable: `${t('containers.admin_seller.sideBar.cities')}`, path: '/admin/cities', rotate: undefined },
-        { lable: `${t('containers.admin_seller.sideBar.sales')}`, path: '/admin/sales', rotate: undefined },
         { lable: `${t('containers.admin_seller.sideBar.deliveryTypes')}`, path: '/admin/deliveryTypes', rotate: undefined },
         { lable: `${t('containers.admin_seller.sideBar.users')}`, path: '/admin/users', rotate: undefined },
         { lable: `${t('containers.admin_seller.sideBar.orderStatuses')}`, path: '/admin/orderStatuses', rotate: undefined },

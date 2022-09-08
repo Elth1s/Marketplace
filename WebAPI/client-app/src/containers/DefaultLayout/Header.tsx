@@ -65,7 +65,7 @@ const Header = () => {
     }
 
     return (
-        <AppBar component="header" sx={{ height: "100px", pt: "10px" }} elevation={0} >
+        <AppBar component="header" sx={{ height: "100px", pt: "10px" }} elevation={0} position="static">
             <Container sx={{ height: "100%", maxWidth: { xl: "xl", lg: "lg", md: "md" } }}>
                 <Toolbar disableGutters={true} sx={{ height: "100%", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <LinkRouter underline="none" color="unset" to="/" onClick={() => UpdateSearch("")}>

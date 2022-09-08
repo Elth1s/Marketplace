@@ -18,7 +18,6 @@ const initialState: ProductState = {
         price: 0,
         filters: []
     },
-    similarProducts: [],
     reviews: [],
     reviewsCount: 0,
     questions: [],
@@ -38,17 +37,20 @@ export const productReducer = (state = initialState, action: ProductAction | Rev
                 ...state,
                 productRating: action.payload,
             }
-        case ProductActionTypes.GET_SIMILAR_PRODUCTS:
-            return {
-                ...state,
-                similarProducts: action.payload,
-            }
-        case ProductActionTypes.UPDATE_SELECTED_PRODUCT:
+        case ProductActionTypes.UPDATE_IS_IN_CART:
             return {
                 ...state,
                 product: {
                     ...state.product,
                     isInBasket: !state.product.isInBasket
+                }
+            }
+        case ProductActionTypes.UPDATE_IS_SELECTED:
+            return {
+                ...state,
+                product: {
+                    ...state.product,
+                    isSelected: !state.product.isSelected
                 }
             }
         case ReviewActionTypes.GET_REVIEWS:

@@ -14,7 +14,7 @@ const initialState: ProfileState = {
         secondName: "",
 
         gender: "",
-        birthDate: null,
+        birthDate: "",
         languageOfCommunication: 0,
         region: 0,
         address: "",

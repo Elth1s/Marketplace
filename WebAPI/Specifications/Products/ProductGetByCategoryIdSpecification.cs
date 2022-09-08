@@ -11,6 +11,7 @@ namespace WebAPI.Specifications.Products
             Query.Where(item => categoryId == item.CategoryId)
                  .Include(c => c.Category)
                  .ThenInclude(c => c.CategoryTranslations)
+                 .Include(o => o.Status).ThenInclude(s => s.ProductStatusTranslations)
                  .Where(item => !item.IsDeleted);
 
             if (productId != null)

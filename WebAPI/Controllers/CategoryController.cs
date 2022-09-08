@@ -87,7 +87,7 @@ namespace WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<FullCatalogItemResponse>))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [HttpGet("GetCategoriesByProducts")]
-        public async Task<IActionResult> GetCategoriesByProducts([FromQuery] SearchProductRequest request)
+        public async Task<IActionResult> GetCategoriesByProducts([FromQuery] SearchProductsRequest request)
         {
             var result = await _categoryService.GetCategoriesByProductsAsync(request);
             return Ok(result);

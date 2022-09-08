@@ -3,7 +3,7 @@
     /// <summary>
     /// Category class to get category with product
     /// </summary>
-    public class SearchProductRequest
+    public class SearchProductsRequest
     {
         /// <summary>
         /// Name of product

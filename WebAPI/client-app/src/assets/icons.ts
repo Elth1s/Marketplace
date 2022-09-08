@@ -39,6 +39,7 @@ export const gamepad = "/assets/icons/gamepad.png";
 
 export const black_heart = "/assets/icons/black-heart.png";
 export const orange_heart = "/assets/icons/orange-heart.png";
+export const filled_orange_heart = "/assets/icons/filled-orange-heart.png";
 
 export const black_shopping_cart = "/assets/icons/black-shopping-cart.png";
 export const orange_shopping_cart = "/assets/icons/orange-shopping-cart.png";

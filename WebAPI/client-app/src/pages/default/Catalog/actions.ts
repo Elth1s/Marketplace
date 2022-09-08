@@ -3,7 +3,7 @@ import { Dispatch } from "react"
 
 import http from "../../../http_comon"
 import { ServerError } from "../../../store/types"
-import { CatalogAction, CatalogActionTypes, ICatalogItem, ICatalogWithProducts, IFilterName, IFullCatalogItem, IProductItem, ISearchProducts } from "./types"
+import { CatalogAction, CatalogActionTypes, ICatalogItem, ICatalogWithProducts, IFilterName, IFullCatalogItem, IProductItem, IProductResponse } from "./types"
 
 
 export const GetCatalog = () => {
@@ -123,7 +123,7 @@ export const GetCatalogWithProducts = (urlSlug: string, page: number, rowsPerPag
 export const SearchProductsForUser = (productName: string, page: number, rowsPerPage: number, categories: Array<number>, filters: Array<number>) => {
     return async (dispatch: Dispatch<CatalogAction>) => {
         try {
-            let response = await http.get<ISearchProducts>(`api/Product/Search`, {
+            let response = await http.get<IProductResponse>(`api/Product/Search`, {
                 params: {
                     productName: productName,
                     shopId: null,
@@ -157,7 +157,7 @@ export const GetMoreProducts = (urlSlug: string, page: number) => {
                 params: {
                     urlSlug: urlSlug,
                     page: page,
-                    rowsPerPage: 0,
+                    rowsPerPage: 5,
                     filters: []
                 },
                 paramsSerializer: params => {
@@ -241,7 +241,7 @@ export const GetCategoriesForSearch = (productName: string) => {
 export const SearchSellerProducts = (shopId: string, page: number, rowsPerPage: number, categories: Array<number>, filters: Array<number>) => {
     return async (dispatch: Dispatch<CatalogAction>) => {
         try {
-            let response = await http.get<ISearchProducts>(`api/Product/Search`, {
+            let response = await http.get<IProductResponse>(`api/Product/Search`, {
                 params: {
                     productName: "",
                     shopId: shopId,
@@ -283,6 +283,77 @@ export const GetCategoriesByShopId = (shopId: string) => {
 
             dispatch({
                 type: CatalogActionTypes.GET_CATEGORIES_FOR_SEARCH,
+                payload: response.data
+            })
+
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
+        }
+    }
+}
+
+export const GetNovelties = (page: number, rowsPerPage: number, categories: Array<number>, filters: Array<number>) => {
+    return async (dispatch: Dispatch<CatalogAction>) => {
+        try {
+            let response = await http.get<IProductResponse>(`api/Product/GetNovelties`, {
+                params: {
+                    page: page,
+                    rowsPerPage: rowsPerPage,
+                    categories: categories,
+                    filters: filters
+                },
+                paramsSerializer: params => {
+                    return qs.stringify({ ...params })
+                }
+            });
+
+            dispatch({
+                type: CatalogActionTypes.GET_NOVELTIES,
+                payload: response.data
+            })
+
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
+        }
+    }
+}
+
+export const ChangeIsSelectedProducts = (productUrlSlug: string) => {
+    return async (dispatch: Dispatch<CatalogAction>) => {
+        try {
+            let response = await http.put(`api/Product/ChangeSelectProduct/${productUrlSlug}`);
+
+            dispatch({
+                type: CatalogActionTypes.CHANGE_IS_SELECTED_PRODUCTS,
+                payload: productUrlSlug
+            })
+
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
+        }
+    }
+}
+
+export const GetSimilarProducts = (urlSlug: string) => {
+    return async (dispatch: Dispatch<CatalogAction>) => {
+        try {
+            let response = await http.get<Array<IProductItem>>(`api/Product/GetSimilarProducts`, {
+                params: {
+                    urlSlug: urlSlug,
+                },
+                paramsSerializer: params => {
+                    return qs.stringify({ ...params })
+                }
+            });
+
+            dispatch({
+                type: CatalogActionTypes.GET_SIMILAR_PRODUCTS,
                 payload: response.data
             })
 

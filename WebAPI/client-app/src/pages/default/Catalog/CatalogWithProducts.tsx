@@ -113,7 +113,7 @@ const CatalogWithProducts = () => {
                     <BoxCatalogStyle>
                         {products != null && products.map((row, index) => {
                             return (
-                                <ProductItem key={row.urlSlug} name={row.name} image={row.image} statusName={row.statusName} price={row.price} urlSlug={row.urlSlug} />
+                                <ProductItem key={row.urlSlug} isSelected={row.isSelected} name={row.name} image={row.image} statusName={row.statusName} price={row.price} urlSlug={row.urlSlug} />
                             );
                         })}
                     </BoxCatalogStyle>
@@ -177,7 +177,7 @@ const CatalogWithProducts = () => {
                         <BoxProductStyle>
                             {products.map((row, index) => {
                                 return (
-                                    <ProductItem key={row.urlSlug} name={row.name} image={row.image} statusName={row.statusName} price={row.price} urlSlug={row.urlSlug} />
+                                    <ProductItem key={row.urlSlug} isSelected={row.isSelected} name={row.name} image={row.image} statusName={row.statusName} price={row.price} urlSlug={row.urlSlug} />
                                 );
                             })}
                         </BoxProductStyle>

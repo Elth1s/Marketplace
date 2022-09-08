@@ -1,10 +1,10 @@
-import { Typography } from '@mui/material'
+import { Paper, Typography } from '@mui/material'
 import { FC } from 'react'
 
 import LinkRouter from '../LinkRouter'
 import { BoxStyle, ImageBoxStyle } from './styled'
 
-import { empty } from '../../assets/backgrounds'
+import { small_empty } from '../../assets/backgrounds'
 
 interface Props {
     name: string,
@@ -18,14 +18,16 @@ const CatalogItem: FC<Props> = ({ name, image, urlSlug }) => {
             <BoxStyle>
                 <ImageBoxStyle>
                     <img
-                        style={{ width: "230px", height: "220px", objectFit: "contain" }}
-                        src={image != "" ? image : empty}
+                        style={{ width: "220px", height: "220px", objectFit: "contain" }}
+                        src={image != "" ? image : small_empty}
                         alt="categoryImage"
                     />
                 </ImageBoxStyle>
-                <Typography variant="h5" fontWeight="medium" align="center">
-                    {name}
-                </Typography>
+                <Paper elevation={0} sx={{ minHeight: "69px", maxHeight: "69px", overflow: "hidden" }}>
+                    <Typography variant="h5" fontWeight="medium" align="center">
+                        {name}
+                    </Typography>
+                </Paper>
             </BoxStyle>
         </LinkRouter>
     )

@@ -64,6 +64,31 @@ export const catalogReducer = (state = initialState, action: CatalogAction): Cat
                 searchCatalog: action.payload,
                 filterNames: []
             }
+        case CatalogActionTypes.GET_NOVELTIES:
+            return {
+                ...state,
+                countProducts: action.payload.count,
+                products: action.payload.values,
+                filterNames: []
+            }
+        case CatalogActionTypes.CHANGE_IS_SELECTED_PRODUCTS:
+            let product = state.products.find(value => value.urlSlug === action.payload);
+            if (product) {
+                let index = state.products.indexOf(product);
+                let tempProducts = state.products.slice();
+                tempProducts[index].isSelected = !tempProducts[index].isSelected;
+                return {
+                    ...state,
+                    products: tempProducts
+                }
+            }
+            else
+                return state;
+        case CatalogActionTypes.GET_SIMILAR_PRODUCTS:
+            return {
+                ...state,
+                products: action.payload,
+            }
         default:
             return state;
     }

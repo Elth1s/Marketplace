@@ -7,6 +7,13 @@ import { ServerError } from "../../store/types"
 import { BasketAction, BasketActionTypes, IBasketItem } from "./types";
 
 
+export const BasketMenuChange = () => {
+    return (dispatch: Dispatch<BasketAction>) => {
+        dispatch({
+            type: BasketActionTypes.BASKET_MENU_CHANGE
+        })
+    }
+}
 
 export const GetBasketItems = () => {
     return async (dispatch: Dispatch<BasketAction>) => {
@@ -47,7 +54,7 @@ export const RemoveFromBasket = (id: number, isInBasket: boolean) => {
 
             if (isInBasket)
                 dispatch({
-                    type: ProductActionTypes.UPDATE_SELECTED_PRODUCT
+                    type: ProductActionTypes.UPDATE_IS_IN_CART
                 })
 
             return Promise.resolve();

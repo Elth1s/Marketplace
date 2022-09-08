@@ -34,7 +34,7 @@ const DefaultLayout = () => {
             }}
         >
             <Header />
-            <Container component="main" sx={{ maxWidth: { xl: "xl", lg: "lg", md: "md" }, mb: 8, mt: "120px" }}>
+            <Container component="main" sx={{ maxWidth: { xl: "xl", lg: "lg", md: "md" }, mb: 8, mt: "20px" }}>
                 <Outlet />
                 {showButton && (
                     <IconButton aria-label="edit" color="primary" sx={{ border: 2, borderRadius: "12px" }} onClick={scrollToTop} style={{ position: "fixed", bottom: "20px", right: "30px" }}>

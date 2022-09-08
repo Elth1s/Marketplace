@@ -93,6 +93,7 @@ export const CreateSale = (data: ISale) => {
 export const UpdateSale = (id: number, data: ISale) => {
     return async () => {
         try {
+            console.log(data.dateStart)
             await http.put(`api/Sale/Update/${id}`, data);
             return Promise.resolve();
         }

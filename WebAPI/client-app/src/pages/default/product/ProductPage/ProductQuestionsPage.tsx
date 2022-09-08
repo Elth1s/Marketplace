@@ -10,7 +10,7 @@ import {
 } from "../styled";
 import { RatingStyle } from "../../../../components/Rating/styled";
 
-import { buy_cart, orange_heart } from "../../../../assets/icons";
+import { buy_cart, filled_orange_heart, orange_heart } from "../../../../assets/icons";
 
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import ReviewItem from "../../../../components/ReviewItem";
@@ -20,6 +20,7 @@ import { useActions } from "../../../../hooks/useActions";
 import ShowInfo from "../../ShortSellerInfo"
 import AddQuestion from "../AddQuestion";
 import QuestionItem from "../../../../components/QuestionItem";
+import LinkRouter from "../../../../components/LinkRouter";
 
 
 interface Props {
@@ -29,8 +30,8 @@ interface Props {
 const ProductReviewsPage: FC<Props> = ({ addInCart }) => {
     const { t } = useTranslation();
 
+    const { GetQuestions, GetMoreQuestions, BasketMenuChange, AddProductInSelected } = useActions();
     const { product, questions, productRating } = useTypedSelector(state => state.product);
-    const { GetQuestions, GetMoreQuestions } = useActions();
 
     let { urlSlug } = useParams();
 
@@ -55,7 +56,17 @@ const ProductReviewsPage: FC<Props> = ({ addInCart }) => {
         <>
             <Typography variant="h1" sx={{ mt: "30px", mb: "15px" }}>{t("pages.product.menu.questions")} {product.name}</Typography>
             <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Typography variant="h4" fontWeight="bold" display="inline" sx={{ marginRight: "70px" }}>{t("pages.product.seller")}: <Typography fontWeight="normal" display="inline" sx={{ fontSize: "20px" }}>{product.shopName}</Typography></Typography>
+                <Typography variant="h4" fontWeight="bold" display="inline" sx={{ marginRight: "70px" }}>{t("pages.product.seller")}:&nbsp;
+                    <Typography
+                        fontWeight="normal"
+                        display="inline"
+                        sx={{ fontSize: "20px" }}
+                    >
+                        <LinkRouter underline="hover" color="inherit" to={`/seller-info/${product.shopId}`}>
+                            {product.shopName}
+                        </LinkRouter>
+                    </Typography>
+                </Typography>
                 <Typography variant="h4" fontWeight="bold">{t("pages.product.sellerRating")}: </Typography>
                 <RatingStyle
                     sx={{ ml: 1, fontSize: "30px", mr: "40px" }}
@@ -103,12 +114,16 @@ const ProductReviewsPage: FC<Props> = ({ addInCart }) => {
                         />}
                         <PriceBox>
                             <Box sx={{ display: "flex", alignItems: 'baseline' }}>
-                                <Typography fontSize="64px" lineHeight="74px" sx={{ mr: "35px" }}>{product.price} &#8372;</Typography>
+                                <Typography fontSize="50px" lineHeight="63px" sx={{ mr: "35px" }}>{product.price} &#8372;</Typography>
                                 <IconButton color="primary" sx={{ borderRadius: "12px" }}>
                                     <img
-                                        style={{ width: "50px", height: "50px" }}
-                                        src={orange_heart}
+                                        style={{ width: "35px", height: "35px" }}
+                                        src={product.isSelected ? filled_orange_heart : orange_heart}
                                         alt="icon"
+                                        onClick={() => {
+                                            if (urlSlug)
+                                                AddProductInSelected(urlSlug)
+                                        }}
                                     />
                                 </IconButton>
                             </Box>
@@ -124,7 +139,7 @@ const ProductReviewsPage: FC<Props> = ({ addInCart }) => {
                                 <Typography variant="h4" fontWeight="bold" display="inline">{productRating.rating} <Typography fontWeight="medium" display="inline" sx={{ fontSize: "20px" }}>({productRating.countReviews} {t("pages.product.ratings")})</Typography></Typography>
                             </Box>
                             {product.isInBasket
-                                ? <BuyButtonSecondStyle fullWidth color="secondary" variant="contained" disabled
+                                ? <BuyButtonSecondStyle fullWidth color="secondary" variant="contained"
                                     startIcon={
                                         <img
                                             style={{ width: "40px", height: "40px" }}
@@ -132,6 +147,7 @@ const ProductReviewsPage: FC<Props> = ({ addInCart }) => {
                                             alt="icon"
                                         />}
                                     sx={{ mt: "47px" }}
+                                    onClick={BasketMenuChange}
                                 >
                                     {t("pages.product.inBasket")}
                                 </BuyButtonSecondStyle>

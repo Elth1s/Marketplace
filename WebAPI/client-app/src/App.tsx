@@ -70,6 +70,7 @@ import SellerInfo from './pages/default/SellerInfo';
 
 import darkTheme from './UISettings/darkTheme';
 import lightTheme from './UISettings/lightTheme';
+import Novelties from './pages/default/Catalog/Novelties';
 
 const App = () => {
   const { AuthUser } = useActions();
@@ -122,6 +123,8 @@ const App = () => {
             <Route path="about" element={<About />} />
             <Route path="faq" element={<FAQ />} />
             <Route path="contact-info" element={<ContactInfo />} />
+
+            <Route path="novelties" element={<Novelties />} />
 
             <Route path="seller-info/:shopId" element={<SellerInfo />} />
           </Route>

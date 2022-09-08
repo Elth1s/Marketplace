@@ -214,7 +214,7 @@ const SellerProducts = () => {
                 <BoxProductStyle>
                     {products.map((row, index) => {
                         return (
-                            <ProductItem key={row.urlSlug} name={row.name} image={row.image} statusName={row.statusName} price={row.price} urlSlug={row.urlSlug} />
+                            <ProductItem isSelected={row.isSelected} key={row.urlSlug} name={row.name} image={row.image} statusName={row.statusName} price={row.price} urlSlug={row.urlSlug} />
                         );
                     })}
                 </BoxProductStyle>

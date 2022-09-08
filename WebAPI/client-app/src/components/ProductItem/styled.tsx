@@ -18,9 +18,10 @@ export const BoxStyle = styled(Box)(({ theme }) => ({
     paddingBottom: "28px",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-between",
 }));
 
 export const ImageBoxStyle = styled(Box)(({ theme }) => ({
     margin: "auto",
+    marginTop: "0px",
+    marginBottom: "15px"
 }));

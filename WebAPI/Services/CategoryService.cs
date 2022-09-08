@@ -155,7 +155,7 @@ namespace WebAPI.Services
             return response;
         }
 
-        public async Task<IEnumerable<FullCatalogItemResponse>> GetCategoriesByProductsAsync(SearchProductRequest request)
+        public async Task<IEnumerable<FullCatalogItemResponse>> GetCategoriesByProductsAsync(SearchProductsRequest request)
         {
             if (request.ShopId != null)
             {

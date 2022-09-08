@@ -23,7 +23,7 @@ import { Form, FormikProvider, useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Navigate, useNavigate } from "react-router-dom";
-import { empty } from "../../../assets/backgrounds";
+import { small_empty } from "../../../assets/backgrounds";
 
 import { black_map_pin } from "../../../assets/icons";
 import { dark_logo, light_logo } from "../../../assets/logos";
@@ -125,7 +125,7 @@ const Ordering = () => {
 
     return (
         <Container sx={{ maxWidth: { xl: "xl", lg: "lg", md: "md" } }}>
-            <Box sx={{ mt: "26px" }}>
+            <Box sx={{ mt: "11px" }}>
                 <LinkRouter underline="none" color="inherit" to="/" >
                     <img
                         style={{ cursor: "pointer", height: "82px" }}
@@ -218,21 +218,21 @@ const Ordering = () => {
                                                     {item.basketItems.map((basketItem, index) => {
 
                                                         return (
-                                                            <Box key={`order_basket_item_${index}`} sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", py: "15px" }}>
+                                                            <Box key={`order_basket_item_${index}`} sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", py: "15px", pr: "30px" }}>
                                                                 <Box sx={{ display: "flex", alignItems: "center" }}>
                                                                     <img
                                                                         style={{ width: "120px", height: "120px", objectFit: "contain", marginRight: "10px" }}
-                                                                        src={basketItem.productImage != "" ? basketItem.productImage : empty}
+                                                                        src={basketItem.productImage != "" ? basketItem.productImage : small_empty}
                                                                         alt="productImage"
                                                                     />
                                                                     <LinkRouter underline="hover" color="inherit" to={`/product/${basketItem.productUrlSlug}`}>
-                                                                        <Typography variant="h4" sx={{ width: "550px" }}>
+                                                                        <Typography variant="h4" sx={{ width: "450px" }}>
                                                                             {basketItem.productName}
                                                                         </Typography>
                                                                     </LinkRouter>
                                                                 </Box>
                                                                 <Box sx={{ display: "flex", flexDirection: "column" }}>
-                                                                    <Typography variant="h4">
+                                                                    <Typography variant="h4" align="center">
                                                                         {t("pages.ordering.price")}
                                                                     </Typography>
                                                                     <Typography variant="h4" align="center">
@@ -240,11 +240,19 @@ const Ordering = () => {
                                                                     </Typography>
                                                                 </Box>
                                                                 <Box sx={{ display: "flex", flexDirection: "column" }}>
-                                                                    <Typography variant="h4">
+                                                                    <Typography variant="h4" align="center">
                                                                         {t("pages.ordering.count")}
                                                                     </Typography>
                                                                     <Typography variant="h4" align="center">
                                                                         {basketItem.count}
+                                                                    </Typography>
+                                                                </Box>
+                                                                <Box sx={{ display: "flex", flexDirection: "column" }}>
+                                                                    <Typography variant="h4" align="center">
+                                                                        {t("pages.ordering.sum")}
+                                                                    </Typography>
+                                                                    <Typography variant="h4" align="center">
+                                                                        {basketItem.productPriceSum} &#8372;
                                                                     </Typography>
                                                                 </Box>
                                                             </Box>
@@ -280,7 +288,7 @@ const Ordering = () => {
                                                                     <Box sx={{ display: "flex", alignItems: "center" }}>
                                                                         <img
                                                                             style={{ width: "120px", height: "120px", objectFit: "contain" }}
-                                                                            src={basketItem.productImage != "" ? basketItem.productImage : empty}
+                                                                            src={basketItem.productImage != "" ? basketItem.productImage : small_empty}
                                                                             alt="productImage"
                                                                         />
                                                                         <LinkRouter underline="hover" color="inherit" to={`/product/${basketItem.productUrlSlug}`}>

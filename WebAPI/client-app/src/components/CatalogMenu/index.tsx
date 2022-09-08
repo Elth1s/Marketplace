@@ -69,6 +69,7 @@ const CatalogMenu = () => {
                     fontSize: "18px",
                     lineHeight: "23px",
                     px: "21px",
+                    boxShadow: 0,
                     textTransform: "none",
                     borderRadius: "10px",
                     zIndex: 1299,
@@ -77,7 +78,7 @@ const CatalogMenu = () => {
                         marginLeft: "0px"
                     },
                     "&:hover": {
-                        boxShadow: 1,
+                        boxShadow: 0,
                         background: palette.primary.main
                     }
                 }}

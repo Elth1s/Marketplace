@@ -9,7 +9,7 @@ import { FC } from "react";
 import { ICardProduct } from "./types";
 import { CardContentStyle, CardPriceStyle, CardStatusStyle, CardTitleStyle } from "./styled";
 
-import { empty } from "../../assets/backgrounds";
+import { small_empty } from "../../assets/backgrounds";
 
 const CardProduct: FC<ICardProduct> = ({ image, name, statusName, price }) => {
     return (
@@ -18,7 +18,7 @@ const CardProduct: FC<ICardProduct> = ({ image, name, statusName, price }) => {
                 component="img"
                 width="260px"
                 height="220px"
-                image={image != "" ? image : empty}
+                image={image != "" ? image : small_empty}
                 alt={name}
             />
             <CardContentStyle>

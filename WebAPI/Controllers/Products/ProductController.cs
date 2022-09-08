@@ -72,15 +72,27 @@ namespace WebAPI.Controllers.Products
         /// Return of sorted products
         /// </summary>
         /// <response code="200">Getting products completed successfully</response>
-        /// <response code="403">You don't have permission</response>
         /// <response code="500">An internal error has occurred</response>
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(SearchResponse<ProductCatalogResponse>))]
-        [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [HttpGet("Search")]
-        public async Task<IActionResult> SearchProducts([FromQuery] SearchProductRequest request)
+        public async Task<IActionResult> SearchProducts([FromQuery] SearchProductsRequest request)
         {
             var result = await _productService.SearchProductsAsync(request, UserId);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Return novelty products
+        /// </summary>
+        /// <response code="200">Getting products completed successfully</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(SearchResponse<ProductCatalogResponse>))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [HttpGet("GetNovelties")]
+        public async Task<IActionResult> GetNovelties([FromQuery] NoveltyProductsRequest request)
+        {
+            var result = await _productService.GetNoveltiesAsync(request, UserId);
             return Ok(result);
         }
 

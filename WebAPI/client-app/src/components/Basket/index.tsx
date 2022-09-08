@@ -25,11 +25,10 @@ import { orange_shopping_cart, basket_empty } from '../../assets/icons';
 const Basket = () => {
     const { t } = useTranslation();
 
-    const { GetBasketItems } = useActions();
-    const { basketItems } = useTypedSelector(state => state.basket);
+    const { GetBasketItems, BasketMenuChange } = useActions();
+    const { basketItems, isBasketMenuOpen } = useTypedSelector(state => state.basket);
 
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const open = Boolean(anchorEl);
+    const anchorRef = React.useRef<HTMLButtonElement>(null);
 
     let { urlSlug } = useParams();
 
@@ -48,16 +47,17 @@ const Basket = () => {
     };
 
     const handleClick = (event: any) => {
-        setAnchorEl(event.currentTarget);
+        BasketMenuChange()
     };
 
     const handleClose = () => {
-        setAnchorEl(null);
+        BasketMenuChange()
     };
 
     return (
         <>
             <IconButton
+                ref={anchorRef}
                 sx={{ borderRadius: '12px', p: 0.5 }}
                 size="large"
                 aria-label="search"
@@ -73,9 +73,9 @@ const Basket = () => {
                 </Badge>
             </IconButton>
             <Menu
-                anchorEl={anchorEl}
+                anchorEl={anchorRef.current}
                 id="basket-menu"
-                open={open}
+                open={isBasketMenuOpen}
                 onClose={handleClose}
                 PaperProps={{
                     elevation: 0,
@@ -154,7 +154,7 @@ const Basket = () => {
                     }
                 </Paper>
                 {basketItems?.length
-                    ? <LinkRouter underline="none" to="/ordering">
+                    ? <LinkRouter underline="none" to="/ordering" onClick={BasketMenuChange}>
                         <Button color="secondary" variant="contained" sx={{ width: "100%", mt: "15px", fontSize: "20px", lineHeight: "25px", py: "12.5px", textTransform: "none" }} >
                             {t('components.basket.order')}
                         </Button>

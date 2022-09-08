@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 import { green_upload_cloud } from "../../../../assets/icons";
 
 import { ToastError, ToastWarning } from "../../../../components/ToastComponent";
-import { TextFieldStyle } from "../../../../components/TextField/styled";
+import { TextFieldSecondStyle } from "../../../../components/TextField/styled";
 import { RatingStyle } from "../../../../components/Rating/styled";
 
 import { useActions } from "../../../../hooks/useActions";
@@ -124,7 +124,7 @@ const ReviewForm: FC<Props> = ({ getData }) => {
                 <Grid container rowSpacing={2.5}>
                     <Grid container item xs={12} columnSpacing={3.25}>
                         <Grid item xs={6}>
-                            <TextFieldStyle
+                            <TextFieldSecondStyle
                                 fullWidth
                                 variant="outlined"
                                 type="text"
@@ -135,7 +135,7 @@ const ReviewForm: FC<Props> = ({ getData }) => {
                             />
                         </Grid>
                         <Grid item xs={6}>
-                            <TextFieldStyle
+                            <TextFieldSecondStyle
                                 disabled={user.isEmailExist}
                                 fullWidth
                                 variant="outlined"
@@ -149,7 +149,7 @@ const ReviewForm: FC<Props> = ({ getData }) => {
                         </Grid>
                     </Grid>
                     <Grid item xs={12}>
-                        <TextFieldStyle
+                        <TextFieldSecondStyle
                             fullWidth
                             variant="outlined"
                             type="text"
@@ -160,7 +160,7 @@ const ReviewForm: FC<Props> = ({ getData }) => {
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <TextFieldStyle
+                        <TextFieldSecondStyle
                             fullWidth
                             variant="outlined"
                             type="text"
@@ -171,7 +171,7 @@ const ReviewForm: FC<Props> = ({ getData }) => {
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <TextFieldStyle
+                        <TextFieldSecondStyle
                             fullWidth
                             variant="outlined"
                             type="text"
@@ -184,7 +184,7 @@ const ReviewForm: FC<Props> = ({ getData }) => {
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <TextFieldStyle
+                        <TextFieldSecondStyle
                             fullWidth
                             variant="outlined"
                             type="text"
@@ -238,7 +238,8 @@ const ReviewForm: FC<Props> = ({ getData }) => {
                                 fontSize: "20px",
                                 fontWeight: "500",
                                 lineHeight: "25px",
-                                padding: "15px 83px"
+                                padding: "15px 83px",
+                                borderRadius: "10px"
                             }}
                         >
                             {t('pages.product.reviewForm.sendBtn')}

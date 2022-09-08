@@ -7,6 +7,7 @@ import {
 
 export const DrawerStyle = styled(Drawer, { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
+    height: "867px",
     '& .MuiDrawer-paper': {
       background: "transparent",
       position: 'relative',

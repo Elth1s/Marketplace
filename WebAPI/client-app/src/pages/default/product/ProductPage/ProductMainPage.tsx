@@ -19,11 +19,13 @@ import {
 } from "../styled";
 import { RatingStyle } from "../../../../components/Rating/styled";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
-import { arrow_right, buy_cart, credit_card, dollar_sign, orange_heart, package_delivery, truck_delivery } from "../../../../assets/icons";
+import { arrow_right, buy_cart, credit_card, dollar_sign, filled_orange_heart, orange_heart, package_delivery, truck_delivery } from "../../../../assets/icons";
 import { useActions } from "../../../../hooks/useActions";
 
 import ShowInfo from "../../ShortSellerInfo"
 import ReviewsForm from "../ReviewForm"
+import { big_empty } from "../../../../assets/backgrounds";
+import LinkRouter from "../../../../components/LinkRouter";
 
 interface Props {
     moveToReview: any
@@ -33,7 +35,7 @@ interface Props {
 const ProductMainPage: FC<Props> = ({ addInCart, moveToReview }) => {
     const { t } = useTranslation();
 
-    const { GetReviews, GetProductRatingByUrlSlug } = useActions();
+    const { GetReviews, BasketMenuChange, AddProductInSelected, GetProductRatingByUrlSlug } = useActions();
     const { product, reviews, productRating } = useTypedSelector(state => state.product);
 
     let { urlSlug } = useParams();
@@ -60,7 +62,17 @@ const ProductMainPage: FC<Props> = ({ addInCart, moveToReview }) => {
         <>
             <Typography variant="h1" sx={{ mt: "30px", mb: "15px" }}>{product.name}</Typography>
             <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Typography variant="h4" fontWeight="bold" display="inline" sx={{ marginRight: "70px" }}>{t("pages.product.seller")}: <Typography fontWeight="normal" display="inline" sx={{ fontSize: "20px" }}>{product.shopName}</Typography></Typography>
+                <Typography variant="h4" fontWeight="bold" display="inline" sx={{ marginRight: "70px" }}>{t("pages.product.seller")}:&nbsp;
+                    <Typography
+                        fontWeight="normal"
+                        display="inline"
+                        sx={{ fontSize: "20px" }}
+                    >
+                        <LinkRouter underline="hover" color="inherit" to={`/seller-info/${product.shopId}`}>
+                            {product.shopName}
+                        </LinkRouter>
+                    </Typography>
+                </Typography>
                 <Typography variant="h4" fontWeight="bold">{t("pages.product.sellerRating")}: </Typography>
                 <RatingStyle
                     sx={{ ml: 1, fontSize: "30px", mr: "40px" }}
@@ -73,51 +85,63 @@ const ProductMainPage: FC<Props> = ({ addInCart, moveToReview }) => {
             </Box>
             <Grid container sx={{ mb: "80px" }}>
                 <Grid item xs={4} sx={{ mt: "84px" }}>
-                    <Swiper
-                        modules={[Controller, Navigation, Thumbs]}
-                        navigation
-                        spaceBetween={15}
-                        thumbs={{ swiper: thumbsSwiper }}
-                    >
-                        {product.images.map((item, index) => (
-                            <SwiperSlide key={index}>
-                                <img
-                                    style={{ width: "520px", height: "520px", objectFit: "contain" }}
-                                    src={item.name}
-                                    alt="productImage"
-                                />
-                            </SwiperSlide>
-                        ))}
-                    </Swiper>
-                    {product.images?.length > 1 && <Swiper
-                        modules={[Controller, Thumbs]}
-                        watchSlidesProgress
-                        slidesPerView={6}
-                        spaceBetween={25}
-                        onSwiper={setThumbsSwiper}
-                        style={{
-                            marginTop: "35px",
-                        }}
-                    >
-                        {product.images.map((item, index) => (
-                            <SwiperSlide key={index} style={{ width: "67px", height: "67px" }}>
-                                <img
-                                    style={{ width: "64px", height: "64px", objectFit: "contain" }}
-                                    src={item.name}
-                                    alt="productImage"
-                                />
-                            </SwiperSlide>
-                        ))}
-                    </Swiper>}
+                    {product.images?.length != 0
+                        ? <>
+                            <Swiper
+                                modules={[Controller, Navigation, Thumbs]}
+                                navigation
+                                spaceBetween={15}
+                                thumbs={{ swiper: thumbsSwiper }}
+                            >
+                                {product.images.map((item, index) => (
+                                    <SwiperSlide key={index} style={{ width: "520px", height: "520px" }}>
+                                        <img
+                                            style={{ width: "520px", height: "520px", objectFit: "contain" }}
+                                            src={item.name}
+                                            alt="productImage"
+                                        />
+                                    </SwiperSlide>
+                                ))}
+                            </Swiper>
+                            {product.images?.length > 1 && <Swiper
+                                modules={[Controller, Thumbs]}
+                                watchSlidesProgress
+                                slidesPerView={6}
+                                spaceBetween={25}
+                                onSwiper={setThumbsSwiper}
+                                style={{
+                                    marginTop: "35px",
+                                }}
+                            >
+                                {product.images.map((item, index) => (
+                                    <SwiperSlide key={index} style={{ width: "65px", height: "65px" }}>
+                                        <img
+                                            style={{ width: "63px", height: "63px", objectFit: "contain" }}
+                                            src={item.name}
+                                            alt="productImage"
+                                        />
+                                    </SwiperSlide>
+                                ))}
+                            </Swiper>}
+                        </>
+                        : <img
+                            style={{ width: "520px", height: "620px", objectFit: "contain" }}
+                            src={big_empty}
+                            alt="productImage"
+                        />}
                 </Grid>
                 <Grid item xs={4} sx={{ mt: "84px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "start", pl: "119px" }}>
                     <Box sx={{ display: "flex", alignItems: 'baseline' }}>
                         <Typography fontSize="50px" lineHeight="63px" sx={{ mr: "35px" }}>{product.price} &#8372;</Typography>
                         <IconButton color="primary" sx={{ borderRadius: "12px" }}>
                             <img
-                                style={{ width: "50px", height: "50px" }}
-                                src={orange_heart}
+                                style={{ width: "35px", height: "35px" }}
+                                src={product.isSelected ? filled_orange_heart : orange_heart}
                                 alt="icon"
+                                onClick={() => {
+                                    if (urlSlug)
+                                        AddProductInSelected(urlSlug)
+                                }}
                             />
                         </IconButton>
                     </Box>
@@ -134,7 +158,7 @@ const ProductMainPage: FC<Props> = ({ addInCart, moveToReview }) => {
                     </Box>
                     <ShowInfo isMainPage={true} id={product.shopId} />
                     {product.isInBasket
-                        ? <BuyButton color="secondary" variant="contained" disabled
+                        ? <BuyButton color="secondary" variant="contained"
                             startIcon={
                                 <img
                                     style={{ width: "40px", height: "40px" }}
@@ -142,6 +166,7 @@ const ProductMainPage: FC<Props> = ({ addInCart, moveToReview }) => {
                                     alt="icon"
                                 />}
                             sx={{ mt: "35px" }}
+                            onClick={BasketMenuChange}
                         >
                             {t("pages.product.inBasket")}
                         </BuyButton>

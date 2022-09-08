@@ -1,4 +1,5 @@
 export enum BasketActionTypes {
+    BASKET_MENU_CHANGE = "BASKET_MENU_CHANGE",
     GET_BASKET_ITEMS = "GET_BASKET_ITEMS",
     RESET_BASKET = "RESET_BASKET"
 }
@@ -14,9 +15,13 @@ export interface IBasketItem {
 }
 
 export interface BasketState {
+    isBasketMenuOpen: boolean,
     basketItems: Array<IBasketItem>,
 }
 
+export interface BasketDialogChangeAction {
+    type: BasketActionTypes.BASKET_MENU_CHANGE
+}
 
 export interface GetBasketItemsAction {
     type: BasketActionTypes.GET_BASKET_ITEMS,
@@ -28,4 +33,4 @@ export interface ResetBasketAction {
 }
 
 
-export type BasketAction = GetBasketItemsAction | ResetBasketAction;
+export type BasketAction = BasketDialogChangeAction | GetBasketItemsAction | ResetBasketAction;

@@ -64,11 +64,11 @@ export const BuyButton = styled(Button)(() => ({
 
 export const BuyButtonSecondStyle = styled(Button)(() => ({
     fontSize: "27px",
-    lineHeight: "34px",
+    lineHeight: "35px",
     textTransform: "none",
     borderRadius: "10px",
-    paddingTop: "20px",
-    paddingBottom: "20px",
+    paddingTop: "15px",
+    paddingBottom: "15px",
     "&>*:nth-of-type(1)": {
         marginRight: "20px",
         marginLeft: "0px"
@@ -77,13 +77,13 @@ export const BuyButtonSecondStyle = styled(Button)(() => ({
 
 export const SellerContactsButtonSecondStyle = styled(Button)(() => ({
     fontSize: "27px",
-    lineHeight: "34px",
+    lineHeight: "35px",
     textTransform: "none",
     borderRadius: "10px",
     borderWidth: "4px",
     borderColor: "#0E7C3A",
-    paddingTop: "19px",
-    paddingBottom: "19px",
+    paddingTop: "13.5px",
+    paddingBottom: "13.5px",
     "&:hover": {
         borderWidth: "4px",
     },

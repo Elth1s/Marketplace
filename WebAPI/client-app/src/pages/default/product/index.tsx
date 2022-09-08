@@ -30,15 +30,17 @@ import { RatingStyle } from "../../../components/Rating/styled";
 const Product = () => {
     const { t } = useTranslation();
 
+    const { GetProductByUrlSlug, GetSimilarProducts, AddProductInCart, GetBasketItems, GetReviews } = useActions();
+    const { parents, product, productRating } = useTypedSelector(state => state.product);
+    const { products } = useTypedSelector(state => state.catalog);
+
     const dataTabs = [
         { label: `${t("pages.product.menu.allAboutTheProduct")}` },
         { label: `${t("pages.product.menu.characteristics")}` },
-        { label: `${t("pages.product.menu.reviews")}` },
+        { label: `${productRating.countReviews ? t("pages.product.menu.reviews") : t("pages.product.menu.leaveReview")}` },
         { label: `${t("pages.product.menu.questions")}` },
     ]
 
-    const { GetProductByUrlSlug, GetSimilarProducts, AddProductInCart, GetBasketItems, GetReviews } = useActions();
-    const { parents, product, similarProducts } = useTypedSelector(state => state.product);
 
     let { urlSlug, menu } = useParams();
 
@@ -83,7 +85,22 @@ const Product = () => {
             <TabContext value={valueTab} >
                 <TabList onChange={handleChange} aria-label="basic tabs example" >
                     {dataTabs.map((item, index) => (
-                        <Tab key={index} label={item.label} value={index.toString()} sx={{ fontSize: "20px", padding: "0px", minWidth: "auto", textTransform: "none", marginRight: "90px", "&& .MuiTouchRipple-child": { backgroundColor: "transparent" } }} />
+                        <Tab
+                            key={index}
+                            label={item.label}
+                            value={index.toString()}
+                            sx={{
+                                fontSize: "20px",
+                                padding: "0px",
+                                minWidth: "auto",
+                                textTransform: "none",
+                                color: "inherit",
+                                marginRight: "90px",
+                                "&& .MuiTouchRipple-child": {
+                                    backgroundColor: "transparent"
+                                }
+                            }}
+                        />
                     ))}
                 </TabList>
 
@@ -123,10 +140,10 @@ const Product = () => {
                     slidesPerGroup={5}
                     spaceBetween={15}
                 >
-                    {similarProducts.map((row, index) => {
+                    {products.map((row, index) => {
                         return (
                             <SwiperSlide key={index}>
-                                <ProductItem name={row.name} image={row.image} statusName={row.statusName} price={row.price} urlSlug={row.urlSlug} />
+                                <ProductItem isSelected={row.isSelected} name={row.name} image={row.image} statusName={row.statusName} price={row.price} urlSlug={row.urlSlug} />
                             </SwiperSlide>
                         );
                     })}
