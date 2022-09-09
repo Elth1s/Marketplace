@@ -164,7 +164,19 @@ namespace DAL.Data
                 marketplaceDbContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT OrderStatuses OFF");
                 transaction.Commit();
             }
+
+            if (!await marketplaceDbContext.DeliveryTypes.AnyAsync())
+            {
+                using var transaction = marketplaceDbContext.Database.BeginTransaction();
+                await marketplaceDbContext.DeliveryTypes.AddRangeAsync(
+                  GetPreconfiguredMarketplaceDeliveryTypes());
+                marketplaceDbContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT DeliveryTypes ON");
+                await marketplaceDbContext.SaveChangesAsync();
+                marketplaceDbContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT DeliveryTypes OFF");
+                transaction.Commit();
+            }
         }
+
 
         static IEnumerable<Country> GetPreconfiguredCountries()
         {
@@ -1728,5 +1740,18 @@ namespace DAL.Data
 
             return daysOfWeek;
         }
+
+        static IEnumerable<DeliveryType> GetPreconfiguredMarketplaceDeliveryTypes()
+        {
+            var deliveryTypes = new List<DeliveryType>
+            {
+                  new(){ Id=1, DarkIcon="",LightIcon="", DeliveryTypeTranslations=new List<DeliveryTypeTranslation>(){
+                        new (){ LanguageId=LanguageId.English, Name="Nova Poshta"},
+                        new (){ LanguageId=LanguageId.Ukrainian, Name="Нова пошта"} } }
+            };
+
+            return deliveryTypes;
+        }
+
     }
 }

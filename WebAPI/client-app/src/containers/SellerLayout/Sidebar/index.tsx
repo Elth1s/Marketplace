@@ -29,6 +29,7 @@ const Sidebar: FC<IDrawer> = ({ open }) => {
         { lable: `${t('containers.admin_seller.sideBar.characteristicNames')}`, path: '/seller/characteristicNames', rotate: undefined },
         { lable: `${t('containers.admin_seller.sideBar.characteristicValues')}`, path: '/seller/characteristicValues', rotate: undefined },
         { lable: `${t('containers.admin_seller.sideBar.products')}`, path: '/seller/products', rotate: undefined },
+        { lable: "orders", path: '/seller/orders', rotate: undefined }
     ]);
     const [selected, setSelected] = useState<string>("");
     const location = useLocation();

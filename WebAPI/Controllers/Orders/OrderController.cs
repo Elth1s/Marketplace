@@ -4,7 +4,9 @@ using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Security.Claims;
 using WebAPI.Interfaces.Orders;
+using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Request.Orders;
+using WebAPI.ViewModels.Response;
 using WebAPI.ViewModels.Response.Orders;
 
 namespace WebAPI.Controllers.Orders
@@ -25,6 +27,43 @@ namespace WebAPI.Controllers.Orders
         {
             _orderService = orderService;
             _orderLocalizer = orderLocalizer;
+        }
+
+        /// <summary>
+        /// Returns all orders to the user
+        /// </summary>
+        /// <response code="200">Getting orders completed successfully</response>
+        /// <response code="401">You are not authorized</response>
+        /// <response code="403">You don't have permission</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<OrderResponse>))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [HttpGet("GetForUser")]
+        public async Task<IActionResult> GetForUser()
+        {
+            var result = await _orderService.GetForUserAsync(UserId);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Return of sorted orders
+        /// </summary>
+        /// <response code="200">Getting orders completed successfully</response>
+        /// <response code="401">You are not authorized</response>
+        /// <response code="403">You don't have permission</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(SearchResponse<OrderResponse>))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = "Admin,Seller")]
+        [HttpGet("AdminSellerSearch")]
+        public async Task<IActionResult> AdminSellerSearchOreders([FromQuery] SellerSearchRequest request)
+        {
+            var result = await _orderService.AdminSellerSearchAsync(request, UserId);
+            return Ok(result);
         }
 
         /// <summary>

@@ -50,7 +50,8 @@
                     "units": "Units",
                     "users": "Users",
                     "sales": "Sales",
-                    "orderStatuses": "Order statuses"
+                    "orderStatuses": "Order statuses",
+                    "order": "Order"
                 },
                 "table": {
                     "rowsPerPage": "Shows",
@@ -296,6 +297,17 @@
                         "shopIdError": "Something went wrong",
                         "RatingWarning": "Set your overview"
                     }
+                }
+            },
+            "user": {
+                "order": {
+                    "title": "Order",
+                    "totalPrice": "Order amount",
+                    "price": "Price",
+                    "count": "Count",
+                    "payment": "Payment",
+                    "delivery": "Delivery",
+                    "total": "Total"
                 }
             },
             "ordering": {

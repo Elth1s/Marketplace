@@ -43,6 +43,7 @@ import AdminCharacteristicValueTable from './pages/admin/characteristicValue/Tab
 import CharacteristicGroupTable from './pages/seller/characteristicGroup/Table';
 import CharacteristicNameTable from './pages/seller/characteristicName/Table';
 import CharacteristicValueTable from './pages/seller/characteristicValue/Table';
+import OrdersTable from './pages/seller/order/Table';
 
 import ProductTable from './pages/seller/product/Table';
 
@@ -148,6 +149,7 @@ const App = () => {
             <Route path="characteristicNames" element={<CharacteristicNameTable />} />
             <Route path="characteristicValues" element={<CharacteristicValueTable />} />
             <Route path="products" element={<ProductTable />} />
+            <Route path="orders" element={<OrdersTable />} />
             <Route path="products/create" element={<ProductCreate />} />
           </Route>
 

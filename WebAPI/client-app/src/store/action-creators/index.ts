@@ -26,6 +26,7 @@ import * as ShopPageActionCreators from "../../pages/default/SellerInfo/actions"
 import * as DeliveryTypeActionCreators from "../../pages/admin/deliveryType/actions"
 import * as SaleActionCreators from "../../pages/admin/sale/actions"
 import * as UIActionCreators from "../../UISettings/actions"
+import * as OrderCreators from "../../pages/seller/order/actions"
 
 const actions = {
     ...AuthActionCreators,
@@ -54,6 +55,7 @@ const actions = {
     ...ShopPageActionCreators,
     ...SaleActionCreators,
     ...DeliveryTypeActionCreators,
-    ...UIActionCreators
+    ...UIActionCreators,
+    ...OrderCreators
 }
 export default actions;
