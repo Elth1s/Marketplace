@@ -4,6 +4,7 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
 
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import LinkRouter from '../../../components/LinkRouter';
 import {
@@ -14,8 +15,7 @@ import {
     black_review, orange_review,
 } from '../../../assets/icons';
 
-import { ListItemStyle } from './styled';
-import { useLocation } from 'react-router-dom';
+import { ListItemButtonStyle } from './styled';
 
 export interface IMenuItem {
     label: string,
@@ -41,12 +41,25 @@ const Sitebar = () => {
     }, []);
 
     return (
-        <List>
+        <List sx={{ padding: "0" }}>
             {menuItems.map((item, index) => (
-                <LinkRouter key={index} underline="none" color="unset" to={item.path}>
-                    <ListItem>
-                        <ListItemStyle selected={selectedItem === item.path} onClick={() => setSelectedItem(item.path)}>
-                            <ListItemIcon>
+                <LinkRouter key={index} underline="none" color="unset" to={item.path}
+                    sx={{
+                        display: "block",
+                        marginBottom: "30px",
+                        "&:last-child": {
+                            marginBottom: "0px"
+                        }
+                    }}
+                >
+                    <ListItem sx={{ padding: "0" }}>
+                        <ListItemButtonStyle selected={selectedItem === item.path} onClick={() => setSelectedItem(item.path)}>
+                            <ListItemIcon
+                                sx={{
+                                    minWidth: "20px",
+                                    marginRight: "20px"
+                                }}
+                            >
                                 <img
                                     style={{ width: "20px", height: "20px" }}
                                     src={selectedItem === item.path ? item.activeIcon : item.icon}
@@ -54,7 +67,7 @@ const Sitebar = () => {
                                 />
                             </ListItemIcon>
                             <ListItemText primary={item.label} />
-                        </ListItemStyle>
+                        </ListItemButtonStyle>
                     </ListItem>
                 </LinkRouter>
             ))}

@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Identity;
 using WebAPI.Extensions;
 using WebAPI.Interfaces.Orders;
 using WebAPI.Specifications.Orders;
+using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Request.Orders;
+using WebAPI.ViewModels.Response;
 using WebAPI.ViewModels.Response.Orders;
 
 namespace WebAPI.Services.Orders
@@ -20,6 +22,7 @@ namespace WebAPI.Services.Orders
         private readonly IRepository<Product> _productRepository;
         private readonly UserManager<AppUser> _userManager;
         private readonly IRepository<BasketItem> _basketItemRepository;
+        private readonly IRepository<Shop> _shopRepository;
         private readonly IMapper _mapper;
         public OrderService(
                IRepository<Order> orderRepository,
@@ -28,6 +31,7 @@ namespace WebAPI.Services.Orders
                IRepository<Product> productRepository,
                IRepository<DeliveryType> deliveryTypeRepository,
                IRepository<BasketItem> basketItemRepository,
+               IRepository<Shop> shopRepository,
                UserManager<AppUser> userManager,
                IMapper mapper
             )
@@ -38,6 +42,7 @@ namespace WebAPI.Services.Orders
             _productRepository = productRepository;
             _deliveryTypeRepository = deliveryTypeRepository;
             _basketItemRepository = basketItemRepository;
+            _shopRepository = shopRepository;
             _userManager = userManager;
             _mapper = mapper;
         }
@@ -54,8 +59,10 @@ namespace WebAPI.Services.Orders
             status.OrderStatusNullChecking();
             order.OrderStatusId = OrderStatusId.InProcess;
 
-            var deliveryType = await _deliveryTypeRepository.GetByIdAsync(request.DeliveryTypeId);
+            //var deliveryType = await _deliveryTypeRepository.GetByIdAsync(request.DeliveryTypeId);
+            var deliveryType = await _deliveryTypeRepository.GetByIdAsync(1);
             deliveryType.DeliveryTypeNullChecking();
+            order.DeliveryTypeId = deliveryType.Id;
 
             await _orderRepository.AddAsync(order);
             await _orderRepository.SaveChangesAsync();
@@ -96,15 +103,65 @@ namespace WebAPI.Services.Orders
             return _mapper.Map<IEnumerable<OrderResponse>>(orders);
         }
 
-        public async Task<OrderResponse> GetByIdAsync(int id)
+        public async Task<IEnumerable<OrderResponse>> GetForUserAsync(string userId)
         {
-            var spec = new OrderIncludeFullInfoSpecification(id);
-            var order = await _orderRepository.GetBySpecAsync(spec);
-            order.OrderNullChecking();
+            var user = await _userManager.FindByIdAsync(userId);
+            user.UserNullChecking();
 
-            var result = _mapper.Map<OrderResponse>(order);
-            result.OrderProductsResponse = _mapper.Map<IEnumerable<OrderProductResponse>>(order.OrderProducts);
-            return result;
+            var spec = new OrderUserIncludeFullInfoSpecification(user.Id);
+            var orders = await _orderRepository.ListAsync(spec);
+
+            var resultOrders = _mapper.Map<IEnumerable<OrderResponse>>(orders);
+
+            foreach(var resultOrder in resultOrders)
+            {
+                var specc = new OrderIncludeFullInfoSpecification(resultOrder.Id);
+                var order = await _orderRepository.GetBySpecAsync(specc);
+                order.OrderNullChecking();
+
+                var result = _mapper.Map<OrderResponse>(order);
+                result.OrderProductsResponse = _mapper.Map<IEnumerable<OrderProductResponse>>(order.OrderProducts);
+                resultOrder.OrderProductsResponse = _mapper.Map<IEnumerable<OrderProductResponse>>(order.OrderProducts);
+            }
+
+            return resultOrders;
         }
+
+    public async Task<OrderResponse> GetByIdAsync(int id)
+    {
+        var spec = new OrderIncludeFullInfoSpecification(id);
+        var order = await _orderRepository.GetBySpecAsync(spec);
+        order.OrderNullChecking();
+
+        var result = _mapper.Map<OrderResponse>(order);
+        result.OrderProductsResponse = _mapper.Map<IEnumerable<OrderProductResponse>>(order.OrderProducts);
+        return result;
     }
+
+    public async Task<SearchResponse<OrderResponse>> AdminSellerSearchAsync(SellerSearchRequest request, string userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+        user.UserNullChecking();
+
+        var shop = await _shopRepository.GetByIdAsync(user.ShopId.Value);
+        shop.ShopNullChecking();
+
+        var spec = new OrderSearchSpecification(request.Name, request.IsAscOrder, request.OrderBy, request.IsSeller, shop.Id);
+        var count = await _orderRepository.CountAsync(spec);
+        spec = new OrderSearchSpecification(
+            request.Name,
+            request.IsAscOrder,
+            request.OrderBy,
+            request.IsSeller,
+            user.ShopId,
+            (request.Page - 1) * request.RowsPerPage,
+            request.RowsPerPage);
+
+        var orders = await _orderRepository.ListAsync(spec);
+        var mappedOrders = _mapper.Map<IEnumerable<OrderResponse>>(orders);
+        var response = new SearchResponse<OrderResponse>() { Count = count, Values = mappedOrders };
+
+        return response;
+    }
+}
 }

@@ -9,10 +9,11 @@ export enum ConfirmEmailActionTypes {
     IS_EMAIL_CONFIRMED = "IS_EMAIL_CONFIRMED"
 }
 export enum OrderActionTypes {
-    GET_ORDER_PRODUCTS = "GET_ORDER_PRODUCTS"
+    GET_ORDER_PRODUCTS = "GET_ORDER_PRODUCTS",
+    GET_ORDER_FOR_USER = "GET_ORDER_FOR_USER"
 }
 
-
+//Profile interface
 export interface IProfile {
     firstName: string,
     secondName: string,
@@ -36,16 +37,13 @@ export interface IProfile {
     hasPassword: boolean
 }
 
-
-export interface ProfileState {
-    userInfo: IProfile,
-    orderProducts: Array<IOrderProducts>
-
+//Confirm Email
+export interface IConfirmEmail {
+    userId: string,
+    confirmationCode: string
 }
 
-// Create order
-
-
+//Order
 export interface IOrderCreate {
     consumerFirstName: string,
     consumerSecondName: string,
@@ -72,24 +70,36 @@ export interface IOrderProducts {
     basketItems: Array<IBasketOrderItem>
 }
 
-
-//Confirm Email
-export interface IConfirmEmail {
-    userId: string,
-    confirmationCode: string
-}
-export interface ConfirmEmailAction {
-    type: ConfirmEmailActionTypes.CONFIRM_EMAIL,
-}
-export interface SendConfirmEmailAction {
-    type: ConfirmEmailActionTypes.SEND_CONFIRM_EMAIL,
-}
-export interface IsEmailConfirmedAction {
-    type: ConfirmEmailActionTypes.IS_EMAIL_CONFIRMED,
-    payload: boolean
+export interface IProductForUser {
+    id: number,
+    count: number,
+    price: number,
+    productId: number,
+    productName: string,
+    productImage: string,
 }
 
+export interface IOrdersForUser {
+    id: number,
+    consumerFirstName: string,
+    consumerSecondName: string,
+    consumerPhone: string,
+    consumerEmail: string,
+    orderStatusName: null,
+    deliveryType: string,
+    orderProductsResponse: Array<IProductForUser>
+}
 
+
+//==========State
+export interface ProfileState {
+    userInfo: IProfile,
+    orderProducts: Array<IOrderProducts>
+    ordersForUser: Array<IOrdersForUser>
+}
+
+//==========Action
+//Profile
 export interface GetProfileAction {
     type: ProfileActionTypes.GET_PROFILE,
     payload: IProfile
@@ -101,11 +111,29 @@ export interface FacebookConnectSuccessAction {
     type: ProfileActionTypes.FACEBOOK_CONNECT_SUCCESS,
 }
 
+//Confirm Email
+export interface ConfirmEmailAction {
+    type: ConfirmEmailActionTypes.CONFIRM_EMAIL,
+}
+export interface SendConfirmEmailAction {
+    type: ConfirmEmailActionTypes.SEND_CONFIRM_EMAIL,
+}
+export interface IsEmailConfirmedAction {
+    type: ConfirmEmailActionTypes.IS_EMAIL_CONFIRMED,
+    payload: boolean
+}
+
+//Order
 export interface GetOrderProductsAction {
     type: OrderActionTypes.GET_ORDER_PRODUCTS,
     payload: Array<IOrderProducts>
 }
 
+export interface GetOrderForUserAction {
+    type: OrderActionTypes.GET_ORDER_FOR_USER,
+    payload: Array<IOrdersForUser>
+}
+
 export type ProfileAction = GetProfileAction | GoogleConnectSuccessAction | FacebookConnectSuccessAction;
 export type EmailConfirmAction = ConfirmEmailAction | SendConfirmEmailAction | IsEmailConfirmedAction;
-export type OrderAction = GetOrderProductsAction;
+export type OrderAction = GetOrderProductsAction | GetOrderForUserAction;

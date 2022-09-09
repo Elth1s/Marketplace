@@ -31,7 +31,8 @@ const initialState: ProfileState = {
         isGoogleConnected: false,
         hasPassword: false,
     },
-    orderProducts: []
+    orderProducts: [],
+    ordersForUser: []
 }
 
 export const profileReducer = (state = initialState, action: ProfileAction | EmailConfirmAction | OrderAction): ProfileState => {
@@ -70,6 +71,11 @@ export const profileReducer = (state = initialState, action: ProfileAction | Ema
                 ...state,
                 orderProducts: action.payload,
             }
+        case OrderActionTypes.GET_ORDER_FOR_USER:
+            return {
+                ...state,
+                ordersForUser: action.payload,
+            }    
         default:
             return state;
     }

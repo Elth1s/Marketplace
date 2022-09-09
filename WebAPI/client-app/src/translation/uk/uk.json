@@ -49,8 +49,9 @@
                     "cities": "Міста",
                     "units": "Одиниці вимірування",
                     "users": "Користувачі",
-                    "sales": "Акції",
-                    "orderStatuses": "Статуси замовлень"
+                    "orderStatuses": "Статуси замовлень",
+                    "order": "Замовлення",
+                    "sales": "Акції"
                 },
                 "table": {
                     "rowsPerPage": "Показати",
@@ -296,6 +297,17 @@
                         "shopIdError": "Щось пішло не так",
                         "RatingWarning": "Вкажіть ваше враження"
                     }
+                }
+            },
+            "user": {
+                "order": {
+                    "title": "Замовлення",
+                    "totalPrice": "Сума замовлення",
+                    "price": "Ціна",
+                    "count": "Кількість",
+                    "payment": "Оплата",
+                    "delivery": "Доставка",
+                    "total": "Всього"
                 }
             },
             "ordering": {
