@@ -90,6 +90,16 @@ namespace WebAPI.Services.Shops
             var shop = _mapper.Map<Shop>(request);
             shop.UserId = userId;
 
+            shop.ShopSchedule = new List<ShopScheduleItem>(){
+                    new(){ DayOfWeekId=DayOfWeekId.Monday, Start=new DateTime(1,1,1,10,0,0), End=new DateTime(1,1,1,18,0,0) },
+                    new(){ DayOfWeekId=DayOfWeekId.Tuesday, Start=new DateTime(1,1,1,10,0,0), End=new DateTime(1,1,1,18,0,0) },
+                    new(){ DayOfWeekId=DayOfWeekId.Wednesday, Start=new DateTime(1,1,1,10,0,0), End=new DateTime(1,1,1,18,0,0) },
+                    new(){ DayOfWeekId=DayOfWeekId.Thursday, Start=new DateTime(1,1,1,10,0,0), End=new DateTime(1,1,1,18,0,0) },
+                    new(){ DayOfWeekId=DayOfWeekId.Friday, Start=new DateTime(1,1,1,10,0,0), End=new DateTime(1,1,1,18,0,0) },
+                    new(){ DayOfWeekId=DayOfWeekId.Saturday, IsWeekend=true },
+                    new(){ DayOfWeekId=DayOfWeekId.Sunday, IsWeekend=true },
+            };
+
             await _shopRepository.AddAsync(shop);
             await _shopRepository.SaveChangesAsync();
 
@@ -109,13 +119,15 @@ namespace WebAPI.Services.Shops
             return response;
         }
 
-        public async Task UpdateShopAsync(int shopId, ShopRequest request, string userId)
+        public async Task UpdateShopAsync(int shopId, UpdateShopRequest request, string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
             user.UserNullChecking();
 
             var shop = await _shopRepository.GetByIdAsync(shopId);
             shop.ShopNullChecking();
+
+
 
             //if (!string.IsNullOrEmpty(request.Photo))
             //{

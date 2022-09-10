@@ -14,7 +14,7 @@ namespace WebAPI.Interfaces.Shops
         Task<ShopInfoFromProductResponse> ShopInfoFromProductAsync(int shopId);
         Task<ShopPageInfoResponse> GetShopInfoAsync(int shopId);
         Task<AuthResponse> CreateShopAsync(ShopRequest request, string userId, string ipAddress);
-        Task UpdateShopAsync(int shopId, ShopRequest request, string userId);
+        Task UpdateShopAsync(int shopId, UpdateShopRequest request, string userId);
         Task DeleteShopAsync(int shopId);
         Task DeleteShopsAsync(IEnumerable<int> ids);
     }

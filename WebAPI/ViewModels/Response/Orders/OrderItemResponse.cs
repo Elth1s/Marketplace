@@ -58,6 +58,11 @@
         /// <example>13945</example>
         public float ProductPrice { get; set; }
         /// <summary>
+        /// Product discount
+        /// </summary>
+        /// <example>10000</example>
+        public float? ProductDiscount { get; set; }
+        /// <summary>
         /// Product sum
         /// </summary>
         /// <example>13945</example>

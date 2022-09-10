@@ -95,6 +95,7 @@ namespace WebAPI.Extensions
             services.AddScoped<IJwtTokenService, JwtTokenService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IGenderService, GenderService>();
 
             services.AddScoped<ICategoryService, CategoryService>();
 

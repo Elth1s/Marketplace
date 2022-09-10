@@ -11,6 +11,7 @@ namespace WebAPI.Interfaces.Orders
         Task<IEnumerable<OrderResponse>> GetForUserAsync(string userId);
         Task<SearchResponse<OrderResponse>> AdminSellerSearchAsync(SellerSearchRequest request, string userId);
         Task<OrderResponse> GetByIdAsync(int id);
+        Task CancelOrderAsync(int id, string userId);
         Task CreateAsync(OrderCreateRequest request, string userId);
         Task DeleteAsync(int id);
 

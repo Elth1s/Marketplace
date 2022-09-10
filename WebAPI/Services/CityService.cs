@@ -132,5 +132,17 @@ namespace WebAPI.Services
             }
             await _cityRepository.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<CityForSelectResponse>> GetCitiesByCountryAsync(int countryId)
+        {
+            var country = await _countryRepository.GetByIdAsync(countryId);
+            country.CountryNullChecking();
+
+            var spec = new CityGetByCountrySpecification(countryId);
+            var cities = await _cityRepository.ListAsync(spec);
+
+            var response = _mapper.Map<IEnumerable<CityForSelectResponse>>(cities);
+            return response;
+        }
     }
 }

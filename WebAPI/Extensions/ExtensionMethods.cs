@@ -68,6 +68,17 @@ namespace WebAPI.Extensions
                 throw new AppException(factory["TokenRevorked"]);
             }
         }
+        public static void GenderNullChecking(this Gender gender)
+        {
+            if (gender == null)
+            {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
+                throw new AppException(
+                    factory["GenderNotFound"],
+                    HttpStatusCode.NotFound);
+            }
+        }
+
         #endregion
 
         #region Country

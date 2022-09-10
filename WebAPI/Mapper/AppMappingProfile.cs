@@ -66,6 +66,11 @@ namespace WebAPI.Mapper
 
             CreateMap<UpdateProfileRequest, AppUser>()
                 .ForMember(u => u.Photo, opt => opt.Ignore());
+
+            //Gender
+            CreateMap<Gender, GenderResponse>()
+                .ForMember(c => c.Name, opt => opt.MapFrom(
+                        vm => vm.GenderTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).Name));
             #endregion
 
             #region Category
@@ -182,6 +187,10 @@ namespace WebAPI.Mapper
                     .ForMember(u => u.CountryName, opt => opt.MapFrom(
                        vm => vm.Country.CountryTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).Name));
 
+            CreateMap<City, CityForSelectResponse>()
+                    .ForMember(c => c.Name, opt => opt.MapFrom(
+                       vm => vm.CityTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).Name));
+
             CreateMap<City, CityFullInfoResponse>()
                 .ForMember(c => c.EnglishName, opt => opt.MapFrom(
                        vm => vm.CityTranslations.FirstOrDefault(c => c.LanguageId == LanguageId.English).Name))
@@ -295,7 +304,13 @@ namespace WebAPI.Mapper
                 .ForMember(s => s.AverageRating, opt => opt.MapFrom(vm => vm.ShopReviews.Count > 0 ?
                                 Math.Round(vm.ShopReviews.Average(sr => (sr.InformationRelevanceRating + sr.ServiceQualityRating + sr.TimelinessRating) / 3f), 1) : 0))
                 .ForMember(s => s.Schedule, opt => opt.Ignore());
+
             CreateMap<ShopRequest, Shop>();
+
+            CreateMap<UpdateShopRequest, Shop>()
+                .ForMember(s => s.Photo, opt => opt.Ignore());
+
+            CreateMap<ShopPhoneRequest, ShopPhone>();
 
             //ShopPhone
             CreateMap<ShopPhone, string>()
@@ -314,8 +329,7 @@ namespace WebAPI.Mapper
             CreateMap<Product, ProductResponse>()
                 .ForMember(u => u.Image, opt => opt.MapFrom(
                     vm => vm.Images.Count != 0 ? Path.Combine(ImagePath.RequestProductsImagePath, vm.Images.FirstOrDefault().Name) : ""))
-                .ForMember(u => u.ShopName, opt => opt.MapFrom(
-                    vm => vm.Shop.Name))
+                .ForMember(u => u.ShopName, opt => opt.MapFrom(vm => vm.Shop.Name))
                 .ForMember(u => u.StatusName, opt => opt.MapFrom(
                     vm => vm.Status.ProductStatusTranslations.FirstOrDefault(s => s.LanguageId == CurrentLanguage.Id).Name))
                 .ForMember(u => u.CategoryName, opt => opt.MapFrom(
@@ -326,6 +340,8 @@ namespace WebAPI.Mapper
                 .ForMember(u => u.ProductStatus, opt => opt.MapFrom(vm =>
                            vm.Status.ProductStatusTranslations.FirstOrDefault(s => s.LanguageId == CurrentLanguage.Id).Name))
                 .ForMember(u => u.Images, opt => opt.MapFrom(vm => vm.Images))
+                .ForMember(u => u.Discount, opt => opt.MapFrom(vm => vm.Discount > 0 ?
+                vm.Price - (vm.Price / 100f * vm.Discount) : (float?)null))
                 .ForMember(u => u.ShopName, opt => opt.MapFrom(vm => vm.Shop.Name))
                 .ForMember(u => u.ShopRating, opt => opt.MapFrom(vm => vm.Shop.ShopReviews.Count > 0 ?
                                 Math.Round(vm.Shop.ShopReviews.Average(
@@ -339,8 +355,11 @@ namespace WebAPI.Mapper
             CreateMap<Product, ProductCatalogResponse>()
                 .ForMember(u => u.StatusName, opt => opt.MapFrom(vm =>
                         vm.Status.ProductStatusTranslations.FirstOrDefault(s => s.LanguageId == CurrentLanguage.Id).Name))
+                .ForMember(u => u.Discount, opt => opt.MapFrom(vm => vm.Discount > 0 ?
+                vm.Price - (vm.Price / 100f * vm.Discount) : (float?)null))
                 .ForMember(u => u.Image, opt => opt.MapFrom(
                         vm => vm.Images.Count != 0 ? Path.Combine(ImagePath.RequestProductsImagePath, vm.Images.FirstOrDefault().Name) : ""));
+
             CreateMap<ProductCreateRequest, Product>()
                 .ForMember(u => u.Images, opt => opt.Ignore());
 
@@ -387,6 +406,8 @@ namespace WebAPI.Mapper
                 .ForMember(u => u.ProductId, opt => opt.MapFrom(vm => vm.Product.Id))
                 .ForMember(u => u.ProductName, opt => opt.MapFrom(vm => vm.Product.Name))
                 .ForMember(u => u.ProductPrice, opt => opt.MapFrom(vm => vm.Product.Price))
+                .ForMember(u => u.ProductDiscount, opt => opt.MapFrom(
+                    vm => vm.Product.Discount > 0 ? vm.Product.Price - (vm.Product.Price / 100f * vm.Product.Discount) : (float?)null))
                 .ForMember(u => u.ProductPriceSum, opt => opt.MapFrom(vm => vm.Product.Price * vm.Count))
                 .ForMember(u => u.ProductUrlSlug, opt => opt.MapFrom(vm => vm.Product.UrlSlug))
                 .ForMember(u => u.ProductImage, opt => opt.MapFrom(

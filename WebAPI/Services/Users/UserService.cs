@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DAL;
 using DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -23,24 +24,50 @@ namespace WebAPI.Services.Users
         private readonly IJwtTokenService _jwtTokenService;
         private readonly UserManager<AppUser> _userManager;
         private readonly PhoneNumberManager _phoneNumberManager;
+        private readonly IRepository<Country> _countryRepository;
+        private readonly IRepository<City> _cityRepository;
+        private readonly IRepository<Gender> _genderRepository;
         public UserService(
             IStringLocalizer<ErrorMessages> errorMessagesLocalizer,
             IMapper mapper,
             UserManager<AppUser> userManager,
             IJwtTokenService jwtTokenService,
-            PhoneNumberManager phoneNumberManager)
+            PhoneNumberManager phoneNumberManager,
+            IRepository<Country> countryRepository,
+            IRepository<City> cityRepository,
+            IRepository<Gender> genderRepository)
         {
             _errorMessagesLocalizer = errorMessagesLocalizer;
             _mapper = mapper;
             _userManager = userManager;
             _jwtTokenService = jwtTokenService;
             _phoneNumberManager = phoneNumberManager;
+            _countryRepository = countryRepository;
+            _cityRepository = cityRepository;
+            _genderRepository = genderRepository;
         }
 
         public async Task UpdateProfileAsync(string id, UpdateProfileRequest request)
         {
             var user = await _userManager.FindByIdAsync(id);
             user.UserNullChecking();
+
+            if (request.CountryId.HasValue)
+            {
+                var country = await _countryRepository.GetByIdAsync(request.CountryId);
+                country.CountryNullChecking();
+            }
+            if (request.CityId.HasValue)
+            {
+                var city = await _cityRepository.GetByIdAsync(request.CityId);
+                city.CityNullChecking();
+            }
+
+            if (request.GenderId.HasValue)
+            {
+                var gender = await _genderRepository.GetByIdAsync(request.GenderId);
+                gender.GenderNullChecking();
+            }
 
             if (!string.IsNullOrEmpty(request.Photo))
             {

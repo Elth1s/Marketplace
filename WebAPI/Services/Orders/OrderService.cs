@@ -3,6 +3,8 @@ using DAL;
 using DAL.Constants;
 using DAL.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Localization;
+using WebAPI.Exceptions;
 using WebAPI.Extensions;
 using WebAPI.Interfaces.Orders;
 using WebAPI.Specifications.Orders;
@@ -15,14 +17,15 @@ namespace WebAPI.Services.Orders
 {
     public class OrderService : IOrderService
     {
+        private readonly IStringLocalizer<ErrorMessages> _errorLocalizer;
         private readonly IRepository<Order> _orderRepository;
         private readonly IRepository<OrderStatus> _orderStatusRepository;
         private readonly IRepository<OrderProduct> _orderProductRepository;
         private readonly IRepository<DeliveryType> _deliveryTypeRepository;
         private readonly IRepository<Product> _productRepository;
-        private readonly UserManager<AppUser> _userManager;
         private readonly IRepository<BasketItem> _basketItemRepository;
         private readonly IRepository<Shop> _shopRepository;
+        private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
         public OrderService(
                IRepository<Order> orderRepository,
@@ -33,8 +36,8 @@ namespace WebAPI.Services.Orders
                IRepository<BasketItem> basketItemRepository,
                IRepository<Shop> shopRepository,
                UserManager<AppUser> userManager,
-               IMapper mapper
-            )
+               IMapper mapper,
+               IStringLocalizer<ErrorMessages> errorLocalizer)
         {
             _orderProductRepository = orderProductRepository;
             _orderRepository = orderRepository;
@@ -45,6 +48,7 @@ namespace WebAPI.Services.Orders
             _shopRepository = shopRepository;
             _userManager = userManager;
             _mapper = mapper;
+            _errorLocalizer = errorLocalizer;
         }
 
         public async Task CreateAsync(OrderCreateRequest request, string userId)
@@ -113,7 +117,7 @@ namespace WebAPI.Services.Orders
 
             var resultOrders = _mapper.Map<IEnumerable<OrderResponse>>(orders);
 
-            foreach(var resultOrder in resultOrders)
+            foreach (var resultOrder in resultOrders)
             {
                 var specc = new OrderIncludeFullInfoSpecification(resultOrder.Id);
                 var order = await _orderRepository.GetBySpecAsync(specc);
@@ -127,41 +131,60 @@ namespace WebAPI.Services.Orders
             return resultOrders;
         }
 
-    public async Task<OrderResponse> GetByIdAsync(int id)
-    {
-        var spec = new OrderIncludeFullInfoSpecification(id);
-        var order = await _orderRepository.GetBySpecAsync(spec);
-        order.OrderNullChecking();
+        public async Task<OrderResponse> GetByIdAsync(int id)
+        {
+            var spec = new OrderIncludeFullInfoSpecification(id);
+            var order = await _orderRepository.GetBySpecAsync(spec);
+            order.OrderNullChecking();
 
-        var result = _mapper.Map<OrderResponse>(order);
-        result.OrderProductsResponse = _mapper.Map<IEnumerable<OrderProductResponse>>(order.OrderProducts);
-        return result;
+            var result = _mapper.Map<OrderResponse>(order);
+            result.OrderProductsResponse = _mapper.Map<IEnumerable<OrderProductResponse>>(order.OrderProducts);
+            return result;
+        }
+
+        public async Task<SearchResponse<OrderResponse>> AdminSellerSearchAsync(SellerSearchRequest request, string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            user.UserNullChecking();
+
+            var shop = await _shopRepository.GetByIdAsync(user.ShopId.Value);
+            shop.ShopNullChecking();
+
+            var spec = new OrderSearchSpecification(request.Name, request.IsAscOrder, request.OrderBy, request.IsSeller, shop.Id);
+            var count = await _orderRepository.CountAsync(spec);
+            spec = new OrderSearchSpecification(
+                request.Name,
+                request.IsAscOrder,
+                request.OrderBy,
+                request.IsSeller,
+                user.ShopId,
+                (request.Page - 1) * request.RowsPerPage,
+                request.RowsPerPage);
+
+            var orders = await _orderRepository.ListAsync(spec);
+            var mappedOrders = _mapper.Map<IEnumerable<OrderResponse>>(orders);
+            var response = new SearchResponse<OrderResponse>() { Count = count, Values = mappedOrders };
+
+            return response;
+        }
+
+        public async Task CancelOrderAsync(int id, string userId)
+        {
+            var order = await _orderRepository.GetByIdAsync(id);
+            order.OrderNullChecking();
+
+            var user = await _userManager.FindByIdAsync(userId);
+            user.UserNullChecking();
+
+            if (order.UserId != userId)
+                throw new AppException(_errorLocalizer["DontHavePermission"]);
+
+            if (order.OrderStatusId == OrderStatusId.Canceled)
+                throw new AppException(_errorLocalizer["OrderAlreadyCanceled"]);
+
+            order.OrderStatusId = OrderStatusId.Canceled;
+            await _orderRepository.UpdateAsync(order);
+            await _orderRepository.SaveChangesAsync();
+        }
     }
-
-    public async Task<SearchResponse<OrderResponse>> AdminSellerSearchAsync(SellerSearchRequest request, string userId)
-    {
-        var user = await _userManager.FindByIdAsync(userId);
-        user.UserNullChecking();
-
-        var shop = await _shopRepository.GetByIdAsync(user.ShopId.Value);
-        shop.ShopNullChecking();
-
-        var spec = new OrderSearchSpecification(request.Name, request.IsAscOrder, request.OrderBy, request.IsSeller, shop.Id);
-        var count = await _orderRepository.CountAsync(spec);
-        spec = new OrderSearchSpecification(
-            request.Name,
-            request.IsAscOrder,
-            request.OrderBy,
-            request.IsSeller,
-            user.ShopId,
-            (request.Page - 1) * request.RowsPerPage,
-            request.RowsPerPage);
-
-        var orders = await _orderRepository.ListAsync(spec);
-        var mappedOrders = _mapper.Map<IEnumerable<OrderResponse>>(orders);
-        var response = new SearchResponse<OrderResponse>() { Count = count, Values = mappedOrders };
-
-        return response;
-    }
-}
 }

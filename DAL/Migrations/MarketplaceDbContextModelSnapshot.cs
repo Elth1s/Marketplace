@@ -111,9 +111,18 @@ namespace DAL.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("CityId")
+                        .HasColumnType("int");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("CountryId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -125,6 +134,9 @@ namespace DAL.Migrations
                     b.Property<string>("FirstName")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<int?>("GenderId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -153,6 +165,9 @@ namespace DAL.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("PostalCode")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SecondName")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -171,6 +186,12 @@ namespace DAL.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CityId");
+
+                    b.HasIndex("CountryId");
+
+                    b.HasIndex("GenderId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -701,6 +722,46 @@ namespace DAL.Migrations
                     b.ToTable("FilterValueTranslations");
                 });
 
+            modelBuilder.Entity("DAL.Entities.Gender", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Genders");
+                });
+
+            modelBuilder.Entity("DAL.Entities.GenderTranslation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("GenderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LanguageId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LanguageId");
+
+                    b.HasIndex("GenderId", "LanguageId")
+                        .IsUnique();
+
+                    b.ToTable("GenderTranslations");
+                });
+
             modelBuilder.Entity("DAL.Entities.Language", b =>
                 {
                     b.Property<int>("Id")
@@ -882,6 +943,9 @@ namespace DAL.Migrations
                     b.HasIndex("ShopId");
 
                     b.HasIndex("StatusId");
+
+                    b.HasIndex("UrlSlug")
+                        .IsUnique();
 
                     b.ToTable("Products");
                 });
@@ -1271,6 +1335,9 @@ namespace DAL.Migrations
                     b.Property<int?>("CityId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("CountryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -1296,6 +1363,8 @@ namespace DAL.Migrations
 
                     b.HasIndex("CityId");
 
+                    b.HasIndex("CountryId");
+
                     b.ToTable("Shops");
                 });
 
@@ -1306,6 +1375,9 @@ namespace DAL.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
@@ -1661,6 +1733,18 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Entities.AppUser", b =>
                 {
+                    b.HasOne("DAL.Entities.City", "City")
+                        .WithMany("Users")
+                        .HasForeignKey("CityId");
+
+                    b.HasOne("DAL.Entities.Country", "Country")
+                        .WithMany("Users")
+                        .HasForeignKey("CountryId");
+
+                    b.HasOne("DAL.Entities.Gender", "Gender")
+                        .WithMany("Users")
+                        .HasForeignKey("GenderId");
+
                     b.HasOne("DAL.Entities.Shop", "Shop")
                         .WithOne("User")
                         .HasForeignKey("DAL.Entities.AppUser", "ShopId");
@@ -1707,6 +1791,12 @@ namespace DAL.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("AppUserId");
                         });
+
+                    b.Navigation("City");
+
+                    b.Navigation("Country");
+
+                    b.Navigation("Gender");
 
                     b.Navigation("RefreshTokens");
 
@@ -1998,6 +2088,25 @@ namespace DAL.Migrations
                     b.Navigation("Language");
                 });
 
+            modelBuilder.Entity("DAL.Entities.GenderTranslation", b =>
+                {
+                    b.HasOne("DAL.Entities.Gender", "Gender")
+                        .WithMany("GenderTranslations")
+                        .HasForeignKey("GenderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DAL.Entities.Language", "Language")
+                        .WithMany()
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Gender");
+
+                    b.Navigation("Language");
+                });
+
             modelBuilder.Entity("DAL.Entities.Order", b =>
                 {
                     b.HasOne("DAL.Entities.DeliveryType", "DeliveryType")
@@ -2267,7 +2376,13 @@ namespace DAL.Migrations
                         .WithMany("Shops")
                         .HasForeignKey("CityId");
 
+                    b.HasOne("DAL.Entities.Country", "Country")
+                        .WithMany("Shops")
+                        .HasForeignKey("CountryId");
+
                     b.Navigation("City");
+
+                    b.Navigation("Country");
                 });
 
             modelBuilder.Entity("DAL.Entities.ShopPhone", b =>
@@ -2453,6 +2568,8 @@ namespace DAL.Migrations
                     b.Navigation("CityTranslations");
 
                     b.Navigation("Shops");
+
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("DAL.Entities.Country", b =>
@@ -2460,6 +2577,10 @@ namespace DAL.Migrations
                     b.Navigation("Cities");
 
                     b.Navigation("CountryTranslations");
+
+                    b.Navigation("Shops");
+
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("DAL.Entities.DayOfWeek", b =>
@@ -2495,6 +2616,13 @@ namespace DAL.Migrations
                     b.Navigation("FilterValueProducts");
 
                     b.Navigation("FilterValueTranslations");
+                });
+
+            modelBuilder.Entity("DAL.Entities.Gender", b =>
+                {
+                    b.Navigation("GenderTranslations");
+
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("DAL.Entities.Language", b =>

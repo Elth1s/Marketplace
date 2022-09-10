@@ -46,6 +46,23 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
+        /// Returns cities
+        /// </summary>
+        /// <response code="200">Getting cities completed successfully</response>
+        /// <response code="401">You are not authorized</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<CityForSelectResponse>))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = "Admin")]
+        [HttpGet("GetByCountry/{countryId}")]
+        public async Task<IActionResult> GetCitiesByCountry(int countryId)
+        {
+            var result = await _cityService.GetCitiesByCountryAsync(countryId);
+            return Ok(result);
+        }
+
+        /// <summary>
         /// Return of sorted cities
         /// </summary>
         /// <response code="200">Getting cities completed successfully</response>

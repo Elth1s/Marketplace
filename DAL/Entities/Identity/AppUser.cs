@@ -13,9 +13,26 @@ namespace DAL.Entities
         [StringLength(100)]
         public string Photo { get; set; }
 
+        public string Address { get; set; }
+        public string PostalCode { get; set; }
+
         public int? ShopId { get; set; }
+
+        public int? CountryId { get; set; }
+        public int? CityId { get; set; }
+        public int? GenderId { get; set; }
+
         [ForeignKey(nameof(ShopId))]
         public Shop Shop { get; set; }
+
+        [ForeignKey(nameof(CountryId))]
+        public Country Country { get; set; }
+
+        [ForeignKey(nameof(CityId))]
+        public City City { get; set; }
+
+        [ForeignKey(nameof(GenderId))]
+        public Gender Gender { get; set; }
 
         public ICollection<CharacteristicGroup> CharacteristicGroups { get; set; }
         public ICollection<CharacteristicName> CharacteristicNames { get; set; }

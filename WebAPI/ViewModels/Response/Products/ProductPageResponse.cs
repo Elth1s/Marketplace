@@ -50,6 +50,11 @@
         /// <example>1200</example>
         public float Price { get; set; }
         /// <summary>
+        /// Product discount
+        /// </summary>
+        /// <example>1000</example>
+        public float? Discount { get; set; }
+        /// <summary>
         /// List of product filters
         /// </summary>
         public IEnumerable<ProductFilterValue> Filters { get; set; }

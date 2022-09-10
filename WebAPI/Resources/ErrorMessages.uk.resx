@@ -363,4 +363,10 @@
   <data name="SaleNotFound" xml:space="preserve">
     <value>Акцію не знайдено</value>
   </data>
+  <data name="GenderNotFound" xml:space="preserve">
+    <value>Стать не знайдено</value>
+  </data>
+  <data name="OrderAlreadyCanceled" xml:space="preserve">
+    <value>Замовлення вже скасовано</value>
+  </data>
 </root>

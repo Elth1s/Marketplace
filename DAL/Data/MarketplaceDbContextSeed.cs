@@ -8,7 +8,10 @@ namespace DAL.Data
 {
     public class MarketplaceDbContextSeed
     {
-        public static async Task SeedAsync(MarketplaceDbContext marketplaceDbContext, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
+        public static async Task SeedAsync(
+            MarketplaceDbContext marketplaceDbContext,
+            UserManager<AppUser> userManager,
+            RoleManager<IdentityRole> roleManager)
         {
 
             if (marketplaceDbContext.Database.IsSqlServer())
@@ -39,6 +42,7 @@ namespace DAL.Data
                 transaction.Commit();
             }
 
+
             if (!await marketplaceDbContext.Countries.AnyAsync())
             {
                 await marketplaceDbContext.Countries.AddRangeAsync(
@@ -47,6 +51,13 @@ namespace DAL.Data
                 await marketplaceDbContext.SaveChangesAsync();
             }
 
+            if (!await marketplaceDbContext.Sales.AnyAsync())
+            {
+                await marketplaceDbContext.Sales.AddRangeAsync(
+                  GetPreconfiguredSales());
+
+                await marketplaceDbContext.SaveChangesAsync();
+            }
 
             if (!await marketplaceDbContext.Cities.AnyAsync())
             {
@@ -56,10 +67,12 @@ namespace DAL.Data
                 await marketplaceDbContext.SaveChangesAsync();
             }
 
+            var clothersSale = marketplaceDbContext.Sales.Where(s => s.Id == 1).FirstOrDefault();
+            var laptopsSale = marketplaceDbContext.Sales.Where(s => s.Id == 2).FirstOrDefault();
             if (!await marketplaceDbContext.Categories.AnyAsync())
             {
                 await marketplaceDbContext.Categories.AddRangeAsync(
-                  GetPreconfiguredMarketplaceCategories());
+                  GetPreconfiguredMarketplaceCategories(clothersSale, laptopsSale));
 
                 await marketplaceDbContext.SaveChangesAsync();
             }
@@ -174,6 +187,14 @@ namespace DAL.Data
                 await marketplaceDbContext.SaveChangesAsync();
                 marketplaceDbContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT DeliveryTypes OFF");
                 transaction.Commit();
+            }
+
+            if (!await marketplaceDbContext.Genders.AnyAsync())
+            {
+                await marketplaceDbContext.Genders.AddRangeAsync(
+                  GetPreconfiguredMarketplaceGenders());
+
+                await marketplaceDbContext.SaveChangesAsync();
             }
         }
 
@@ -996,355 +1017,842 @@ namespace DAL.Data
             return cities;
         }
 
-
-        static IEnumerable<Category> GetPreconfiguredMarketplaceCategories()
+        static IEnumerable<Sale> GetPreconfiguredSales()
+        {
+            var sales = new List<Sale>()
+            {
+                new (){
+                    Name ="Clothes and shoes",
+                    DiscountMin =10,
+                    DiscountMax=60,
+                    DateStart=DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
+                    DateEnd=DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc).AddDays(30),
+                    SaleTranslations=new List<SaleTranslation>()
+                    {
+                        new(){ LanguageId=LanguageId.Ukrainian,
+                               VerticalImage="uk-vertical-clothes-and-shoes.png",
+                               HorizontalImage="uk-horizontal-clothes-and-shoes.png"
+                        },
+                        new(){ LanguageId=LanguageId.English,
+                               VerticalImage="en-vertical-clothes-and-shoes.png",
+                               HorizontalImage="en-horizontal-clothes-and-shoes.png"
+                        }
+                    }
+                },
+                new (){
+                    Name="Laptops",
+                    DiscountMin =10,
+                    DiscountMax=60,
+                    DateStart=DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc),
+                    DateEnd=DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc).AddDays(30),
+                    SaleTranslations=new List<SaleTranslation>()
+                    {
+                        new(){ LanguageId=LanguageId.Ukrainian,
+                               VerticalImage="uk-vertical-laptop.png",
+                               HorizontalImage="uk-horizontal-laptops.png"
+                        },
+                        new(){ LanguageId=LanguageId.English,
+                               VerticalImage="en-vertical-laptop.png",
+                               HorizontalImage="en-horizontal-laptops.png"
+                        }
+                    }
+                },
+                };
+            return sales;
+        }
+        static IEnumerable<Category> GetPreconfiguredMarketplaceCategories(Sale clothesSale, Sale laptopSale)
         {
             var categories = new List<Category>
             {
-/*1*/           new(){ UrlSlug = "beauty-and-health", Image = "BeautyAndHealth.png",LightIcon="BeautyAndHealthLight.png",DarkIcon="BeautyAndHealthDark.png",ActiveIcon="BeautyAndHealthActive.png", ParentId = null,
+/*1*/           new(){
+                    UrlSlug = "beauty-and-health",
+                    Image = "BeautyAndHealth.png",
+                    LightIcon="BeautyAndHealthLight.png",
+                    DarkIcon="BeautyAndHealthDark.png",
+                    ActiveIcon="BeautyAndHealthActive.png",
+                    ParentId = null,
                      CategoryTranslations=new List<CategoryTranslation>(){
                         new(){ Name = "Beauty and health", LanguageId=LanguageId.English },
                         new(){ Name = "Краса і здоров'я", LanguageId=LanguageId.Ukrainian } } },
-/*2*/           new(){ UrlSlug = "house-and-garden", Image = "HouseAndGarden.png",LightIcon="HouseAndGardenLight.png",DarkIcon="HouseAndGardenDark.png",ActiveIcon="HouseAndGardenActive.png", ParentId = null,
+/*2*/           new(){
+                    UrlSlug = "house-and-garden",
+                    Image = "HouseAndGarden.png",
+                    LightIcon="HouseAndGardenLight.png",DarkIcon="HouseAndGardenDark.png",
+                    ActiveIcon="HouseAndGardenActive.png",
+                    ParentId = null,
                      CategoryTranslations=new List<CategoryTranslation>(){
                         new(){ Name = "House and garden",  LanguageId=LanguageId.English },
                         new(){ Name = "Дім і сад", LanguageId=LanguageId.Ukrainian } } },
-/*3*/           new(){ UrlSlug = "clothes-and-shoes", Image = "ClothesAndShoes.png",LightIcon="ClothesAndShoesLight.png",DarkIcon="ClothesAndShoesDark.png",ActiveIcon="ClothesAndShoesActive.png", ParentId = null,
-                     CategoryTranslations=new List<CategoryTranslation>(){
+/*3*/           new(){
+                    UrlSlug = "clothes-and-shoes",
+                    Image = "ClothesAndShoes.png",
+                    LightIcon="ClothesAndShoesLight.png",
+                    DarkIcon="ClothesAndShoesDark.png",
+                    ActiveIcon="ClothesAndShoesActive.png",
+                    ParentId = null,
+                    Sales=new List<Sale>(){clothesSale},
+                     CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Clothes and shoes", LanguageId=LanguageId.English },
                         new(){ Name = "Одяг та взуття", LanguageId=LanguageId.Ukrainian } } },
-/*4*/           new(){ UrlSlug = "technology-and-electronics", Image = "TechnologyAndElectronics.png",LightIcon="TechnologyAndElectronicsLight.png",DarkIcon="TechnologyAndElectronicsDark.png",ActiveIcon="TechnologyAndElectronicsActive.png", ParentId = null,
+/*4*/           new (){ UrlSlug = "technology-and-electronics", Image = "TechnologyAndElectronics.png",LightIcon="TechnologyAndElectronicsLight.png",DarkIcon="TechnologyAndElectronicsDark.png",ActiveIcon="TechnologyAndElectronicsActive.png", ParentId = null,
                      CategoryTranslations=new List<CategoryTranslation>(){
-                        new(){ Name = "Technology and electronics", LanguageId=LanguageId.English },
-                        new(){ Name = "Техніка та електроніка", LanguageId=LanguageId.Ukrainian } } },
-/*5*/           new(){ UrlSlug = "goods-for-children", Image = "GoodsForChildren.png",LightIcon="GoodsForChildrenLight.png",DarkIcon="GoodsForChildrenDark.png",ActiveIcon="GoodsForChildrenActive.png", ParentId = null,
-                     CategoryTranslations=new List<CategoryTranslation>(){
+                        new (){ Name = "Technology and electronics", LanguageId=LanguageId.English},
+                        new (){ Name = "Техніка та електроніка", LanguageId=LanguageId.Ukrainian} } },
+/*5*/           new()
+                {
+                    UrlSlug = "goods-for-children",
+                    Image = "GoodsForChildren.png",
+                    LightIcon = "GoodsForChildrenLight.png",
+                    DarkIcon = "GoodsForChildrenDark.png",
+                    ActiveIcon = "GoodsForChildrenActive.png",
+                    ParentId = null,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Goods for children", LanguageId=LanguageId.English },
-                        new(){ Name = "Товари для дітей", LanguageId=LanguageId.Ukrainian } } },
-/*6*/           new(){ UrlSlug = "auto", Image = "Auto.png", ParentId = null,
-                     CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Товари для дітей", LanguageId=LanguageId.Ukrainian } }
+                },
+/*6*/           new()
+                {
+                    UrlSlug = "auto",
+                    Image = "Auto.png",
+                    ParentId = null,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Auto", LanguageId=LanguageId.English },
-                        new(){ Name = "Авто", LanguageId=LanguageId.Ukrainian } } },
-/*7*/           new(){ UrlSlug = "gifts-hobbies-books", Image = "GiftsHobbiesBooks.png", ParentId = null,
-                     CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Авто", LanguageId=LanguageId.Ukrainian } }
+                },
+/*7*/           new()
+                {
+                    UrlSlug = "gifts-hobbies-books",
+                    Image = "GiftsHobbiesBooks.png",
+                    ParentId = null,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Gifts, hobbies, books", LanguageId=LanguageId.English },
-                        new(){ Name = "Подарунки, хобі, книги", LanguageId=LanguageId.Ukrainian } } },
-/*8*/           new(){ UrlSlug = "accessories-and-decorations", Image = "AccessoriesAndDecorations.png", ParentId = null,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Подарунки, хобі, книги", LanguageId=LanguageId.Ukrainian } }
+                },
+/*8*/           new()
+                {
+                    UrlSlug = "accessories-and-decorations",
+                    Image = "AccessoriesAndDecorations.png",
+                    ParentId = null,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Accessories and decorations", LanguageId=LanguageId.English },
-                        new(){ Name = "Аксесуари та прикраси", LanguageId=LanguageId.Ukrainian } } },
-/*9*/           new(){ UrlSlug = "materials-for-repair", Image = "", ParentId = null,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Аксесуари та прикраси", LanguageId=LanguageId.Ukrainian } }
+                },
+/*9*/           new()
+                {
+                    UrlSlug = "materials-for-repair",
+                    Image = "",
+                    ParentId = null,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Materials for repair", LanguageId=LanguageId.English },
-                        new(){ Name = "Матеріали для ремонту", LanguageId=LanguageId.Ukrainian } } },
-/*10*/          new(){ UrlSlug = "sports-and-recreation", Image = "SportsAndRecreation.png",LightIcon="SportsAndRecreationLight.png",DarkIcon="SportsAndRecreationDark.png",ActiveIcon="SportsAndRecreationActive.png", ParentId = null,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Матеріали для ремонту", LanguageId=LanguageId.Ukrainian } }
+                },
+/*10*/          new()
+                {
+                    UrlSlug = "sports-and-recreation",
+                    Image = "SportsAndRecreation.png",
+                    LightIcon = "SportsAndRecreationLight.png",
+                    DarkIcon = "SportsAndRecreationDark.png",
+                    ActiveIcon = "SportsAndRecreationActive.png",
+                    ParentId = null,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Sports and recreation", LanguageId=LanguageId.English },
-                        new(){ Name = "Спорт і відпочинок", LanguageId=LanguageId.Ukrainian } } },
-/*11*/          new(){ UrlSlug = "medicines-and-medical-products", Image = "", ParentId = null,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Спорт і відпочинок", LanguageId=LanguageId.Ukrainian } }
+                },
+/*11*/          new()
+                {
+                    UrlSlug = "medicines-and-medical-products",
+                    Image = "",
+                    ParentId = null,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Medicines and medical products", LanguageId=LanguageId.English },
-                        new(){ Name = "Медикаменти та медичні товари", LanguageId=LanguageId.Ukrainian } } },
-/*12*/          new(){ UrlSlug = "pets-and-pet-products", Image = "", ParentId = null,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Медикаменти та медичні товари", LanguageId=LanguageId.Ukrainian } }
+                },
+/*12*/          new()
+                {
+                    UrlSlug = "pets-and-pet-products",
+                    Image = "",
+                    ParentId = null,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Pets and pet products", LanguageId=LanguageId.English },
-                        new(){ Name = "Домашні тварини та зоотовари", LanguageId=LanguageId.Ukrainian } } },
-/*13*/          new(){ UrlSlug = "stationery", Image = "Stationery.png",LightIcon="StationeryLight.png",DarkIcon="StationeryDark.png",ActiveIcon="StationeryActive.png", ParentId = null,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Домашні тварини та зоотовари", LanguageId=LanguageId.Ukrainian } }
+                },
+/*13*/          new()
+                {
+                    UrlSlug = "stationery",
+                    Image = "Stationery.png",
+                    LightIcon = "StationeryLight.png",
+                    DarkIcon = "StationeryDark.png",
+                    ActiveIcon = "StationeryActive.png",
+                    ParentId = null,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Stationery",  LanguageId=LanguageId.English },
-                        new(){ Name = "Канцтовари", LanguageId=LanguageId.Ukrainian } } },
-/*14*/          new(){ UrlSlug = "overalls-and-shoes", Image = "", ParentId = null,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Канцтовари", LanguageId=LanguageId.Ukrainian } }
+                },
+/*14*/          new()
+                {
+                    UrlSlug = "overalls-and-shoes",
+                    Image = "",
+                    ParentId = null,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Overalls and shoes", LanguageId=LanguageId.English },
-                        new(){ Name = "Спецодяг та взуття", LanguageId=LanguageId.Ukrainian } } },
-/*15*/          new(){ UrlSlug = "wedding-goods", Image = "", ParentId = null,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Спецодяг та взуття", LanguageId=LanguageId.Ukrainian } }
+                },
+/*15*/          new()
+                {
+                    UrlSlug = "wedding-goods",
+                    Image = "",
+                    ParentId = null,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Wedding goods", LanguageId=LanguageId.English },
-                        new(){ Name = "Весільні товари", LanguageId=LanguageId.Ukrainian } } },
-/*16*/          new(){ UrlSlug = "food-products-drinks", Image = "", ParentId = null,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Весільні товари", LanguageId=LanguageId.Ukrainian } }
+                },
+/*16*/          new()
+                {
+                    UrlSlug = "food-products-drinks",
+                    Image = "",
+                    ParentId = null,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Food products, drinks", LanguageId=LanguageId.English },
-                        new(){ Name = "Продукти харчування, напої", LanguageId=LanguageId.Ukrainian } } },
-/*17*/          new(){ UrlSlug = "tools", Image = "Tools.png",LightIcon="ToolsLight.png",DarkIcon="ToolsDark.png",ActiveIcon="ToolsActive.png", ParentId = null,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Продукти харчування, напої", LanguageId=LanguageId.Ukrainian } }
+                },
+/*17*/          new()
+                {
+                    UrlSlug = "tools",
+                    Image = "Tools.png",
+                    LightIcon = "ToolsLight.png",
+                    DarkIcon = "ToolsDark.png",
+                    ActiveIcon = "ToolsActive.png",
+                    ParentId = null,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Tools", LanguageId=LanguageId.English },
-                        new(){ Name = "Інструменти", LanguageId=LanguageId.Ukrainian } } },
-/*18*/          new(){ UrlSlug = "antiques-and-collectibles", Image = "", ParentId = null,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Інструменти", LanguageId=LanguageId.Ukrainian } }
+                },
+/*18*/          new()
+                {
+                    UrlSlug = "antiques-and-collectibles",
+                    Image = "",
+                    ParentId = null,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Antiques and collectibles", LanguageId=LanguageId.English },
-                        new(){ Name = "Антикваріат і колекціонування", LanguageId=LanguageId.Ukrainian } } },
-/*19*/          new(){ UrlSlug = "сonstruction", Image = "Construction.png",LightIcon="ConstructionLight.png",DarkIcon="ConstructionDark.png",ActiveIcon="ConstructionActive.png", ParentId = null,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Антикваріат і колекціонування", LanguageId=LanguageId.Ukrainian } }
+                },
+/*19*/          new()
+                {
+                    UrlSlug = "сonstruction",
+                    Image = "Construction.png",
+                    LightIcon = "ConstructionLight.png",
+                    DarkIcon = "ConstructionDark.png",
+                    ActiveIcon = "ConstructionActive.png",
+                    ParentId = null,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Construction", LanguageId=LanguageId.English },
-                        new(){ Name = "Будівництво", LanguageId=LanguageId.Ukrainian } } },
+                        new(){ Name = "Будівництво", LanguageId=LanguageId.Ukrainian } }
+                },
 
-/*20*/          new(){ UrlSlug = "mens-clothing", Image = "", ParentId = 3,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+/*20*/          new()
+                {
+                    UrlSlug = "mens-clothing",
+                    Image = "",
+                    ParentId = 3,
+                    Sales=new List<Sale>(){clothesSale},
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Men's clothing", LanguageId=LanguageId.English },
-                        new(){ Name = "Чоловічий одяг", LanguageId=LanguageId.Ukrainian } } },
-/*21*/          new(){ UrlSlug = "womens-clothes", Image = "", ParentId = 3,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Чоловічий одяг", LanguageId=LanguageId.Ukrainian } }
+                },
+/*21*/          new()
+                {
+                    UrlSlug = "womens-clothes",
+                    Image = "",
+                    ParentId = 3,
+                    Sales=new List<Sale>(){clothesSale},
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Women's clothes", LanguageId=LanguageId.English },
-                        new(){ Name = "Жіночий одяг", LanguageId=LanguageId.Ukrainian } } },
-/*22*/          new(){ UrlSlug = "Childrens-clothes-shoes-accessories", Image = "", ParentId = 3,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Жіночий одяг", LanguageId=LanguageId.Ukrainian } }
+                },
+/*22*/          new()
+                {
+                    UrlSlug = "Childrens-clothes-shoes-accessories",
+                    Image = "",
+                    ParentId = 3,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Children's clothes, shoes, accessories", LanguageId=LanguageId.English },
-                        new(){ Name = "Дитячі одяг, взуття, аксесуари", LanguageId=LanguageId.Ukrainian } } },
-/*23*/          new(){ UrlSlug = "sportswear-and-footwear", Image = "", ParentId = 3,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Дитячі одяг, взуття, аксесуари", LanguageId=LanguageId.Ukrainian } }
+                },
+/*23*/          new()
+                {
+                    UrlSlug = "sportswear-and-footwear",
+                    Image = "",
+                    ParentId = 3,
+                    Sales=new List<Sale>(){clothesSale},
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Sportswear and footwear", LanguageId=LanguageId.English },
-                        new(){ Name = "Спортивний одяг та взуття", LanguageId=LanguageId.Ukrainian } } },
-/*24*/          new(){ UrlSlug = "footwear", Image = "", ParentId = 3,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Спортивний одяг та взуття", LanguageId=LanguageId.Ukrainian } }
+                },
+/*24*/          new()
+                {
+                    UrlSlug = "footwear",
+                    Image = "",
+                    ParentId = 3,
+                    Sales=new List<Sale>(){clothesSale},
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Footwear", LanguageId=LanguageId.English },
-                        new(){ Name = "Взуття", LanguageId=LanguageId.Ukrainian } } },
-/*25*/          new(){ UrlSlug = "carnival-costumes", Image = "", ParentId = 3,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Взуття", LanguageId=LanguageId.Ukrainian } }
+                },
+/*25*/          new()
+                {
+                    UrlSlug = "carnival-costumes",
+                    Image = "",
+                    ParentId = 3,
+                    Sales=new List<Sale>(){clothesSale},
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Carnival costumes", LanguageId=LanguageId.English },
-                        new(){ Name = "Карнавальні костюми", LanguageId=LanguageId.Ukrainian } } },
-/*26*/          new(){ UrlSlug = "ethnic-clothing", Image = "", ParentId = 3,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Карнавальні костюми", LanguageId=LanguageId.Ukrainian } }
+                },
+/*26*/          new()
+                {
+                    UrlSlug = "ethnic-clothing",
+                    Image = "",
+                    ParentId = 3,
+                    Sales=new List<Sale>(){clothesSale},
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Ethnic clothing", LanguageId=LanguageId.English },
-                        new(){ Name = "Етнічний одяг", LanguageId=LanguageId.Ukrainian } } },
+                        new(){ Name = "Етнічний одяг", LanguageId=LanguageId.Ukrainian } }
+                },
 
-/*27*/          new(){ UrlSlug = "computer-equipment-and-software", Image = "", ParentId = 4,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+/*27*/          new()
+                {
+                    UrlSlug = "computer-equipment-and-software",
+                    Image = "",
+                    ParentId = 4,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Computer equipment and software", LanguageId=LanguageId.English },
-                        new(){ Name = "Комп'ютерна техніка та ПЗ", LanguageId=LanguageId.Ukrainian } } },
-/*28*/          new(){ UrlSlug = "household-appliances", Image = "", ParentId = 4,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Комп'ютерна техніка та ПЗ", LanguageId=LanguageId.Ukrainian } }
+                },
+/*28*/          new()
+                {
+                    UrlSlug = "household-appliances",
+                    Image = "",
+                    ParentId = 4,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Household appliances", LanguageId=LanguageId.English },
-                        new(){ Name = "Побутова техніка", LanguageId=LanguageId.Ukrainian } } },
-/*29*/          new(){ UrlSlug = "phones-and-accessories", Image = "", ParentId = 4,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Побутова техніка", LanguageId=LanguageId.Ukrainian } }
+                },
+/*29*/          new()
+                {
+                    UrlSlug = "phones-and-accessories",
+                    Image = "",
+                    ParentId = 4,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Phones and accessories", LanguageId=LanguageId.English },
-                        new(){ Name = "Телефони та аксесуари", LanguageId=LanguageId.Ukrainian } } },
-/*30*/          new(){ UrlSlug = "audio-equipment-and-accessories", Image = "", ParentId = 4,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Телефони та аксесуари", LanguageId=LanguageId.Ukrainian } }
+                },
+/*30*/          new()
+                {
+                    UrlSlug = "audio-equipment-and-accessories",
+                    Image = "",
+                    ParentId = 4,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Audio equipment and accessories", LanguageId=LanguageId.English },
-                        new(){ Name = "Аудіотехніка і аксесуари", LanguageId=LanguageId.Ukrainian } } },
-/*31*/          new(){ UrlSlug = "spare-parts-for-machinery-and-electronics", Image = "", ParentId = 4,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Аудіотехніка і аксесуари", LanguageId=LanguageId.Ukrainian } }
+                },
+/*31*/          new()
+                {
+                    UrlSlug = "spare-parts-for-machinery-and-electronics",
+                    Image = "",
+                    ParentId = 4,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Spare parts for machinery and electronics", LanguageId=LanguageId.English},
-                        new(){ Name = "Запчастини для техніки та електроніки", LanguageId=LanguageId.Ukrainian } } },
-/*32*/          new(){ UrlSlug = "tv-and-video-equipment", Image = "", ParentId = 4,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Запчастини для техніки та електроніки", LanguageId=LanguageId.Ukrainian } }
+                },
+/*32*/          new()
+                {
+                    UrlSlug = "tv-and-video-equipment",
+                    Image = "",
+                    ParentId = 4,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){  Name = "TV and video equipment", LanguageId=LanguageId.English },
-                        new(){ Name = "TV та відеотехніка", LanguageId=LanguageId.Ukrainian } } },
-/*33*/          new(){ UrlSlug = "car-electronics", Image = "", ParentId = 4,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "TV та відеотехніка", LanguageId=LanguageId.Ukrainian } }
+                },
+/*33*/          new()
+                {
+                    UrlSlug = "car-electronics",
+                    Image = "",
+                    ParentId = 4,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Car electronics", LanguageId=LanguageId.English },
-                        new(){ Name = "Автомобільна електроніка", LanguageId=LanguageId.Ukrainian } } },
-/*34*/          new(){ UrlSlug = "photos-camcorders-and-accessories", Image = "", ParentId = 4,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Автомобільна електроніка", LanguageId=LanguageId.Ukrainian } }
+                },
+/*34*/          new()
+                {
+                    UrlSlug = "photos-camcorders-and-accessories",
+                    Image = "",
+                    ParentId = 4,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Photos, camcorders and accessories", LanguageId=LanguageId.English },
-                        new(){ Name = "Фото, відеокамери та аксесуари", LanguageId=LanguageId.Ukrainian } } },
-/*35*/          new(){ UrlSlug = "3d-devices", Image = "", ParentId = 4,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Фото, відеокамери та аксесуари", LanguageId=LanguageId.Ukrainian } }
+                },
+/*35*/          new()
+                {
+                    UrlSlug = "3d-devices",
+                    Image = "",
+                    ParentId = 4,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){Name = "3d devices", LanguageId=LanguageId.English },
-                        new(){ Name = "3d пристрої", LanguageId=LanguageId.Ukrainian } } },
-/*36*/          new(){ UrlSlug = "equipment-for-satellite-internet", Image = "", ParentId = 4,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "3d пристрої", LanguageId=LanguageId.Ukrainian } }
+                },
+/*36*/          new()
+                {
+                    UrlSlug = "equipment-for-satellite-internet",
+                    Image = "",
+                    ParentId = 4,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){Name = "Equipment for satellite internet",  LanguageId=LanguageId.English },
-                        new(){ Name = "Обладнання для супутникового інтернету", LanguageId=LanguageId.Ukrainian } } },
+                        new(){ Name = "Обладнання для супутникового інтернету", LanguageId=LanguageId.Ukrainian } }
+                },
 
-/*37*/          new(){ UrlSlug = "tablet-computers", Image = "", ParentId = 27,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+/*37*/          new()
+                {
+                    UrlSlug = "tablet-computers",
+                    Image = "",
+                    ParentId = 27,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Tablet computers", LanguageId=LanguageId.English },
-                        new(){ Name = "Планшетні комп'ютери", LanguageId=LanguageId.Ukrainian } } },
-/*38*/          new(){ UrlSlug = "laptops", Image = "", ParentId = 27,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Планшетні комп'ютери", LanguageId=LanguageId.Ukrainian } }
+                },
+/*38*/          new()
+                {
+                    UrlSlug = "laptops",
+                    Image = "",
+                    ParentId = 27,
+                    Sales=new List<Sale>(){laptopSale},
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){  Name = "Laptops", LanguageId=LanguageId.English },
-                        new(){ Name = "Ноутбуки", LanguageId=LanguageId.Ukrainian } } },
-/*39*/          new(){ UrlSlug = "monitors", Image = "", ParentId = 27,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Ноутбуки", LanguageId=LanguageId.Ukrainian } }
+                },
+/*39*/          new()
+                {
+                    UrlSlug = "monitors",
+                    Image = "",
+                    ParentId = 27,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Monitors", LanguageId=LanguageId.English },
-                        new(){ Name = "Монітори", LanguageId=LanguageId.Ukrainian } } },
-/*40*/          new(){ UrlSlug = "components-for-computer-equipment", Image = "", ParentId = 27,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Монітори", LanguageId=LanguageId.Ukrainian } }
+                },
+/*40*/          new()
+                {
+                    UrlSlug = "components-for-computer-equipment",
+                    Image = "",
+                    ParentId = 27,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Components for computer equipment",LanguageId=LanguageId.English },
-                        new(){ Name = "Комплектуючі для комп'ютерної техніки", LanguageId=LanguageId.Ukrainian } } },
-/*41*/          new(){ UrlSlug = "computer-accessories", Image = "", ParentId = 27,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Комплектуючі для комп'ютерної техніки", LanguageId=LanguageId.Ukrainian } }
+                },
+/*41*/          new()
+                {
+                    UrlSlug = "computer-accessories",
+                    Image = "",
+                    ParentId = 27,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Computer accessories", LanguageId=LanguageId.English},
-                        new(){ Name = "Комп'ютерні аксесуари", LanguageId=LanguageId.Ukrainian } } },
-/*42*/          new(){ UrlSlug = "smart-watches-and-fitness-bracelets", Image = "", ParentId = 27,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Комп'ютерні аксесуари", LanguageId=LanguageId.Ukrainian } }
+                },
+/*42*/          new()
+                {
+                    UrlSlug = "smart-watches-and-fitness-bracelets",
+                    Image = "",
+                    ParentId = 27,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Smart watches and fitness bracelets", LanguageId=LanguageId.English },
-                        new(){ Name = "Розумні годинники та фітнес браслети", LanguageId=LanguageId.Ukrainian } } },
-/*43*/          new(){ UrlSlug = "printers-scanners-mfps-and-components", Image = "", ParentId = 27,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Розумні годинники та фітнес браслети", LanguageId=LanguageId.Ukrainian } }
+                },
+/*43*/          new()
+                {
+                    UrlSlug = "printers-scanners-mfps-and-components",
+                    Image = "",
+                    ParentId = 27,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Printers, scanners, MFPs and components", LanguageId=LanguageId.English },
-                        new(){ Name = "Принтери, сканери, МФУ та комплектуючі", LanguageId=LanguageId.Ukrainian } } },
-/*44*/          new(){ UrlSlug = "information-carriers", Image = "", ParentId = 27,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Принтери, сканери, МФУ та комплектуючі", LanguageId=LanguageId.Ukrainian } }
+                },
+/*44*/          new()
+                {
+                    UrlSlug = "information-carriers",
+                    Image = "",
+                    ParentId = 27,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Information carriers", LanguageId=LanguageId.English },
-                        new(){ Name = "Носії інформації", LanguageId=LanguageId.Ukrainian } } },
-/*45*/          new(){ UrlSlug = "game-consoles-and-components", Image = "", ParentId = 27,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Носії інформації", LanguageId=LanguageId.Ukrainian } }
+                },
+/*45*/          new()
+                {
+                    UrlSlug = "game-consoles-and-components",
+                    Image = "",
+                    ParentId = 27,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Game consoles and components", LanguageId=LanguageId.English },
-                        new(){ Name = "Ігрові приставки та компоненти", LanguageId=LanguageId.Ukrainian } } },
-/*46*/          new(){ UrlSlug = "desktops", Image = "", ParentId = 27,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Ігрові приставки та компоненти", LanguageId=LanguageId.Ukrainian } }
+                },
+/*46*/          new()
+                {
+                    UrlSlug = "desktops",
+                    Image = "",
+                    ParentId = 27,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Desktops", LanguageId=LanguageId.English },
-                        new(){ Name = "Настільні комп'ютери", LanguageId=LanguageId.Ukrainian } } },
-/*47*/          new(){ UrlSlug = "software", Image = "", ParentId = 27,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Настільні комп'ютери", LanguageId=LanguageId.Ukrainian } }
+                },
+/*47*/          new()
+                {
+                    UrlSlug = "software",
+                    Image = "",
+                    ParentId = 27,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Software", LanguageId=LanguageId.English },
-                        new(){ Name = "Програмне забезпечення", LanguageId=LanguageId.Ukrainian } } },
-/*48*/          new(){ UrlSlug = "server-equipment", Image = "", ParentId = 27,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Програмне забезпечення", LanguageId=LanguageId.Ukrainian } }
+                },
+/*48*/          new()
+                {
+                    UrlSlug = "server-equipment",
+                    Image = "",
+                    ParentId = 27,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Server equipment", LanguageId=LanguageId.English },
-                        new(){ Name = "Серверне обладнання", LanguageId=LanguageId.Ukrainian } } },
-/*49*/          new(){ UrlSlug = "mining-equipment", Image = "", ParentId = 27,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Серверне обладнання", LanguageId=LanguageId.Ukrainian } }
+                },
+/*49*/          new()
+                {
+                    UrlSlug = "mining-equipment",
+                    Image = "",
+                    ParentId = 27,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Mining equipment", LanguageId=LanguageId.English },
-                        new(){ Name = "Обладнання для майнінгу", LanguageId=LanguageId.Ukrainian } } },
-/*50*/          new(){ UrlSlug = "e-books", Image = "", ParentId = 27,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Обладнання для майнінгу", LanguageId=LanguageId.Ukrainian } }
+                },
+/*50*/          new()
+                {
+                    UrlSlug = "e-books",
+                    Image = "",
+                    ParentId = 27,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "E-books",  LanguageId=LanguageId.English },
-                        new(){ Name = "Електронні книги (пристрій)", LanguageId=LanguageId.Ukrainian } } },
-/*51*/          new(){ UrlSlug = "single-board-computers-and-nettops", Image = "", ParentId = 27,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Електронні книги (пристрій)", LanguageId=LanguageId.Ukrainian } }
+                },
+/*51*/          new()
+                {
+                    UrlSlug = "single-board-computers-and-nettops",
+                    Image = "",
+                    ParentId = 27,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Single board computers and nettops", LanguageId=LanguageId.English },
-                        new(){ Name = "Одноплатні комп'ютери та неттопи", LanguageId=LanguageId.Ukrainian } } },
-/*52*/          new(){ UrlSlug = "portable-electronic-translators", Image = "", ParentId = 27,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Одноплатні комп'ютери та неттопи", LanguageId=LanguageId.Ukrainian } }
+                },
+/*52*/          new()
+                {
+                    UrlSlug = "portable-electronic-translators",
+                    Image = "",
+                    ParentId = 27,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Portable electronic translators", LanguageId=LanguageId.English },
-                        new(){ Name = "Портативні електронні перекладачі", LanguageId=LanguageId.Ukrainian } } },
+                        new(){ Name = "Портативні електронні перекладачі", LanguageId=LanguageId.Ukrainian } }
+                },
 
-                new(){ UrlSlug = "cables-for-electronics", Image = "", ParentId = 40,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                new()
+                {
+                    UrlSlug = "cables-for-electronics",
+                    Image = "",
+                    ParentId = 40,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Cables for electronics", LanguageId=LanguageId.English },
-                        new(){ Name = "Кабелі для електроніки", LanguageId=LanguageId.Ukrainian } } },
-                new(){ UrlSlug = "hdd-ssd", Image = "", ParentId = 40,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Кабелі для електроніки", LanguageId=LanguageId.Ukrainian } }
+                },
+                new()
+                {
+                    UrlSlug = "hdd-ssd",
+                    Image = "",
+                    ParentId = 40,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "HDD, SSD", LanguageId=LanguageId.English },
-                        new(){ Name = "Внутрішні та зовнішні жорсткі диски, HDD, SSD", LanguageId=LanguageId.Ukrainian } } },
-                new(){ UrlSlug = "batteries-for-laptops-tablets-e-books-translators", Image = "", ParentId = 40,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Внутрішні та зовнішні жорсткі диски, HDD, SSD", LanguageId=LanguageId.Ukrainian } }
+                },
+                new()
+                {
+                    UrlSlug = "batteries-for-laptops-tablets-e-books-translators",
+                    Image = "",
+                    ParentId = 40,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Batteries for laptops, tablets, e-books, translators", LanguageId=LanguageId.English },
-                        new(){ Name = "Акумулятори для ноутбуків, планшетів, електронних книг, перекладачів", LanguageId=LanguageId.Ukrainian } } },
-                new(){ UrlSlug = "laptop-chargers", Image = "", ParentId = 40,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Акумулятори для ноутбуків, планшетів, електронних книг, перекладачів", LanguageId=LanguageId.Ukrainian } }
+                },
+                new()
+                {
+                    UrlSlug = "laptop-chargers",
+                    Image = "",
+                    ParentId = 40,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Laptop chargers", LanguageId=LanguageId.English },
-                        new(){ Name = "Зарядні пристрої для ноутбуків", LanguageId=LanguageId.Ukrainian } } },
-                new(){ UrlSlug = "laptop-body-parts", Image = "", ParentId = 40,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Зарядні пристрої для ноутбуків", LanguageId=LanguageId.Ukrainian } }
+                },
+                new()
+                {
+                    UrlSlug = "laptop-body-parts",
+                    Image = "",
+                    ParentId = 40,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Laptop body parts", LanguageId=LanguageId.English },
-                        new(){ Name = "Частини корпусу ноутбука", LanguageId=LanguageId.Ukrainian } } },
-                new(){ UrlSlug = "memory-modules", Image = "", ParentId = 40,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Частини корпусу ноутбука", LanguageId=LanguageId.Ukrainian } }
+                },
+                new()
+                {
+                    UrlSlug = "memory-modules",
+                    Image = "",
+                    ParentId = 40,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Memory modules", LanguageId=LanguageId.English },
-                        new(){ Name = "Модулі пам'яті", LanguageId=LanguageId.Ukrainian } } },
-                new(){ UrlSlug = "processors", Image = "", ParentId = 40,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Модулі пам'яті", LanguageId=LanguageId.Ukrainian } }
+                },
+                new()
+                {
+                    UrlSlug = "processors",
+                    Image = "",
+                    ParentId = 40,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Processors", LanguageId=LanguageId.English },
-                        new(){ Name = "Процесори", LanguageId=LanguageId.Ukrainian } } },
-                new(){ UrlSlug = "coolers-and-cooling-systems", Image = "", ParentId = 40,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Процесори", LanguageId=LanguageId.Ukrainian } }
+                },
+                new()
+                {
+                    UrlSlug = "coolers-and-cooling-systems",
+                    Image = "",
+                    ParentId = 40,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Coolers and cooling systems", LanguageId=LanguageId.English },
-                        new(){ Name = "Кулери і системи охолодження", LanguageId=LanguageId.Ukrainian } } },
-                new(){ UrlSlug = "matrixes-for-laptops-tablets-and-monitors", Image = "", ParentId = 40,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Кулери і системи охолодження", LanguageId=LanguageId.Ukrainian } }
+                },
+                new()
+                {
+                    UrlSlug = "matrixes-for-laptops-tablets-and-monitors",
+                    Image = "",
+                    ParentId = 40,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Matrixes for laptops, tablets and monitors", LanguageId=LanguageId.English },
-                        new(){ Name = "Матриці для ноутбуків, планшетів і моніторів", LanguageId=LanguageId.Ukrainian } } },
-                new(){ UrlSlug = "cables-and-connectors-for-laptops-computers-tablets", Image = "", ParentId = 40,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Матриці для ноутбуків, планшетів і моніторів", LanguageId=LanguageId.Ukrainian } }
+                },
+                new()
+                {
+                    UrlSlug = "cables-and-connectors-for-laptops-computers-tablets",
+                    Image = "",
+                    ParentId = 40,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Cables and connectors for laptops, computers, tablets", LanguageId=LanguageId.English },
-                        new(){ Name = "Шлейфи та роз'єми для ноутбуків, комп'ютерів, планшетів", LanguageId=LanguageId.Ukrainian } } },
-                new(){ UrlSlug = "keyboard-blocks-for-laptops", Image = "", ParentId = 40,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Шлейфи та роз'єми для ноутбуків, комп'ютерів, планшетів", LanguageId=LanguageId.Ukrainian } }
+                },
+                new()
+                {
+                    UrlSlug = "keyboard-blocks-for-laptops",
+                    Image = "",
+                    ParentId = 40,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Keyboard blocks for laptops", LanguageId=LanguageId.English },
-                        new(){ Name = "Клавіатурні блоки для ноутбуків", LanguageId=LanguageId.Ukrainian } } },
-                new(){ UrlSlug = "touchscreen-for-displays", Image = "", ParentId = 40,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Клавіатурні блоки для ноутбуків", LanguageId=LanguageId.Ukrainian } }
+                },
+                new()
+                {
+                    UrlSlug = "touchscreen-for-displays",
+                    Image = "",
+                    ParentId = 40,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Touchscreen for displays", LanguageId=LanguageId.English },
-                        new(){ Name = "Touchscreen для дисплеїв", LanguageId=LanguageId.Ukrainian } } },
-                new(){ UrlSlug = "microcircuits", Image = "", ParentId = 40,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Touchscreen для дисплеїв", LanguageId=LanguageId.Ukrainian } }
+                },
+                new()
+                {
+                    UrlSlug = "microcircuits",
+                    Image = "",
+                    ParentId = 40,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Microcircuits", LanguageId=LanguageId.English },
-                        new(){ Name = "Мікросхеми", LanguageId=LanguageId.Ukrainian } } },
-                new(){ UrlSlug = "spare-parts-for-tvs-and-monitors", Image = "", ParentId = 40,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Мікросхеми", LanguageId=LanguageId.Ukrainian } }
+                },
+                new()
+                {
+                    UrlSlug = "spare-parts-for-tvs-and-monitors",
+                    Image = "",
+                    ParentId = 40,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Spare parts for TVs and monitors", LanguageId=LanguageId.English },
-                        new(){ Name = "Запчастини для телевізорів і моніторів", LanguageId=LanguageId.Ukrainian } } },
-                new(){ UrlSlug = "motherboards", Image = "", ParentId = 40,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Запчастини для телевізорів і моніторів", LanguageId=LanguageId.Ukrainian } }
+                },
+                new()
+                {
+                    UrlSlug = "motherboards",
+                    Image = "",
+                    ParentId = 40,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Motherboards", LanguageId=LanguageId.English },
-                        new(){ Name = "Материнські плати", LanguageId=LanguageId.Ukrainian } } },
-                new(){ UrlSlug = "video-cards", Image = "", ParentId = 40,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Материнські плати", LanguageId=LanguageId.Ukrainian } }
+                },
+                new()
+                {
+                    UrlSlug = "video-cards",
+                    Image = "",
+                    ParentId = 40,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Video cards", LanguageId=LanguageId.English},
-                        new(){ Name = "Відеокарти", LanguageId=LanguageId.Ukrainian } } },
-                new(){ UrlSlug = "enclosures-for-computers", Image = "", ParentId = 40,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Відеокарти", LanguageId=LanguageId.Ukrainian } }
+                },
+                new()
+                {
+                    UrlSlug = "enclosures-for-computers",
+                    Image = "",
+                    ParentId = 40,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Enclosures for computers", LanguageId=LanguageId.English },
-                        new(){ Name = "Корпуси для комп'ютерів", LanguageId=LanguageId.Ukrainian } } },
-                new(){UrlSlug = "power-supplies-for-computers", Image = "", ParentId = 40,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Корпуси для комп'ютерів", LanguageId=LanguageId.Ukrainian } }
+                },
+                new()
+                {
+                    UrlSlug = "power-supplies-for-computers",
+                    Image = "",
+                    ParentId = 40,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Power supplies for computers", LanguageId=LanguageId.English },
-                        new(){ Name = "Блоки живлення для комп'ютерів", LanguageId=LanguageId.Ukrainian } } },
-                new(){ UrlSlug = "patch-cord", Image = "", ParentId = 40,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Блоки живлення для комп'ютерів", LanguageId=LanguageId.Ukrainian } }
+                },
+                new()
+                {
+                    UrlSlug = "patch-cord",
+                    Image = "",
+                    ParentId = 40,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Patch cord", LanguageId=LanguageId.English },
-                        new(){ Name = "Патч-корди", LanguageId=LanguageId.Ukrainian } } },
-                new(){ UrlSlug = "pockets-for-hard-drives", Image = "", ParentId = 40,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Патч-корди", LanguageId=LanguageId.Ukrainian } }
+                },
+                new()
+                {
+                    UrlSlug = "pockets-for-hard-drives",
+                    Image = "",
+                    ParentId = 40,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Pockets for hard drives", LanguageId=LanguageId.English },
-                        new(){ Name = "Кишені для жорстких дисків", LanguageId=LanguageId.Ukrainian } } },
-                new(){ UrlSlug = "adapters-and-port-expansion-cards", Image = "", ParentId = 40,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Кишені для жорстких дисків", LanguageId=LanguageId.Ukrainian } }
+                },
+                new()
+                {
+                    UrlSlug = "adapters-and-port-expansion-cards",
+                    Image = "",
+                    ParentId = 40,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Adapters and port expansion cards", LanguageId=LanguageId.English },
-                        new(){ Name = "Адаптери і плати розширення портів", LanguageId=LanguageId.Ukrainian } } },
-                new(){ UrlSlug = "audio-parts-for-laptops", Image = "", ParentId = 40,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Адаптери і плати розширення портів", LanguageId=LanguageId.Ukrainian } }
+                },
+                new()
+                {
+                    UrlSlug = "audio-parts-for-laptops",
+                    Image = "",
+                    ParentId = 40,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Audio parts for laptops", LanguageId=LanguageId.English },
-                        new(){ Name = "Звукові запчастини для портативних ПК", LanguageId=LanguageId.Ukrainian } } },
-                new(){ UrlSlug = "thermal-paste", Image = "", ParentId = 40,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Звукові запчастини для портативних ПК", LanguageId=LanguageId.Ukrainian } }
+                },
+                new()
+                {
+                    UrlSlug = "thermal-paste",
+                    Image = "",
+                    ParentId = 40,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Thermal paste", LanguageId=LanguageId.English },
-                        new(){ Name = "Термопаста", LanguageId=LanguageId.Ukrainian } } },
-                new(){ UrlSlug = "sound-cards", Image = "", ParentId = 40,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Термопаста", LanguageId=LanguageId.Ukrainian } }
+                },
+                new()
+                {
+                    UrlSlug = "sound-cards",
+                    Image = "",
+                    ParentId = 40,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Sound cards", LanguageId=LanguageId.English },
-                        new(){ Name = "Звукові карти", LanguageId=LanguageId.Ukrainian } } },
-                new(){ UrlSlug = "network-cards", Image = "", ParentId = 40,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Звукові карти", LanguageId=LanguageId.Ukrainian } }
+                },
+                new()
+                {
+                    UrlSlug = "network-cards",
+                    Image = "",
+                    ParentId = 40,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Network cards", LanguageId=LanguageId.English },
-                        new(){ Name = "Мережеві карти", LanguageId=LanguageId.Ukrainian } } },
-                new(){ UrlSlug = "optical-drives", Image = "", ParentId = 40,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Мережеві карти", LanguageId=LanguageId.Ukrainian } }
+                },
+                new()
+                {
+                    UrlSlug = "optical-drives",
+                    Image = "",
+                    ParentId = 40,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Optical drives", LanguageId=LanguageId.English },
-                        new(){ Name = "Оптичні приводи", LanguageId=LanguageId.Ukrainian } } },
-                new(){ UrlSlug = "cases-for-tablets", Image = "", ParentId = 40,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Оптичні приводи", LanguageId=LanguageId.Ukrainian } }
+                },
+                new()
+                {
+                    UrlSlug = "cases-for-tablets",
+                    Image = "",
+                    ParentId = 40,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Cases for tablets", LanguageId=LanguageId.English },
-                        new(){ Name = "Корпуси для планшетів", LanguageId=LanguageId.Ukrainian } } },
-                new(){ UrlSlug = "accessories-for-matrices-and-displays", Image = "", ParentId = 40,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Корпуси для планшетів", LanguageId=LanguageId.Ukrainian } }
+                },
+                new()
+                {
+                    UrlSlug = "accessories-for-matrices-and-displays",
+                    Image = "",
+                    ParentId = 40,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Accessories for matrices and displays", LanguageId=LanguageId.English },
-                        new(){ Name = "Комплектуючі для матриць та дисплеїв", LanguageId=LanguageId.Ukrainian } } },
-                new(){ UrlSlug = "cameras-for-laptops", Image = "", ParentId = 40,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Комплектуючі для матриць та дисплеїв", LanguageId=LanguageId.Ukrainian } }
+                },
+                new()
+                {
+                    UrlSlug = "cameras-for-laptops",
+                    Image = "",
+                    ParentId = 40,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Cameras for laptops", LanguageId=LanguageId.English },
-                        new(){ Name = "Камери для портативних ПК", LanguageId=LanguageId.Ukrainian } } },
-                new(){ UrlSlug = "cooling-systems-for-laptops", Image = "", ParentId = 40,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Камери для портативних ПК", LanguageId=LanguageId.Ukrainian } }
+                },
+                new()
+                {
+                    UrlSlug = "cooling-systems-for-laptops",
+                    Image = "",
+                    ParentId = 40,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Cooling systems for laptops", LanguageId=LanguageId.English },
-                        new(){ Name = "Системи охолодження для ноутбуків", LanguageId=LanguageId.Ukrainian } } },
-                new(){ UrlSlug = "tv-and-fm-tuners", Image = "", ParentId = 40,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Системи охолодження для ноутбуків", LanguageId=LanguageId.Ukrainian } }
+                },
+                new()
+                {
+                    UrlSlug = "tv-and-fm-tuners",
+                    Image = "",
+                    ParentId = 40,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "TV and FM tuners", LanguageId=LanguageId.English },
-                        new(){ Name = "TV-тюнери і FM-тюнери", LanguageId=LanguageId.Ukrainian } } },
-                new(){ UrlSlug = "postcards", Image = "", ParentId = 40,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "TV-тюнери і FM-тюнери", LanguageId=LanguageId.Ukrainian } }
+                },
+                new()
+                {
+                    UrlSlug = "postcards",
+                    Image = "",
+                    ParentId = 40,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Postcards", LanguageId=LanguageId.English },
-                        new(){ Name = "Post-карти", LanguageId=LanguageId.Ukrainian } } },
-                new(){ UrlSlug = "accessories-for-routers", Image = "", ParentId = 40,
-                    CategoryTranslations=new List<CategoryTranslation>(){
+                        new(){ Name = "Post-карти", LanguageId=LanguageId.Ukrainian } }
+                },
+                new()
+                {
+                    UrlSlug = "accessories-for-routers",
+                    Image = "",
+                    ParentId = 40,
+                    CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Accessories for routers", LanguageId=LanguageId.English },
-                        new(){ Name = "Комплектуючі для маршрутизаторів", LanguageId=LanguageId.Ukrainian } } },
+                        new(){ Name = "Комплектуючі для маршрутизаторів", LanguageId=LanguageId.Ukrainian } }
+                },
             };
             return categories;
         }
@@ -1388,12 +1896,77 @@ namespace DAL.Data
         {
             var products = new List<Product>
             {
-                new(){ Name = "Nike Festive dress Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
-                new(){ Name = "Puma Festive dress Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
-                new(){ Name = "Zara Festive dress Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
-                new(){ Name = "H&M Festive dress Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
-                new(){ Name = "AAA Festive dress Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
-                new(){ Name = "Nike Festive dress Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
+                new(){
+                    Name = "Nike Festive dress Hex Wednesday Dress",
+                    Description="",
+                    Price=1000f,
+                    Count=100,
+                    ShopId=1,
+                    StatusId=1,
+                    CategoryId=21,
+                    UrlSlug=Guid.NewGuid(),
+                    SaleId=1,
+                    Discount=10
+                },
+                new(){ Name = "Puma Festive dress Hex Wednesday Dress",
+                    Description="",
+                    Price=1500f,
+                    Count=100,
+                    ShopId=1,
+                    StatusId=1,
+                    CategoryId=21,
+                    UrlSlug=Guid.NewGuid(),
+                    SaleId=1,
+                    Discount=15
+                },
+                new(){
+                    Name = "Zara Festive dress Hex Wednesday Dress",
+                    Description="",
+                    Price=1700f,
+                    Count=100,
+                    ShopId=1,
+                    StatusId=1,
+                    CategoryId=21,
+                    UrlSlug=Guid.NewGuid(),
+                    SaleId=1,
+                    Discount=25
+                },
+                new(){
+                    Name = "H&M Festive dress Hex Wednesday Dress",
+                    Description="",
+                    Price=1500f,
+                    Count=100,
+                    ShopId=1,
+                    StatusId=1,
+                    CategoryId=21,
+                    UrlSlug=Guid.NewGuid(),
+                    SaleId=1,
+                    Discount=10
+                },
+                new(){
+                    Name = "AAA Festive dress Hex Wednesday Dress",
+                    Description="",
+                    Price=3500f,
+                    Count=100,
+                    ShopId=1,
+                    StatusId=1,
+                    CategoryId=21,
+                    UrlSlug=Guid.NewGuid(),
+                    SaleId=1,
+                    Discount=35
+                },
+                new(){
+                    Name = "Nike Festive dress Hex Wednesday Dress",
+                    Description="",
+                    Price=1000f,
+                    Count=100,
+                    ShopId=1,
+                    StatusId=1,
+                    CategoryId=21,
+                    UrlSlug=Guid.NewGuid(),
+                    SaleId=1,
+                    Discount=25
+                },
                 new(){ Name = "AAA Festive dress Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
                 new(){ Name = "Puma Festive dress Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
                 new(){ Name = "H&M Festive dress Hex Wednesday Dress",Description="",Price=1000f,Count=100,ShopId=1,StatusId=1,CategoryId=21,UrlSlug=Guid.NewGuid() },
@@ -1751,6 +2324,24 @@ namespace DAL.Data
             };
 
             return deliveryTypes;
+        }
+
+        static IEnumerable<Gender> GetPreconfiguredMarketplaceGenders()
+        {
+            var genders = new List<Gender>
+            {
+                  new(){  GenderTranslations=new List<GenderTranslation>(){
+                        new (){ LanguageId=LanguageId.English, Name="Man"},
+                        new (){ LanguageId=LanguageId.Ukrainian, Name="Чоловіча"} } },
+                  new(){  GenderTranslations=new List<GenderTranslation>(){
+                        new (){ LanguageId=LanguageId.English, Name="Woman"},
+                        new (){ LanguageId=LanguageId.Ukrainian, Name="Жіноча"} } },
+                  new(){  GenderTranslations=new List<GenderTranslation>(){
+                        new (){ LanguageId=LanguageId.English, Name="Non-binary"},
+                        new (){ LanguageId=LanguageId.Ukrainian, Name="Небінарна"} } },
+            };
+
+            return genders;
         }
 
     }

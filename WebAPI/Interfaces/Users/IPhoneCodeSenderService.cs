@@ -1,6 +1,6 @@
 ﻿using WebAPI.ViewModels.Request;
 
-namespace WebAPI.Interfaces
+namespace WebAPI.Interfaces.Users
 {
     public interface IPhoneCodeSenderService
     {

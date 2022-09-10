@@ -11,7 +11,8 @@ const initialState: CityState = {
         countryId: 0,
     },
     count: 0,
-    cities: []
+    cities: [],
+    cityForSelect: []
 }
 
 export const cityReducer = (state = initialState, action: CityAction): CityState => {
@@ -20,6 +21,11 @@ export const cityReducer = (state = initialState, action: CityAction): CityState
             return {
                 ...state,
                 cities: action.payload,
+            }
+        case CityActionTypes.GET_CITIES_FOR_SELECT:
+            return {
+                ...state,
+                cityForSelect: action.payload,
             }
         case CityActionTypes.SEARCH_CITIES:
             return {

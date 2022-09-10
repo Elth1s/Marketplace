@@ -12,9 +12,12 @@ namespace DAL.Entities
         public string SiteUrl { get; set; }
 
 
+        public int? CountryId { get; set; }
         public int? CityId { get; set; }
         public string UserId { get; set; }
 
+        [ForeignKey(nameof(CountryId))]
+        public Country Country { get; set; }
         [ForeignKey(nameof(CityId))]
         public City City { get; set; }
 

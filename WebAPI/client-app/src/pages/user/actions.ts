@@ -7,7 +7,10 @@ import { AuthAction, IExternalLoginModel } from "../auth/types"
 import {
     ConfirmEmailActionTypes,
     EmailConfirmAction,
+    GenderAction,
+    GenderActionTypes,
     IConfirmEmail,
+    IGender,
     IOrderCreate,
     IOrderProducts,
     IOrdersForUser,
@@ -209,6 +212,29 @@ export const CreateOrder = (values: IOrderCreate) => {
         try {
             let response = await http.post(`/api/Order/CreateOrder`, values)
 
+            return Promise.resolve();
+        }
+        catch (error) {
+            if (axios.isAxiosError(error)) {
+                const serverError = error as AxiosError<ServerError>;
+                if (serverError && serverError.response) {
+                    return Promise.reject(serverError.response.data);
+                }
+            }
+            return Promise.reject(error)
+        }
+    }
+}
+
+export const GetGenders = () => {
+    return async (dispatch: Dispatch<GenderAction>) => {
+        try {
+            let response = await http.get<Array<IGender>>(`api/Gender/Get`)
+
+            dispatch({
+                type: GenderActionTypes.GET_GENDERS,
+                payload: response.data
+            })
             return Promise.resolve();
         }
         catch (error) {

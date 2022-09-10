@@ -124,7 +124,24 @@ namespace WebAPI.Controllers.Orders
             return Ok(_orderLocalizer["CreateSuccess"].Value);
         }
 
-
+        /// <summary>
+        /// Cancel order
+        /// </summary>
+        /// <param name="id">Order identifier</param>
+        /// <response code="200">Order canceling completed successfully</response>
+        /// <response code="401">You are not authorized</response>
+        /// <response code="404">Order not found</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [HttpPut("CancelOrder/{id}")]
+        public async Task<IActionResult> CancelOrder(int id)
+        {
+            await _orderService.CancelOrderAsync(id, UserId);
+            return Ok(_orderLocalizer["CancelSuccess"].Value);
+        }
 
         /// <summary>
         /// Delete an existing order

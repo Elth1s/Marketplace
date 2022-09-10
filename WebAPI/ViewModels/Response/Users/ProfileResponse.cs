@@ -30,7 +30,31 @@
         /// </summary>
         /// <example>https://some_user_photo_example_url.com</example>
         public string Photo { get; set; }
-
+        /// <summary>
+        /// Address
+        /// </summary>
+        /// <example>27 Park St Centereach</example>
+        public string Address { get; set; }
+        /// <summary>
+        /// Postal code
+        /// </summary>
+        /// <example>33014</example>
+        public string PostalCode { get; set; }
+        /// <summary>
+        /// Country identifier
+        /// </summary>
+        /// <example>2</example>
+        public int? CountryId { get; set; }
+        /// <summary>
+        /// City identifier
+        /// </summary>
+        /// <example>1</example>
+        public int? CityId { get; set; }
+        /// <summary>
+        /// Gender identifier
+        /// </summary>
+        /// <example>3</example>
+        public int? GenderId { get; set; }
         /// <summary>
         /// Is user email confirmed
         /// </summary>

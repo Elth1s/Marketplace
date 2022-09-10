@@ -12,18 +12,21 @@ export enum OrderActionTypes {
     GET_ORDER_PRODUCTS = "GET_ORDER_PRODUCTS",
     GET_ORDER_FOR_USER = "GET_ORDER_FOR_USER"
 }
+export enum GenderActionTypes {
+    GET_GENDERS = "GET_GENDERS"
+}
 
 //Profile interface
 export interface IProfile {
     firstName: string,
     secondName: string,
 
-    gender: string,
-    birthDate: Date | string,
-    languageOfCommunication: number,
-    region: number,
+    //birthDate: Date | string,
+    //languageOfCommunication: number,
+    genderId: number | null,
+    countryId: number | null,
+    cityId: number | null,
     address: string,
-    city: string,
     postalCode: string,
 
     email: string,
@@ -35,6 +38,11 @@ export interface IProfile {
     isGoogleConnected: boolean,
     isFacebookConnected: boolean,
     hasPassword: boolean
+}
+
+export interface IGender {
+    id: number,
+    name: string
 }
 
 //Confirm Email
@@ -96,6 +104,7 @@ export interface ProfileState {
     userInfo: IProfile,
     orderProducts: Array<IOrderProducts>
     ordersForUser: Array<IOrdersForUser>
+    genders: Array<IGender>
 }
 
 //==========Action
@@ -134,6 +143,12 @@ export interface GetOrderForUserAction {
     payload: Array<IOrdersForUser>
 }
 
+export interface GetGendersAction {
+    type: GenderActionTypes.GET_GENDERS,
+    payload: Array<IGender>
+}
+
 export type ProfileAction = GetProfileAction | GoogleConnectSuccessAction | FacebookConnectSuccessAction;
 export type EmailConfirmAction = ConfirmEmailAction | SendConfirmEmailAction | IsEmailConfirmedAction;
 export type OrderAction = GetOrderProductsAction | GetOrderForUserAction;
+export type GenderAction = GetGendersAction;

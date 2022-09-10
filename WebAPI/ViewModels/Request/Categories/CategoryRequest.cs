@@ -27,7 +27,7 @@ namespace WebAPI.ViewModels.Request.Categories
         /// <summary>
         /// Category image
         /// </summary>
-        /// <example>technology-and-electronics</example>
+        /// <example>https://some_category_image_example.jp</example>
         public string Image { get; set; }
         /// <summary>
         /// Category light icon

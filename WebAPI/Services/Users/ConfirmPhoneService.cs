@@ -1,7 +1,6 @@
 ﻿using DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 using WebAPI.Extensions;
-using WebAPI.Interfaces;
 using WebAPI.Interfaces.Users;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Request.Users;

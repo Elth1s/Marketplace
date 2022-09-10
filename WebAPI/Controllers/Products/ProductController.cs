@@ -264,7 +264,7 @@ namespace WebAPI.Controllers.Products
         /// <response code="200">Getting product completed successfully</response>
         /// <response code="404">User not found</response>
         /// <response code="500">An internal error has occurred</response>
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ProductResponse))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ProductWithCartResponse))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
@@ -283,7 +283,7 @@ namespace WebAPI.Controllers.Products
         /// <response code="200">Getting product completed successfully</response>
         /// <response code="404">User not found</response>
         /// <response code="500">An internal error has occurred</response>
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ProductResponse))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ProductWithCartResponse))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]

@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 using Twilio;
 using Twilio.Rest.Verify.V2.Service;
 using WebAPI.Exceptions;
-using WebAPI.Interfaces;
+using WebAPI.Interfaces.Users;
 using WebAPI.Settings;
 using WebAPI.ViewModels.Request;
 

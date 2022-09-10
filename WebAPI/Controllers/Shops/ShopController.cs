@@ -162,7 +162,7 @@ namespace WebAPI.Controllers.Shops
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = "Admin,Seller")]
         [HttpPut("Update/{shopId}")]
-        public async Task<IActionResult> UpdateShop(int shopId, [FromBody] ShopRequest request)
+        public async Task<IActionResult> UpdateShop(int shopId, [FromBody] UpdateShopRequest request)
         {
             await _shopService.UpdateShopAsync(shopId, request, UserId);
             return Ok(_shopLocalizer["UpdateSuccess"].Value);

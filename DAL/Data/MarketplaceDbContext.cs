@@ -54,7 +54,11 @@ namespace DAL.Data
         public DbSet<ReviewImage> ReviewImages { get; set; }
 
         public DbSet<Sale> Sales { get; set; }
+
+        public DbSet<Gender> Genders { get; set; }
+
         public DbSet<Language> Languages { get; set; }
+
         public DbSet<CountryTranslation> CountryTranslations { get; set; }
         public DbSet<CityTranslation> CityTranslations { get; set; }
         public DbSet<UnitTranslation> UnitTranslations { get; set; }
@@ -67,6 +71,7 @@ namespace DAL.Data
         public DbSet<DeliveryTypeTranslation> DeliveryTypeTranslations { get; set; }
         public DbSet<DayOfWeekTranslation> DayOfWeekTranslations { get; set; }
         public DbSet<SaleTranslation> SaleTranslations { get; set; }
+        public DbSet<GenderTranslation> GenderTranslations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -75,6 +80,10 @@ namespace DAL.Data
             builder.Entity<Category>()
                 .HasOne(c => c.Parent)
                 .WithMany(c => c.Children);
+
+            builder.Entity<Product>()
+                 .HasIndex(p => p.UrlSlug)
+                 .IsUnique();
 
             builder.Entity<AppUser>(entity =>
             {
@@ -164,6 +173,10 @@ namespace DAL.Data
 
             builder.Entity<SaleTranslation>()
                   .HasIndex(c => new { c.SaleId, c.LanguageId })
+                  .IsUnique();
+
+            builder.Entity<GenderTranslation>()
+                  .HasIndex(c => new { c.GenderId, c.LanguageId })
                   .IsUnique();
 
             builder.Entity<BasketItem>().HasIndex(b => new { b.ProductId, b.UserId }).IsUnique();

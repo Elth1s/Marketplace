@@ -52,7 +52,7 @@ export const rootReducer = combineReducers({
     orderStatus: orderStatusReducer,
     deliveryType: deliveryTypeReducer,
     shopPage: shopPageReducer,
-    sale: saleReducer
+    sale: saleReducer,
     order: orderReducer,
 });
 

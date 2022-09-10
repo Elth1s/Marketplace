@@ -19,8 +19,10 @@ import DatePickerComponent from "../../../../components/DatePicker";
 import { ButtonStyled } from "../../styled";
 
 const Information = () => {
-    const { GetProfile, UpdateProfile } = useActions();
+    const { GetProfile, UpdateProfile, GetCountries, GetCitiesByCountry, GetGenders } = useActions();
     const { userInfo } = useTypedSelector((store) => store.profile);
+    const { countries } = useTypedSelector((store) => store.country);
+    const { cityForSelect } = useTypedSelector((store) => store.city);
 
     useEffect(() => {
         getData();
@@ -83,12 +85,12 @@ const Information = () => {
                             />
                         </Grid>
                         <Grid item xs>
-                            <TextFieldComponent
-                                type="text"
+                            <SelectComponent
                                 label="Gender"
-                                error={errors.gender}
-                                touched={touched.gender}
-                                getFieldProps={{ ...getFieldProps('gender') }}
+                                items={[{ id: 1, name: "test1" }, { id: 2, name: "test2" }]}
+                                error={errors.genderId}
+                                touched={touched.genderId}
+                                getFieldProps={{ ...getFieldProps('genderId') }}
                             />
                         </Grid>
                         <Grid item xs>
@@ -106,13 +108,13 @@ const Information = () => {
                             /> */}
                         </Grid>
                         <Grid item xs>
-                            <SelectComponent
+                            {/* <SelectComponent
                                 label="Language of communication"
                                 items={[{ id: 1, name: "test1" }, { id: 2, name: "test2" }]}
                                 error={errors.languageOfCommunication}
                                 touched={touched.languageOfCommunication}
                                 getFieldProps={{ ...getFieldProps('languageOfCommunication') }}
-                            />
+                            /> */}
                         </Grid>
                         <ButtonStyled fullWidth variant="contained" color="primary" sx={{ mt: "95px" }}>
                             Save Change
@@ -121,11 +123,11 @@ const Information = () => {
                     <Grid container item xs={6} rowSpacing={2.5} direction="column">
                         <Grid item xs>
                             <SelectComponent
-                                label="Region"
+                                label="Country"
                                 items={[{ id: 1, name: "test1" }, { id: 2, name: "test2" }]}
-                                error={errors.region}
-                                touched={touched.region}
-                                getFieldProps={{ ...getFieldProps('region') }}
+                                error={errors.countryId}
+                                touched={touched.countryId}
+                                getFieldProps={{ ...getFieldProps('countryId') }}
                             />
                         </Grid>
                         <Grid item xs>
@@ -138,12 +140,12 @@ const Information = () => {
                             />
                         </Grid>
                         <Grid item xs>
-                            <TextFieldComponent
-                                type="text"
+                            <SelectComponent
                                 label="City"
-                                error={errors.city}
-                                touched={touched.city}
-                                getFieldProps={{ ...getFieldProps('city') }}
+                                items={[{ id: 1, name: "test1" }, { id: 2, name: "test2" }]}
+                                error={errors.cityId}
+                                touched={touched.cityId}
+                                getFieldProps={{ ...getFieldProps('cityId') }}
                             />
                         </Grid>
                         <Grid item xs>

@@ -1,6 +1,8 @@
 import {
     ConfirmEmailActionTypes,
     EmailConfirmAction,
+    GenderAction,
+    GenderActionTypes,
     OrderAction,
     OrderActionTypes,
     ProfileAction,
@@ -13,12 +15,12 @@ const initialState: ProfileState = {
         firstName: "",
         secondName: "",
 
-        gender: "",
-        birthDate: "",
-        languageOfCommunication: 0,
-        region: 0,
+        // birthDate: "",
+        // languageOfCommunication: 0,
+        genderId: null,
+        countryId: null,
+        cityId: null,
         address: "",
-        city: "",
         postalCode: "",
 
         email: "",
@@ -32,10 +34,11 @@ const initialState: ProfileState = {
         hasPassword: false,
     },
     orderProducts: [],
-    ordersForUser: []
+    ordersForUser: [],
+    genders: []
 }
 
-export const profileReducer = (state = initialState, action: ProfileAction | EmailConfirmAction | OrderAction): ProfileState => {
+export const profileReducer = (state = initialState, action: ProfileAction | EmailConfirmAction | OrderAction | GenderAction): ProfileState => {
     switch (action.type) {
         case ProfileActionTypes.GET_PROFILE:
             return {
@@ -75,7 +78,12 @@ export const profileReducer = (state = initialState, action: ProfileAction | Ema
             return {
                 ...state,
                 ordersForUser: action.payload,
-            }    
+            }
+        case GenderActionTypes.GET_GENDERS:
+            return {
+                ...state,
+                genders: action.payload,
+            }
         default:
             return state;
     }

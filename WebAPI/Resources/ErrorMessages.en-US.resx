@@ -354,4 +354,10 @@
   <data name="SaleNotFound" xml:space="preserve">
     <value>Sale was not found</value>
   </data>
+  <data name="GenderNotFound" xml:space="preserve">
+    <value>Gender not found</value>
+  </data>
+  <data name="OrderAlreadyCanceled" xml:space="preserve">
+    <value>Order has already been cancelled</value>
+  </data>
 </root>

@@ -7,6 +7,7 @@ import {
     CityAction,
     CityActionTypes,
     ISearchCities,
+    ICityForSelect,
 } from "./types"
 import { ServerError } from "../../../store/types"
 import qs from "qs"
@@ -65,6 +66,24 @@ export const GetCities = () => {
 
             dispatch({
                 type: CityActionTypes.GET_CITIES,
+                payload: response.data
+            })
+
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
+        }
+    }
+}
+
+export const GetCitiesByCountry = (countryId: number) => {
+    return async (dispatch: Dispatch<CityAction>) => {
+        try {
+            let response = await http.get<Array<ICityForSelect>>(`api/City/GetByCountry/${countryId}`)
+
+            dispatch({
+                type: CityActionTypes.GET_CITIES_FOR_SELECT,
                 payload: response.data
             })
 

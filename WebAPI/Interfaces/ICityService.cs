@@ -8,6 +8,7 @@ namespace WebAPI.Interfaces
     {
         Task<IEnumerable<CityResponse>> GetCitiesAsync();
         Task<SearchResponse<CityResponse>> SearchCitiesAsync(AdminSearchRequest request);
+        Task<IEnumerable<CityForSelectResponse>> GetCitiesByCountryAsync(int countryId);
         Task<CityFullInfoResponse> GetCityByIdAsync(int cityId);
         Task CreateCityAsync(CityRequest request);
         Task UpdateCityAsync(int cityId, CityRequest request);

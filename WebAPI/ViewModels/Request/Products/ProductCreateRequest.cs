@@ -102,8 +102,7 @@ namespace WebAPI.ViewModels.Request.Products
 
             //Description
             RuleFor(x => x.Description).Cascade(CascadeMode.Stop)
-              .NotEmpty().WithName(_validationResources["DescriptionNameProp"])
-              .Length(15, 250);
+              .Length(10, 850).When(d => !string.IsNullOrEmpty(d.Description)).WithName(_validationResources["DescriptionNameProp"]);
 
             //Price
             RuleFor(c => c.Price).Cascade(CascadeMode.Stop)

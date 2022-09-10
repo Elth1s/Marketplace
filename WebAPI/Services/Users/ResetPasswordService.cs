@@ -6,7 +6,6 @@ using System.Net;
 using WebAPI.Exceptions;
 using WebAPI.Extensions;
 using WebAPI.Helpers;
-using WebAPI.Interfaces;
 using WebAPI.Interfaces.Emails;
 using WebAPI.Interfaces.Users;
 using WebAPI.Settings;

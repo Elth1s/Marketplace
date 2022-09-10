@@ -233,7 +233,8 @@ namespace WebAPI.Services
         }
         public async Task DeleteSaleAsync(int saleId)
         {
-            var sale = await _saleRepository.GetByIdAsync(saleId);
+            var spec = new SaleIncludeFullInfoSpecification(saleId);
+            var sale = await _saleRepository.GetBySpecAsync(spec);
             sale.SaleNullChecking();
 
             var engTranslation = sale.SaleTranslations.FirstOrDefault(s => s.LanguageId == LanguageId.English);
@@ -284,7 +285,8 @@ namespace WebAPI.Services
         {
             foreach (var item in ids)
             {
-                var sale = await _saleRepository.GetByIdAsync(item);
+                var spec = new SaleIncludeFullInfoSpecification(item);
+                var sale = await _saleRepository.GetBySpecAsync(spec);
                 var engTranslation = sale.SaleTranslations.FirstOrDefault(s => s.LanguageId == LanguageId.English);
                 var ukTranslation = sale.SaleTranslations.FirstOrDefault(s => s.LanguageId == LanguageId.Ukrainian);
                 if (!string.IsNullOrEmpty(engTranslation.HorizontalImage))

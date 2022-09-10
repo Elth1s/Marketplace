@@ -38,8 +38,8 @@
         /// <summary>
         /// Discount
         /// </summary>
-        /// <example>10</example>
-        public int Discount { get; set; }
+        /// <example>900</example>
+        public float? Discount { get; set; }
         /// <summary>
         /// Url slug
         /// </summary>
