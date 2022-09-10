@@ -365,6 +365,13 @@
                 "exceptions": {
                     "urlSlugError": "Something went wrong"
                 }
+            },
+            "replyDialog": {
+                "title": "Send a reply",
+                "button": "Send",
+                "exceptions": {
+                    "urlSlugError": "Щось пішло не так"
+                }
             }
         },
         "toastTitles": {
@@ -408,7 +415,11 @@
             "ukrainianVerticalImage": "Ukrainian vertical image",
             "ukrainianHorizontalImage": "Ukrainian horizontal image",
             "englishHorizontalImage": "English horizontal image",
-            "englishVerticalImage": "English vertical image"
+            "englishVerticalImage": "English vertical image",
+            "reply": "Reply"
+        },
+        "validationMessages": {
+            "required": "is required"
         }
     }
 }

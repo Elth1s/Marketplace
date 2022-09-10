@@ -50,7 +50,7 @@
         /// Question replies count
         /// </summary>
         /// <example>10</example>
-        public int Replies { get; set; }
+        public int RepliesCount { get; set; }
         /// <summary>
         /// List of question images
         /// </summary>

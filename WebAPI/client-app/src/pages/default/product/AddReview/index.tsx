@@ -19,6 +19,7 @@ import { ToastError, ToastWarning } from '../../../../components/ToastComponent'
 
 import { useTypedSelector } from '../../../../hooks/useTypedSelector';
 import { useActions } from "../../../../hooks/useActions";
+import CropperDialog from '../../../../components/CropperDialog';
 
 
 interface Props {
@@ -91,6 +92,13 @@ const AddReview: FC<Props> = ({ getData }) => {
         validationSchema: reviewValidationFields,
         onSubmit: onHandleSubmit
     });
+
+    const onSaveImage = (base64: string) => {
+        var tempImages = formik.values.images.slice();
+
+        tempImages.push(base64);
+        setFieldValue("images", tempImages);
+    }
 
     const { errors, touched, isSubmitting, handleSubmit, setFieldValue, setFieldError, getFieldProps, resetForm } = formik;
 
@@ -223,6 +231,20 @@ const AddReview: FC<Props> = ({ getData }) => {
                                         error={Boolean(touched.videoURL && errors.videoURL)}
                                         helperText={touched.videoURL && errors.videoURL}
                                     />
+                                </Grid>
+                                <Grid item xs={12} sx={{ display: "flex" }}>
+                                    {formik.values.images?.length != 0 &&
+                                        formik.values.images.map((row, index) => {
+                                            return (
+                                                <img
+                                                    key={`product_image_${index}`}
+                                                    src={row}
+                                                    alt="icon"
+                                                    style={{ width: "100px", height: "100px", borderRadius: "10px", marginRight: "10px", marginBottom: "10px", border: "1px solid #F45626", objectFit: "contain" }} />
+                                            );
+                                        })
+                                    }
+                                    <CropperDialog imgSrc={""} onDialogSave={onSaveImage} />
                                 </Grid>
                             </Grid>
                         </DialogContent>

@@ -12,11 +12,11 @@ import LinkRouter from '../../../components/LinkRouter';
 
 import { DrawerStyle, RotatedBox, ListItemButtonStyle } from './styled';
 
-export interface IDrawer {
+interface IDrawer {
     open: boolean,
 }
 
-export interface IMenuItem {
+interface IMenuItem {
     lable: string,
     path: string,
     rotate?: boolean
@@ -46,10 +46,9 @@ const Sidebar: FC<IDrawer> = ({ open }) => {
     const location = useLocation();
 
     useEffect(() => {
-        const pathnames = location.pathname.split('/').filter((x) => x);
         let newArr = [...menuItems];
         newArr.forEach(element => {
-            if (element.path.split('/').filter((x) => x)[1] == pathnames[1]) {
+            if (element.path == location.pathname) {
                 element.rotate = true;
                 setSelected(element.lable);
             }

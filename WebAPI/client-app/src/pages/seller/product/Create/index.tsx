@@ -13,11 +13,7 @@ import { toLowerFirstLetter } from "../../../../http_comon";
 import { ServerError } from "../../../../store/types";
 import { IProductCreate, IProductImage } from "../types";
 
-interface Props {
-
-}
-
-const ProductCreate: FC<Props> = ({ }) => {
+const ProductCreate = () => {
     const { GetCategoriesWithoutChildren, GetProductStatusesSeller, GetFiltersByCategoryId, CreateProductImage, CreateProduct } = useActions();
 
     const { categories, productStatuses, filters } = useTypedSelector((store) => store.productSeller);
@@ -26,10 +22,16 @@ const ProductCreate: FC<Props> = ({ }) => {
 
     const [imagesLoading, setImagesLoading] = useState<number>(0);
 
-    useEffect(() => {
-        document.title = "Product create";
-        getData();
-    }, [imagesLoading]);
+
+
+    const getData = async () => {
+        try {
+            await GetCategoriesWithoutChildren();
+            await GetProductStatusesSeller();
+        }
+        catch (ex) {
+        }
+    }
 
     const item: IProductCreate = {
         name: "",
@@ -67,15 +69,11 @@ const ProductCreate: FC<Props> = ({ }) => {
             }
         }
     });
+    useEffect(() => {
+        document.title = "Product create";
+        getData();
+    }, [imagesLoading, formik.values.images]);
 
-    const getData = async () => {
-        try {
-            await GetCategoriesWithoutChildren();
-            await GetProductStatusesSeller();
-        }
-        catch (ex) {
-        }
-    }
 
     const selectFilterValue = (nameId: number, valueId: number, customValue?: number) => {
         const index = formik.values.filtersValue.map(object => object.nameId).indexOf(nameId);
@@ -281,7 +279,6 @@ const ProductCreate: FC<Props> = ({ }) => {
                                             );
                                         }))
                                 }
-
                             </Grid>
                         </Grid>
                         <LoadingButton

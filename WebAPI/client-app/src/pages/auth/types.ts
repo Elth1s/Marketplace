@@ -5,7 +5,8 @@ export enum AuthActionTypes {
 }
 
 export interface IUser {
-    name: string,
+    firstName: string,
+    secondName: string,
     emailOrPhone: string,
     isEmailExist: boolean,
     role: string,

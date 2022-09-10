@@ -124,7 +124,7 @@ const MainMenu = () => {
                         <LinkRouter underline="none" color="unset" to="/profile/information" onClick={handleClose}>
                             <Box sx={{ my: 0.5, mb: 1.5, px: 2.5 }}>
                                 <Typography variant="h6" noWrap >
-                                    {user.name}
+                                    {user.firstName} {user.secondName}
                                 </Typography>
                                 <Typography variant="body2" noWrap>
                                     {user.emailOrPhone}
@@ -149,7 +149,7 @@ const MainMenu = () => {
                 {isAuth && <Box>
                     {
                         user.role == "Admin" || user.role == "Seller"
-                            ? <LinkRouter underline="none" color="unset" to="/seller" >
+                            ? <LinkRouter underline="none" color="unset" to="/seller/products" >
                                 <MenuItemStyle                                >
                                     <IconButton sx={{ mr: 2, width: 24, height: 24, color: "secondary" }}>
                                         <Store />

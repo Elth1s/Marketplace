@@ -12,7 +12,7 @@ import {
 import { ServerError } from "../../store/types";
 import http, { setLocalRefreshToken, setLocalAccessToken } from "../../http_comon"
 
-import { accessToken, refreshToken, emailClaim, roleClaim, mobilePhoneClaim, isEmailExistClaim, photoClaim, nameClaim } from "./constants"
+import { accessToken, refreshToken, emailClaim, roleClaim, mobilePhoneClaim, isEmailExistClaim, photoClaim, nameClaim, secondNameClaim } from "./constants"
 
 export const AuthDialogChange = () => {
     return (dispatch: Dispatch<AuthAction>) => {
@@ -102,7 +102,7 @@ export const AuthUser = (token: string, dispatch: Dispatch<AuthAction>) => {
     const decodedToken = jwt_decode(token) as any;
     dispatch({
         type: AuthActionTypes.AUTH_SUCCESS,
-        payload: { name: decodedToken[nameClaim], photo: decodedToken[photoClaim], emailOrPhone: decodedToken[emailClaim] ?? decodedToken[mobilePhoneClaim], isEmailExist: decodedToken[isEmailExistClaim].toLowerCase() == 'true', role: decodedToken[roleClaim] }
+        payload: { firstName: decodedToken[nameClaim], secondName: decodedToken[secondNameClaim], photo: decodedToken[photoClaim], emailOrPhone: decodedToken[emailClaim] ?? decodedToken[mobilePhoneClaim], isEmailExist: decodedToken[isEmailExistClaim].toLowerCase() == 'true', role: decodedToken[roleClaim] }
     })
 }
 

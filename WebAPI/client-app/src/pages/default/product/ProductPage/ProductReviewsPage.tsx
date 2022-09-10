@@ -1,5 +1,5 @@
 import { Box, Grid, Typography, IconButton } from "@mui/material";
-import { StarRounded } from "@mui/icons-material";
+import { CachedOutlined, StarRounded } from "@mui/icons-material";
 
 import { FC, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -21,6 +21,8 @@ import ShowInfo from "../../ShortSellerInfo"
 import AddReview from "../AddReview";
 import ReviewsForm from "../ReviewForm"
 import LinkRouter from "../../../../components/LinkRouter";
+import { big_empty } from "../../../../assets/backgrounds";
+import { ShowMoreButton } from "../../Catalog/styled";
 
 interface Props {
     addInCart: any,
@@ -29,7 +31,7 @@ interface Props {
 const ProductReviewsPage: FC<Props> = ({ addInCart }) => {
     const { t } = useTranslation();
 
-    const { product, reviews, productRating } = useTypedSelector(state => state.product);
+    const { product, reviews, productRating, reviewsCount } = useTypedSelector(state => state.product);
     const { GetReviews, GetMoreReviews, BasketMenuChange, AddProductInSelected, GetProductRatingByUrlSlug } = useActions();
 
     let { urlSlug } = useParams();
@@ -51,6 +53,18 @@ const ProductReviewsPage: FC<Props> = ({ addInCart }) => {
         } catch (ex) {
         }
     };
+
+    const showMore = async () => {
+        if (!urlSlug)
+            return;
+        try {
+            let newPage = page + 1;
+            await GetMoreReviews(urlSlug, newPage, rowsPerPage)
+            setPage(newPage);
+        } catch (ex) {
+
+        }
+    }
 
     return (
         <>
@@ -93,36 +107,53 @@ const ProductReviewsPage: FC<Props> = ({ addInCart }) => {
                     {reviews.length === 0
                         ?
                         <ReviewsForm getData={getData} />
-                        : (reviews?.length != 0 && reviews.map((item, index) => {
-                            return (
-                                <ReviewItem
-                                    key={index}
-                                    fullName={item.fullName}
-                                    reviewLink="/"
-                                    date={item.date}
-                                    productRating={item.productRating}
-                                    comment={item.comment}
-                                    advantages={item.advantages}
-                                    disadvantages={item.disadvantages}
-                                    images={item.images}
-                                    videoURL={item.videoURL}
-                                    isLiked={item.isLiked}
-                                    isDisliked={item.isDisliked}
-                                    likes={item.likes}
-                                    dislikes={item.dislikes}
-                                    replies={item.replies}
-                                />
-                            )
-                        }))
+                        :
+                        <>
+                            {reviews?.length != 0 && reviews.map((item, index) => {
+                                return (
+                                    <ReviewItem
+                                        key={index}
+                                        id={item.id}
+                                        fullName={item.fullName}
+                                        reviewLink="/"
+                                        date={item.date}
+                                        productRating={item.productRating}
+                                        comment={item.comment}
+                                        advantages={item.advantages}
+                                        disadvantages={item.disadvantages}
+                                        images={item.images}
+                                        videoURL={item.videoURL}
+                                        isLiked={item.isLiked}
+                                        isDisliked={item.isDisliked}
+                                        likes={item.likes}
+                                        dislikes={item.dislikes}
+                                        repliesCount={item.repliesCount}
+                                        replies={item.replies}
+                                        getData={() => getData()}
+                                    />
+                                )
+                            })}
+                            {reviews.length != reviewsCount && <Box sx={{ display: "flex", justifyContent: "center" }}>
+                                <ShowMoreButton onClick={showMore} startIcon={<CachedOutlined />}>
+                                    {t("pages.catalog.showMore")}
+                                </ShowMoreButton>
+                            </Box>}
+                        </>
                     }
                 </Grid>
                 <Grid item xs={4}>
                     <Box sx={{ width: "350px", ml: "auto" }}>
-                        {product.images?.length > 0 && <img
-                            style={{ width: "350px", height: "350px", objectFit: "contain" }}
-                            src={product.images[0].name}
-                            alt="productImage"
-                        />}
+                        {product.images?.length > 0
+                            ? <img
+                                style={{ width: "350px", height: "350px", objectFit: "contain" }}
+                                src={product.images[0].name}
+                                alt="productImage"
+                            />
+                            : <img
+                                style={{ width: "350px", height: "350px", objectFit: "contain" }}
+                                src={big_empty}
+                                alt="productImage"
+                            />}
                         <PriceBox>
                             <Box sx={{ display: "flex", alignItems: 'baseline' }}>
                                 <Typography fontSize="50px" lineHeight="63px" sx={{ mr: "35px" }}>{product.price} &#8372;</Typography>

@@ -24,6 +24,7 @@ import ShowInfo from "../../ShortSellerInfo"
 import { useActions } from "../../../../hooks/useActions";
 import { useParams } from "react-router-dom";
 import LinkRouter from "../../../../components/LinkRouter";
+import { big_empty } from "../../../../assets/backgrounds";
 
 interface Props {
     addInCart: any
@@ -78,12 +79,18 @@ const ProductCharacteristicsPage: FC<Props> = ({ addInCart }) => {
                 </Grid>
                 <Grid item xs={1} />
                 <Grid item xs={4}>
-                    <Box sx={{ width: "420px", ml: "auto" }}>
-                        {product.images?.length > 0 && <img
-                            style={{ width: "420px", height: "420px", objectFit: "contain" }}
-                            src={product.images[0].name}
-                            alt="productImage"
-                        />}
+                    <Box sx={{ width: "350px", ml: "auto" }}>
+                        {product.images?.length > 0
+                            ? <img
+                                style={{ width: "350px", height: "350px", objectFit: "contain" }}
+                                src={product.images[0].name}
+                                alt="productImage"
+                            />
+                            : <img
+                                style={{ width: "350px", height: "350px", objectFit: "contain" }}
+                                src={big_empty}
+                                alt="productImage"
+                            />}
                         <PriceBox>
                             <Box sx={{ display: "flex", alignItems: 'baseline' }}>
                                 <Typography fontSize="50px" lineHeight="63px" sx={{ mr: "35px" }}>{product.price} &#8372;</Typography>

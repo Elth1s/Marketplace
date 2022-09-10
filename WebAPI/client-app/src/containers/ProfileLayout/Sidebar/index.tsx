@@ -16,37 +16,53 @@ import {
 } from '../../../assets/icons';
 
 import { ListItemButtonStyle } from './styled';
+import { useTranslation } from 'react-i18next';
+import { useTypedSelector } from '../../../hooks/useTypedSelector';
 
-export interface IMenuItem {
+interface IMenuItem {
     label: string,
     path: string,
     icon: string,
     activeIcon: string,
 }
 
-const menuItems = [
-    { label: 'User Name', path: '/profile/information', icon: black_user, activeIcon: orange_user },
-    { label: 'Reviewed products', path: '/profile/reviewed-products', icon: black_eye, activeIcon: orange_eye },
-    { label: 'My Order', path: '/profile/order', icon: black_shopping_cart, activeIcon: orange_shopping_cart },
-    { label: 'Selected products', path: '/profile/selected-product', icon: black_heart, activeIcon: orange_heart },
-    { label: 'My reviews', path: '/profile/reviews', icon: black_review, activeIcon: orange_review },
-];
 
-const Sitebar = () => {
-    const [selectedItem, setSelectedItem] = useState<string>("");
+
+const Sidebar = () => {
+    const { t } = useTranslation();
+
+    const { user } = useTypedSelector(state => state.auth);
+
+    const [menuItems, setMenuItems] = useState<Array<IMenuItem>>([
+        { label: `${user.firstName} ${user.secondName}`, path: '/profile/information', icon: black_user, activeIcon: orange_user },
+        { label: `${t("pages.user.menu.reviewedProducts")}`, path: '/profile/reviewed-products', icon: black_eye, activeIcon: orange_eye },
+        { label: `${t("pages.user.menu.myOrders")}`, path: '/profile/orders', icon: black_shopping_cart, activeIcon: orange_shopping_cart },
+        { label: `${t("pages.user.menu.selectedProducts")}`, path: '/profile/selected-product', icon: black_heart, activeIcon: orange_heart },
+        { label: `${t("pages.user.menu.myReviews")}`, path: '/profile/reviews', icon: black_review, activeIcon: orange_review },
+    ]);
+
     const location = useLocation();
+
+    const [selectedItem, setSelectedItem] = useState<string>("");
 
     useEffect(() => {
         setSelectedItem(location.pathname);
     }, []);
 
     return (
-        <List sx={{ padding: "0" }}>
+        <List
+            sx={{
+                padding: "0",
+                "&& .MuiTouchRipple-child": {
+                    backgroundColor: "transparent"
+                }
+            }}
+        >
             {menuItems.map((item, index) => (
                 <LinkRouter key={index} underline="none" color="unset" to={item.path}
                     sx={{
                         display: "block",
-                        marginBottom: "30px",
+                        marginBottom: "20px",
                         "&:last-child": {
                             marginBottom: "0px"
                         }
@@ -75,4 +91,4 @@ const Sitebar = () => {
     );
 }
 
-export default Sitebar;
+export default Sidebar;

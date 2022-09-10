@@ -35,7 +35,7 @@ namespace WebAPI.ViewModels.Request.Questions
         /// <summary>
         /// List of images
         /// </summary>
-        public ICollection<int> Images { get; set; }
+        public ICollection<string> Images { get; set; }
     }
 
 

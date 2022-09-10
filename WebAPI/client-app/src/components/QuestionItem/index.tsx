@@ -1,17 +1,23 @@
-import { StarRounded } from '@mui/icons-material'
+import { CachedOutlined, StarRounded } from '@mui/icons-material'
 import {
     Box,
     Button,
     IconButton,
-    Typography
+    Typography,
+    useTheme
 } from '@mui/material'
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { dislike, like, link, reply } from '../../assets/icons'
+import { dislike, like, link, reply, selected_dislike, selected_like } from '../../assets/icons'
+import { useActions } from '../../hooks/useActions'
+import { ShowMoreButton } from '../../pages/default/Catalog/styled'
+import AddReply from '../../pages/default/product/AddReply'
+import { IReply, IReplyItem } from '../../pages/default/product/types'
 import LinkRouter from '../LinkRouter'
 import { RatingStyle } from '../Rating/styled'
 
 interface Props {
+    id: number
     questionLink: string,
     fullName: string,
     date: string,
@@ -21,12 +27,51 @@ interface Props {
     isDisliked: boolean,
     likes: number,
     dislikes: number,
-    replies: number
+    repliesCount: number,
+    replies: Array<IReplyItem>,
+    getData: any
 }
 
-const QuestionItem: FC<Props> = ({ questionLink, fullName, date, message, images, isLiked, isDisliked, likes, dislikes, replies }) => {
+const QuestionItem: FC<Props> = ({ id, questionLink, fullName, date, message, images, isLiked, isDisliked, likes, dislikes, repliesCount, replies, getData }) => {
     const { t } = useTranslation();
+    const { palette } = useTheme();
 
+    const { QuestionLike, QuestionDislike, AddQuestionReply, GetRepliesForQuestion, GetMoreRepliesForQuestion } = useActions();
+
+    const [isReplyOpen, setIsReplyOpen] = useState<boolean>(false);
+    const [page, setPage] = useState<number>(1);
+    const [rowsPerPage, setRewsPerPage] = useState<number>(3);
+
+    useEffect(() => {
+    }, [replies])
+
+    const changeLiked = async () => {
+        await QuestionLike(id)
+    }
+
+    const changeDisliked = async () => {
+        await QuestionDislike(id)
+    }
+
+    const AddReplyForQuestion = async (value: IReply) => {
+        await AddQuestionReply(value, id);
+        await GetRepliesForQuestion(id, 1, rowsPerPage)
+        setPage(1);
+    }
+
+    const GetReplies = async () => {
+        await GetRepliesForQuestion(id, page, rowsPerPage);
+        setIsReplyOpen(!isReplyOpen);
+    }
+
+    const showMore = async () => {
+        try {
+            let newPage = page + 1;
+            await GetMoreRepliesForQuestion(id, newPage, rowsPerPage)
+            setPage(newPage);
+        } catch (ex) {
+        }
+    }
 
     return (
         <Box sx={{ border: "1px solid #7e7e7e", borderRadius: "10px", p: "37px 41px", mb: "20px" }}>
@@ -35,7 +80,7 @@ const QuestionItem: FC<Props> = ({ questionLink, fullName, date, message, images
                     {fullName}
                 </Typography>
                 <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <LinkRouter to={questionLink} underline="none" color="inherit">
+                    {/* <LinkRouter to={questionLink} underline="none" color="inherit">
                         <IconButton sx={{ "&:hover": { background: "transparent" }, "&& .MuiTouchRipple-child": { backgroundColor: "transparent" } }}>
                             <img
                                 style={{ width: "30px", height: "30px" }}
@@ -43,7 +88,7 @@ const QuestionItem: FC<Props> = ({ questionLink, fullName, date, message, images
                                 alt="link"
                             />
                         </IconButton>
-                    </LinkRouter>
+                    </LinkRouter> */}
                     <Typography variant="h5" sx={{ ml: "30px" }}>
                         {date}
                     </Typography>
@@ -52,62 +97,48 @@ const QuestionItem: FC<Props> = ({ questionLink, fullName, date, message, images
             <Typography variant="h4" sx={{ mt: "21px" }}>
                 {message}
             </Typography>
-            {images.map((image, index) => {
-                return (
-                    <img
-                        key={`review_image_${index}`}
-                        style={{ width: "100px", height: "100px" }}
-                        src={image}
-                        alt="reviewImage"
-                    />
-                )
-            })}
+            <Box sx={{ display: "flex", mt: "25px" }}>
+                {images.map((image, index) => {
+                    return (
+                        <img
+                            key={`review_image_${index}`}
+                            style={{ width: "100px", height: "100px", marginRight: "10px", marginBottom: "10px", objectFit: "contain" }}
+                            src={image}
+                            alt="reviewImage"
+                        />
+                    )
+                })}
+            </Box>
             <Box sx={{ display: "flex", justifyContent: "space-between", mt: "50px" }}>
                 <Box>
-                    <Button
-                        sx={{
-                            color: "inherit",
-                            textTransform: "none",
-                            fontSize: "18px",
-                            mr: "40px",
-                            "&:hover": { background: "transparent" },
-                            "&& .MuiTouchRipple-child": { backgroundColor: "transparent" }
-                        }}
-                        startIcon={
-                            <img
-                                style={{ width: "30px", height: "30px" }}
-                                src={reply}
-                                alt="replyIcon"
-                            />
-                        }
-                    >
-                        {t("components.reviewItem.reply")}
-                    </Button>
-                    {replies != 0 && <Button
+                    <AddReply create={AddReplyForQuestion} />
+                    {!isReplyOpen && (repliesCount != 0 && <Button
                         sx={{
                             textTransform: "none",
                             fontSize: "18px",
                             "&:hover": { background: "transparent" },
                             "&& .MuiTouchRipple-child": { backgroundColor: "transparent" }
                         }}
+                        onClick={GetReplies}
                     >
-                        {t("components.reviewItem.showReply")} ({replies})
-                    </Button>}
+                        {t("components.reviewItem.showReply")} ({repliesCount})
+                    </Button>)}
                 </Box>
                 <Box>
                     <Button
                         sx={{
-                            color: "inherit",
+                            color: isLiked ? palette.secondary.main : "inherit",
                             textTransform: "none",
                             fontSize: "18px",
                             mr: "35px",
                             "&:hover": { background: "transparent" },
                             "&& .MuiTouchRipple-child": { backgroundColor: "transparent" }
                         }}
+                        onClick={changeLiked}
                         startIcon={
                             <img
                                 style={{ width: "30px", height: "30px" }}
-                                src={like}
+                                src={isLiked ? selected_like : like}
                                 alt="likeIcon"
                             />
                         }
@@ -116,16 +147,17 @@ const QuestionItem: FC<Props> = ({ questionLink, fullName, date, message, images
                     </Button>
                     <Button
                         sx={{
-                            color: "inherit",
+                            color: isDisliked ? palette.secondary.main : "inherit",
                             textTransform: "none",
                             fontSize: "18px",
                             "&:hover": { background: "transparent" },
                             "&& .MuiTouchRipple-child": { backgroundColor: "transparent" }
                         }}
+                        onClick={changeDisliked}
                         startIcon={
                             <img
                                 style={{ width: "30px", height: "30px" }}
-                                src={dislike}
+                                src={isDisliked ? selected_dislike : dislike}
                                 alt="dislikeIcon"
                             />
                         }
@@ -134,6 +166,30 @@ const QuestionItem: FC<Props> = ({ questionLink, fullName, date, message, images
                     </Button>
                 </Box>
             </Box>
+            {isReplyOpen && <Box sx={{ px: "20px" }}>
+                {replies?.length !== 0 && replies.map((reply, index) => {
+                    return (
+                        <Box sx={{ pt: "30px", pb: "15px" }}>
+                            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                                <Typography variant="h1">
+                                    {reply.fullName}
+                                </Typography>
+                                <Typography variant="h5">
+                                    {reply.date}
+                                </Typography>
+                            </Box>
+                            <Typography variant="h4" sx={{ pt: "20px" }}>
+                                {reply.text}
+                            </Typography>
+                        </Box>
+                    )
+                })}
+                {replies.length != repliesCount && <Box sx={{ display: "flex", justifyContent: "center" }}>
+                    <ShowMoreButton onClick={showMore} startIcon={<CachedOutlined />}>
+                        {t("pages.catalog.showMore")}
+                    </ShowMoreButton>
+                </Box>}
+            </Box>}
         </Box>
     )
 }

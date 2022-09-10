@@ -22,7 +22,9 @@ export const green_upload_cloud = "/assets/icons/green-upload-cloud.png"
 export const reply = "/assets/icons/reply.png"
 
 export const like = "/assets/icons/like.png"
+export const selected_like = "/assets/icons/selected-like.png"
 export const dislike = "/assets/icons/dislike.png"
+export const selected_dislike = "/assets/icons/selected-dislike.png"
 
 export const link = "/assets/icons/link.png"
 

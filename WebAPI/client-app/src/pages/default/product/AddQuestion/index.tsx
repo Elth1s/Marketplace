@@ -2,14 +2,14 @@ import { Box, DialogActions, DialogContent, DialogTitle, IconButton, Typography,
 import { Close, StarRounded } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Form, FormikProvider, useFormik } from "formik";
 
-import { questionValidationFields, reviewValidationFields } from "../validation";
-import { IQuestion, IReview } from "../types";
+import { questionValidationFields } from "../validation";
+import { IQuestion } from "../types";
 import { ServerError } from '../../../../store/types';
 
 import { ReviewQustionDialogStyle } from '../../../../components/Dialog/styled';
@@ -19,6 +19,8 @@ import { ToastError, ToastWarning } from '../../../../components/ToastComponent'
 
 import { useTypedSelector } from '../../../../hooks/useTypedSelector';
 import { useActions } from "../../../../hooks/useActions";
+import { upload_cloud } from '../../../../assets/icons';
+import CropperDialog from '../../../../components/CropperDialog';
 
 
 interface Props {
@@ -83,6 +85,13 @@ const AddQuestion: FC<Props> = ({ getData }) => {
         validationSchema: questionValidationFields,
         onSubmit: onHandleSubmit
     });
+
+    const onSaveImage = (base64: string) => {
+        var tempImages = formik.values.images.slice();
+
+        tempImages.push(base64);
+        setFieldValue("images", tempImages);
+    }
 
     const { errors, touched, isSubmitting, handleSubmit, setFieldValue, setFieldError, getFieldProps, resetForm } = formik;
 
@@ -165,6 +174,20 @@ const AddQuestion: FC<Props> = ({ getData }) => {
                                         error={Boolean(touched.message && errors.message)}
                                         helperText={touched.message && errors.message}
                                     />
+                                </Grid>
+                                <Grid item xs={12} sx={{ display: "flex" }}>
+                                    {formik.values.images?.length != 0 &&
+                                        formik.values.images.map((row, index) => {
+                                            return (
+                                                <img
+                                                    key={`product_image_${index}`}
+                                                    src={row}
+                                                    alt="icon"
+                                                    style={{ width: "100px", height: "100px", borderRadius: "10px", marginRight: "10px", marginBottom: "10px", border: "1px solid #F45626", objectFit: "contain" }} />
+                                            );
+                                        })
+                                    }
+                                    <CropperDialog imgSrc={""} onDialogSave={onSaveImage} />
                                 </Grid>
                             </Grid>
                         </DialogContent>

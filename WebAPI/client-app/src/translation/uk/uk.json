@@ -300,6 +300,12 @@
                 }
             },
             "user": {
+                "menu": {
+                    "reviewedProducts": "Переглянуті товари",
+                    "myOrders": "Мої замовлення",
+                    "selectedProducts": "Обрані товари",
+                    "myReviews": "Мої відгуки"
+                },
                 "order": {
                     "title": "Замовлення",
                     "totalPrice": "Сума замовлення",
@@ -365,6 +371,13 @@
                 "exceptions": {
                     "urlSlugError": "Щось пішло не так"
                 }
+            },
+            "replyDialog": {
+                "title": "Відправити відповідь",
+                "button": "Відправити",
+                "exceptions": {
+                    "urlSlugError": "Щось пішло не так"
+                }
             }
         },
         "toastTitles": {
@@ -408,7 +421,11 @@
             "ukrainianVerticalImage": "Українське вертикальне зображення",
             "ukrainianHorizontalImage": "Українське горизонтальне зображення",
             "englishHorizontalImage": "Англійське горизонтальне зображення",
-            "englishVerticalImage": "Англійське вертикальне зображення"
+            "englishVerticalImage": "Англійське вертикальне зображення",
+            "reply": "Відповідь"
+        },
+        "validationMessages": {
+            "required": "є обов'язковим"
         }
     }
 }

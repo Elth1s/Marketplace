@@ -23,6 +23,7 @@ import { ServerError } from "../../../../store/types";
 
 import { IReview } from "../types";
 import { StarRounded } from "@mui/icons-material";
+import CropperDialog from "../../../../components/CropperDialog";
 
 interface Props {
     getData: any
@@ -94,6 +95,13 @@ const ReviewForm: FC<Props> = ({ getData }) => {
         validationSchema: reviewValidationFields,
         onSubmit: onHandleSubmit
     });
+
+    const onSaveImage = (base64: string) => {
+        var tempImages = formik.values.images.slice();
+
+        tempImages.push(base64);
+        setFieldValue("images", tempImages);
+    }
 
     const { errors, touched, isSubmitting, handleSubmit, setFieldError, getFieldProps, resetForm, setFieldValue } = formik;
 
@@ -194,39 +202,19 @@ const ReviewForm: FC<Props> = ({ getData }) => {
                             helperText={touched.videoURL && errors.videoURL}
                         />
                     </Grid>
-                    <Grid item xs={12} sx={{ paddingTop: "24px" }}>
-                        <Box
-                            sx={{
-                                display: "flex",
-                                flexDirection: "column",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                width: "100px",
-                                height: "100px",
-                                borderRadius: "10px",
-                                cursor: "pointer",
-                                border: "1px solid #0E7C3A",
-                            }}
-                        >
-                            {/* <div {...getRootProps({ className: 'dropzone' })}>
-                                <input {...getInputProps()} /> */}
-                            <Box
-                                sx={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    alignItems: "center"
-                                }}
-                            >
-                                <img
-                                    src={green_upload_cloud}
-                                    alt="icon"
-                                    style={{ width: "25px", height: "25px" }}
-                                />
-                                <Typography variant="subtitle1" align="center">
-                                    {t('pages.product.reviewForm.attachPhoto')}
-                                </Typography>
-                            </Box>
-                        </Box>
+                    <Grid item xs={12} sx={{ display: "flex" }}>
+                        {formik.values.images?.length != 0 &&
+                            formik.values.images.map((row, index) => {
+                                return (
+                                    <img
+                                        key={`product_image_${index}`}
+                                        src={row}
+                                        alt="icon"
+                                        style={{ width: "100px", height: "100px", borderRadius: "10px", marginRight: "10px", marginBottom: "10px", border: "1px solid #F45626", objectFit: "contain" }} />
+                                );
+                            })
+                        }
+                        <CropperDialog imgSrc={""} onDialogSave={onSaveImage} />
                     </Grid>
                     <Grid item xs={12} sx={{ display: "flex", justifyContent: "flex-end", alignItems: "flex-end", mt: "25px" }}>
                         <LoadingButton

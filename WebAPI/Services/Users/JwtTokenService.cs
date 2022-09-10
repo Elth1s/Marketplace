@@ -44,6 +44,7 @@ namespace WebAPI.Services.Users
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(ClaimTypes.Name, user.FirstName),
+                new Claim(ClaimTypes.Surname,!string.IsNullOrEmpty(user.SecondName)?user.SecondName:""),
                 new Claim(CustomClaimTypes.Photo, !string.IsNullOrEmpty(user.Photo) ? string.Concat(ImagePath.RequestUsersImagePath, "/", user.Photo) : ""),
                 (user.Email != null ?
                 new Claim(ClaimTypes.Email, user.Email)

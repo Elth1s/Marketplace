@@ -97,21 +97,14 @@ const CropperDialog: React.FC<ICropperDialog> = ({ imgSrc, aspectRation = 1 / 1,
     return (
         <>
             <BoxStyle imgSrc={imgSrc} isDark={isDark}>
-                {/* <label htmlFor={labelId}>
-                    <img
-                        src={imgSrc}
-                        alt="DefaultImage"
-                        style={{ width: "160px", height: "160px", cursor: "pointer", borderRadius: "12px" }} />
-                </label>
-                <input style={{ display: "none" }} type="file" name={labelId} id={labelId} onChange={handleImageChange} /> */}
                 <div {...getRootProps({ className: 'dropzone' })}>
                     <input {...getInputProps()} />
                     {imgSrc !== ""
                         ? <img
                             src={imgSrc}
                             alt="DefaultImage"
-                            style={{ width: "100px", height: "100px", borderRadius: "10px" }} />
-                        : <Box sx={{ height: "100px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+                            style={{ width: "98px", height: "98px", borderRadius: "10px" }} />
+                        : <Box sx={{ height: "98px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
                             <img
                                 src={upload_cloud}
                                 alt="icon"

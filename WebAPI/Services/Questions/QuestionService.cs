@@ -3,8 +3,11 @@ using DAL;
 using DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
+using System.Drawing.Imaging;
+using WebAPI.Constants;
 using WebAPI.Exceptions;
 using WebAPI.Extensions;
+using WebAPI.Helpers;
 using WebAPI.Interfaces.Questions;
 using WebAPI.Specifications.Products;
 using WebAPI.Specifications.Questions;
@@ -82,12 +85,14 @@ namespace WebAPI.Services.Questions
             {
                 foreach (var item in request.Images)
                 {
-                    var image = await _questionImageRepository.GetByIdAsync(item);
-                    if (image == null)
-                        continue;
+                    var img = ImageWorker.FromBase64StringToImage(item);
+                    string randomFilename = Guid.NewGuid() + ".png";
+                    var dir = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.QuestionsImagePath, randomFilename);
+                    img.Save(dir, ImageFormat.Png);
 
-                    image.QuestionId = question.Id;
-                    await _questionImageRepository.UpdateAsync(image);
+                    var questionImage = new QuestionImage() { Name = randomFilename, QuestionId = question.Id };
+
+                    await _questionImageRepository.AddAsync(questionImage);
                     await _questionImageRepository.SaveChangesAsync();
                 }
             }

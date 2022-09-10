@@ -58,10 +58,10 @@ const CategoryCreate: FC<CreateProps> = ({ afterCreate }) => {
 
     const urlSlugRegExp = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
     const validationFields = Yup.object().shape({
-        englishName: Yup.string().min(2).max(50).label(t('validationProps.englishName')),
-        ukrainianName: Yup.string().min(2).max(50).label(t('validationProps.englishName')),
-        urlSlug: Yup.string().min(2).max(50).matches(urlSlugRegExp, 'Invalid format of  url slug').label(t('validationProps.urlSlug')),
-        parentId: Yup.number().nullable().label(t('validationProps.categotyParent')),
+        englishName: Yup.string().min(2).max(50).required().label(t('validationProps.englishName')),
+        ukrainianName: Yup.string().min(2).max(50).required().label(t('validationProps.englishName')),
+        urlSlug: Yup.string().min(2).max(50).matches(urlSlugRegExp, 'Invalid format of  url slug').required().label(t('validationProps.urlSlug')),
+        parentId: Yup.number().nullable().required().label(t('validationProps.categotyParent')),
     });
 
     const formik = useFormik({

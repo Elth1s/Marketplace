@@ -36,7 +36,7 @@ namespace WebAPI.Controllers.Questions
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize]
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<IActionResult> Create([FromBody] string base64)
         {
             var result = await _questionImageService.CreateAsync(base64);

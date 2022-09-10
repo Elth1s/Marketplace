@@ -73,7 +73,13 @@ import darkTheme from './UISettings/darkTheme';
 import lightTheme from './UISettings/lightTheme';
 import Novelties from './pages/default/Catalog/Novelties';
 
+import * as Yup from "yup"
+import { useTranslation } from 'react-i18next';
+
+
 const App = () => {
+  const { t } = useTranslation();
+
   const { AuthUser } = useActions();
   const { isAuth } = useTypedSelector(store => store.auth);
 
@@ -93,6 +99,12 @@ const App = () => {
     console.log("%c" + "https://www.youtube.com/watch?v=LJsQZ6QNdmU", "font-size:22px;");
     console.log("%c" + "Ця функція браузера призначена для розробників. Якщо хтось сказав вам щось скопіювати і сюди вставити, щоб включити функцію Mall або «зламати» чиюсь сторінку, це шахраї. Виконавши ці дії, ви надасте їм доступ до своєї сторінки Mall.", "font-size:22px;");
   }, []);
+
+  Yup.setLocale({
+    mixed: {
+      required: label => `${label.label} ${t("validationMessages.required")}`,
+    },
+  })
 
   return (
     <>
@@ -134,7 +146,7 @@ const App = () => {
           <Route path="/profile/" element={<ProfileLayout />}>
             <Route path="information" element={<Profile />} />
             <Route path="reviewed-products" element={<Reviewed />} />
-            <Route path="order" element={<Order />} />
+            <Route path="orders" element={<Order />} />
           </Route>
 
           <Route path="ordering" element={<Ordering />} />

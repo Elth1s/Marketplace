@@ -3,8 +3,11 @@ using DAL;
 using DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
+using System.Drawing.Imaging;
+using WebAPI.Constants;
 using WebAPI.Exceptions;
 using WebAPI.Extensions;
+using WebAPI.Helpers;
 using WebAPI.Interfaces.Reviews;
 using WebAPI.Specifications.Products;
 using WebAPI.Specifications.Reviews;
@@ -72,12 +75,14 @@ namespace WebAPI.Services.Reviews
             {
                 foreach (var item in request.Images)
                 {
-                    var image = await _reviewImageRepository.GetByIdAsync(item);
-                    if (image == null)
-                        continue;
+                    var img = ImageWorker.FromBase64StringToImage(item);
+                    string randomFilename = Guid.NewGuid() + ".png";
+                    var dir = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.ReviewsImagePath, randomFilename);
+                    img.Save(dir, ImageFormat.Png);
 
-                    image.ReviewId = review.Id;
-                    await _reviewImageRepository.UpdateAsync(image);
+                    var reviewImage = new ReviewImage() { Name = randomFilename, ReviewId = review.Id };
+
+                    await _reviewImageRepository.AddAsync(reviewImage);
                     await _reviewImageRepository.SaveChangesAsync();
                 }
             }

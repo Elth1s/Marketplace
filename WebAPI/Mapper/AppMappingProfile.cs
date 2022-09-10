@@ -501,7 +501,7 @@ namespace WebAPI.Mapper
             CreateMap<Review, ReviewResponse>()
                  .ForMember(r => r.Dislikes, opt => opt.MapFrom(vm => vm.CountDislikes))
                  .ForMember(r => r.Likes, opt => opt.MapFrom(vm => vm.CountLikes))
-                 .ForMember(r => r.Replies, opt => opt.MapFrom(vm => vm.Replies.Count))
+                 .ForMember(r => r.RepliesCount, opt => opt.MapFrom(vm => vm.Replies.Count))
                  .ForMember(q => q.Date, opt => opt.MapFrom(vm => vm.Date.ToString("dd MMMM yyyy")));
 
             //ReviewReply
@@ -528,7 +528,7 @@ namespace WebAPI.Mapper
             CreateMap<Question, QuestionResponse>()
                 .ForMember(r => r.Dislikes, opt => opt.MapFrom(vm => vm.CountDislikes))
                 .ForMember(r => r.Likes, opt => opt.MapFrom(vm => vm.CountLikes))
-                .ForMember(r => r.Replies, opt => opt.MapFrom(vm => vm.Replies.Count))
+                .ForMember(r => r.RepliesCount, opt => opt.MapFrom(vm => vm.Replies.Count))
                 .ForMember(q => q.Date, opt => opt.MapFrom(vm => vm.Date.ToString("dd MMMM yyyy")));
 
             //QuestionReply

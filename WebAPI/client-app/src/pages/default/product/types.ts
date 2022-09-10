@@ -10,14 +10,22 @@ export enum ReviewActionTypes {
     GET_REVIEW_BY_ID = "GET_REVIEW_BY_ID",
     GET_MORE_REVIEWS = "GET_MORE_REVIEWS",
     GET_REVIEW_REPLIES = "GET_REVIEW_REPLIES",
-    GET__MORE_REVIEW_REPLIES = "GET__MORE_REVIEW_REPLIES"
+    GET__MORE_REVIEW_REPLIES = "GET__MORE_REVIEW_REPLIES",
+    CHANGE_REVIEW_LIKE = "CHANGE_REVIEW_LIKE",
+    CHANGE_REVIEW_DISLIKE = "CHANGE_REVIEW_DISLIKE",
+    GET_REPLIES_FOR_REVIEW = "GET_REPLIES_FOR_REVIEW",
+    GET_MORE_REPLIES_FOR_REVIEW = "GET_MORE_REPLIES_FOR_REVIEW"
 }
 export enum QuestionActionTypes {
     GET_QUESTIONS = "GET_QUESTIONS",
     GET_QUESTION_BY_ID = "GET_QUESTION_BY_ID",
     GET_MORE_QUESTIONS = "GET_MORE_QUESTIONS",
     GET_QUESTION_REPLIES = "GET_QUESTION_REPLIES",
-    GET__MORE_QUESTION_REPLIES = "GET__MORE_QUESTION_REPLIES"
+    GET__MORE_QUESTION_REPLIES = "GET__MORE_QUESTION_REPLIES",
+    CHANGE_QUESTION_LIKE = "CHANGE_QUESTION_LIKE",
+    CHANGE_QUESTION_DISLIKE = "CHANGE_QUESTION_DISLIKE",
+    GET_REPLIES_FOR_QUESTION = "GET_REPLIES_FOR_QUESTION",
+    GET_MORE_REPLIES_FOR_QUESTION = "GET_MORE_REPLIES_FOR_QUESTION"
 }
 
 export interface IParentCategoryItem {
@@ -80,7 +88,8 @@ export interface IReviewItem {
     isDisliked: boolean,
     dislikes: number,
     likes: number,
-    replies: number,
+    repliesCount: number,
+    replies: Array<IReplyItem>,
     images: Array<string>
 }
 export interface IReview {
@@ -95,20 +104,8 @@ export interface IReview {
     images: Array<string>
 }
 
-//Review Reply
-export interface IReviewReplyItem {
-    id: number,
-    fullName: string,
-    date: string,
-    text: string,
-    isSeller: boolean
-}
-export interface IReviewReply {
-    fullName: string,
-    email: string,
-    text: string,
-    reviewId: number
-}
+
+
 //Question
 export interface IQuestionItem {
     id: number,
@@ -119,7 +116,8 @@ export interface IQuestionItem {
     isDisliked: boolean,
     dislikes: number,
     likes: number,
-    replies: number,
+    repliesCount: number,
+    replies: Array<IReplyItem>
     images: Array<string>
 }
 export interface IQuestion {
@@ -127,23 +125,30 @@ export interface IQuestion {
     email: string
     message: string,
     productSlug: string
-    images: Array<number>
+    images: Array<string>
 }
 
-//Question Reply
-export interface IQuestionReplyItem {
+//Reply
+export interface IReplyItem {
     id: number,
     fullName: string,
     date: string,
     text: string,
     isSeller: boolean
 }
-export interface IQuestionReply {
+
+export interface IReply {
     fullName: string,
     email: string,
     text: string,
-    questionId: number
 }
+
+export interface IReplyWithCount {
+    id: number,
+    count: number,
+    values: Array<IReplyItem>
+}
+
 
 export interface ProductState {
     parents: Array<IParentCategoryItem>,
@@ -198,7 +203,27 @@ export interface GetReviewsAction {
 
 export interface GetMoreReviewsAction {
     type: ReviewActionTypes.GET_MORE_REVIEWS,
-    payload: Array<IReviewItem>
+    payload: IReviewWithCount
+}
+
+export interface ChangeReviewLikeAction {
+    type: ReviewActionTypes.CHANGE_REVIEW_LIKE,
+    payload: number
+}
+
+export interface ChangeReviewDislikeAction {
+    type: ReviewActionTypes.CHANGE_REVIEW_DISLIKE,
+    payload: number
+}
+
+export interface GetRepliesForReviewAction {
+    type: ReviewActionTypes.GET_REPLIES_FOR_REVIEW,
+    payload: IReplyWithCount
+}
+
+export interface GetMoreRepliesForReviewAction {
+    type: ReviewActionTypes.GET_MORE_REPLIES_FOR_REVIEW,
+    payload: IReplyWithCount
 }
 
 //QuestionAction
@@ -210,8 +235,29 @@ export interface GetQuestionsAction {
 
 export interface GetMoreQuestionsAction {
     type: QuestionActionTypes.GET_MORE_QUESTIONS,
-    payload: Array<IQuestionItem>
+    payload: IQuestionWithCount
 }
+
+export interface ChangeQuestionLikeAction {
+    type: QuestionActionTypes.CHANGE_QUESTION_LIKE,
+    payload: number
+}
+
+export interface ChangeQuestionDislikeAction {
+    type: QuestionActionTypes.CHANGE_QUESTION_DISLIKE,
+    payload: number
+}
+
+export interface GetRepliesForQuestionAction {
+    type: QuestionActionTypes.GET_REPLIES_FOR_QUESTION,
+    payload: IReplyWithCount
+}
+
+export interface GetMoreRepliesForQuestionAction {
+    type: QuestionActionTypes.GET_MORE_REPLIES_FOR_QUESTION,
+    payload: IReplyWithCount
+}
+
 
 export type ProductAction = GetProductByUrlSlugAction |
     GetProductRatingByUrlSlugAction |
@@ -219,7 +265,15 @@ export type ProductAction = GetProductByUrlSlugAction |
     UpdateIsSelectedAction;
 
 export type ReviewAction = GetReviewsAction |
-    GetMoreReviewsAction;
+    GetMoreReviewsAction |
+    ChangeReviewDislikeAction |
+    ChangeReviewLikeAction |
+    GetMoreRepliesForReviewAction |
+    GetRepliesForReviewAction;
 
 export type QuestionAction = GetQuestionsAction |
-    GetMoreQuestionsAction;
+    GetMoreQuestionsAction |
+    ChangeQuestionLikeAction |
+    ChangeQuestionDislikeAction |
+    GetRepliesForQuestionAction |
+    GetMoreRepliesForQuestionAction;
