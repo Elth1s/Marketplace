@@ -37,7 +37,7 @@ const SelectedProducts = () => {
             <BoxStyled>
                 {userProducts != null && userProducts.map((row, index) => {
                     return (
-                        <ProductItem key={row.urlSlug} isInCart={row.isInBasket} isSelected={row.isSelected} name={row.name} image={row.image} statusName={row.statusName} price={row.price} urlSlug={row.urlSlug} />
+                        <ProductItem key={row.urlSlug} isInCart={row.isInBasket} isSelected={row.isSelected} discount={row.discount} name={row.name} image={row.image} statusName={row.statusName} price={row.price} urlSlug={row.urlSlug} />
                     );
                 })}
             </BoxStyled>

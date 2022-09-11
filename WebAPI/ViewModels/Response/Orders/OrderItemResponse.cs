@@ -21,6 +21,10 @@
         /// <example>13</example>
         public float TotalCount { get; set; }
         /// <summary>
+        /// List of delivery types
+        /// </summary>
+        public IEnumerable<DeliveryTypeResponse> DeliveryTypes { get; set; }
+        /// <summary>
         /// List of products
         /// </summary>
         public IEnumerable<BasketOrderItemResponse> BasketItems { get; set; }

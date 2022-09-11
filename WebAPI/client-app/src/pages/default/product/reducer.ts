@@ -16,7 +16,9 @@ const initialState: ProductState = {
         shopRating: 0,
         images: [],
         price: 0,
-        filters: []
+        discount: null,
+        filters: [],
+        deliveryTypes: []
     },
     reviews: [],
     reviewsCount: 0,

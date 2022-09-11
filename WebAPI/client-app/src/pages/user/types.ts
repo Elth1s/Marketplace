@@ -54,7 +54,8 @@ export interface IOrderCreate {
     consumerSecondName: string,
     consumerPhone: string,
     consumerEmail: string,
-    basketItems: Array<IBasketOrderItem>
+    basketItems: Array<IBasketOrderItem>,
+    deliveryTypeId: number | string
 }
 
 export interface IBasketOrderItem {
@@ -63,15 +64,22 @@ export interface IBasketOrderItem {
     productName: string,
     productImage: string,
     productPrice: number,
+    productDiscount: number,
     productPriceSum: number,
     productUrlSlug: string,
     count: number
+}
+
+export interface IDeliveryType {
+    id: number,
+    name: string,
 }
 
 export interface IOrderProducts {
     shopName: string,
     totalPrice: number,
     totalCount: number,
+    deliveryTypes: Array<IDeliveryType>
     basketItems: Array<IBasketOrderItem>
 }
 

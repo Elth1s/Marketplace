@@ -275,7 +275,7 @@ const ProductCreate = () => {
                                                     key={`product_image_${index}`}
                                                     src={row.name}
                                                     alt="icon"
-                                                    style={{ width: "136px", height: "136px", borderRadius: "10px", border: "1px solid #F45626" }} />
+                                                    style={{ width: "136px", height: "136px", marginTop: "15px", marginRight: "15px", borderRadius: "10px", border: "1px solid #F45626" }} />
                                             );
                                         }))
                                 }

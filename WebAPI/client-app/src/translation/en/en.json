@@ -221,6 +221,11 @@
                 "buy": "Buy",
                 "inBasket": "In basket",
                 "payment": "Payment",
+                "paymentVariants": {
+                    "postpaidNovaPoshta": "Postpaid Nova Poshta",
+                    "postpaidUkrposhta": "Postpaid Ukrposhta",
+                    "postpaid": "Postpaid"
+                },
                 "delivery": "Delivery",
                 "characterictics": "Characterictics",
                 "reviews": "Reviews",
@@ -444,7 +449,8 @@
             "postalCode": "Postal code",
             "address": "Address",
             "gender": "Gender",
-            "city": "City"
+            "city": "City",
+            "deliveryType": "Delivery type"
         },
         "validationMessages": {
             "required": "is required"

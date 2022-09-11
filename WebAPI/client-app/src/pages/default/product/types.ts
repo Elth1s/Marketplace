@@ -61,6 +61,13 @@ export interface IProductRating {
     countReviews: number,
 }
 
+export interface IDeliveryType {
+    id: number,
+    name: string,
+    lightIcon: string,
+    darkIcon: string
+}
+
 export interface IProductItem {
     isInBasket: boolean,
     isSelected: boolean,
@@ -71,7 +78,9 @@ export interface IProductItem {
     shopRating: number,
     images: Array<IProductImage>,
     price: number,
+    discount: number | null,
     filters: Array<IFilterItem>
+    deliveryTypes: Array<IDeliveryType>
 }
 
 //Review

@@ -143,7 +143,7 @@ const Product = () => {
                     {products.map((row, index) => {
                         return (
                             <SwiperSlide key={index}>
-                                <ProductItem isSelected={row.isSelected} name={row.name} image={row.image} statusName={row.statusName} price={row.price} urlSlug={row.urlSlug} />
+                                <ProductItem isSelected={row.isSelected} name={row.name} image={row.image} statusName={row.statusName} price={row.price} discount={row.discount} urlSlug={row.urlSlug} />
                             </SwiperSlide>
                         );
                     })}

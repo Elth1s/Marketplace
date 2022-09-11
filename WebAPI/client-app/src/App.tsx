@@ -82,7 +82,7 @@ const App = () => {
   const { t } = useTranslation();
 
   const { AuthUser } = useActions();
-  const { isAuth } = useTypedSelector(store => store.auth);
+  const { isAuth, user } = useTypedSelector(store => store.auth);
 
   const { SetTheme } = useActions();
   const { isDarkTheme } = useTypedSelector((state) => state.ui);
@@ -158,43 +158,46 @@ const App = () => {
             <Route path="/auth/signup" element={<SignUp />} />
           </Route> */}
 
-          <Route path="/seller/" element={<SellerLayout />}>
-            <Route path="characteristicGroups" element={<CharacteristicGroupTable />} />
-            <Route path="characteristicNames" element={<CharacteristicNameTable />} />
-            <Route path="characteristicValues" element={<CharacteristicValueTable />} />
-            <Route path="products" element={<ProductTable />} />
-            <Route path="orders" element={<OrdersTable />} />
-            <Route path="products/create" element={<ProductCreate />} />
-          </Route>
+          {isAuth &&
+            <>
+              {user.role == "Seller" || user.role == "Admin" && <Route path="/seller/" element={<SellerLayout />}>
+                <Route path="characteristicGroups" element={<CharacteristicGroupTable />} />
+                <Route path="characteristicNames" element={<CharacteristicNameTable />} />
+                <Route path="characteristicValues" element={<CharacteristicValueTable />} />
+                <Route path="products" element={<ProductTable />} />
+                <Route path="orders" element={<OrdersTable />} />
+                <Route path="products/create" element={<ProductCreate />} />
+              </Route>}
 
-          <Route path="/admin/" element={<AdminLayout />}>
-            <Route path="categories" element={<CategoryTable />} />
+              {user.role == "Admin" && <Route path="/admin/" element={<AdminLayout />}>
+                <Route path="categories" element={<CategoryTable />} />
 
-            <Route path="characteristicGroups" element={<AdminCharacteristicGroupTable />} />
-            <Route path="characteristicNames" element={<AdminCharacteristicNameTable />} />
-            <Route path="characteristicValues" element={<AdminCharacteristicValueTable />} />
+                <Route path="characteristicGroups" element={<AdminCharacteristicGroupTable />} />
+                <Route path="characteristicNames" element={<AdminCharacteristicNameTable />} />
+                <Route path="characteristicValues" element={<AdminCharacteristicValueTable />} />
 
-            <Route path="filterGroups" element={<FilterGroupTable />} />
-            <Route path="filterNames" element={<FilterNameTable />} />
-            <Route path="filterValues" element={<FilterValueTable />} />
+                <Route path="filterGroups" element={<FilterGroupTable />} />
+                <Route path="filterNames" element={<FilterNameTable />} />
+                <Route path="filterValues" element={<FilterValueTable />} />
 
-            <Route path="productStatuses" element={<ProductStatusTable />} />
-            <Route path="products" element={<AdminProductTable />} />
+                <Route path="productStatuses" element={<ProductStatusTable />} />
+                <Route path="products" element={<AdminProductTable />} />
 
-            <Route path="shops" element={<ShopTable />} />
+                <Route path="shops" element={<ShopTable />} />
 
-            <Route path="countries" element={<CountryTable />} />
-            <Route path="cities" element={<CityTable />} />
+                <Route path="countries" element={<CountryTable />} />
+                <Route path="cities" element={<CityTable />} />
 
-            <Route path="units" element={<UnitTable />} />
+                <Route path="units" element={<UnitTable />} />
 
-            <Route path="sales" element={<SaleTable />} />
+                <Route path="sales" element={<SaleTable />} />
 
-            <Route path="users" element={<UserTable />} />
-            <Route path="orderStatuses" element={<OrderStatusTable />} />
-            <Route path="deliveryTypes" element={<DeliveryTypeTable />} />
-          </Route>
-
+                <Route path="users" element={<UserTable />} />
+                <Route path="orderStatuses" element={<OrderStatusTable />} />
+                <Route path="deliveryTypes" element={<DeliveryTypeTable />} />
+              </Route>}
+            </>
+          }
           <Route path="/confirmEmail" element={<ConfirmEmail />} />
           <Route path="/resetPassword/:token" element={<ChangePassword />} />
 

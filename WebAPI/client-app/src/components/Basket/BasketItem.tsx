@@ -15,13 +15,14 @@ interface Props {
     image: string
     name: string
     price: number
+    discount: number | null
     productCount: number
     urlSlug: string
     closeBasket: any
     linkUrlSlug: string | undefined
 }
 
-const BasketItem: FC<Props> = ({ id, count, image, name, price, productCount, urlSlug, closeBasket, linkUrlSlug }) => {
+const BasketItem: FC<Props> = ({ id, count, image, name, price, discount, productCount, urlSlug, closeBasket, linkUrlSlug }) => {
     const { t } = useTranslation();
 
     const { GetBasketItems, UpdateBasketItem, RemoveFromBasket } = useActions();
@@ -117,9 +118,13 @@ const BasketItem: FC<Props> = ({ id, count, image, name, price, productCount, ur
                 </Box>
             </Box>
             <Box>
-                <Typography variant="h4">
-                    {price} {t("currency")}
-                </Typography>
+                {discount != null
+                    ? <Box sx={{ mr: "35px" }}>
+                        <Typography variant="h6" color="#7e7e7e">{price} {t("currency")}</Typography>
+                        <Typography variant="h5" sx={{ mt: "5px" }}>{discount} {t("currency")}</Typography>
+                    </Box>
+                    : <Typography variant="h5" sx={{ mr: "35px" }}>{price} {t("currency")}</Typography>
+                }
             </Box>
             <IconButton
                 sx={{ borderRadius: '12px', p: 0.5 }}

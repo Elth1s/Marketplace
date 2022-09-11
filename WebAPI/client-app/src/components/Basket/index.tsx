@@ -130,6 +130,7 @@ const Basket = () => {
                                         image={row.productImage}
                                         name={row.productName}
                                         price={row.productPrice}
+                                        discount={row.productDiscount}
                                         productCount={row.productCount}
                                         urlSlug={row.productUrlSlug}
                                         closeBasket={handleClose}

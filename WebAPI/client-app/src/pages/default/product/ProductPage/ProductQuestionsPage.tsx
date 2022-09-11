@@ -148,8 +148,14 @@ const ProductReviewsPage: FC<Props> = ({ addInCart }) => {
                             />}
                         <PriceBox>
                             <Box sx={{ display: "flex", alignItems: 'baseline' }}>
-                                <Typography fontSize="50px" lineHeight="63px" sx={{ mr: "35px" }}>{product.price} {t("currency")}</Typography>
-                                <IconButton color="primary" sx={{ borderRadius: "12px" }}>
+                                {product.discount != null
+                                    ? <Box sx={{ mr: "35px" }}>
+                                        <Typography variant="h1" color="#7e7e7e">{product.price} {t("currency")}</Typography>
+                                        <Typography fontSize="50px" lineHeight="63px" sx={{ mr: "35px" }}>{product.discount} {t("currency")}</Typography>
+                                    </Box>
+                                    : <Typography fontSize="50px" lineHeight="63px" sx={{ mr: "35px" }}>{product.price} {t("currency")}</Typography>
+                                }
+                                <IconButton color="primary" sx={{ borderRadius: "12px", mt: "auto" }}>
                                     <img
                                         style={{ width: "35px", height: "35px" }}
                                         src={product.isSelected ? filled_orange_heart : orange_heart}

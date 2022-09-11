@@ -57,6 +57,7 @@ namespace WebAPI.Services
                 TotalPrice = o.Sum(b =>
                 (b.Product.Discount > 0 ? b.Product.Price - (b.Product.Price / 100f * b.Product.Discount) : b.Product.Price) * b.Count),
                 TotalCount = o.Sum(b => b.Count),
+                DeliveryTypes = _mapper.Map<IEnumerable<DeliveryTypeResponse>>(o.Key.DeliveryTypes),
                 BasketItems = _mapper.Map<IEnumerable<BasketOrderItemResponse>>(o.ToList())
             });
 

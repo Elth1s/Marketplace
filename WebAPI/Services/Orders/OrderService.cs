@@ -64,8 +64,7 @@ namespace WebAPI.Services.Orders
             status.OrderStatusNullChecking();
             order.OrderStatusId = OrderStatusId.InProcess;
 
-            //var deliveryType = await _deliveryTypeRepository.GetByIdAsync(request.DeliveryTypeId);
-            var deliveryType = await _deliveryTypeRepository.GetByIdAsync(1);
+            var deliveryType = await _deliveryTypeRepository.GetByIdAsync(request.DeliveryTypeId);
             deliveryType.DeliveryTypeNullChecking();
             order.DeliveryTypeId = deliveryType.Id;
 

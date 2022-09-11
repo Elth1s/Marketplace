@@ -132,8 +132,14 @@ const ProductMainPage: FC<Props> = ({ addInCart, moveToReview }) => {
                 </Grid>
                 <Grid item xs={4} sx={{ mt: "84px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "start", pl: "119px" }}>
                     <Box sx={{ display: "flex", alignItems: 'baseline' }}>
-                        <Typography fontSize="50px" lineHeight="63px" sx={{ mr: "35px" }}>{product.price} {t("currency")}</Typography>
-                        <IconButton color="primary" sx={{ borderRadius: "12px" }}>
+                        {product.discount != null
+                            ? <Box sx={{ mr: "35px" }}>
+                                <Typography variant="h1" color="#7e7e7e">{product.price} {t("currency")}</Typography>
+                                <Typography fontSize="50px" lineHeight="63px" sx={{ mr: "35px" }}>{product.discount} {t("currency")}</Typography>
+                            </Box>
+                            : <Typography fontSize="50px" lineHeight="63px" sx={{ mr: "35px" }}>{product.price} {t("currency")}</Typography>
+                        }
+                        <IconButton color="primary" sx={{ borderRadius: "12px", mt: "auto" }}>
                             <img
                                 style={{ width: "35px", height: "35px" }}
                                 src={product.isSelected ? filled_orange_heart : orange_heart}
@@ -196,7 +202,7 @@ const ProductMainPage: FC<Props> = ({ addInCart, moveToReview }) => {
                                     alt="icon"
                                 />
                                 <Typography variant="h4" fontWeight="medium">
-                                    Postpaid «Nova Poshta»
+                                    {t("pages.product.paymentVariants.postpaidNovaPoshta")}
                                 </Typography>
                             </ListItemStyle>
                             <ListItemStyle>
@@ -206,7 +212,7 @@ const ProductMainPage: FC<Props> = ({ addInCart, moveToReview }) => {
                                     alt="icon"
                                 />
                                 <Typography variant="h4" fontWeight="medium">
-                                    Payment by details
+                                    {t("pages.product.paymentVariants.postpaidUkrposhta")}
                                 </Typography>
                             </ListItemStyle>
                             <ListItemStyle>
@@ -216,7 +222,7 @@ const ProductMainPage: FC<Props> = ({ addInCart, moveToReview }) => {
                                     alt="icon"
                                 />
                                 <Typography variant="h4" fontWeight="medium">
-                                    Cash
+                                    {t("pages.product.paymentVariants.postpaid")}
                                 </Typography>
                             </ListItemStyle>
                         </ListStyle>
@@ -225,36 +231,18 @@ const ProductMainPage: FC<Props> = ({ addInCart, moveToReview }) => {
                             {t("pages.product.delivery")}
                         </Typography>
                         <ListStyle>
-                            <ListItemStyle>
-                                <img
-                                    style={{ width: "30px", height: "30px", marginRight: "70px" }}
-                                    src={package_delivery}
-                                    alt="icon"
-                                />
-                                <Typography variant="h4" fontWeight="medium">
-                                    Delivery «Nova Poshta»
-                                </Typography>
-                            </ListItemStyle>
-                            <ListItemStyle>
-                                <img
-                                    style={{ width: "30px", height: "30px", marginRight: "70px" }}
-                                    src={truck_delivery}
-                                    alt="icon"
-                                />
-                                <Typography variant="h4" fontWeight="medium">
-                                    Delivery «Mall»
-                                </Typography>
-                            </ListItemStyle>
-                            <ListItemStyle>
-                                <img
-                                    style={{ width: "30px", height: "30px", marginRight: "70px" }}
-                                    src={truck_delivery}
-                                    alt="icon"
-                                />
-                                <Typography variant="h4" fontWeight="medium">
-                                    Ukrposhta
-                                </Typography>
-                            </ListItemStyle>
+                            {product.deliveryTypes.map((item, index) => (
+                                <ListItemStyle key={`delivery_types_${index}`}>
+                                    <img
+                                        style={{ width: "30px", height: "30px", marginRight: "70px" }}
+                                        src={item.darkIcon}
+                                        alt="icon"
+                                    />
+                                    <Typography variant="h4" fontWeight="medium">
+                                        {item.name}
+                                    </Typography>
+                                </ListItemStyle>
+                            ))}
                         </ListStyle>
                     </Box>
                 </Grid>

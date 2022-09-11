@@ -13,6 +13,8 @@ namespace WebAPI.Specifications
                  .ThenInclude(p => p.Images)
                  .Include(p => p.Product)
                  .ThenInclude(p => p.Shop)
+                 .ThenInclude(p => p.DeliveryTypes)
+                 .ThenInclude(p => p.DeliveryTypeTranslations)
                  .AsSplitQuery();
         }
         public BasketItemIncludeFullInfoSpecification(string userId, int productId)

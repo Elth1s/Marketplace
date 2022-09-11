@@ -77,7 +77,7 @@ const Order = () => {
                         }}>
                         <Grid container>
                             <Grid item xs={4}>
-                                <Typography variant="h5">{item.id}</Typography>
+                                <Typography variant="h5">№{item.id}</Typography>
                                 <Typography variant="h5">{item.orderStatusName}</Typography>
                             </Grid>
                             <Grid item xs={4}>
@@ -107,7 +107,9 @@ const Order = () => {
                             <Grid item xs={6}>
                                 <Typography variant="subtitle1" sx={{ mb: "20px" }}>{item.deliveryType}</Typography>
                                 <Typography variant="subtitle1" sx={{ mb: "20px" }}>
-                                    Рівненська обл., Острог, вул. Князів Острозьких, б.3
+                                    {index == 0 && "Київ 2 віділення"}
+                                    {index == 1 && "Львів 13 віділення"}
+                                    {index == 2 && "Рівне 9 віділення"}
                                     {/* {item.address} */}
                                 </Typography>
                                 <Typography variant="subtitle1" sx={{ mb: "20px" }}>{item.consumerFirstName} {item.consumerSecondName}</Typography>
@@ -137,7 +139,7 @@ const Order = () => {
                                 <Box sx={{ display: "flex", justifyContent: "space-between", mb: "20px" }}>
                                     <Typography variant="subtitle1" sx={{ fontWeight: "700" }}>{t("pages.user.order.payment")}</Typography>
                                     <Typography variant="subtitle1">
-                                        Самовивіз з Нової Пошти
+                                        Оплата при отриманні товару
                                         {/* {item.paymentType} */}
                                     </Typography>
                                 </Box>

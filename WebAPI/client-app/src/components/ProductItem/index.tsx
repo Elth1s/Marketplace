@@ -18,9 +18,10 @@ interface Props {
     urlSlug: string,
     statusName: string,
     price: number,
+    discount: number | null
 }
 
-const ProductItem: FC<Props> = ({ isSelected, name, image, statusName, urlSlug, price }) => {
+const ProductItem: FC<Props> = ({ isSelected, name, image, statusName, urlSlug, price, discount }) => {
     const { t } = useTranslation();
 
     const { ChangeIsSelectedProducts } = useActions();
@@ -47,14 +48,21 @@ const ProductItem: FC<Props> = ({ isSelected, name, image, statusName, urlSlug, 
                             {name}
                         </Typography>
                     </Paper>
-                    <Typography variant="h6" color="secondary" fontWeight="medium" py="10px">
+                    <Typography variant="h6" color="secondary" fontWeight="medium" py="5px">
                         {statusName}
                     </Typography>
-                    <Typography variant="h5" sx={{ marginTop: "auto" }}>
-                    </Typography>
-                    <Typography variant="h5">
-                        {price} {t("currency")}
-                    </Typography>
+                    {discount != null
+                        ? <>
+                            <Typography variant="subtitle1" color="#7e7e7e" sx={{ marginTop: "auto" }}>
+                                {price} {t("currency")}
+                            </Typography>
+                            <Typography variant="h5">
+                                {discount} {t("currency")}
+                            </Typography>
+                        </>
+                        : <Typography variant="h5" sx={{ marginTop: "auto" }}>
+                            {price} {t("currency")}
+                        </Typography>}
                 </BoxStyle>
             </LinkRouter>
             <IconButton

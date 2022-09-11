@@ -19,9 +19,10 @@ interface Props {
     urlSlug: string,
     statusName: string,
     price: number,
+    discount: number | null
 }
 
-const ProductItem: FC<Props> = ({ isInCart, isSelected, name, image, statusName, urlSlug, price }) => {
+const ProductItem: FC<Props> = ({ isInCart, isSelected, name, image, statusName, urlSlug, price, discount }) => {
     const { t } = useTranslation();
 
     const { ChangeIsSelectedUserProducts, AddProductInCart, GetBasketItems, ChangeIsInCartUserProducts } = useActions();
@@ -46,7 +47,7 @@ const ProductItem: FC<Props> = ({ isInCart, isSelected, name, image, statusName,
                 <SmallBoxStyle>
                     <SmallImageBoxStyle>
                         <img
-                            style={{ width: "160px", height: "160px", objectFit: "contain" }}
+                            style={{ width: "150px", height: "150px", objectFit: "contain" }}
                             src={image != "" ? image : small_empty}
                             alt="productImage"
                         />
@@ -56,14 +57,21 @@ const ProductItem: FC<Props> = ({ isInCart, isSelected, name, image, statusName,
                             {name}
                         </Typography>
                     </Paper>
-                    <Typography fontSize="12" color="secondary" fontWeight="medium" py="5px">
+                    <Typography fontSize="12" color="secondary" fontWeight="medium">
                         {statusName}
                     </Typography>
-                    <Typography fontSize="12" sx={{ marginTop: "auto" }}>
-                    </Typography>
-                    <Typography variant="subtitle1">
-                        {price} {t("currency")}
-                    </Typography>
+                    {discount != null
+                        ? <>
+                            <Typography variant="subtitle1" color="#7e7e7e" sx={{ marginTop: "auto" }}>
+                                {price} {t("currency")}
+                            </Typography>
+                            <Typography variant="h5">
+                                {discount} {t("currency")}
+                            </Typography>
+                        </>
+                        : <Typography variant="h5" sx={{ marginTop: "auto" }}>
+                            {price} {t("currency")}
+                        </Typography>}
                 </SmallBoxStyle>
             </LinkRouter>
             <Box

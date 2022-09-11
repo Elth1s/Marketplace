@@ -10,6 +10,7 @@ export interface IBasketItem {
     productName: string,
     productImage: string,
     productPrice: number,
+    productDiscount: number | null,
     productCount: number,
     productUrlSlug: string
 }

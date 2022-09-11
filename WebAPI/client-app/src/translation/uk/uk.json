@@ -221,6 +221,11 @@
                 "buy": "Купити",
                 "inBasket": "В кошику",
                 "payment": "Оплата",
+                "paymentVariants": {
+                    "postpaidNovaPoshta": "Після плата Нова Пошта",
+                    "postpaidUkrposhta": "Після плата Укрпошта",
+                    "postpaid": "Після плата"
+                },
                 "delivery": "Доставка",
                 "characterictics": "Характеристики",
                 "reviews": "Відгуки",
@@ -444,7 +449,8 @@
             "postalCode": "Поштовий індекс",
             "address": "Адреса",
             "gender": "Стать",
-            "city": "Місто"
+            "city": "Місто",
+            "deliveryType": "Тип доставки"
         },
         "validationMessages": {
             "required": "є обов'язковим"
