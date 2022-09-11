@@ -306,6 +306,22 @@
                     "selectedProducts": "Обрані товари",
                     "myReviews": "Мої відгуки"
                 },
+                "personalInformation": {
+                    "title": "Налаштування профіля",
+                    "tabs": {
+                        "personalInfo": "Особиста інформація",
+                        "changePasswordAndLogin": "Зміна паролю та логіну"
+                    },
+                    "saveChanges": "Зберегти зміни",
+                    "deleteProfile": "Видалити профіль",
+                    "changePassword": "Змінити пароль",
+                    "changePhone": "Змінити телефон",
+                    "changeEmail": "Змінити email",
+                    "confirmPhone": "Підтвердити телефон",
+                    "confirmEmail": "Підтвердити email",
+                    "connectText": "Ви можете зв'язати свій особистий кабінет з обліковими записами соціальних мереж, щоб надалі входити на сайт.",
+                    "connect": "Прив'язати"
+                },
                 "order": {
                     "title": "Замовлення",
                     "totalPrice": "Сума замовлення",
@@ -422,10 +438,17 @@
             "ukrainianHorizontalImage": "Українське горизонтальне зображення",
             "englishHorizontalImage": "Англійське горизонтальне зображення",
             "englishVerticalImage": "Англійське вертикальне зображення",
-            "reply": "Відповідь"
+            "reply": "Відповідь",
+            "firstName": "Ім'я",
+            "secondName": "Прізвище",
+            "postalCode": "Поштовий індекс",
+            "address": "Адреса",
+            "gender": "Стать",
+            "city": "Місто"
         },
         "validationMessages": {
             "required": "є обов'язковим"
-        }
+        },
+        "currency": "грн"
     }
 }

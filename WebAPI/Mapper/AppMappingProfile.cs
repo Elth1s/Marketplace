@@ -483,11 +483,17 @@ namespace WebAPI.Mapper
                 .ForMember(o => o.OrderProducts, opt => opt.Ignore());
 
             CreateMap<Order, OrderResponse>()
+                .ForMember(o => o.TotalPrice, opt => opt.MapFrom(
+                    vm => vm.OrderProducts.Sum(o => o.Price)))
+                .ForMember(o => o.OrderStatusName, opt => opt.MapFrom(
+                    vm => vm.OrderStatus.OrderStatusTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).Name))
                 .ForMember(o => o.DeliveryType, opt => opt.MapFrom(
                     vm => vm.DeliveryType.DeliveryTypeTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).Name));
 
             CreateMap<OrderProduct, OrderProductResponse>()
+                .ForMember(r => r.ProductId, opt => opt.MapFrom(o => o.Product.Id))
                 .ForMember(r => r.ProductName, opt => opt.MapFrom(o => o.Product.Name))
+                .ForMember(r => r.ProductUrlSlug, opt => opt.MapFrom(o => o.Product.UrlSlug))
                 .ForMember(r => r.ProductImage, opt => opt.MapFrom(vm => vm.Product.Images.Count != 0 ? Path.Combine(ImagePath.RequestProductsImagePath, vm.Product.Images.FirstOrDefault().Name) : ""));
 
             #endregion

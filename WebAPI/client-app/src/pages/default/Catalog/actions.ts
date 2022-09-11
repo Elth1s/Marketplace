@@ -3,7 +3,7 @@ import { Dispatch } from "react"
 
 import http from "../../../http_comon"
 import { ServerError } from "../../../store/types"
-import { CatalogAction, CatalogActionTypes, ICatalogItem, ICatalogWithProducts, IFilterName, IFullCatalogItem, IProductItem, IProductResponse } from "./types"
+import { CatalogAction, CatalogActionTypes, ICatalogItem, ICatalogWithProducts, IFilterName, IFullCatalogItem, IProductItem, IProductResponse, IUserProductItem } from "./types"
 
 
 export const GetCatalog = () => {
@@ -340,6 +340,40 @@ export const ChangeIsSelectedProducts = (productUrlSlug: string) => {
     }
 }
 
+export const ChangeIsSelectedUserProducts = (productUrlSlug: string) => {
+    return async (dispatch: Dispatch<CatalogAction>) => {
+        try {
+            let response = await http.put(`api/Product/ChangeSelectProduct/${productUrlSlug}`);
+
+            dispatch({
+                type: CatalogActionTypes.CHANGE_IS_SELECTED_USER_PRODUCTS,
+                payload: productUrlSlug
+            })
+
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
+        }
+    }
+}
+
+export const ChangeIsInCartUserProducts = (productUrlSlug: string) => {
+    return async (dispatch: Dispatch<CatalogAction>) => {
+        try {
+            dispatch({
+                type: CatalogActionTypes.CHANGE_IS_IN_CART_USER_PRODUCTS,
+                payload: productUrlSlug
+            })
+
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
+        }
+    }
+}
+
 export const GetSimilarProducts = (urlSlug: string) => {
     return async (dispatch: Dispatch<CatalogAction>) => {
         try {
@@ -354,6 +388,42 @@ export const GetSimilarProducts = (urlSlug: string) => {
 
             dispatch({
                 type: CatalogActionTypes.GET_SIMILAR_PRODUCTS,
+                payload: response.data
+            })
+
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
+        }
+    }
+}
+
+export const GetSelectedProducts = () => {
+    return async (dispatch: Dispatch<CatalogAction>) => {
+        try {
+            let response = await http.get<Array<IUserProductItem>>(`api/Product/GetSelectedProducts`);
+
+            dispatch({
+                type: CatalogActionTypes.GET_SELECTED_PRODUCTS,
+                payload: response.data
+            })
+
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
+        }
+    }
+}
+
+export const GetReviewedProducts = () => {
+    return async (dispatch: Dispatch<CatalogAction>) => {
+        try {
+            let response = await http.get<Array<IUserProductItem>>(`api/Product/GetReviewedProducts`);
+
+            dispatch({
+                type: CatalogActionTypes.GET_REVIEWED_PRODUCTS,
                 payload: response.data
             })
 

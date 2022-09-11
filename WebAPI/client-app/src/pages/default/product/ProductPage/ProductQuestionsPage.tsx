@@ -148,7 +148,7 @@ const ProductReviewsPage: FC<Props> = ({ addInCart }) => {
                             />}
                         <PriceBox>
                             <Box sx={{ display: "flex", alignItems: 'baseline' }}>
-                                <Typography fontSize="50px" lineHeight="63px" sx={{ mr: "35px" }}>{product.price} &#8372;</Typography>
+                                <Typography fontSize="50px" lineHeight="63px" sx={{ mr: "35px" }}>{product.price} {t("currency")}</Typography>
                                 <IconButton color="primary" sx={{ borderRadius: "12px" }}>
                                     <img
                                         style={{ width: "35px", height: "35px" }}

@@ -96,3 +96,5 @@ export const deliver_car = "/assets/icons/deliver-car.png";
 export const shield = "/assets/icons/shield.png";
 export const cash = "/assets/icons/cash.png";
 export const arrow_return = "/assets/icons/arrow-return.png";
+
+export const in_shopping_cart = "/assets/icons/in-shopping-cart.png"

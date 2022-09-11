@@ -44,6 +44,12 @@
         /// <example>By courier</example>
         public string DeliveryType { get; set; }
 
+        /// <summary>
+        /// Name of delivery type
+        /// </summary>
+        /// <example>By courier</example>
+        public float TotalPrice { get; set; }
+
 
         public IEnumerable<OrderProductResponse> OrderProductsResponse { get; set; }
 
@@ -79,6 +85,12 @@
         /// </summary>
         /// <example>T-shirt</example>
         public string ProductName { get; set; }
+
+        /// <summary>
+        /// Product Name
+        /// </summary>
+        /// <example>T-shirt</example>
+        public string ProductUrlSlug { get; set; }
 
         /// <summary>
         /// Product Image

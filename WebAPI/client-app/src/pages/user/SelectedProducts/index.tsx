@@ -11,20 +11,20 @@ import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import ProductItem from "../../../components/ProductItem/small";
 import { BoxStyled } from "../styled";
 
-const Reviewed = () => {
+const SelectedProducts = () => {
     const { t } = useTranslation();
 
-    const { GetReviewedProducts } = useActions();
+    const { GetSelectedProducts } = useActions();
     const { userProducts } = useTypedSelector(state => state.catalog);
 
     useEffect(() => {
-        document.title = `${t("pages.user.menu.reviewedProducts")}`;
+        document.title = `${t("pages.user.menu.selectedProducts")}`;
         getData();
     }, [])
 
     const getData = async () => {
         try {
-            await GetReviewedProducts();
+            await GetSelectedProducts();
         } catch (ex) {
         }
     };
@@ -32,7 +32,7 @@ const Reviewed = () => {
     return (
         <>
             <Typography variant="h1" color="inherit" sx={{ mb: "25px" }}>
-                {t("pages.user.menu.reviewedProducts")}
+                {t("pages.user.menu.selectedProducts")}
             </Typography>
             <BoxStyled>
                 {userProducts != null && userProducts.map((row, index) => {
@@ -45,4 +45,4 @@ const Reviewed = () => {
     );
 }
 
-export default Reviewed;
+export default SelectedProducts;

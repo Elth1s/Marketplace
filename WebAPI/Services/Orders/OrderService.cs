@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 using WebAPI.Exceptions;
 using WebAPI.Extensions;
+using WebAPI.Helpers;
 using WebAPI.Interfaces.Orders;
 using WebAPI.Specifications.Orders;
 using WebAPI.ViewModels.Request;
@@ -115,18 +116,18 @@ namespace WebAPI.Services.Orders
             var spec = new OrderUserIncludeFullInfoSpecification(user.Id);
             var orders = await _orderRepository.ListAsync(spec);
 
-            var resultOrders = _mapper.Map<IEnumerable<OrderResponse>>(orders);
-
-            foreach (var resultOrder in resultOrders)
+            var resultOrders = orders.Select(o => new OrderResponse()
             {
-                var specc = new OrderIncludeFullInfoSpecification(resultOrder.Id);
-                var order = await _orderRepository.GetBySpecAsync(specc);
-                order.OrderNullChecking();
-
-                var result = _mapper.Map<OrderResponse>(order);
-                result.OrderProductsResponse = _mapper.Map<IEnumerable<OrderProductResponse>>(order.OrderProducts);
-                resultOrder.OrderProductsResponse = _mapper.Map<IEnumerable<OrderProductResponse>>(order.OrderProducts);
-            }
+                Id = o.Id,
+                ConsumerFirstName = o.ConsumerFirstName,
+                ConsumerSecondName = o.ConsumerSecondName,
+                ConsumerEmail = o.ConsumerEmail,
+                ConsumerPhone = o.ConsumerPhone,
+                OrderStatusName = o.OrderStatus.OrderStatusTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).Name,
+                DeliveryType = o.DeliveryType.DeliveryTypeTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).Name,
+                TotalPrice = o.OrderProducts.Sum(o => o.Price * o.Count),
+                OrderProductsResponse = _mapper.Map<IEnumerable<OrderProductResponse>>(o.OrderProducts)
+            });
 
             return resultOrders;
         }

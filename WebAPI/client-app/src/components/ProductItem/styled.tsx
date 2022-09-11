@@ -2,9 +2,9 @@ import { Box, styled } from "@mui/material";
 
 
 export const BoxStyle = styled(Box)(({ theme }) => ({
-    height: "415px",
+    height: "413px",
     [theme.breakpoints.only('xl')]: {
-        width: "300px",
+        width: "298px",
     },
     [theme.breakpoints.down('xl')]: {
         width: "285px",
@@ -20,8 +20,33 @@ export const BoxStyle = styled(Box)(({ theme }) => ({
     flexDirection: "column",
 }));
 
+export const SmallBoxStyle = styled(Box)(({ theme }) => ({
+    height: "298px",
+    [theme.breakpoints.only('xl')]: {
+        width: "216px",
+    },
+    [theme.breakpoints.down('xl')]: {
+        width: "175pxpx",
+    },
+
+    border: "1px solid #7e7e7e",
+    borderRadius: "10px",
+    paddingLeft: "15px",
+    paddingRight: "15px",
+    paddingTop: "16px",
+    paddingBottom: "16px",
+    display: "flex",
+    flexDirection: "column",
+}));
+
 export const ImageBoxStyle = styled(Box)(({ theme }) => ({
     margin: "auto",
     marginTop: "0px",
     marginBottom: "15px"
+}));
+
+export const SmallImageBoxStyle = styled(Box)(({ theme }) => ({
+    margin: "auto",
+    marginTop: "0px",
+    marginBottom: "10px"
 }));

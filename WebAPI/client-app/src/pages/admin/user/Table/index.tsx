@@ -33,11 +33,6 @@ const UserTable = () => {
             label: `${t('containers.admin_seller.tableHeadCell.secondName')}`,
         },
         {
-            id: 'photo',
-            numeric: false,
-            label: `${t('containers.admin_seller.tableHeadCell.photo')}`,
-        },
-        {
             id: 'email',
             numeric: false,
             label: `${t('containers.admin_seller.tableHeadCell.email')}`,
@@ -173,13 +168,6 @@ const UserTable = () => {
                             </TableCellStyle>
                             <TableCellStyle align="center">{row.firstName}</TableCellStyle>
                             <TableCellStyle align="center">{row.secondName}</TableCellStyle>
-
-                            <TableCellStyle align="center">
-                                <Avatar
-                                    sx={{ mx: "auto" }}
-                                    src={row.photo}
-                                    alt="Photo"
-                                /></TableCellStyle>
                             <TableCellStyle align="center">{row.email}</TableCellStyle>
                             <TableCellStyle align="center">{row.phone}</TableCellStyle>
                         </TableRow>

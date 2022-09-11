@@ -49,7 +49,7 @@ export const UpdateProfile = (data: IProfile) => {
     return async (dispatch: Dispatch<AuthAction>) => {
         try {
 
-            let response = await http.put(`api/User/UpdateProfile`, data)
+            let response = await http.put(`api/User/UpdateProfile`, { ...data, cityId: data.cityId != "" ? data.cityId : null, genderId: data.genderId != "" ? data.genderId : null, countryId: data.countryId != "" ? data.countryId : null })
 
             // AuthUser(token);
             return Promise.resolve();

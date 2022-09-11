@@ -114,10 +114,10 @@ namespace WebAPI.Extensions
             var user = await userManager.Users.Where(u => u.Id == userId)
                                               .Include(u => u.ReviewedProducts)
                                                     .ThenInclude(p => p.Shop)
-                                              .Include(u => u.SelectedProducts)
+                                              .Include(u => u.ReviewedProducts)
                                                     .ThenInclude(p => p.Status)
                                                         .ThenInclude(s => s.ProductStatusTranslations)
-                                              .Include(u => u.SelectedProducts)
+                                              .Include(u => u.ReviewedProducts)
                                                     .ThenInclude(p => p.Images)
                                               .SingleOrDefaultAsync(cancellationToken);
             return user;

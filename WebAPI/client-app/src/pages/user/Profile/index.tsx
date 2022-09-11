@@ -1,19 +1,21 @@
-import Typography from "@mui/material/Typography";
-
-import TabContext from "@mui/lab/TabContext";
-import TabList from "@mui/lab/TabList";
-import TabPanel from "@mui/lab/TabPanel";
+import { Typography, Tab, Box } from "@mui/material";
+import { TabContext, TabList, TabPanel } from "@mui/lab";
 
 import { useState } from "react";
 
 import Information from "./Information";
 import Change from "./Change";
 
-import { PaperStyled, TabStyled } from "../styled";
-
-const tabs = ['Personal information', 'Change password and login']
+import { useTranslation } from "react-i18next";
 
 const Profile = () => {
+    const { t } = useTranslation();
+
+    const tabs = [
+        { label: `${t("pages.user.personalInformation.tabs.personalInfo")}` },
+        { label: `${t("pages.user.personalInformation.tabs.changePasswordAndLogin")}` }
+    ]
+
     const [valueTab, setValueTab] = useState<string>("0");
 
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -21,31 +23,42 @@ const Profile = () => {
     };
 
     return (
-        <TabContext value={valueTab} >
-            <Typography variant="h1" sx={{ mb: "30px" }}>Settings profile</Typography>
-            <TabList
-                onChange={handleChange}
-                sx={{ px: "33px" }}>
-                {tabs.map((item, index) => (
-                    <TabStyled
-                        key={index}
-                        label={item}
-                        value={index.toString()}
-                    />
-                ))}
-            </TabList >
+        <>
+            <Typography variant="h1" sx={{ mb: "30px" }}>{t("pages.user.personalInformation.title")}</Typography>
+            <TabContext value={valueTab} >
+                <TabList onChange={handleChange} >
+                    {tabs.map((item, index) => (
+                        <Tab
+                            key={index}
+                            label={item.label}
+                            value={index.toString()}
+                            sx={{
+                                fontSize: "27px",
+                                padding: "0px",
+                                minWidth: "auto",
+                                textTransform: "none",
+                                color: "inherit",
+                                "&:nth-of-type(1)": {
+                                    mr: "auto",
+                                },
+                                "&& .MuiTouchRipple-child": {
+                                    backgroundColor: "transparent"
+                                }
+                            }}
+                        />
+                    ))}
+                </TabList >
 
-            <TabPanel sx={{ p: "0px" }} value="0" >
-                <PaperStyled sx={{ padding: "24px 16px 46px", margin: "13px 13px 130px 15px" }}>
-                    <Information />
-                </PaperStyled>
-            </TabPanel>
-            <TabPanel sx={{ p: "0px" }} value="1">
-                <PaperStyled sx={{ padding: "24px 16px 46px", margin: "13px 13px 130px 15px" }}>
-                    <Change />
-                </PaperStyled>
-            </TabPanel>
-        </TabContext>
+                <Box sx={{ border: "1px solid #7e7e7e", borderRadius: "10px", p: "30px", mt: "25px" }}>
+                    <TabPanel sx={{ p: "0px" }} value="0" >
+                        <Information />
+                    </TabPanel>
+                    <TabPanel sx={{ p: "0px" }} value="1">
+                        <Change />
+                    </TabPanel>
+                </Box>
+            </TabContext>
+        </>
     )
 }
 

@@ -300,6 +300,28 @@
                 }
             },
             "user": {
+                "menu": {
+                    "reviewedProducts": "Reviewed products",
+                    "myOrders": "My orders",
+                    "selectedProducts": "Selected products",
+                    "myReviews": "My reviews"
+                },
+                "personalInformation": {
+                    "title": "Profile settings",
+                    "tabs": {
+                        "personalInfo": "Personal information",
+                        "changePasswordAndLogin": "Change password and login"
+                    },
+                    "saveChanges": "Save changes",
+                    "deleteProfile": "Remove profile",
+                    "changePassword": "Change password",
+                    "changePhone": "Change phone",
+                    "changeEmail": "Change email",
+                    "confirmPhone": "Confirm phone",
+                    "confirmEmail": "Confirm email",
+                    "connectText": "You can link your personal account with social network accounts to further log in to the site.",
+                    "connect": "Connect"
+                },
                 "order": {
                     "title": "Order",
                     "totalPrice": "Order amount",
@@ -416,10 +438,17 @@
             "ukrainianHorizontalImage": "Ukrainian horizontal image",
             "englishHorizontalImage": "English horizontal image",
             "englishVerticalImage": "English vertical image",
-            "reply": "Reply"
+            "reply": "Reply",
+            "firstName": "First name",
+            "secondName": "Second name",
+            "postalCode": "Postal code",
+            "address": "Address",
+            "gender": "Gender",
+            "city": "City"
         },
         "validationMessages": {
             "required": "is required"
-        }
+        },
+        "currency": "uah"
     }
 }

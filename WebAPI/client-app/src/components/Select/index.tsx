@@ -1,9 +1,9 @@
 import MenuItem from "@mui/material/MenuItem";
+import { TextFieldFirstStyle } from "../TextField/styled";
 
-import { TextFieldStyle } from "./style";
 import { ISelect } from "./type";
 
-const SelectComponent: React.FC<ISelect> = ({ 
+const SelectComponent: React.FC<ISelect> = ({
     label,
     touched,
     error,
@@ -11,7 +11,7 @@ const SelectComponent: React.FC<ISelect> = ({
     items
 }) => {
     return (
-        <TextFieldStyle
+        <TextFieldFirstStyle
             select
             fullWidth
             variant="standard"
@@ -23,7 +23,7 @@ const SelectComponent: React.FC<ISelect> = ({
             {items && items.map((item) =>
                 <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
             )}
-        </TextFieldStyle>
+        </TextFieldFirstStyle>
     )
 }
 

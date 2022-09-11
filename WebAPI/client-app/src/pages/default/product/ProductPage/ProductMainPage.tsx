@@ -132,7 +132,7 @@ const ProductMainPage: FC<Props> = ({ addInCart, moveToReview }) => {
                 </Grid>
                 <Grid item xs={4} sx={{ mt: "84px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "start", pl: "119px" }}>
                     <Box sx={{ display: "flex", alignItems: 'baseline' }}>
-                        <Typography fontSize="50px" lineHeight="63px" sx={{ mr: "35px" }}>{product.price} &#8372;</Typography>
+                        <Typography fontSize="50px" lineHeight="63px" sx={{ mr: "35px" }}>{product.price} {t("currency")}</Typography>
                         <IconButton color="primary" sx={{ borderRadius: "12px" }}>
                             <img
                                 style={{ width: "35px", height: "35px" }}

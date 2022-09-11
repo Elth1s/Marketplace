@@ -207,7 +207,7 @@ const Ordering = () => {
                                                             {t("pages.ordering.order")} №{index + 1}
                                                         </Typography>
                                                         <Typography variant="h4">
-                                                            {t("pages.ordering.forTheSum")} {item.totalPrice} &#8372;
+                                                            {t("pages.ordering.forTheSum")} {item.totalPrice} {t("currency")}
                                                         </Typography>
                                                     </Box>
                                                 </AccordionSummary>
@@ -236,7 +236,7 @@ const Ordering = () => {
                                                                         {t("pages.ordering.price")}
                                                                     </Typography>
                                                                     <Typography variant="h4" align="center">
-                                                                        {basketItem.productPrice} &#8372;
+                                                                        {basketItem.productPrice} {t("currency")}
                                                                     </Typography>
                                                                 </Box>
                                                                 <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -252,7 +252,7 @@ const Ordering = () => {
                                                                         {t("pages.ordering.sum")}
                                                                     </Typography>
                                                                     <Typography variant="h4" align="center">
-                                                                        {basketItem.productPriceSum} &#8372;
+                                                                        {basketItem.productPriceSum} {t("currency")}
                                                                     </Typography>
                                                                 </Box>
                                                             </Box>
@@ -273,7 +273,7 @@ const Ordering = () => {
                                                                 {t("pages.ordering.order")} №{index + 1}
                                                             </Typography>
                                                             <Typography variant="h4" color="#7e7e7e">
-                                                                {t("pages.ordering.forTheSum")} {item.totalPrice} &#8372;
+                                                                {t("pages.ordering.forTheSum")} {item.totalPrice} {t("currency")}
                                                             </Typography>
                                                         </Box>
                                                     </AccordionSummary>
@@ -302,7 +302,7 @@ const Ordering = () => {
                                                                             {t("pages.ordering.price")}
                                                                         </Typography>
                                                                         <Typography variant="h4" align="center">
-                                                                            {basketItem.productPrice} &#8372;
+                                                                            {basketItem.productPrice} {t("currency")}
                                                                         </Typography>
                                                                     </Box>
                                                                     <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -333,7 +333,7 @@ const Ordering = () => {
                                         {orderProducts[currentOrder - 1]?.totalCount} {orderProducts[currentOrder - 1]?.totalCount == 1 ? t("pages.ordering.countProductsOne") : (lastCharOfCountProducts(orderProducts[currentOrder - 1]?.totalCount) ? t("pages.ordering.countProductsLessFive") : t("pages.ordering.countProducts"))} {t("pages.ordering.forTheSum")}:
                                     </Typography>
                                     <Typography variant="h4">
-                                        {orderProducts[currentOrder - 1]?.totalPrice} &#8372;
+                                        {orderProducts[currentOrder - 1]?.totalPrice} {t("currency")}
                                     </Typography>
                                 </Box>
                                 <Box sx={{ display: "flex", justifyContent: "space-between", mt: "20px" }}>
@@ -349,7 +349,7 @@ const Ordering = () => {
                                         {t("pages.ordering.amountPayable")}:
                                     </Typography>
                                     <Typography variant="h4">
-                                        {orderProducts[currentOrder - 1]?.totalPrice} &#8372;
+                                        {orderProducts[currentOrder - 1]?.totalPrice} {t("currency")}
                                     </Typography>
                                 </Box>
                                 <LoadingButton

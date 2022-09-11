@@ -9,7 +9,8 @@ const initialState: CatalogState = {
     countProducts: 0,
     filterNames: [],
     searchField: "",
-    searchCatalog: []
+    searchCatalog: [],
+    userProducts: []
 }
 
 export const catalogReducer = (state = initialState, action: CatalogAction): CatalogState => {
@@ -84,10 +85,46 @@ export const catalogReducer = (state = initialState, action: CatalogAction): Cat
             }
             else
                 return state;
+        case CatalogActionTypes.CHANGE_IS_SELECTED_USER_PRODUCTS:
+            let userproduct = state.userProducts.find(value => value.urlSlug === action.payload);
+            if (userproduct) {
+                let index = state.userProducts.indexOf(userproduct);
+                let tempProducts = state.userProducts.slice();
+                tempProducts[index].isSelected = !tempProducts[index].isSelected;
+                return {
+                    ...state,
+                    userProducts: tempProducts
+                }
+            }
+            else
+                return state;
+        case CatalogActionTypes.CHANGE_IS_IN_CART_USER_PRODUCTS:
+            let cartproduct = state.userProducts.find(value => value.urlSlug === action.payload);
+            if (cartproduct) {
+                let index = state.userProducts.indexOf(cartproduct);
+                let tempProducts = state.userProducts.slice();
+                tempProducts[index].isInBasket = !tempProducts[index].isInBasket;
+                return {
+                    ...state,
+                    userProducts: tempProducts
+                }
+            }
+            else
+                return state;
         case CatalogActionTypes.GET_SIMILAR_PRODUCTS:
             return {
                 ...state,
                 products: action.payload,
+            }
+        case CatalogActionTypes.GET_SELECTED_PRODUCTS:
+            return {
+                ...state,
+                userProducts: action.payload,
+            }
+        case CatalogActionTypes.GET_REVIEWED_PRODUCTS:
+            return {
+                ...state,
+                userProducts: action.payload,
             }
         default:
             return state;

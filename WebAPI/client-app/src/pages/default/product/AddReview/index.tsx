@@ -244,7 +244,7 @@ const AddReview: FC<Props> = ({ getData }) => {
                                             );
                                         })
                                     }
-                                    <CropperDialog imgSrc={""} onDialogSave={onSaveImage} />
+                                    <CropperDialog imgSrc={""} onDialogSave={onSaveImage} isGreen={true} />
                                 </Grid>
                             </Grid>
                         </DialogContent>

@@ -20,8 +20,13 @@ import { check, icon_color_facebook, icon_color_google } from "../../../../asset
 import { GoogleLogin, GoogleLoginResponse } from 'react-google-login';
 import { ReactFacebookLoginInfo } from "react-facebook-login";
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
+import { useTranslation } from "react-i18next";
+import { Button, useTheme } from "@mui/material";
 
 const Change = () => {
+    const { t } = useTranslation();
+    const { palette } = useTheme();
+
     const { GetProfile, UpdateProfile, GoogleConnect, FacebookConnect } = useActions();
     const { userInfo } = useTypedSelector((store) => store.profile);
 
@@ -38,7 +43,7 @@ const Change = () => {
     }, []);
 
     const getData = async () => {
-        document.title = "Change password and login";
+        document.title = `${t("pages.user.personalInformation.tabs.changePasswordAndLogin")}`;
         await GetProfile();
     }
 
@@ -95,9 +100,9 @@ const Change = () => {
     return (
         <FormikProvider value={formik} >
             <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-                <Grid container columnSpacing={21.125}>
-                    <Grid container item xs={6} direction="column" rowSpacing={4.125}>
-                        <Grid item sx={{ display: "inline-flex", alignItems: "flex-end" }}>
+                <Grid container columnSpacing="30px">
+                    <Grid container item xs={7} rowSpacing="45px">
+                        <Grid item xs={12} sx={{ display: "inline-flex", alignItems: "flex-end" }}>
                             <Box sx={{ width: "207px" }} >
                                 <TextFieldComponent
                                     type="text"
@@ -108,13 +113,13 @@ const Change = () => {
                                 />
                             </Box>
                             <ChangeButton variant="outlined" color="secondary" sx={{ ml: "20px" }}>
-                                Change email
+                                {t("pages.user.personalInformation.changeEmail")}
                             </ChangeButton>
                             <ChangeButton variant="outlined" color="secondary" sx={{ ml: "30px" }}>
-                                Confirm email
+                                {t("pages.user.personalInformation.confirmEmail")}
                             </ChangeButton>
                         </Grid>
-                        <Grid item sx={{ display: "inline-flex", alignItems: "flex-end" }}>
+                        <Grid item xs={12} sx={{ display: "inline-flex", alignItems: "flex-end" }}>
                             <Box sx={{ width: "207px" }} >
                                 <TextFieldComponent
                                     type="text"
@@ -125,23 +130,20 @@ const Change = () => {
                                 />
                             </Box>
                             <ChangeButton variant="outlined" color="secondary" sx={{ ml: "20px" }}>
-                                Change phone
+                                {t("pages.user.personalInformation.changePhone")}
                             </ChangeButton>
                             <ChangeButton variant="outlined" color="secondary" sx={{ ml: "30px" }}>
-                                Confirm phone
+                                {t("pages.user.personalInformation.confirmPhone")}
                             </ChangeButton>
                         </Grid>
-                        <ButtonStyled fullWidth variant="contained" color="primary" sx={{ mt: "97px" }}>
-                            Change password
-                        </ButtonStyled>
                     </Grid>
-                    <Grid container item xs={6} rowSpacing={1.625}
-                        alignContent="flex-start"
-                        direction="column">
-                        <Grid item xs>
-                            <Typography variant="subtitle1">Ви можете зв'язати свій особистий кабінет з обліковими записами соціальних мереж, щоб надалі входити на сайт, як користувач Facebook або Google.</Typography>
+                    <Grid container item xs={5} rowSpacing="25px">
+                        <Grid item xs={12}>
+                            <Typography variant="subtitle1">
+                                {t("pages.user.personalInformation.connectText")}
+                            </Typography>
                         </Grid>
-                        <Grid item xs>
+                        <Grid item xs={12}>
                             <Box sx={{
                                 display: "flex",
                                 justifyContent: "space-between",
@@ -168,13 +170,15 @@ const Change = () => {
                                         prompt='select_account'
                                         render={renderProps => (
                                             <BlindButton variant="text"
-                                                onClick={renderProps.onClick} color="primary" sx={{ textTransform: "none" }}>Bind</BlindButton>
+                                                onClick={renderProps.onClick} color="primary" sx={{ textTransform: "none" }}>
+                                                {t("pages.user.personalInformation.connect")}
+                                            </BlindButton>
                                         )}
                                     />
                                 }
                             </Box>
                         </Grid>
-                        <Grid item xs>
+                        <Grid item xs={12}>
                             <Box sx={{
                                 display: "flex",
                                 justifyContent: "space-between",
@@ -196,15 +200,48 @@ const Change = () => {
                                         appId={process.env.REACT_APP_FACEBOOK_APP_ID as string}
                                         callback={responseFacebook}
                                         render={renderProps => (
-                                            <BlindButton variant="text" onClick={renderProps.onClick} color="primary" sx={{ textTransform: "none" }}>Bind</BlindButton>
+                                            <BlindButton variant="text" onClick={renderProps.onClick} color="primary" sx={{ textTransform: "none" }}>
+                                                {t("pages.user.personalInformation.connect")}
+                                            </BlindButton>
                                         )} />
 
                                 }
                             </Box>
                         </Grid>
-                        <ButtonStyled fullWidth variant="outlined" color="secondary" sx={{ mt: "63px" }}>
-                            Remove profile
-                        </ButtonStyled>
+                    </Grid>
+                    <Grid item xs={12} sx={{ display: "flex", justifyContent: "space-between", mt: "45px" }}>
+                        <Button
+                            color="primary"
+                            variant="contained"
+                            sx={{
+                                width: "auto",
+                                px: "32.5px",
+                                py: "12.5px",
+                                textTransform: "none",
+                                borderRadius: "10px",
+                                fontSize: "20px",
+                                height: "50px",
+                                "&:hover": { background: palette.primary.main }
+                            }}
+                        >
+                            {t("pages.user.personalInformation.changePassword")}
+                        </Button>
+                        <Button
+                            color="secondary"
+                            variant="outlined"
+                            sx={{
+                                width: "auto",
+                                px: "15.5px",
+                                py: "11.5px",
+                                textTransform: "none",
+                                borderRadius: "10px",
+                                fontSize: "20px",
+                                height: "50px",
+                                border: "1px solid #0E7C3A"
+                            }}
+                        >
+                            {t("pages.user.personalInformation.deleteProfile")}
+                        </Button>
                     </Grid>
                 </Grid>
             </Form>

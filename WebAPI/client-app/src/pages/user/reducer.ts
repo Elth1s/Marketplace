@@ -15,11 +15,9 @@ const initialState: ProfileState = {
         firstName: "",
         secondName: "",
 
-        // birthDate: "",
-        // languageOfCommunication: 0,
-        genderId: null,
-        countryId: null,
-        cityId: null,
+        genderId: "",
+        countryId: "",
+        cityId: "",
         address: "",
         postalCode: "",
 
@@ -43,7 +41,26 @@ export const profileReducer = (state = initialState, action: ProfileAction | Ema
         case ProfileActionTypes.GET_PROFILE:
             return {
                 ...state,
-                userInfo: action.payload,
+                userInfo: {
+                    firstName: action.payload.firstName,
+                    secondName: action.payload.secondName,
+
+                    genderId: action.payload.genderId != null ? action.payload.genderId : "",
+                    countryId: action.payload.countryId != null ? action.payload.countryId : "",
+                    cityId: action.payload.cityId != null ? action.payload.cityId : "",
+                    address: action.payload.address,
+                    postalCode: action.payload.postalCode,
+
+                    email: action.payload.email,
+                    phone: action.payload.phone,
+
+                    photo: action.payload.photo,
+                    isEmailConfirmed: action.payload.isEmailConfirmed,
+                    isPhoneConfirmed: action.payload.isPhoneConfirmed,
+                    isFacebookConnected: action.payload.isFacebookConnected,
+                    isGoogleConnected: action.payload.isGoogleConnected,
+                    hasPassword: action.payload.hasPassword,
+                },
             }
         case ConfirmEmailActionTypes.IS_EMAIL_CONFIRMED:
             return {

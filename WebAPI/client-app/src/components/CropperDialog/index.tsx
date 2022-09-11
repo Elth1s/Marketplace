@@ -21,7 +21,7 @@ import { TransitionProps } from "@mui/material/transitions";
 import { BoxStyle } from "./styled"
 
 import { useDropzone } from 'react-dropzone';
-import { upload_cloud } from "../../assets/icons";
+import { upload_cloud, green_upload_cloud } from "../../assets/icons";
 
 const Transition = forwardRef(function Transition(
     props: TransitionProps & {
@@ -36,10 +36,11 @@ export interface ICropperDialog {
     imgSrc: string,
     aspectRation?: number,
     onDialogSave: any,
-    isDark?: boolean
+    isDark?: boolean,
+    isGreen?: boolean
 }
 
-const CropperDialog: React.FC<ICropperDialog> = ({ imgSrc, aspectRation = 1 / 1, onDialogSave, isDark = false }) => {
+const CropperDialog: React.FC<ICropperDialog> = ({ imgSrc, aspectRation = 1 / 1, onDialogSave, isDark = false, isGreen = false }) => {
     const [cropperObj, setCropperObj] = useState<Cropper>();
     const imgRef = useRef<HTMLImageElement>(null);
     const prevRef = useRef<HTMLDivElement>();
@@ -96,7 +97,7 @@ const CropperDialog: React.FC<ICropperDialog> = ({ imgSrc, aspectRation = 1 / 1,
 
     return (
         <>
-            <BoxStyle imgSrc={imgSrc} isDark={isDark}>
+            <BoxStyle imgSrc={imgSrc} isDark={isDark} isGreen={isGreen}>
                 <div {...getRootProps({ className: 'dropzone' })}>
                     <input {...getInputProps()} />
                     {imgSrc !== ""
@@ -106,7 +107,7 @@ const CropperDialog: React.FC<ICropperDialog> = ({ imgSrc, aspectRation = 1 / 1,
                             style={{ width: "98px", height: "98px", borderRadius: "10px" }} />
                         : <Box sx={{ height: "98px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
                             <img
-                                src={upload_cloud}
+                                src={isGreen ? green_upload_cloud : upload_cloud}
                                 alt="icon"
                                 style={{ width: "25px", height: "25px" }} />
                             <Typography variant="subtitle1" align="center" color={isDark ? "white" : "black"}>

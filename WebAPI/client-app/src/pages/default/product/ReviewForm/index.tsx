@@ -129,32 +129,30 @@ const ReviewForm: FC<Props> = ({ getData }) => {
 
                     />
                 </Box>
-                <Grid container rowSpacing={2.5}>
-                    <Grid container item xs={12} columnSpacing={3.25}>
-                        <Grid item xs={6}>
-                            <TextFieldSecondStyle
-                                fullWidth
-                                variant="outlined"
-                                type="text"
-                                placeholder={t("validationProps.fullName")}
-                                {...getFieldProps('fullName')}
-                                error={Boolean(touched.fullName && errors.fullName)}
-                                helperText={touched.fullName && errors.fullName}
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextFieldSecondStyle
-                                disabled={user.isEmailExist}
-                                fullWidth
-                                variant="outlined"
-                                type="text"
-                                placeholder={t("validationProps.email")}
-                                autoComplete="email"
-                                {...getFieldProps('email')}
-                                error={Boolean(touched.email && errors.email)}
-                                helperText={touched.email && errors.email}
-                            />
-                        </Grid>
+                <Grid container rowSpacing={2.5} columnSpacing={3.25}>
+                    <Grid item xs={6}>
+                        <TextFieldSecondStyle
+                            fullWidth
+                            variant="outlined"
+                            type="text"
+                            placeholder={t("validationProps.fullName")}
+                            {...getFieldProps('fullName')}
+                            error={Boolean(touched.fullName && errors.fullName)}
+                            helperText={touched.fullName && errors.fullName}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <TextFieldSecondStyle
+                            disabled={user.isEmailExist}
+                            fullWidth
+                            variant="outlined"
+                            type="text"
+                            placeholder={t("validationProps.email")}
+                            autoComplete="email"
+                            {...getFieldProps('email')}
+                            error={Boolean(touched.email && errors.email)}
+                            helperText={touched.email && errors.email}
+                        />
                     </Grid>
                     <Grid item xs={12}>
                         <TextFieldSecondStyle
@@ -214,7 +212,7 @@ const ReviewForm: FC<Props> = ({ getData }) => {
                                 );
                             })
                         }
-                        <CropperDialog imgSrc={""} onDialogSave={onSaveImage} />
+                        <CropperDialog imgSrc={""} onDialogSave={onSaveImage} isGreen={true} />
                     </Grid>
                     <Grid item xs={12} sx={{ display: "flex", justifyContent: "flex-end", alignItems: "flex-end", mt: "25px" }}>
                         <LoadingButton

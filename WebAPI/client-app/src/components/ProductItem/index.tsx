@@ -9,6 +9,7 @@ import { FavoriteBorder } from '@mui/icons-material'
 
 import { orange_heart, filled_orange_heart } from '../../assets/icons';
 import { useActions } from '../../hooks/useActions'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
     isSelected: boolean,
@@ -20,6 +21,8 @@ interface Props {
 }
 
 const ProductItem: FC<Props> = ({ isSelected, name, image, statusName, urlSlug, price }) => {
+    const { t } = useTranslation();
+
     const { ChangeIsSelectedProducts } = useActions();
 
     return (
@@ -50,7 +53,7 @@ const ProductItem: FC<Props> = ({ isSelected, name, image, statusName, urlSlug, 
                     <Typography variant="h5" sx={{ marginTop: "auto" }}>
                     </Typography>
                     <Typography variant="h5">
-                        {price} &#8372;
+                        {price} {t("currency")}
                     </Typography>
                 </BoxStyle>
             </LinkRouter>

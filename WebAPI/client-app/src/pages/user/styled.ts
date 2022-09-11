@@ -1,8 +1,26 @@
-import Paper from "@mui/material/Paper";
-import Tab from "@mui/material/Tab";
-import Button from "@mui/material/Button";
+import { Paper, Tab, Button, Box } from "@mui/material";
 
 import { styled } from "@mui/material";
+
+export const BoxStyled = styled(Box)(({ theme }) => ({
+    display: "flex",
+    flexWrap: 'wrap',
+    [theme.breakpoints.only('xl')]: {
+        "&>*:nth-of-type(5n)": {
+            marginRight: "0px"
+        }
+    },
+    [theme.breakpoints.only("lg")]: {
+        "&>*:nth-of-type(4n)": {
+            marginRight: "0px"
+        }
+    },
+    [theme.breakpoints.only('md')]: {
+        "&>*:nth-of-type(3n)": {
+            marginRight: "0px"
+        }
+    },
+}));
 
 export const PaperStyled = styled(Paper)(() => ({
     boxShadow: "0px 5px 15px rgba(0, 0, 0, 0.25)",
@@ -42,13 +60,15 @@ export const ButtonStyled = styled(Button)(() => ({
 }));
 
 export const ChangeButton = styled(Button)(() => ({
-    width: "155px",
-    height: "28px",
+    width: "175px",
+    height: "32px",
     fontSize: "14px",
     lineHeight: "18px",
     fontWeight: "500",
-    borderRadius: "10px",
+    borderRadius: "5px",
     textTransform: "none",
+    paddingLeft: "0px",
+    paddingRight: "0px"
 }));
 
 export const BlindButton = styled(Button)(() => ({

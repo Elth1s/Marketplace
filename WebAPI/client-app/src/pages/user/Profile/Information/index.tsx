@@ -14,24 +14,21 @@ import { IProfile } from "../../types";
 
 import TextFieldComponent from "../../../../components/TextField";
 import SelectComponent from "../../../../components/Select";
-import DatePickerComponent from "../../../../components/DatePicker";
 
-import { ButtonStyled } from "../../styled";
+import { useTranslation } from "react-i18next";
+import { LoadingButton } from "@mui/lab";
+import { Button, MenuItem, useTheme } from "@mui/material";
+import { TextFieldFirstStyle } from "../../../../components/TextField/styled";
 
 const Information = () => {
+    const { t } = useTranslation();
+    const { palette } = useTheme();
+
     const { GetProfile, UpdateProfile, GetCountries, GetCitiesByCountry, GetGenders } = useActions();
     const { userInfo } = useTypedSelector((store) => store.profile);
     const { countries } = useTypedSelector((store) => store.country);
     const { cityForSelect } = useTypedSelector((store) => store.city);
-
-    useEffect(() => {
-        getData();
-    }, []);
-
-    const getData = async () => {
-        document.title = "Personal information";
-        await GetProfile();
-    }
+    const { genders } = useTypedSelector((store) => store.profile);
 
     const onHandleSubmit = async (values: IProfile) => {
         try {
@@ -59,111 +56,184 @@ const Information = () => {
         onSubmit: onHandleSubmit
     });
 
+    useEffect(() => {
+        document.title = `${t("pages.user.personalInformation.tabs.personalInfo")}`;
+
+        getData();
+    }, [formik.values.countryId]);
+
+    const getData = async () => {
+        try {
+            await GetProfile();
+            await GetGenders();
+            await GetCountries();
+            if (userInfo.countryId != "")
+                await GetCitiesByCountry(+userInfo.countryId)
+        } catch (ex) {
+        }
+    }
+
     const { errors, touched, isSubmitting, handleSubmit, setFieldError, getFieldProps, setFieldValue } = formik;
 
     return (
         <FormikProvider value={formik} >
             <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-                <Grid container columnSpacing={27.5}>
-                    <Grid container item xs={6} rowSpacing={2.5} direction="column">
-                        <Grid item xs>
-                            <TextFieldComponent
+                <Grid container columnSpacing="180px">
+                    <Grid container item xs={6} rowSpacing="25px">
+                        <Grid item xs={12}>
+                            <TextFieldFirstStyle
+                                fullWidth
+                                variant="standard"
                                 type="text"
-                                label="First Name"
-                                error={errors.firstName}
-                                touched={touched.firstName}
-                                getFieldProps={{ ...getFieldProps('firstName') }}
+                                label={t("validationProps.firstName")}
+                                {...getFieldProps('firstName')}
+                                error={Boolean(touched.firstName && errors.firstName)}
+                                helperText={touched.firstName && errors.firstName}
                             />
                         </Grid>
-                        <Grid item xs>
-                            <TextFieldComponent
+                        <Grid item xs={12}>
+                            <TextFieldFirstStyle
+                                fullWidth
+                                variant="standard"
                                 type="text"
-                                label="Second Name"
-                                error={errors.secondName}
-                                touched={touched.secondName}
-                                getFieldProps={{ ...getFieldProps('secondName') }}
+                                label={t("validationProps.secondName")}
+                                {...getFieldProps('secondName')}
+                                error={Boolean(touched.secondName && errors.secondName)}
+                                helperText={touched.secondName && errors.secondName}
                             />
                         </Grid>
-                        <Grid item xs>
-                            <SelectComponent
-                                label="Gender"
-                                items={[{ id: 1, name: "test1" }, { id: 2, name: "test2" }]}
-                                error={errors.genderId}
-                                touched={touched.genderId}
-                                getFieldProps={{ ...getFieldProps('genderId') }}
-                            />
+                        <Grid item xs={12}>
+                            <TextFieldFirstStyle
+                                select
+                                fullWidth
+                                variant="standard"
+                                label={t("validationProps.gender")}
+                                error={Boolean(touched.genderId && errors.genderId)}
+                                helperText={touched.genderId && errors.genderId}
+                                {...getFieldProps('genderId')}
+                            >
+                                {genders && genders.map((item) =>
+                                    <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                                )}
+                            </TextFieldFirstStyle>
                         </Grid>
-                        <Grid item xs>
-                            {/* <DatePickerComponent
-                                label={"birthDate"}
-                                error={errors.birthDate}
-                                touched={touched.birthDate}
-                                onChange={(value) => { setFieldValue('birthDate', value) }}
-                                {...getFieldProps('birthDate')}
-                                label={t('validationProps.dateStart')}
-                                {...getFieldProps('dateStart')}
-                                error={errors.dateStart}
-                                touched={touched.dateStart}
-                                onChange={(value) => { setFieldValue('dateStart', value) }}
-                            /> */}
-                        </Grid>
-                        <Grid item xs>
-                            {/* <SelectComponent
-                                label="Language of communication"
-                                items={[{ id: 1, name: "test1" }, { id: 2, name: "test2" }]}
-                                error={errors.languageOfCommunication}
-                                touched={touched.languageOfCommunication}
-                                getFieldProps={{ ...getFieldProps('languageOfCommunication') }}
-                            /> */}
-                        </Grid>
-                        <ButtonStyled fullWidth variant="contained" color="primary" sx={{ mt: "95px" }}>
-                            Save Change
-                        </ButtonStyled>
+                        <Grid item xs={12} height="73px" />
                     </Grid>
-                    <Grid container item xs={6} rowSpacing={2.5} direction="column">
-                        <Grid item xs>
-                            <SelectComponent
-                                label="Country"
-                                items={[{ id: 1, name: "test1" }, { id: 2, name: "test2" }]}
-                                error={errors.countryId}
-                                touched={touched.countryId}
-                                getFieldProps={{ ...getFieldProps('countryId') }}
-                            />
+                    <Grid container item xs={6} rowSpacing="25px">
+                        <Grid item xs={12}>
+                            <TextFieldFirstStyle
+                                select
+                                fullWidth
+                                variant="standard"
+                                label={t("validationProps.country")}
+                                error={Boolean(touched.countryId && errors.countryId)}
+                                helperText={touched.countryId && errors.countryId}
+                                {...getFieldProps('countryId')}
+                                onChange={(event) => {
+                                    setFieldValue("countryId", event.target.value)
+                                    setFieldValue("cityId", "")
+                                }}
+                                SelectProps={{
+                                    MenuProps: {
+                                        PaperProps: {
+                                            sx: {
+                                                maxHeight: "200px"
+                                            }
+                                        }
+                                    }
+                                }}
+                            >
+                                {countries && countries.map((item) =>
+                                    <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                                )}
+                            </TextFieldFirstStyle>
                         </Grid>
-                        <Grid item xs>
-                            <TextFieldComponent
+                        <Grid item xs={12}>
+                            <TextFieldFirstStyle
+                                select
+                                fullWidth
+                                variant="standard"
+                                label={t("validationProps.city")}
+                                error={Boolean(touched.cityId && errors.cityId)}
+                                helperText={touched.cityId && errors.cityId}
+                                {...getFieldProps('cityId')}
+                                SelectProps={{
+                                    MenuProps: {
+                                        PaperProps: {
+                                            sx: {
+                                                maxHeight: "200px"
+                                            }
+                                        }
+                                    }
+                                }}
+                            >
+                                {cityForSelect && cityForSelect.map((item) =>
+                                    <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                                )}
+                            </TextFieldFirstStyle>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextFieldFirstStyle
+                                fullWidth
+                                variant="standard"
                                 type="text"
-                                label="Address"
-                                error={errors.address}
-                                touched={touched.address}
-                                getFieldProps={{ ...getFieldProps('address') }}
+                                label={t("validationProps.address")}
+                                {...getFieldProps('address')}
+                                error={Boolean(touched.address && errors.address)}
+                                helperText={touched.address && errors.address}
                             />
                         </Grid>
-                        <Grid item xs>
-                            <SelectComponent
-                                label="City"
-                                items={[{ id: 1, name: "test1" }, { id: 2, name: "test2" }]}
-                                error={errors.cityId}
-                                touched={touched.cityId}
-                                getFieldProps={{ ...getFieldProps('cityId') }}
-                            />
-                        </Grid>
-                        <Grid item xs>
-                            <TextFieldComponent
+                        <Grid item xs={12}>
+                            <TextFieldFirstStyle
+                                fullWidth
+                                variant="standard"
                                 type="text"
-                                label="Postal Code"
-                                error={errors.postalCode}
-                                touched={touched.postalCode}
-                                getFieldProps={{ ...getFieldProps('postalCode') }}
+                                label={t("validationProps.postalCode")}
+                                {...getFieldProps('postalCode')}
+                                error={Boolean(touched.postalCode && errors.postalCode)}
+                                helperText={touched.postalCode && errors.postalCode}
                             />
                         </Grid>
-                        <ButtonStyled fullWidth variant="outlined" color="secondary" sx={{ mt: "188px" }}>
-                            Remove profile
-                        </ButtonStyled>
+                    </Grid>
+                    <Grid item xs={12} sx={{ display: "flex", justifyContent: "space-between", mt: "40px" }}>
+                        <LoadingButton
+                            color="primary"
+                            variant="contained"
+                            loading={isSubmitting}
+                            type="submit"
+                            sx={{
+                                width: "auto",
+                                px: "32.5px",
+                                py: "12.5px",
+                                textTransform: "none",
+                                borderRadius: "10px",
+                                fontSize: "20px",
+                                height: "50px",
+                                "&:hover": { background: palette.primary.main }
+                            }}
+                        >
+                            {t("pages.user.personalInformation.saveChanges")}
+                        </LoadingButton>
+                        <Button
+                            color="secondary"
+                            variant="outlined"
+                            sx={{
+                                width: "auto",
+                                px: "15.5px",
+                                py: "11.5px",
+                                textTransform: "none",
+                                borderRadius: "10px",
+                                fontSize: "20px",
+                                height: "50px",
+                                border: "1px solid #0E7C3A"
+                            }}
+                        >
+                            {t("pages.user.personalInformation.deleteProfile")}
+                        </Button>
                     </Grid>
                 </Grid>
             </Form>
-        </FormikProvider>
+        </FormikProvider >
     );
 }
 

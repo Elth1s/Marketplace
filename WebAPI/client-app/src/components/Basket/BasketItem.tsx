@@ -7,6 +7,7 @@ import { small_empty } from "../../assets/backgrounds"
 import { basket_trash, minus, plus } from "../../assets/icons"
 import LinkRouter from "../LinkRouter"
 import { TextFieldStyle } from "./styled"
+import { useTranslation } from "react-i18next"
 
 interface Props {
     id: number
@@ -21,6 +22,8 @@ interface Props {
 }
 
 const BasketItem: FC<Props> = ({ id, count, image, name, price, productCount, urlSlug, closeBasket, linkUrlSlug }) => {
+    const { t } = useTranslation();
+
     const { GetBasketItems, UpdateBasketItem, RemoveFromBasket } = useActions();
 
     const [basketItemCount, setBasketItemCount] = useState<number>(count);
@@ -115,7 +118,7 @@ const BasketItem: FC<Props> = ({ id, count, image, name, price, productCount, ur
             </Box>
             <Box>
                 <Typography variant="h4">
-                    {price} &#8372;
+                    {price} {t("currency")}
                 </Typography>
             </Box>
             <IconButton

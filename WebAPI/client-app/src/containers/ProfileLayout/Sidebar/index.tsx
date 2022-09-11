@@ -37,8 +37,8 @@ const Sidebar = () => {
         { label: `${user.firstName} ${user.secondName}`, path: '/profile/information', icon: black_user, activeIcon: orange_user },
         { label: `${t("pages.user.menu.reviewedProducts")}`, path: '/profile/reviewed-products', icon: black_eye, activeIcon: orange_eye },
         { label: `${t("pages.user.menu.myOrders")}`, path: '/profile/orders', icon: black_shopping_cart, activeIcon: orange_shopping_cart },
-        { label: `${t("pages.user.menu.selectedProducts")}`, path: '/profile/selected-product', icon: black_heart, activeIcon: orange_heart },
-        { label: `${t("pages.user.menu.myReviews")}`, path: '/profile/reviews', icon: black_review, activeIcon: orange_review },
+        { label: `${t("pages.user.menu.selectedProducts")}`, path: '/profile/selected-products', icon: black_heart, activeIcon: orange_heart },
+        // { label: `${t("pages.user.menu.myReviews")}`, path: '/profile/reviews', icon: black_review, activeIcon: orange_review },
     ]);
 
     const location = useLocation();

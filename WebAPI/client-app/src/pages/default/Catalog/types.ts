@@ -10,7 +10,12 @@ export enum CatalogActionTypes {
     GET_CATEGORIES_FOR_SEARCH = "GET_CATEGORIES_FOR_SEARCH",
     GET_NOVELTIES = "GET_NOVELTIES",
     CHANGE_IS_SELECTED_PRODUCTS = "CHANGE_IS_SELECTED_PRODUCTS",
-    GET_SIMILAR_PRODUCTS = "GET_SIMILAR_PRODUCTS"
+    CHANGE_IS_SELECTED_USER_PRODUCTS = "CHANGE_IS_SELECTED_USER_PRODUCTS",
+    CHANGE_IS_IN_CART_USER_PRODUCTS = "CHANGE_IS_IN_CART_USER_PRODUCTS",
+    GET_SIMILAR_PRODUCTS = "GET_SIMILAR_PRODUCTS",
+
+    GET_SELECTED_PRODUCTS = "GET_SELECTED_PRODUCTS",
+    GET_REVIEWED_PRODUCTS = "GET_REVIEWED_PRODUCTS"
 }
 
 export interface ICatalogItem {
@@ -41,6 +46,18 @@ export interface IProductItem {
     discount: number | null
 }
 
+export interface IUserProductItem {
+    id: number,
+    isSelected: boolean,
+    name: string,
+    image: string,
+    price: number,
+    statusName: string,
+    urlSlug: string,
+    discount: number | null,
+    isInBasket: boolean
+}
+
 export interface IFilterValue {
     id: number,
     value: string,
@@ -62,7 +79,8 @@ export interface CatalogState {
     countProducts: number,
     filterNames: Array<IFilterName>,
     searchField: string,
-    searchCatalog: Array<IFullCatalogItem>
+    searchCatalog: Array<IFullCatalogItem>,
+    userProducts: Array<IUserProductItem>
 }
 
 export interface ICatalogWithProducts {
@@ -132,10 +150,30 @@ export interface ChangeIsSelectedProductsAction {
     payload: string
 }
 
+export interface ChangeIsSelectedUserProductsAction {
+    type: CatalogActionTypes.CHANGE_IS_SELECTED_USER_PRODUCTS,
+    payload: string
+}
+
+export interface ChangeIsInCartUserProductsAction {
+    type: CatalogActionTypes.CHANGE_IS_IN_CART_USER_PRODUCTS,
+    payload: string
+}
+
 
 export interface GetSimilarProductsAction {
     type: CatalogActionTypes.GET_SIMILAR_PRODUCTS,
     payload: Array<IProductItem>
+}
+
+export interface GetSelectedProductsAction {
+    type: CatalogActionTypes.GET_SELECTED_PRODUCTS,
+    payload: Array<IUserProductItem>
+}
+
+export interface GetReviewedProductsAction {
+    type: CatalogActionTypes.GET_REVIEWED_PRODUCTS,
+    payload: Array<IUserProductItem>
 }
 
 
@@ -150,4 +188,8 @@ export type CatalogAction = GetCatalogAction |
     GetCategoriesForSearchAction |
     GetNoveltiesAction |
     ChangeIsSelectedProductsAction |
-    GetSimilarProductsAction;
+    GetSimilarProductsAction |
+    GetReviewedProductsAction |
+    GetSelectedProductsAction |
+    ChangeIsSelectedUserProductsAction |
+    ChangeIsInCartUserProductsAction;

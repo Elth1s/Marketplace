@@ -75,6 +75,7 @@ import Novelties from './pages/default/Catalog/Novelties';
 
 import * as Yup from "yup"
 import { useTranslation } from 'react-i18next';
+import SelectedProducts from './pages/user/SelectedProducts';
 
 
 const App = () => {
@@ -146,6 +147,7 @@ const App = () => {
           <Route path="/profile/" element={<ProfileLayout />}>
             <Route path="information" element={<Profile />} />
             <Route path="reviewed-products" element={<Reviewed />} />
+            <Route path="selected-products" element={<SelectedProducts />} />
             <Route path="orders" element={<Order />} />
           </Route>
 

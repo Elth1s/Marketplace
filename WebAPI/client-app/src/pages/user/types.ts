@@ -20,12 +20,9 @@ export enum GenderActionTypes {
 export interface IProfile {
     firstName: string,
     secondName: string,
-
-    //birthDate: Date | string,
-    //languageOfCommunication: number,
-    genderId: number | null,
-    countryId: number | null,
-    cityId: number | null,
+    genderId: number | string,
+    countryId: number | string,
+    cityId: number | string,
     address: string,
     postalCode: string,
 
@@ -84,6 +81,7 @@ export interface IProductForUser {
     price: number,
     productId: number,
     productName: string,
+    productUrlSlug: string,
     productImage: string,
 }
 
@@ -95,6 +93,7 @@ export interface IOrdersForUser {
     consumerEmail: string,
     orderStatusName: null,
     deliveryType: string,
+    totalPrice: number,
     orderProductsResponse: Array<IProductForUser>
 }
 

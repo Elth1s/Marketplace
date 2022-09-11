@@ -64,6 +64,11 @@ const Header = () => {
         }
     }
 
+    const moveToSelected = () => {
+        if (isAuth)
+            navigate("/profile/selected-products")
+    }
+
     return (
         <AppBar component="header" sx={{ height: "100px", pt: "10px" }} elevation={0} position="static">
             <Container sx={{ height: "100%", maxWidth: { xl: "xl", lg: "lg", md: "md" } }}>
@@ -113,21 +118,19 @@ const Header = () => {
                         <Divider sx={{ borderColor: "inherit", borderRightWidth: "3px", mx: "1px" }} orientation="vertical" flexItem />
                         <LanguageButtonStyle selected={isUaLanguage} onClick={() => { changeLanguage(true) }}>&nbsp;UA</LanguageButtonStyle>
                     </Box>
-                    {isAuth &&
-                        <>
-                            <IconButton
-                                sx={{ borderRadius: '12px', p: 0.5 }}
-                                size="large"
-                                aria-label="search"
-                                color="primary"
-                            >
-                                <img
-                                    style={{ width: "40px", height: "40px" }}
-                                    src={orange_heart}
-                                    alt="icon"
-                                />
-                            </IconButton>
-                        </>}
+                    <IconButton
+                        sx={{ borderRadius: '12px', p: 0.5 }}
+                        size="large"
+                        aria-label="search"
+                        color="primary"
+                        onClick={moveToSelected}
+                    >
+                        <img
+                            style={{ width: "40px", height: "40px" }}
+                            src={orange_heart}
+                            alt="icon"
+                        />
+                    </IconButton>
                     <Basket />
                     <MainMenu />
                 </Toolbar>
