@@ -94,6 +94,20 @@ namespace WebAPI.Controllers
         }
 
         /// <summary>
+        /// Return of catalog with products by sale
+        /// </summary>
+        /// <response code="200">Getting catalog with products completed successfully</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<FullCatalogItemResponse>))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [HttpGet("GetCategoriesBySale")]
+        public async Task<IActionResult> GetCategoriesBySale([FromQuery] SaleProductsRequest request)
+        {
+            var result = await _categoryService.GetCategoriesBySaleAsync(request);
+            return Ok(result);
+        }
+
+        /// <summary>
         /// Return more products
         /// </summary>
         /// <response code="200">Getting products completed successfully</response>

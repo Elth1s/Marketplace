@@ -126,6 +126,9 @@
   <data name="DeleteSuccess" xml:space="preserve">
     <value>Shop deleted successfully</value>
   </data>
+  <data name="UpdateShopScheduleSuccess" xml:space="preserve">
+    <value>Shop schedule updated successfully</value>
+  </data>
   <data name="UpdateSuccess" xml:space="preserve">
     <value>Shop updated successfully</value>
   </data>

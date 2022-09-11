@@ -54,7 +54,8 @@ namespace WebAPI.Services
             var result = orderItems.Select(o => new OrderItemResponse()
             {
                 ShopName = o.Key.Name,
-                TotalPrice = o.Sum(b => b.Product.Price * b.Count),
+                TotalPrice = o.Sum(b =>
+                (b.Product.Discount > 0 ? b.Product.Price - (b.Product.Price / 100f * b.Product.Discount) : b.Product.Price) * b.Count),
                 TotalCount = o.Sum(b => b.Count),
                 BasketItems = _mapper.Map<IEnumerable<BasketOrderItemResponse>>(o.ToList())
             });

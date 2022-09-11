@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Security.Claims;
+using WebAPI.Helpers;
 using WebAPI.Interfaces.Users;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Request.Users;
@@ -110,7 +111,7 @@ namespace WebAPI.Controllers.Users
         /// <response code="401">You are not authorized</response>
         /// <response code="404">User not found</response>
         /// <response code="500">An internal error has occurred</response>
-        [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AuthResponse))]
         [SwaggerResponse(StatusCodes.Status400BadRequest)]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
@@ -119,8 +120,8 @@ namespace WebAPI.Controllers.Users
         [HttpPut("UpdateProfile")]
         public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileRequest request)
         {
-            await _userService.UpdateProfileAsync(UserId, request);
-            return Ok(_userLocalizer["UpdateProfileSuccess"].Value);
+            var result = await _userService.UpdateProfileAsync(UserId, request, IpUtil.GetIpAddress(Request, HttpContext));
+            return Ok(result);
         }
 
         /// <summary>

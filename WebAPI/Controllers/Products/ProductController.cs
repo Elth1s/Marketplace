@@ -83,6 +83,20 @@ namespace WebAPI.Controllers.Products
         }
 
         /// <summary>
+        /// Return products in sale
+        /// </summary>
+        /// <response code="200">Getting products completed successfully</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(SearchResponse<ProductCatalogResponse>))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [HttpGet("GetProductsBySale")]
+        public async Task<IActionResult> GetProductsBySale([FromQuery] SaleProductsRequest request)
+        {
+            var result = await _productService.GetProductsBySaleAsync(request, UserId);
+            return Ok(result);
+        }
+
+        /// <summary>
         /// Return novelty products
         /// </summary>
         /// <response code="200">Getting products completed successfully</response>

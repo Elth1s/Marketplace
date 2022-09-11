@@ -57,5 +57,12 @@ namespace WebAPI.Specifications.Products
                 Query.Where(item => item.ShopId == shopId.Value);
 
         }
+
+        public ProductGetByCategoryIdSpecification(int categoryId, int saleId)
+        {
+            Query.Where(item => categoryId == item.CategoryId)
+                 .Where(item => !item.IsDeleted)
+                 .Where(item => item.SaleId == saleId);
+        }
     }
 }

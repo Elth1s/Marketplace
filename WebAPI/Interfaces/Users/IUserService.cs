@@ -11,7 +11,7 @@ namespace WebAPI.Interfaces.Users
         Task DeleteUsersAsync(IEnumerable<string> ids);
         Task<ProfileResponse> GetProfileAsync(string id);
 
-        Task UpdateProfileAsync(string id, UpdateProfileRequest request);
+        Task<AuthResponse> UpdateProfileAsync(string id, UpdateProfileRequest request, string ipAddress);
 
         Task ChangeEmailAsync(string userId, ChangeEmailRequest request);
 

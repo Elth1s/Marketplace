@@ -51,9 +51,9 @@ namespace WebAPI.Controllers
 
 
         /// <summary>
-        /// Returns sales by ID
+        /// Returns sale by id
         /// </summary>
-        /// <param name="saleId">Category identifier</param>
+        /// <param name="saleId">Sale identifier</param>
         /// <response code="200">Getting sales completed successfully</response>
         /// <response code="401">You are not authorized</response>
         /// <response code="403">You don't have permission</response>
@@ -69,6 +69,23 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetById(int saleId)
         {
             var result = await _saleService.GetSaleByIdAsync(saleId);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Returns sale by id
+        /// </summary>
+        /// <param name="saleId">Sale identifier</param>
+        /// <response code="200">Getting sales completed successfully</response>
+        /// <response code="404">Sales not found</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(SaleResponse))]
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [HttpGet("GetSale/{saleId}")]
+        public async Task<IActionResult> GetSale(int saleId)
+        {
+            var result = await _saleService.GetSaleAsync(saleId);
             return Ok(result);
         }
 

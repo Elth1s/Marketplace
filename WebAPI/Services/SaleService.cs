@@ -156,10 +156,20 @@ namespace WebAPI.Services
             var engTranslation = sale.SaleTranslations.FirstOrDefault(s => s.LanguageId == LanguageId.English);
             if (!string.IsNullOrEmpty(request.EnglishHorizontalImage))
             {
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), request.EnglishHorizontalImage.Replace(ImagePath.RequestSalesImagePath, ImagePath.SalesImagePath));
-
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(),
+                    request.EnglishHorizontalImage.Replace(ImagePath.RequestSalesImagePath,
+                    ImagePath.SalesImagePath));
                 if (!File.Exists(filePath))
                 {
+                    if (engTranslation.HorizontalImage != null)
+                    {
+                        filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.SalesImagePath, engTranslation.HorizontalImage);
+
+                        if (File.Exists(filePath))
+                        {
+                            File.Delete(filePath);
+                        }
+                    }
                     var img = ImageWorker.FromBase64StringToImage(request.EnglishHorizontalImage);
                     string randomFilename = Guid.NewGuid() + ".png";
                     var dir = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.SalesImagePath, randomFilename);
@@ -171,10 +181,20 @@ namespace WebAPI.Services
 
             if (!string.IsNullOrEmpty(request.EnglishVerticalImage))
             {
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), request.EnglishVerticalImage.Replace(ImagePath.RequestSalesImagePath, ImagePath.SalesImagePath));
-
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(),
+                    request.EnglishVerticalImage.Replace(ImagePath.RequestSalesImagePath,
+                    ImagePath.SalesImagePath));
                 if (!File.Exists(filePath))
                 {
+                    if (engTranslation.VerticalImage != null)
+                    {
+                        filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.SalesImagePath, engTranslation.VerticalImage);
+
+                        if (File.Exists(filePath))
+                        {
+                            File.Delete(filePath);
+                        }
+                    }
                     var img = ImageWorker.FromBase64StringToImage(request.EnglishVerticalImage);
                     string randomFilename = Guid.NewGuid() + ".png";
                     var dir = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.SalesImagePath, randomFilename);
@@ -183,13 +203,24 @@ namespace WebAPI.Services
                     engTranslation.VerticalImage = randomFilename;
                 }
             }
+
             var ukTranslation = sale.SaleTranslations.FirstOrDefault(s => s.LanguageId == LanguageId.Ukrainian);
             if (!string.IsNullOrEmpty(request.UkrainianHorizontalImage))
             {
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), request.UkrainianHorizontalImage.Replace(ImagePath.RequestSalesImagePath, ImagePath.SalesImagePath));
-
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(),
+                    request.UkrainianHorizontalImage.Replace(ImagePath.RequestSalesImagePath,
+                    ImagePath.SalesImagePath));
                 if (!File.Exists(filePath))
                 {
+                    if (ukTranslation.HorizontalImage != null)
+                    {
+                        filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.SalesImagePath, ukTranslation.HorizontalImage);
+
+                        if (File.Exists(filePath))
+                        {
+                            File.Delete(filePath);
+                        }
+                    }
                     var img = ImageWorker.FromBase64StringToImage(request.UkrainianHorizontalImage);
                     string randomFilename = Guid.NewGuid() + ".png";
                     var dir = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.SalesImagePath, randomFilename);
@@ -201,10 +232,20 @@ namespace WebAPI.Services
 
             if (!string.IsNullOrEmpty(request.UkrainianVerticalImage))
             {
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), request.UkrainianVerticalImage.Replace(ImagePath.RequestSalesImagePath, ImagePath.SalesImagePath));
-
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(),
+                    request.UkrainianVerticalImage.Replace(ImagePath.RequestSalesImagePath,
+                    ImagePath.SalesImagePath));
                 if (!File.Exists(filePath))
                 {
+                    if (ukTranslation.VerticalImage != null)
+                    {
+                        filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.SalesImagePath, ukTranslation.VerticalImage);
+
+                        if (File.Exists(filePath))
+                        {
+                            File.Delete(filePath);
+                        }
+                    }
                     var img = ImageWorker.FromBase64StringToImage(request.UkrainianVerticalImage);
                     string randomFilename = Guid.NewGuid() + ".png";
                     var dir = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.SalesImagePath, randomFilename);
@@ -213,6 +254,7 @@ namespace WebAPI.Services
                     ukTranslation.VerticalImage = randomFilename;
                 }
             }
+
             sale.SaleTranslations.Clear();
             sale.SaleTranslations = new List<SaleTranslation>() { engTranslation, ukTranslation };
 
@@ -329,6 +371,15 @@ namespace WebAPI.Services
                 await _saleRepository.DeleteAsync(sale);
             }
             await _saleRepository.SaveChangesAsync();
+        }
+
+        public async Task<SaleResponse> GetSaleAsync(int saleId)
+        {
+            var spec = new SaleIncludeFullInfoSpecification(saleId);
+            var sale = await _saleRepository.GetBySpecAsync(spec);
+            sale.SaleNullChecking();
+
+            return _mapper.Map<SaleResponse>(sale);
         }
     }
 }

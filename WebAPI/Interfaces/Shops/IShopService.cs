@@ -11,7 +11,10 @@ namespace WebAPI.Interfaces.Shops
         Task<IEnumerable<ShopResponse>> GetShopsAsync();
         Task<SearchResponse<ShopResponse>> SearchShopsAsync(AdminSearchRequest request);
         Task<ShopResponse> GetShopByIdAsync(int shopId);
+        Task<ShopSettingsResponse> GetShopSettingsAsync(int shopId);
+        Task<IEnumerable<ShopScheduleSettingsItemResponse>> GetShopScheduleSettingsAsync(int shopId);
         Task<ShopInfoFromProductResponse> ShopInfoFromProductAsync(int shopId);
+        Task UpdateShopScheduleAsync(int shopId, ShopScheduleRequest request);
         Task<ShopPageInfoResponse> GetShopInfoAsync(int shopId);
         Task<AuthResponse> CreateShopAsync(ShopRequest request, string userId, string ipAddress);
         Task UpdateShopAsync(int shopId, UpdateShopRequest request, string userId);

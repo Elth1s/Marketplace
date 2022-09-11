@@ -79,7 +79,7 @@ namespace WebAPI.Services.Orders
                         OrderId = order.Id,
                         ProductId = item.ProductId,
                         Count = item.Count,
-                        Price = item.ProductPrice
+                        Price = item.ProductDiscount ?? item.ProductPrice
                     });
                 await _orderProductRepository.SaveChangesAsync();
 

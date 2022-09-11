@@ -89,10 +89,22 @@ namespace DAL.Data
                 transaction.Commit();
             }
 
+            if (!await marketplaceDbContext.DeliveryTypes.AnyAsync())
+            {
+                using var transaction = marketplaceDbContext.Database.BeginTransaction();
+                await marketplaceDbContext.DeliveryTypes.AddRangeAsync(
+                  GetPreconfiguredMarketplaceDeliveryTypes());
+                marketplaceDbContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT DeliveryTypes ON");
+                await marketplaceDbContext.SaveChangesAsync();
+                marketplaceDbContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT DeliveryTypes OFF");
+                transaction.Commit();
+            }
+
+            var deliveryType = marketplaceDbContext.DeliveryTypes.ToList();
             if (!await marketplaceDbContext.Shops.AnyAsync())
             {
                 await marketplaceDbContext.Shops.AddRangeAsync(
-                  GetPreconfiguredMarketplaceShops(defaultUser.Id));
+                  GetPreconfiguredMarketplaceShops(defaultUser.Id, deliveryType));
 
                 await marketplaceDbContext.SaveChangesAsync();
             }
@@ -178,16 +190,7 @@ namespace DAL.Data
                 transaction.Commit();
             }
 
-            if (!await marketplaceDbContext.DeliveryTypes.AnyAsync())
-            {
-                using var transaction = marketplaceDbContext.Database.BeginTransaction();
-                await marketplaceDbContext.DeliveryTypes.AddRangeAsync(
-                  GetPreconfiguredMarketplaceDeliveryTypes());
-                marketplaceDbContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT DeliveryTypes ON");
-                await marketplaceDbContext.SaveChangesAsync();
-                marketplaceDbContext.Database.ExecuteSqlRaw("SET IDENTITY_INSERT DeliveryTypes OFF");
-                transaction.Commit();
-            }
+
 
             if (!await marketplaceDbContext.Genders.AnyAsync())
             {
@@ -1857,7 +1860,7 @@ namespace DAL.Data
             return categories;
         }
 
-        static IEnumerable<Shop> GetPreconfiguredMarketplaceShops(string userId)
+        static IEnumerable<Shop> GetPreconfiguredMarketplaceShops(string userId, List<DeliveryType> deliveryTypes)
         {
             var shops = new List<Shop>
             {
@@ -1870,7 +1873,8 @@ namespace DAL.Data
                     new(){ DayOfWeekId=DayOfWeekId.Friday, Start=new DateTime(1,1,1,8,0,0), End=new DateTime(1,1,1,18,0,0) },
                     new(){ DayOfWeekId=DayOfWeekId.Saturday, IsWeekend=true },
                     new(){ DayOfWeekId=DayOfWeekId.Sunday, IsWeekend=true },
-                } }
+                },
+                DeliveryTypes=deliveryTypes}
             };
             return shops;
         }

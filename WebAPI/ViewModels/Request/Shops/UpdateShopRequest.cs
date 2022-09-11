@@ -117,7 +117,6 @@ namespace WebAPI.ViewModels.Request.Shops
                 child.RuleFor(x => x.Comment)
                         .MaximumLength(20).WithName(_validationResources["CommentMaxLengthPropName"]);
             }).When(s => s.Phones.Count > 0);
-            _phoneNumberManager = phoneNumberManager;
         }
         private bool IsValidPhone(string phone)
         {
