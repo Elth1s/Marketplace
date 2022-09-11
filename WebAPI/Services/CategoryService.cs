@@ -26,6 +26,7 @@ namespace WebAPI.Services
     public class CategoryService : ICategoryService
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly IRepository<Sale> _saleRepository;
         private readonly IRepository<Category> _categoryRepository;
         private readonly IRepository<Product> _productRepository;
         private readonly IRepository<FilterValue> _filterValueRepository;
@@ -41,7 +42,8 @@ namespace WebAPI.Services
             IRepository<Shop> shopRepository,
             IMapper mapper,
             MarketplaceDbContext context,
-            UserManager<AppUser> userManager)
+            UserManager<AppUser> userManager,
+            IRepository<Sale> saleRepository)
         {
             _categoryRepository = categorRepository;
             _productRepository = productRepository;
@@ -50,6 +52,7 @@ namespace WebAPI.Services
             _mapper = mapper;
             _userManager = userManager;
             _context = context;
+            _saleRepository = saleRepository;
         }
 
         public async Task<IEnumerable<CategoryResponse>> GetAsync()
@@ -149,6 +152,58 @@ namespace WebAPI.Services
                 foreach (var item in response.Products)
                 {
                     item.IsSelected = await _userManager.IsProductSelectedByUserAsync(user.Id, item.Id);
+                }
+            }
+
+            return response;
+        }
+
+        public async Task<IEnumerable<FullCatalogItemResponse>> GetCategoriesBySaleAsync(SaleProductsRequest request)
+        {
+            var sale = await _saleRepository.GetByIdAsync(request.SaleId);
+            sale.SaleNullChecking();
+
+            var query = _context.Products
+                 .Where(item => item.SaleId == request.SaleId)
+                 .Include(o => o.Category).ThenInclude(c => c.CategoryTranslations)
+                 .Include(o => o.Status).ThenInclude(s => s.ProductStatusTranslations)
+                 .Include(pi => pi.Images)
+                 .AsQueryable();
+
+            var categoryQuery = query.GroupBy(p => p.CategoryId).Select(p => p.Key);
+            var categoriesId = await categoryQuery.ToListAsync();
+
+            var response = new List<FullCatalogItemResponse>();
+
+            foreach (var item in categoriesId)
+            {
+                var categories = new List<Category>();
+                var spec = new CategoryIncludeFullInfoSpecification(item);
+                var category = await _categoryRepository.GetBySpecAsync(spec);
+                while (category.Parent != null)
+                {
+                    categories.Add(category);
+                    spec = new CategoryIncludeFullInfoSpecification(category.Parent.Id);
+                    category = await _categoryRepository.GetBySpecAsync(spec);
+                }
+                categories.Add(category);
+
+                var isExist = response.Where(c => c.Id == category.Id).FirstOrDefault();
+                if (isExist == null)
+                {
+                    response.Add(_mapper.Map<FullCatalogItemResponse>(category));
+                    var newChild = _mapper.Map<FullCatalogItemResponse>(categories.First());
+                    var countProductInCategorySpec = new ProductGetByCategoryIdSpecification(newChild.Id, request.SaleId);
+                    newChild.CountProducts = await _productRepository.CountAsync(countProductInCategorySpec);
+                    response[response.Count - 1].Children = new List<FullCatalogItemResponse>() { newChild };
+                }
+                else
+                {
+                    var index = response.IndexOf(isExist);
+                    var newChild = _mapper.Map<FullCatalogItemResponse>(categories.First());
+                    var countProductInCategorySpec = new ProductGetByCategoryIdSpecification(newChild.Id, request.SaleId);
+                    newChild.CountProducts = await _productRepository.CountAsync(countProductInCategorySpec);
+                    response[index].Children = response[index].Children.Append(newChild);
                 }
             }
 

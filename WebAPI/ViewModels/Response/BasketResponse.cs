@@ -36,6 +36,11 @@
         /// <example>1000</example>
         public int ProductCount { get; set; }
         /// <summary>
+        /// Product discount
+        /// </summary>
+        /// <example>10000</example>
+        public float? ProductDiscount { get; set; }
+        /// <summary>
         ///  Url slug
         /// </summary>
         /// <example>url-slug</example>

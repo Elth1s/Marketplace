@@ -4,6 +4,7 @@ using DAL.Constants;
 using DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
+using System.Drawing.Imaging;
 using System.Net;
 using System.Text;
 using WebAPI.Constants;
@@ -25,6 +26,7 @@ namespace WebAPI.Services.Shops
     {
         private readonly IStringLocalizer<ErrorMessages> _errorMessagesLocalizer;
         private readonly IRepository<Shop> _shopRepository;
+        private readonly IRepository<DeliveryType> _deliveryTypeRepository;
         private readonly IJwtTokenService _jwtTokenService;
         private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
@@ -33,13 +35,15 @@ namespace WebAPI.Services.Shops
             IMapper mapper,
             IRepository<Shop> shopRepository,
             IJwtTokenService jwtTokenService,
-            UserManager<AppUser> userManager)
+            UserManager<AppUser> userManager,
+            IRepository<DeliveryType> deliveryTypeRepository)
         {
             _errorMessagesLocalizer = errorMessagesLocalizer;
             _shopRepository = shopRepository;
             _jwtTokenService = jwtTokenService;
             _userManager = userManager;
             _mapper = mapper;
+            _deliveryTypeRepository = deliveryTypeRepository;
         }
 
         public async Task<IEnumerable<ShopResponse>> GetShopsAsync()
@@ -100,6 +104,8 @@ namespace WebAPI.Services.Shops
                     new(){ DayOfWeekId=DayOfWeekId.Sunday, IsWeekend=true },
             };
 
+            shop.DeliveryTypes = await _deliveryTypeRepository.ListAsync();
+
             await _shopRepository.AddAsync(shop);
             await _shopRepository.SaveChangesAsync();
 
@@ -124,38 +130,36 @@ namespace WebAPI.Services.Shops
             var user = await _userManager.FindByIdAsync(userId);
             user.UserNullChecking();
 
-            var shop = await _shopRepository.GetByIdAsync(shopId);
+            var spec = new ShopIncludeInfoSpecification(shopId);
+            var shop = await _shopRepository.GetBySpecAsync(spec);
             shop.ShopNullChecking();
 
+            if (!string.IsNullOrEmpty(request.Photo))
+            {
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(),
+                    request.Photo.Replace(ImagePath.RequestShopsImagePath,
+                    ImagePath.ShopsImagePath));
+                if (!File.Exists(filePath))
+                {
+                    if (shop.Photo != null)
+                    {
+                        filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.ShopsImagePath, shop.Photo);
 
+                        if (File.Exists(filePath))
+                        {
+                            File.Delete(filePath);
+                        }
+                    }
+                    var img = ImageWorker.FromBase64StringToImage(request.Photo);
+                    string randomFilename = Guid.NewGuid() + ".png";
+                    var dir = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.ShopsImagePath, randomFilename);
+                    img.Save(dir, ImageFormat.Png);
 
-            //if (!string.IsNullOrEmpty(request.Photo))
-            //{
-            //    var filePath = Path.Combine(
-            //        Directory.GetCurrentDirectory(),
-            //        request.Photo.Replace(ImagePath.RequestShopsImagePath,
-            //        ImagePath.ShopsImagePath));
-            //    if (!File.Exists(filePath))
-            //    {
-            //        if (!string.IsNullOrEmpty(shop.Photo))
-            //        {
-            //            filePath = Path.Combine(
-            //               Directory.GetCurrentDirectory(),
-            //               ImagePath.ShopsImagePath,
-            //               shop.Photo);
+                    shop.Photo = randomFilename;
+                }
+            }
 
-            //            if (File.Exists(filePath))
-            //                File.Delete(filePath);
-            //        }
-            //        var img = ImageWorker.FromBase64StringToImage(request.Photo);
-            //        string randomFilename = Guid.NewGuid() + ".png";
-            //        var dir = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.ShopsImagePath, randomFilename);
-            //        img.Save(dir, ImageFormat.Png);
-
-            //        shop.Photo = randomFilename;
-            //    }
-            //}
-
+            shop.Phones.Clear();
             _mapper.Map(request, shop);
 
             await _shopRepository.UpdateAsync(shop);
@@ -261,17 +265,31 @@ namespace WebAPI.Services.Shops
                 schedule.Add(sh);
             }
             var sortedWeekend = shop.ShopSchedule.Where(s => s.IsWeekend).OrderBy(s => s.DayOfWeekId);
-
-            var item = new ShopScheduleItemResponse
+            if (sortedWeekend.Any())
             {
-                IsWeekend = true,
-                ShortNames = GetShopScheduleItemShortNames(sortedWeekend.ToList())
-            };
-            schedule.Add(item);
+                var item = new ShopScheduleItemResponse
+                {
+                    IsWeekend = true,
+                    ShortNames = GetShopScheduleItemShortNames(sortedWeekend.ToList())
+                };
+                schedule.Add(item);
+            }
 
             result.Schedule = schedule;
 
             return result;
+        }
+
+        public async Task UpdateShopScheduleAsync(int shopId, ShopScheduleRequest request)
+        {
+            var spec = new ShopIncludeShopScheduleSpecification(shopId);
+            var shop = await _shopRepository.GetBySpecAsync(spec);
+            shop.ShopNullChecking();
+
+            shop.ShopSchedule = _mapper.Map<IEnumerable<ShopScheduleItem>>(request.Items).ToList();
+
+            await _shopRepository.UpdateAsync(shop);
+            await _shopRepository.SaveChangesAsync();
         }
         private static string GetShopScheduleItemShortNames(List<ShopScheduleItem> list)
         {
@@ -301,6 +319,26 @@ namespace WebAPI.Services.Shops
             }
 
             return result.ToString();
+        }
+
+        public async Task<ShopSettingsResponse> GetShopSettingsAsync(int shopId)
+        {
+            var spec = new ShopIncludeInfoSpecification(shopId);
+            var shop = await _shopRepository.GetBySpecAsync(spec);
+            shop.ShopNullChecking();
+
+            var response = _mapper.Map<ShopSettingsResponse>(shop);
+            return response;
+        }
+
+        public async Task<IEnumerable<ShopScheduleSettingsItemResponse>> GetShopScheduleSettingsAsync(int shopId)
+        {
+            var spec = new ShopIncludeShopScheduleSpecification(shopId);
+            var shop = await _shopRepository.GetBySpecAsync(spec);
+            shop.ShopNullChecking();
+
+            var response = _mapper.Map<IEnumerable<ShopScheduleSettingsItemResponse>>(shop.ShopSchedule);
+            return response;
         }
     }
 }

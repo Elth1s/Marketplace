@@ -1,4 +1,6 @@
-﻿namespace WebAPI.ViewModels.Response.Products
+﻿using WebAPI.ViewModels.Response.Orders;
+
+namespace WebAPI.ViewModels.Response.Products
 {
     /// <summary>
     /// Product class returned from the controller
@@ -58,6 +60,12 @@
         /// List of product filters
         /// </summary>
         public IEnumerable<ProductFilterValue> Filters { get; set; }
+
+        /// <summary>
+        /// List of delivery types
+        /// </summary>
+        public IEnumerable<DeliveryTypeResponse> DeliveryTypes { get; set; }
+
     }
 
     public class ProductFilterValue

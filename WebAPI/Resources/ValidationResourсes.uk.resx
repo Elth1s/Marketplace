@@ -180,6 +180,9 @@
   <data name="EmailOrPhonePropName" xml:space="preserve">
     <value>Email-адреса або номер телефону</value>
   </data>
+  <data name="EndGreaterStart" xml:space="preserve">
+    <value>Кінець має бути більшим за початок</value>
+  </data>
   <data name="EnglishMeasurePropName" xml:space="preserve">
     <value>Міра англійською</value>
   </data>
@@ -279,8 +282,14 @@
   <data name="TextPropName" xml:space="preserve">
     <value>Текст</value>
   </data>
+  <data name="TimeEndPropName" xml:space="preserve">
+    <value>Кінець</value>
+  </data>
   <data name="TimelinessRatingPropName" xml:space="preserve">
     <value>Рейтинг дотримання термінів</value>
+  </data>
+  <data name="TimeStartPropName" xml:space="preserve">
+    <value>Початок</value>
   </data>
   <data name="TokenPropName" xml:space="preserve">
     <value>Токен</value>

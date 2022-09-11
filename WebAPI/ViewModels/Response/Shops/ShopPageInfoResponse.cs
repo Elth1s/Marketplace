@@ -52,9 +52,25 @@
 
     public class ShopScheduleItemResponse
     {
+        /// <summary>
+        /// Start time
+        /// </summary>
+        /// <example>9:00</example>
         public string Start { get; set; }
+        /// <summary>
+        /// End time
+        /// </summary>
+        /// <example>18:00</example>
         public string End { get; set; }
+        /// <summary>
+        /// Is weekend
+        /// </summary>
+        /// <example>true</example>
         public bool IsWeekend { get; set; }
+        /// <summary>
+        /// Short name
+        /// </summary>
+        /// <example>Mo-Th</example>
         public string ShortNames { get; set; }
     }
 

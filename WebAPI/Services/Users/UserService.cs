@@ -47,7 +47,7 @@ namespace WebAPI.Services.Users
             _genderRepository = genderRepository;
         }
 
-        public async Task UpdateProfileAsync(string id, UpdateProfileRequest request)
+        public async Task<AuthResponse> UpdateProfileAsync(string id, UpdateProfileRequest request, string ipAddress)
         {
             var user = await _userManager.FindByIdAsync(id);
             user.UserNullChecking();
@@ -101,6 +101,18 @@ namespace WebAPI.Services.Users
             await _userManager.UpdateAsync(user);
 
             await _userManager.UpdateNormalizedUserNameAsync(user);
+
+            var newRefreshToken = _jwtTokenService.GenerateRefreshToken(ipAddress);
+            await _jwtTokenService.SaveRefreshToken(newRefreshToken, user);
+
+            await _jwtTokenService.RemoveOldRefreshTokens(user);
+
+            var response = new AuthResponse
+            {
+                AccessToken = await _jwtTokenService.GenerateJwtToken(user),
+                RefreshToken = newRefreshToken.Token
+            };
+            return response;
         }
 
         public async Task<ProfileResponse> GetProfileAsync(string id)

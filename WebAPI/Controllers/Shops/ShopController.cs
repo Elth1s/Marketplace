@@ -74,8 +74,10 @@ namespace WebAPI.Controllers.Shops
         /// </summary>
         /// /// <param name="shopId">Shop identifier</param>
         /// <response code="200">Getting shops completed successfully</response>
+        /// <response code="404">Shop not found</response>
         /// <response code="500">An internal error has occurred</response>
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ShopInfoFromProductResponse))]
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [HttpGet("ShopInfoFromProduct/{shopId}")]
         public async Task<IActionResult> ShopInfoFromProduct(int shopId)
@@ -89,14 +91,49 @@ namespace WebAPI.Controllers.Shops
         /// </summary>
         /// /// <param name="shopId">Shop identifier</param>
         /// <response code="200">Getting shop info completed successfully</response>
-        /// <response code="403">You don't have permission</response>
+        /// <response code="404">Shop not found</response>
         /// <response code="500">An internal error has occurred</response>
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ShopPageInfoResponse))]
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [HttpGet("GetShopInfo/{shopId}")]
         public async Task<IActionResult> GetShopInfo(int shopId)
         {
             var result = await _shopService.GetShopInfoAsync(shopId);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Return shop info
+        /// </summary>
+        /// /// <param name="shopId">Shop identifier</param>
+        /// <response code="200">Getting shop info completed successfully</response>
+        /// <response code="404">Shop not found</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ShopSettingsResponse))]
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [HttpGet("GetShopSettings/{shopId}")]
+        public async Task<IActionResult> GetShopSettings(int shopId)
+        {
+            var result = await _shopService.GetShopSettingsAsync(shopId);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Return shop schedule settings
+        /// </summary>
+        /// /// <param name="shopId">Shop identifier</param>
+        /// <response code="200">Getting shop schedule completed successfully</response>
+        /// <response code="404">Shop not found</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<ShopScheduleSettingsItemResponse>))]
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [HttpGet("GetShopScheduleSettings/{shopId}")]
+        public async Task<IActionResult> GetShopScheduleSettings(int shopId)
+        {
+            var result = await _shopService.GetShopScheduleSettingsAsync(shopId);
             return Ok(result);
         }
 
@@ -166,6 +203,29 @@ namespace WebAPI.Controllers.Shops
         {
             await _shopService.UpdateShopAsync(shopId, request, UserId);
             return Ok(_shopLocalizer["UpdateSuccess"].Value);
+        }
+
+        /// <summary>
+        /// Update shop schedule
+        /// </summary>
+        /// <param name="shopId">Shop identifier</param>
+        /// <param name="request">Shop schedule</param>
+        /// <response code="200">Shop update completed successfully</response>
+        /// <response code="401">You are not authorized</response>
+        /// <response code="403">You don't have permission</response>
+        /// <response code="404">Shop not found</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = "Admin,Seller")]
+        [HttpPut("UpdateShopSchedule/{shopId}")]
+        public async Task<IActionResult> UpdateShopSchedule(int shopId, [FromBody] ShopScheduleRequest request)
+        {
+            await _shopService.UpdateShopScheduleAsync(shopId, request);
+            return Ok(_shopLocalizer["UpdateShopScheduleSuccess"].Value);
         }
 
         /// <summary>
