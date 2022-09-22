@@ -1,0 +1,749 @@
+﻿@using Microsoft.Extensions.Localization
+@using WebAPI
+@model WebAPI.ViewModels.Mails.OrderEmailRequest
+@inject IStringLocalizer<MailResources> _localizer
+
+@{
+    Layout = "_MailLayout";
+}
+
+<div  style="Margin:0;box-sizing:border-box;margin:0;min-width:100%;padding:0;text-align:left;width:100%!important">
+                <table
+                    style="Margin:0;background:#e5e5e5;border-collapse:collapse;color:#221f1f;font-family:Arial,Helvetica,sans-serif;font-weight:400;height:100%;margin:0;padding:0;width:100%">
+                    <tbody>
+                        <tr>
+                            <td align="center" valign="top"
+                                style="Margin:0;margin:0;padding:0;text-align:left;vertical-align:middle">
+                                <center style="min-width:650px;width:100%">
+
+                                    <table align="center"
+                                        style="Margin:0 auto;border-collapse:collapse;margin:0 auto;padding:0;width:650px">
+                                        <tbody>
+                                            <tr>
+                                                <td style="Margin:0;margin:0;padding:0">
+                                                    <table
+                                                        style="border-collapse:collapse;display:table;padding:0;width:100%">
+
+
+
+                                                        <tbody>
+                                                            <tr>
+                                                                <td style="Margin:0;margin:0;padding:0">
+                                                                    <table
+                                                                        style="Margin:0 auto;background:#fff;font-family:Arial,Helvetica,sans-serif;border-collapse:collapse;margin:0;margin:0 auto;padding:0;width:650px">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td style="Margin:0;margin:0;padding:0">
+                                                                                    <table
+                                                                                        style="border-collapse:collapse;display:table;padding:0;width:100%">
+
+                                                                                        <tbody>
+                                                                                            <tr>
+                                                                                                <td
+                                                                                                    style="Margin:0;margin:0;padding:0 16px;vertical-align:middle;text-align:left">
+                                                                                                    <span
+                                                                                                        style="display:block;font-size:24px;line-height:28px;width:100%;font-weight:400;font-family:Arial,Helvetica,sans-serif">
+                                                                                                       @String.Format(@_localizer["ThxOrder"], @Model.Name) 
+                                                                                                       
+                                                                                                    </span>
+                                                                                                </td>
+                                                                                            </tr>
+
+
+                                                                                            <tr>
+                                                                                                <td height="16"
+                                                                                                    style="line-height:16px;height:16px;padding:0">
+                                                                                                    &nbsp;</td>
+                                                                                            </tr>
+
+
+                                                                                            <tr>
+                                                                                                <td
+                                                                                                    style="Margin:0;margin:0;padding:0 16px;vertical-align:middle;text-align:left">
+                                                                                                    <span
+                                                                                                        style="display:block;font-size:14px;line-height:16px;width:100%;font-weight:400;font-family:Arial,Helvetica,sans-serif">
+                                                                                                     @_localizer["TrackOrder"]
+                                                                                                     <a
+                                                                                                            href=@(String.Format("{0}{1}",@Model.Uri,"profile/orders"))
+                                                                                                            style="Margin:0;color:#3e77aa;margin:0;padding:0;text-decoration:none;font-weight:400;font-size:14px;line-height:16px;font-family:Arial,Helvetica,sans-serif"
+                                                                                                            target="_blank">
+                                                                                                            @_localizer["InProfile"]
+                                                                                                        </a>.
+                                                                                                    </span>
+                                                                                                </td>
+                                                                                            </tr>
+
+
+                                                                                            <tr>
+                                                                                                <td height="16"
+                                                                                                    style="line-height:16px;height:16px;padding:0">
+                                                                                                    &nbsp;</td>
+                                                                                            </tr>
+
+                                                                                            <tr>
+                                                                                                <td
+                                                                                                    style="Margin:0;margin:0;padding:0 16px">
+                                                                                                    <table
+                                                                                                        style="border-collapse:collapse;display:table;padding:0;width:100%">
+
+                                                                                                        <tbody>
+                                                                                                            <tr>
+                                                                                                                <td
+                                                                                                                    style="Margin:0;margin:0;padding:0">
+                                                                                                                    <table
+                                                                                                                        style="border-collapse:collapse;display:table;padding:0;width:100%">
+                                                                                                                        <tbody>
+                                                                                                                            <tr>
+                                                                                                                                <td
+                                                                                                                                    style="Margin:0;margin:0;padding:0;border:#eaeaea 1px solid;border-radius:8px;display:block">
+                                                                                                                                    <table
+                                                                                                                                        style="border-collapse:collapse;display:table;padding:0;width:100%">
+
+                                                                                                                                        <tbody>
+                                                                                                                                            <tr>
+                                                                                                                                                <td
+                                                                                                                                                    style="Margin:0;margin:0;padding:0">
+                                                                                                                                                    <table
+                                                                                                                                                        style="border-collapse:collapse;display:table;padding:0;width:100%">
+                                                                                                                                                        <tbody>
+                                                                                                                                                            <tr>
+                                                                                                                                                                <th
+                                                                                                                                                                    style="Margin:0;margin:0;padding:0;padding:16px 16px;width:auto">
+                                                                                                                                                                    <table
+                                                                                                                                                                        style="border-collapse:collapse;display:table;padding:0;width:100%">
+                                                                                                                                                                        <tbody>
+                                                                                                                                                                            <tr>
+
+                                                                                                                                                                                <th
+                                                                                                                                                                                    style="Margin:0 auto;margin:0 auto;padding:0;width:400px;vertical-align:middle">
+                                                                                                                                                                                    <table
+                                                                                                                                                                                        style="border-collapse:collapse;display:table;padding:0;width:100%">
+                                                                                                                                                                                        <tbody>
+                                                                                                                                                                                            <tr>
+                                                                                                                                                                                                <td
+                                                                                                                                                                                                    style="Margin:0;margin:0;padding:0;text-align:left">
+                                                                                                                                                                                                    <span
+                                                                                                                                                                                                        style="padding:0;color:#221f1f;font-size:18px;line-height:20px;font-weight:400;font-family:Arial,Helvetica,sans-serif">
+                                                                                                                                                                                                        @_localizer["Order"]
+                                                                                                                                                                                                        <span>№
+                                                                                                                                                                                                         @Model.Id</span>
+                                                                                                                                                                                                    </span>
+                                                                                                                                                                                                </td>
+                                                                                                                                                                                            </tr>
+                                                                                                                                                                                        </tbody>
+                                                                                                                                                                                    </table>
+                                                                                                                                                                                </th>
+
+
+
+
+                                                                                                                                                                                <th
+                                                                                                                                                                                    style="Margin:0;margin:0;padding:0;vertical-align:middle;padding-left:16px">
+                                                                                                                                                                                    <table
+                                                                                                                                                                                        style="border-collapse:collapse;display:table;padding:0;width:100%">
+                                                                                                                                                                                        <tbody>
+                                                                                                                                                                                            <tr>
+                                                                                                                                                                                                <td
+                                                                                                                                                                                                    style="Margin:0;margin:0;padding:0;text-align:right">
+                                                                                                                                                                                                    <span
+                                                                                                                                                                                                        style="padding:0;color:#797878;font-size:14px;line-height:16px;font-weight:400;font-family:Arial,Helvetica,sans-serif">
+                                                                                                                                                                                                        @Model.Date
+                                                                                                                                                                                                    </span>
+                                                                                                                                                                                                </td>
+                                                                                                                                                                                            </tr>
+                                                                                                                                                                                        </tbody>
+                                                                                                                                                                                    </table>
+                                                                                                                                                                                </th>
+
+                                                                                                                                                                            </tr>
+                                                                                                                                                                        </tbody>
+                                                                                                                                                                    </table>
+                                                                                                                                                                </th>
+                                                                                                                                                            </tr>
+                                                                                                                                                        </tbody>
+                                                                                                                                                    </table>
+                                                                                                                                                </td>
+                                                                                                                                            </tr>
+
+
+
+
+                                                                                                                                            @foreach (var item in Model.Products)
+                                                                                                                                            {
+                                                                                                                                    
+
+                                                                                                                                            <tr>
+                                                                                                                                                <th
+                                                                                                                                                    style="Margin:0 auto;margin:0 auto;padding:0;padding:16px 16px;vertical-align:top;border-top:#eaeaea 1px solid">
+                                                                                                                                                    <table
+                                                                                                                                                        style="border-collapse:collapse;display:table;padding:0;width:100%">
+                                                                                                                                                        <tbody>
+                                                                                                                                                            <tr>
+                                                                                                                                                                <th
+                                                                                                                                                                    style="Margin:0 auto;margin:0 auto;padding:0;width:160px;vertical-align:top">
+                                                                                                                                                                    <table
+                                                                                                                                                                        style="border-collapse:collapse;padding:0;width:100%">
+                                                                                                                                                                        <tbody>
+                                                                                                                                                                            <tr>
+                                                                                                                                                                                <td
+                                                                                                                                                                                    style="Margin:0;margin:0;padding:0;height:190px">
+                                                                                                                                                                                            <a href=@(String.Format("{0}{1}{2}",@Model.Uri,"product/",@item.UrlSlug))
+                                                                                                                                                                                        target="_blank">
+                                                                                                                                                                                            <img src=@(String.Format("{0}{1}",@Model.Uri.ToString().Remove(@Model.Uri.ToString().Length-1),@item.Image))
+                                                                                                                                                                                            border="0"
+                                                                                                                                                                                            alt="@item.Name"
+                                                                                                                                                                                            style="max-width:160px;width:auto;max-height:190px;height:auto;display:block;margin:0 auto"
+                                                                                                                                                                                            data-bit="iit">
+                                                                                                                                                                                    </a>
+                                                                                                                                                                                </td>
+                                                                                                                                                                            </tr>
+                                                                                                                                                                        </tbody>
+                                                                                                                                                                    </table>
+                                                                                                                                                                </th>
+
+
+
+
+
+                                                                                                                                                                <th
+                                                                                                                                                                    style="Margin:0 auto;margin:0 auto;padding:0;vertical-align:top;padding-left:16px">
+                                                                                                                                                                    <table
+                                                                                                                                                                        style="border-collapse:collapse;padding:0;width:100%">
+
+                                                                                                                                                                        <tbody>
+                                                                                                                                                                            <tr>
+                                                                                                                                                                                <td
+                                                                                                                                                                                    style="Margin:0;margin:0;padding:0;text-align:left">
+                                                                                                                                                                                    <span
+                                                                                                                                                                                        style="display:block;width:100%;padding:0;color:#797878;font-size:14px;line-height:16px;font-weight:400;font-family:Arial,Helvetica,sans-serif">
+                                                                                                                                                                                        №
+                                                                                                                                                                                        <span>@item.Id</span>
+                                                                                                                                                                                    </span>
+                                                                                                                                                                                </td>
+                                                                                                                                                                            </tr>
+
+                                                                                                                                                                            <tr>
+                                                                                                                                                                                <td height="8"
+                                                                                                                                                                                    style="line-height:8px;height:8px;padding:0">
+                                                                                                                                                                                    &nbsp;
+                                                                                                                                                                                </td>
+                                                                                                                                                                            </tr>
+
+                                                                                                                                                                            <tr>
+                                                                                                                                                                                <td
+                                                                                                                                                                                    style="Margin:0;margin:0;padding:0;text-align:left">
+                                                                                                                                                                                    <span
+                                                                                                                                                                                        style="display:block;width:100%">
+                                                                                                                                                                                            <a href=@(String.Format("{0}{1}{2}",@Model.Uri,"product/",@item.UrlSlug))
+                                                                                                                                                                                            style="Margin:0;color:#3e77aa;margin:0;padding:0;text-decoration:none;font-weight:400;font-size:14px;line-height:16px;font-family:Arial,Helvetica,sans-serif"
+                                                                                                                                                                                            target="_blank">
+                                                                                                                                                                                            @item.Name
+                                                                                                                                                                                        </a>
+                                                                                                                                                                                    </span>
+                                                                                                                                                                                </td>
+                                                                                                                                                                            </tr>
+
+                                                                                                                                                                            <tr>
+                                                                                                                                                                                <td height="8"
+                                                                                                                                                                                    style="line-height:8px;height:8px;padding:0">
+                                                                                                                                                                                    &nbsp;
+                                                                                                                                                                                </td>
+                                                                                                                                                                            </tr>
+
+                                                                                                                                                                            <tr>
+                                                                                                                                                                                <td
+                                                                                                                                                                                    style="Margin:0;margin:0;padding:0;text-align:left">
+                                                                                                                                                                                    <span
+                                                                                                                                                                                        style="display:block;width:100%;padding:0;font-size:12px;line-height:14px;font-weight:400;font-family:Arial,Helvetica,sans-serif">
+                                                                                                                                                                                        @_localizer["Price"]
+                                                                                                                                                                                        <span>@item.Price</span>
+                                                                                                                                                                                        @_localizer["UAH"]</span>
+                                                                                                                                                                                </td>
+                                                                                                                                                                            </tr>
+
+                                                                                                                                                                            <tr>
+                                                                                                                                                                                <td height="8"
+                                                                                                                                                                                    style="line-height:8px;height:8px;padding:0">
+                                                                                                                                                                                    &nbsp;
+                                                                                                                                                                                </td>
+                                                                                                                                                                            </tr>
+
+                                                                                                                                                                            <tr>
+                                                                                                                                                                                <td
+                                                                                                                                                                                    style="Margin:0;margin:0;padding:0;text-align:left">
+                                                                                                                                                                                    <span
+                                                                                                                                                                                        style="display:block;width:100%;padding:0;font-size:12px;line-height:14px;font-weight:400;font-family:Arial,Helvetica,sans-serif">
+                                                                                                                                                                                        @_localizer["Count"]
+                                                                                                                                                                                        <span>@item.Count</span>
+                                                                                                                                                                                        @_localizer["Unit"]</span>
+                                                                                                                                                                                </td>
+                                                                                                                                                                            </tr>
+
+
+                                                                                                                                                                        </tbody>
+                                                                                                                                                                    </table>
+                                                                                                                                                                </th>
+
+
+
+
+                                                                                                                                                                <th
+                                                                                                                                                                    style="Margin:0 auto;margin:0 auto;padding:0;width:130px;vertical-align:top;padding-left:16px">
+                                                                                                                                                                    <table
+                                                                                                                                                                        style="border-collapse:collapse;padding:0;width:100%">
+                                                                                                                                                                        <tbody>
+                                                                                                                                                                            <tr>
+                                                                                                                                                                                <th
+                                                                                                                                                                                    style="Margin:0;margin:0;padding:0;text-align:left;display:block">
+                                                                                                                                                                                    <table
+                                                                                                                                                                                        style="border-collapse:collapse;display:table;padding:0;width:100%">
+                                                                                                                                                                                        <tbody>
+                                                                                                                                                                                            <tr>
+
+                                                                                                                                                                                                <th
+                                                                                                                                                                                                    style="Margin:0;margin:0;padding:0;display:block;text-align:left">
+                                                                                                                                                                                                    <span
+                                                                                                                                                                                                        style="display:inline-block;text-align:center;padding:0;color:#221f1f;font-size:24px;line-height:24px;font-weight:400;font-family:Arial,Helvetica,sans-serif">
+                                                                                                                                                                                                        @item.TotalPrice
+                                                                                                                                                                                                        <span
+                                                                                                                                                                                                            style="font-size:17px">&nbsp;₴</span></span>
+                                                                                                                                                                                                </th>
+
+                                                                                                                                                                                            </tr>
+                                                                                                                                                                                        </tbody>
+                                                                                                                                                                                    </table>
+                                                                                                                                                                                </th>
+                                                                                                                                                                            </tr>
+                                                                                                                                                                        </tbody>
+                                                                                                                                                                    </table>
+                                                                                                                                                                </th>
+
+
+                                                                                                                                                            </tr>
+                                                                                                                                                        </tbody>
+                                                                                                                                                    </table>
+                                                                                                                                                </th>
+                                                                                                                                            </tr>
+
+
+                                                                                                                                            }
+
+
+
+
+
+                                                                                                                                            <tr>
+                                                                                                                                                <th
+                                                                                                                                                    style="Margin:0 auto;margin:0 auto;padding:0;padding:16px 16px;vertical-align:top;border-top:#eaeaea 1px solid">
+                                                                                                                                                    <table
+                                                                                                                                                        style="border-collapse:collapse;display:table;padding:0;width:100%">
+                                                                                                                                                        <tbody>
+                                                                                                                                                            <tr>
+
+                                                                                                                                                                <th
+                                                                                                                                                                    style="Margin:0 auto;margin:0 auto;padding:0;width:160px;vertical-align:top">
+                                                                                                                                                                    <table
+                                                                                                                                                                        style="border-collapse:collapse;padding:0;width:100%">
+
+                                                                                                                                                                        <tbody>
+                                                                                                                                                                            <tr>
+                                                                                                                                                                                <td
+                                                                                                                                                                                    style="Margin:0;margin:0;padding:0;text-align:left">
+                                                                                                                                                                                    <span
+                                                                                                                                                                                        style="display:block;width:100%;color:#797878;padding:0;font-size:14px;line-height:16px;font-weight:400;font-family:Arial,Helvetica,sans-serif">
+                                                                                                                                                                            @_localizer["Delivery"]
+                                                                                                                                                                                    </span>
+                                                                                                                                                                                </td>
+                                                                                                                                                                            </tr>
+                                                                                                                                                                        </tbody>
+                                                                                                                                                                    </table>
+                                                                                                                                                                </th>
+
+
+
+
+
+                                                                                                                                                                <th
+                                                                                                                                                                    style="Margin:0 auto;margin:0 auto;padding:0;vertical-align:top;padding-left:16px">
+                                                                                                                                                                    <table
+                                                                                                                                                                        style="border-collapse:collapse;padding:0;width:100%">
+
+                                                                                                                                                                        <tbody>
+                                                                                                                                                                            <tr>
+                                                                                                                                                                                <td
+                                                                                                                                                                                    style="Margin:0;margin:0;padding:0;text-align:left">
+                                                                                                                                                                                    <span
+                                                                                                                                                                                        style="display:block;width:100%;padding:0;font-size:14px;line-height:16px;font-weight:400;font-family:Arial,Helvetica,sans-serif">
+                                                                                                                                                                                        @Model.DeliveryType
+                                                                                                                                                                                    </span>
+                                                                                                                                                                                </td>
+                                                                                                                                                                            </tr>
+
+                                                                                                                                                                            <tr>
+                                                                                                                                                                                <td height="8"
+                                                                                                                                                                                    style="line-height:8px;height:8px;padding:0">
+                                                                                                                                                                                    &nbsp;
+                                                                                                                                                                                </td>
+                                                                                                                                                                            </tr>
+
+                                                                                                                                                                            <tr>
+                                                                                                                                                                                <td
+                                                                                                                                                                                    style="Margin:0;margin:0;padding:0;text-align:left">
+                                                                                                                                                                                    <span
+                                                                                                                                                                                        style="Margin:0;margin:0;padding:0;text-decoration:none;font-weight:400;font-size:14px;line-height:16px;font-family:Arial,Helvetica,sans-serif">
+
+                                                                                                                                                                                        @Model.DeliveryAddress
+
+                                                                                                                                                                                    </span>
+                                                                                                                                                                                </td>
+                                                                                                                                                                            </tr>
+
+                                                                                                                                                                            <tr>
+                                                                                                                                                                                <td height="8"
+                                                                                                                                                                                    style="line-height:8px;height:8px;padding:0">
+                                                                                                                                                                                    &nbsp;
+                                                                                                                                                                                </td>
+                                                                                                                                                                            </tr>
+
+                                                                                                                                                                        </tbody>
+                                                                                                                                                                    </table>
+                                                                                                                                                                </th>
+
+
+
+
+                                                                                                                                                            </tr>
+                                                                                                                                                        </tbody>
+                                                                                                                                                    </table>
+                                                                                                                                                </th>
+                                                                                                                                            </tr>
+
+
+
+
+                                                                                                                                            <tr>
+                                                                                                                                                <th
+                                                                                                                                                    style="Margin:0 auto;margin:0 auto;padding:0;padding:16px 16px;vertical-align:top;border-top:#eaeaea 1px solid">
+                                                                                                                                                    <table
+                                                                                                                                                        style="border-collapse:collapse;display:table;padding:0;width:100%">
+                                                                                                                                                        <tbody>
+                                                                                                                                                            <tr>
+
+
+                                                                                                                                                                <th
+                                                                                                                                                                    style="Margin:0 auto;margin:0 auto;padding:0;width:160px;vertical-align:top">
+                                                                                                                                                                    <table
+                                                                                                                                                                        style="border-collapse:collapse;padding:0;width:100%">
+
+                                                                                                                                                                        <tbody>
+                                                                                                                                                                            <tr>
+                                                                                                                                                                                <td
+                                                                                                                                                                                    style="Margin:0;margin:0;padding:0;text-align:left">
+                                                                                                                                                                                    <span
+                                                                                                                                                                                        style="display:block;width:100%;color:#797878;padding:0;font-size:14px;line-height:16px;font-weight:400;font-family:Arial,Helvetica,sans-serif">
+                                                                                                                                                                            @_localizer["Payment"]
+                                                                                                                                                                                    </span>
+                                                                                                                                                                                </td>
+                                                                                                                                                                            </tr>
+                                                                                                                                                                        </tbody>
+                                                                                                                                                                    </table>
+                                                                                                                                                                </th>
+
+
+
+
+                                                                                                                                                                <th
+                                                                                                                                                                    style="Margin:0 auto;margin:0 auto;padding:0;vertical-align:top;padding-left:16px">
+                                                                                                                                                                    <table
+                                                                                                                                                                        style="border-collapse:collapse;padding:0;width:100%">
+
+                                                                                                                                                                        <tbody>
+                                                                                                                                                                            <tr>
+                                                                                                                                                                                <td
+                                                                                                                                                                                    style="Margin:0;margin:0;padding:0;text-align:left">
+                                                                                                                                                                                    <span
+                                                                                                                                                                                        style="display:block;width:100%;padding:0;font-size:14px;line-height:16px;font-weight:400;font-family:Arial,Helvetica,sans-serif">
+                                                                                                                                                                                       @Model.Payment
+                                                                                                                                                                                    </span>
+                                                                                                                                                                                </td>
+                                                                                                                                                                            </tr>
+
+
+                                                                                                                                                                        </tbody>
+                                                                                                                                                                    </table>
+                                                                                                                                                                </th>
+
+
+
+                                                                                                                                                            </tr>
+                                                                                                                                                        </tbody>
+                                                                                                                                                    </table>
+                                                                                                                                                </th>
+                                                                                                                                            </tr>
+
+
+                                                                                                                                            <tr>
+                                                                                                                                                <th
+                                                                                                                                                    style="Margin:0 auto;margin:0 auto;padding:0;padding:16px 16px;vertical-align:top;border-top:#eaeaea 1px solid">
+                                                                                                                                                    <table
+                                                                                                                                                        style="border-collapse:collapse;display:table;padding:0;width:100%">
+                                                                                                                                                        <tbody>
+                                                                                                                                                            <tr>
+
+
+                                                                                                                                                                <th
+                                                                                                                                                                    style="Margin:0 auto;margin:0 auto;padding:0;width:160px;vertical-align:top">
+                                                                                                                                                                    <table
+                                                                                                                                                                        style="border-collapse:collapse;padding:0;width:100%">
+
+                                                                                                                                                                        <tbody>
+                                                                                                                                                                            <tr>
+                                                                                                                                                                                <td
+                                                                                                                                                                                    style="Margin:0;margin:0;padding:0;text-align:left">
+                                                                                                                                                                                    <span
+                                                                                                                                                                                        style="display:block;width:100%;color:#797878;padding:0;font-size:14px;line-height:16px;font-weight:400;font-family:Arial,Helvetica,sans-serif">
+                                                                                                                                                                            @_localizer["Buyer"]
+                                                                                                                                                                                    </span>
+                                                                                                                                                                                </td>
+                                                                                                                                                                            </tr>
+                                                                                                                                                                        </tbody>
+                                                                                                                                                                    </table>
+                                                                                                                                                                </th>
+
+
+
+
+                                                                                                                                                                <th
+                                                                                                                                                                    style="Margin:0 auto;margin:0 auto;padding:0;vertical-align:top;padding-left:16px">
+                                                                                                                                                                    <table
+                                                                                                                                                                        style="border-collapse:collapse;padding:0;width:100%">
+
+                                                                                                                                                                        <tbody>
+                                                                                                                                                                            <tr>
+                                                                                                                                                                                <td
+                                                                                                                                                                                    style="Margin:0;margin:0;padding:0;text-align:left">
+                                                                                                                                                                                    <span
+                                                                                                                                                                                        style="display:block;width:100%;padding:0;font-size:14px;line-height:16px;font-weight:400;font-family:Arial,Helvetica,sans-serif">
+                                                                                                                                                                                        @Model.BuyerName
+                                                                                                                                                                                    </span>
+                                                                                                                                                                                </td>
+                                                                                                                                                                            </tr>
+                                                                                                                                                                            <tr>
+                                                                                                                                                                                <td height="8"
+                                                                                                                                                                                    style="line-height:8px;height:8px;padding:0">
+                                                                                                                                                                                    &nbsp;
+                                                                                                                                                                                </td>
+                                                                                                                                                                            </tr>
+                                                                                                                                                                            <tr>
+                                                                                                                                                                                <td
+                                                                                                                                                                                    style="Margin:0;margin:0;padding:0;text-align:left">
+                                                                                                                                                                                    <span
+                                                                                                                                                                                        style="display:block;width:100%;padding:0;font-size:14px;line-height:16px;font-weight:400;font-family:Arial,Helvetica,sans-serif">
+                                                                                                                                                                                       @Model.BuyerPhone
+                                                                                                                                                                                    </span>
+                                                                                                                                                                                </td>
+                                                                                                                                                                            </tr>
+
+
+                                                                                                                                                                        </tbody>
+                                                                                                                                                                    </table>
+                                                                                                                                                                </th>
+
+
+
+                                                                                                                                                            </tr>
+                                                                                                                                                        </tbody>
+                                                                                                                                                    </table>
+                                                                                                                                                </th>
+                                                                                                                                            </tr>
+
+
+                                                                                                                                            <tr>
+                                                                                                                                                <th
+                                                                                                                                                    style="Margin:0 auto;margin:0 auto;padding:0;padding:16px 16px;vertical-align:top;border-top:#eaeaea 1px solid">
+                                                                                                                                                    <table
+                                                                                                                                                        style="border-collapse:collapse;display:table;padding:0;width:100%">
+                                                                                                                                                        <tbody>
+                                                                                                                                                            <tr>
+                                                                                                                                                                <th
+                                                                                                                                                                    style="Margin:0 auto;margin:0 auto;padding:0;width:160px;vertical-align:top">
+                                                                                                                                                                    <table
+                                                                                                                                                                        style="border-collapse:collapse;padding:0;width:100%">
+
+                                                                                                                                                                        <tbody>
+                                                                                                                                                                            <tr>
+                                                                                                                                                                                <td
+                                                                                                                                                                                    style="Margin:0;margin:0;padding:0;text-align:left">
+                                                                                                                                                                                    <span
+                                                                                                                                                                                        style="display:block;width:100%;color:#797878;padding:0;font-size:14px;line-height:16px;font-weight:400;font-family:Arial,Helvetica,sans-serif">
+                                                                                                                                                                            @_localizer["Seller"]
+                                                                                                                                                                                    </span>
+                                                                                                                                                                                </td>
+                                                                                                                                                                            </tr>
+                                                                                                                                                                        </tbody>
+                                                                                                                                                                    </table>
+                                                                                                                                                                </th>
+
+
+                                                                                                                                                                <th
+                                                                                                                                                                    style="Margin:0 auto;margin:0 auto;padding:0;vertical-align:top;padding-left:16px">
+                                                                                                                                                                    <table
+                                                                                                                                                                        style="border-collapse:collapse;padding:0;width:100%">
+
+                                                                                                                                                                        <tbody>
+                                                                                                                                                                            <tr>
+                                                                                                                                                                                <td
+                                                                                                                                                                                    style="Margin:0;margin:0;padding:0;text-align:left">
+                                                                                                                                                                                    <img src=@(String.Format("{0}{1}",@Model.Uri.ToString().Remove(@Model.Uri.ToString().Length-1),Model.SellerImage))
+                                                                                                                                                                                        border="0"
+                                                                                                                                                                                        style="display:inline-block;margin:0 auto;max-width:100%;width:auto;max-width:145px;max-height:25px"
+                                                                                                                                                                                        data-bit="iit">
+                                                                                                                                                                                </td>
+                                                                                                                                                                            </tr>
+
+
+                                                                                                                                                                        </tbody>
+                                                                                                                                                                    </table>
+                                                                                                                                                                </th>
+
+
+
+                                                                                                                                                            </tr>
+                                                                                                                                                        </tbody>
+                                                                                                                                                    </table>
+                                                                                                                                                </th>
+                                                                                                                                            </tr>
+
+
+
+
+
+
+
+                                                                                                                                            <tr>
+                                                                                                                                                <th
+                                                                                                                                                    style="Margin:0 auto;margin:0 auto;padding:0;padding:16px 16px;vertical-align:top;border-top:#eaeaea 1px solid">
+                                                                                                                                                    <table
+                                                                                                                                                        style="border-collapse:collapse;display:table;padding:0;width:100%">
+                                                                                                                                                        <tbody>
+                                                                                                                                                            <tr>
+
+
+                                                                                                                                                                <th
+                                                                                                                                                                    style="Margin:0 auto;margin:0 auto;padding:0;vertical-align:top">
+                                                                                                                                                                    <table
+                                                                                                                                                                        style="border-collapse:collapse;padding:0;width:100%">
+
+                                                                                                                                                                        <tbody>
+                                                                                                                                                                            <tr>
+                                                                                                                                                                                <td
+                                                                                                                                                                                    style="Margin:0;margin:0;padding:0;text-align:left">
+                                                                                                                                                                                    <span
+                                                                                                                                                                                        style="display:block;width:100%;color:#797878;padding:0;font-size:14px;line-height:16px;font-weight:400;font-family:Arial,Helvetica,sans-serif">
+                                                                                                                                                                            @_localizer["TotalAmount"]
+                                                                                                                                                                                    </span>
+                                                                                                                                                                                </td>
+                                                                                                                                                                            </tr>
+                                                                                                                                                                        </tbody>
+                                                                                                                                                                    </table>
+                                                                                                                                                                </th>
+
+
+
+
+                                                                                                                                                                <th
+                                                                                                                                                                    style="Margin:0 auto;margin:0 auto;padding:0;width:130px;vertical-align:top;padding-left:16px">
+                                                                                                                                                                    <table
+                                                                                                                                                                        style="border-collapse:collapse;padding:0;width:100%">
+                                                                                                                                                                        <tbody>
+                                                                                                                                                                            <tr>
+                                                                                                                                                                                <th
+                                                                                                                                                                                    style="Margin:0;margin:0;padding:0;text-align:left;display:block">
+                                                                                                                                                                                    <table
+                                                                                                                                                                                        style="border-collapse:collapse;display:table;padding:0;width:100%">
+                                                                                                                                                                                        <tbody>
+                                                                                                                                                                                            <tr>
+
+                                                                                                                                                                                                <th
+                                                                                                                                                                                                    style="Margin:0;margin:0;padding:0;display:block;text-align:left">
+                                                                                                                                                                                                    <span
+                                                                                                                                                                                                        style="display:inline-block;text-align:center;padding:0;color:#221f1f;font-size:24px;line-height:24px;font-weight:400;font-family:Arial,Helvetica,sans-serif">
+                                                                                                                                                                                                       @Model.TotalPrice
+                                                                                                                                                                                                        <span
+                                                                                                                                                                                                            style="font-size:17px">&nbsp;₴</span>
+                                                                                                                                                                                                    </span>
+                                                                                                                                                                                                </th>
+
+                                                                                                                                                                                            </tr>
+                                                                                                                                                                                        </tbody>
+                                                                                                                                                                                    </table>
+                                                                                                                                                                                </th>
+                                                                                                                                                                            </tr>
+                                                                                                                                                                        </tbody>
+                                                                                                                                                                    </table>
+                                                                                                                                                                </th>
+
+
+                                                                                                                                                            </tr>
+                                                                                                                                                        </tbody>
+                                                                                                                                                    </table>
+                                                                                                                                                </th>
+                                                                                                                                            </tr>
+
+
+
+
+                                                                                                                                        </tbody>
+                                                                                                                                    </table>
+                                                                                                                                </td>
+                                                                                                                            </tr>
+                                                                                                                        </tbody>
+                                                                                                                    </table>
+                                                                                                                </td>
+                                                                                                            </tr>
+
+
+
+                                                                                                        </tbody>
+                                                                                                    </table>
+                                                                                                </td>
+                                                                                            </tr>
+
+
+
+
+
+
+                                                                                            <tr>
+                                                                                                <td height="16"
+                                                                                                    style="line-height:16px;height:16px;padding:0">
+                                                                                                    &nbsp;</td>
+                                                                                            </tr>
+
+
+
+
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </td>
+                                                            </tr>
+
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </center>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+
+            </div>

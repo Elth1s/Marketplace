@@ -1063,6 +1063,7 @@ namespace DAL.Data
                 };
             return sales;
         }
+
         static IEnumerable<Category> GetPreconfiguredMarketplaceCategories(Sale clothesSale, Sale laptopSale)
         {
             var categories = new List<Category>
@@ -1097,7 +1098,7 @@ namespace DAL.Data
                      CategoryTranslations = new List<CategoryTranslation>(){
                         new(){ Name = "Clothes and shoes", LanguageId=LanguageId.English },
                         new(){ Name = "Одяг та взуття", LanguageId=LanguageId.Ukrainian } } },
-/*4*/           new (){ UrlSlug = "technology-and-electronics", Image = "TechnologyAndElectronics.png",LightIcon="TechnologyAndElectronicsLight.png",DarkIcon="TechnologyAndElectronicsDark.png",ActiveIcon="TechnologyAndElectronicsActive.png", ParentId = null,
+/*4*/           new(){ UrlSlug = "technology-and-electronics", Image = "TechnologyAndElectronics.png",LightIcon="TechnologyAndElectronicsLight.png",DarkIcon="TechnologyAndElectronicsDark.png",ActiveIcon="TechnologyAndElectronicsActive.png", ParentId = null,
                      CategoryTranslations=new List<CategoryTranslation>(){
                         new (){ Name = "Technology and electronics", LanguageId=LanguageId.English},
                         new (){ Name = "Техніка та електроніка", LanguageId=LanguageId.Ukrainian} } },

@@ -39,5 +39,7 @@ namespace DAL.Entities
 
         public ICollection<AppUser> Reviewed { get; set; }
         public ICollection<AppUser> Selected { get; set; }
+        public ICollection<AppUser> Comparison { get; set; }
+
     }
 }

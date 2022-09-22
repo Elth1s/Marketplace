@@ -14,6 +14,8 @@ namespace WebAPI.Interfaces.Orders
         Task CancelOrderAsync(int id, string userId);
         Task CreateAsync(OrderCreateRequest request, string userId);
         Task DeleteAsync(int id);
+        Task UpdateAsync(int id, UpdateOrderRequest request);
+        Task SendOrderEmail(int id, string userId);
 
     }
 }

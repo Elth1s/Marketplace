@@ -103,7 +103,7 @@ namespace WebAPI.ViewModels.Request.Users
             if (!IsEmail)
                 return true;
 
-            return _userManager.FindByEmailAsync(email).Result == null;
+            return _userManager.GetByEmailAsync(email).Result == null;
         }
         private bool IsUniquePhone(string phone)
         {
@@ -111,7 +111,7 @@ namespace WebAPI.ViewModels.Request.Users
                 return true;
 
             var formatedPhone = _phoneNumberManager.GetPhoneE164Format(phone);
-            return _userManager.FindByPhoneNumberAsync(formatedPhone).Result == null;
+            return _userManager.GetByPhoneNumberAsync(formatedPhone).Result == null;
         }
     }
 }

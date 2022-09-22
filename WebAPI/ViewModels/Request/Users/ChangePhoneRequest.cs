@@ -55,7 +55,7 @@ namespace WebAPI.ViewModels.Request.Users
         private bool IsUniquePhone(string phone)
         {
             var formatedPhone = _phoneNumberManager.GetPhoneE164Format(phone);
-            return _userManager.FindByPhoneNumberAsync(formatedPhone).Result == null;
+            return _userManager.GetByPhoneNumberAsync(formatedPhone).Result == null;
         }
         private bool IsValidPhone(string phone)
         {

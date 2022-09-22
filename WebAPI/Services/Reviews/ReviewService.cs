@@ -52,7 +52,7 @@ namespace WebAPI.Services.Reviews
             var user = await _userManager.FindByIdAsync(userId);
             user.UserNullChecking();
 
-            var userEmail = await _userManager.FindByEmailAsync(request.Email);
+            var userEmail = await _userManager.GetByEmailAsync(request.Email);
             if (userEmail != null && user.Id != userEmail.Id)
                 throw new AppValidationException(
                     new ValidationError(nameof(AppUser.Email), _errorMessagesLocalizer["InvalidUserEmail"]));

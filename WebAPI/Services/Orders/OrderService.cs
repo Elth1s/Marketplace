@@ -4,11 +4,14 @@ using DAL.Constants;
 using DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Options;
 using WebAPI.Exceptions;
 using WebAPI.Extensions;
-using WebAPI.Helpers;
+using WebAPI.Interfaces.Emails;
 using WebAPI.Interfaces.Orders;
+using WebAPI.Settings;
 using WebAPI.Specifications.Orders;
+using WebAPI.ViewModels.Mails;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Request.Orders;
 using WebAPI.ViewModels.Response;
@@ -27,6 +30,9 @@ namespace WebAPI.Services.Orders
         private readonly IRepository<BasketItem> _basketItemRepository;
         private readonly IRepository<Shop> _shopRepository;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IEmailSenderService _emailService;
+        private readonly ITemplateService _templateService;
+        private readonly ClientUrl _clientUrl;
         private readonly IMapper _mapper;
         public OrderService(
                IRepository<Order> orderRepository,
@@ -38,7 +44,10 @@ namespace WebAPI.Services.Orders
                IRepository<Shop> shopRepository,
                UserManager<AppUser> userManager,
                IMapper mapper,
-               IStringLocalizer<ErrorMessages> errorLocalizer)
+               IStringLocalizer<ErrorMessages> errorLocalizer,
+               IEmailSenderService emailService,
+               ITemplateService templateService,
+               IOptions<ClientUrl> clientUrl)
         {
             _orderProductRepository = orderProductRepository;
             _orderRepository = orderRepository;
@@ -50,6 +59,9 @@ namespace WebAPI.Services.Orders
             _userManager = userManager;
             _mapper = mapper;
             _errorLocalizer = errorLocalizer;
+            _emailService = emailService;
+            _templateService = templateService;
+            _clientUrl = clientUrl.Value;
         }
 
         public async Task CreateAsync(OrderCreateRequest request, string userId)
@@ -87,6 +99,8 @@ namespace WebAPI.Services.Orders
                 await _basketItemRepository.DeleteAsync(basketItem);
                 await _basketItemRepository.SaveChangesAsync();
             }
+
+            await SendOrderEmail(order.Id, userId);
         }
 
         public async Task DeleteAsync(int id)
@@ -115,20 +129,9 @@ namespace WebAPI.Services.Orders
             var spec = new OrderUserIncludeFullInfoSpecification(user.Id);
             var orders = await _orderRepository.ListAsync(spec);
 
-            var resultOrders = orders.Select(o => new OrderResponse()
-            {
-                Id = o.Id,
-                ConsumerFirstName = o.ConsumerFirstName,
-                ConsumerSecondName = o.ConsumerSecondName,
-                ConsumerEmail = o.ConsumerEmail,
-                ConsumerPhone = o.ConsumerPhone,
-                OrderStatusName = o.OrderStatus.OrderStatusTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).Name,
-                DeliveryType = o.DeliveryType.DeliveryTypeTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).Name,
-                TotalPrice = o.OrderProducts.Sum(o => o.Price * o.Count),
-                OrderProductsResponse = _mapper.Map<IEnumerable<OrderProductResponse>>(o.OrderProducts)
-            });
+            var response = _mapper.Map<IEnumerable<OrderResponse>>(orders);
 
-            return resultOrders;
+            return response;
         }
 
         public async Task<OrderResponse> GetByIdAsync(int id)
@@ -185,6 +188,44 @@ namespace WebAPI.Services.Orders
             order.OrderStatusId = OrderStatusId.Canceled;
             await _orderRepository.UpdateAsync(order);
             await _orderRepository.SaveChangesAsync();
+        }
+
+
+        public async Task SendOrderEmail(int id, string userId)
+        {
+            var spec = new OrderIncludeFullInfoSpecification(id);
+            var order = await _orderRepository.GetBySpecAsync(spec);
+            order.OrderNullChecking();
+
+            var user = await _userManager.FindByIdAsync(userId);
+            user.UserNullChecking();
+
+            var request = _mapper.Map<OrderEmailRequest>(order);
+            request.Name = user.FirstName;
+            request.Uri = _clientUrl.ApplicationUrl;
+            await _emailService.SendEmailAsync(new MailRequest()
+            {
+                ToEmail = user.Email,
+                Subject = "123",
+                Body = await _templateService.GetTemplateHtmlAsStringAsync("Mails/Order",
+                    request)
+            });
+        }
+
+        public async Task UpdateAsync(int id, UpdateOrderRequest request)
+        {
+            var order = await _orderRepository.GetByIdAsync(id);
+            order.OrderNullChecking();
+
+            var status = await _orderStatusRepository.GetByIdAsync(request.OrderStatusId);
+            status.OrderStatusNullChecking();
+
+            order.OrderStatusId = status.Id;
+            order.TrackingNumber = request.TrackingNumber;
+
+            await _orderRepository.UpdateAsync(order);
+            await _orderRepository.SaveChangesAsync();
+
         }
     }
 }

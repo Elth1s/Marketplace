@@ -13,6 +13,8 @@ namespace DAL.Entities
         [StringLength(100)]
         public string Photo { get; set; }
 
+        public bool IsDeleted { get; set; }
+
         public string Address { get; set; }
         public string PostalCode { get; set; }
 
@@ -54,5 +56,6 @@ namespace DAL.Entities
 
         public ICollection<Product> ReviewedProducts { get; set; }
         public ICollection<Product> SelectedProducts { get; set; }
+        public ICollection<Product> ComparisonProducts { get; set; }
     }
 }

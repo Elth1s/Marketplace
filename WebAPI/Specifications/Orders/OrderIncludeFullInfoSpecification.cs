@@ -19,9 +19,13 @@ namespace WebAPI.Specifications.Orders
             Query.Where(_ => _.Id == id)
                  .Include(_ => _.OrderStatus)
                  .Include(_ => _.OrderProducts)
-                 .ThenInclude(_ => _.Product)
-                 .ThenInclude(_ => _.Images)
-                 .Include(_ => _.DeliveryType).ThenInclude(_ => _.DeliveryTypeTranslations)
+                    .ThenInclude(_ => _.Product)
+                        .ThenInclude(_ => _.Images)
+                 .Include(_ => _.OrderProducts)
+                    .ThenInclude(_ => _.Product)
+                        .ThenInclude(_ => _.Shop)
+                 .Include(_ => _.DeliveryType)
+                    .ThenInclude(_ => _.DeliveryTypeTranslations)
                  .AsSplitQuery();
         }
 

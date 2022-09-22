@@ -18,6 +18,11 @@ namespace WebAPI.ViewModels.Response.Products
         /// <example>true</example>
         public bool IsSelected { get; set; }
         /// <summary>
+        /// Is product deleted
+        /// </summary>
+        /// <example>false</example>
+        public bool IsDeleted { get; set; }
+        /// <summary>
         /// Name of product
         /// </summary>
         /// <example>T-shirt</example>

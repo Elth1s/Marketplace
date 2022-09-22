@@ -6,14 +6,26 @@ namespace WebAPI.Extensions
 {
     public static class ExtentionsUserManager
     {
-        public static async Task<AppUser> FindByPhoneNumberAsync(
+        public static async Task<AppUser> GetByPhoneNumberAsync(
             this UserManager<AppUser> userManager,
             string PhoneNumber,
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            return await userManager.Users.SingleOrDefaultAsync(u => u.PhoneNumber == PhoneNumber, cancellationToken);
+            return await userManager.Users.SingleOrDefaultAsync(u => u.PhoneNumber == PhoneNumber && !u.IsDeleted, cancellationToken);
         }
+
+        public static async Task<AppUser> GetByEmailAsync(
+           this UserManager<AppUser> userManager,
+           string email,
+           CancellationToken cancellationToken = default)
+        {
+            email = userManager.NormalizeEmail(email);
+
+            var user = await userManager.Users.SingleOrDefaultAsync(u => u.NormalizedEmail == email && !u.IsDeleted, cancellationToken);
+            return user;
+        }
+
         public static IQueryable<AppUser> UserSearch(
             this UserManager<AppUser> userManager,
             string name,
@@ -91,16 +103,9 @@ namespace WebAPI.Extensions
                                          .Include(x => x.Shop)
                                          .Include(x => x.BasketItems)
                                          .Include(x => x.RefreshTokens)
-                                         .Include(x => x.CharacteristicGroups)
-                                         .Include(x => x.CharacteristicNames)
-                                         .Include(x => x.CharacteristicValues)
-                                         .Include(x => x.Reviews)
-                                         .Include(x => x.ReviewReplies)
-                                         .Include(x => x.ReviewVotes)
-                                         .Include(x => x.Questions)
-                                         .Include(x => x.QuestionReplies)
-                                         .Include(x => x.QuestionVotes)
-                                         .Include(x => x.Orders)
+                                         .Include(x => x.SelectedProducts)
+                                         .Include(x => x.ReviewedProducts)
+                                         .Include(x => x.ComparisonProducts)
                                          .SingleOrDefaultAsync(cancellationToken);
             return user;
         }
@@ -141,6 +146,34 @@ namespace WebAPI.Extensions
             return user;
         }
 
+        public static async Task<AppUser> GetUserWithComparisonProductsAsync(
+            this UserManager<AppUser> userManager,
+            string userId,
+            CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            var user = await userManager.Users.Where(u => u.Id == userId)
+                                              .Include(u => u.ComparisonProducts)
+                                                    .ThenInclude(p => p.Shop)
+                                              .Include(u => u.ComparisonProducts)
+                                                    .ThenInclude(p => p.Category)
+                                                        .ThenInclude(c => c.CategoryTranslations)
+                                              .Include(u => u.ComparisonProducts)
+                                                    .ThenInclude(p => p.Images)
+                                              .Include(u => u.ComparisonProducts)
+                                                    .ThenInclude(p => p.FilterValueProducts)
+                                                        .ThenInclude(f => f.FilterValue)
+                                                            .ThenInclude(v => v.FilterValueTranslations)
+                                               .Include(u => u.ComparisonProducts)
+                                                    .ThenInclude(p => p.FilterValueProducts)
+                                                        .ThenInclude(f => f.FilterValue)
+                                                            .ThenInclude(v => v.FilterName)
+                                                                .ThenInclude(n => n.Unit)
+                                                                    .ThenInclude(u => u.UnitTranslations)
+                                              .SingleOrDefaultAsync(cancellationToken);
+            return user;
+        }
+
         public static async Task<bool> IsProductSelectedByUserAsync(
             this UserManager<AppUser> userManager,
             string userId,
@@ -153,6 +186,23 @@ namespace WebAPI.Extensions
                                               .CountAsync(u => u.SelectedProducts.Any(p => p.Id == productId), cancellationToken);
 
             return count > 0;
+        }
+
+        public static async Task<AppUser> GetUserReviewsAsync(
+           this UserManager<AppUser> userManager,
+           string userId,
+           CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            var result = await userManager.Users.Where(u => u.Id == userId)
+                                                .Include(u => u.Orders)
+                                                    .ThenInclude(o => o.OrderProducts)
+                                                        .ThenInclude(op => op.Product)
+                                                            .ThenInclude(p => p.Images)
+                                                .Include(u => u.Reviews)
+                                                .FirstOrDefaultAsync(cancellationToken);
+
+            return result;
         }
     }
 }

@@ -43,13 +43,22 @@
         /// </summary>
         /// <example>By courier</example>
         public string DeliveryType { get; set; }
-
+        /// <summary>
+        /// Tracking Number
+        /// </summary>
+        /// <example>123</example>
+        public string TrackingNumber { get; set; }
         /// <summary>
         /// Name of delivery type
         /// </summary>
         /// <example>By courier</example>
         public float TotalPrice { get; set; }
 
+        /// <summary>
+        /// Date of order
+        /// </summary>
+        /// <example>12.09.22 </example>
+        public string Date { get; set; }
 
         public IEnumerable<OrderProductResponse> OrderProductsResponse { get; set; }
 

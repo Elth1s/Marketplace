@@ -22,7 +22,11 @@ namespace WebAPI.Interfaces.Products
         Task DeleteProductsAsync(IEnumerable<int> ids);
 
         Task ChangeSelectProductAsync(string productSlug, string userId);
+        Task ChangeComparisonProductAsync(string productSlug, string userId);
         Task<IEnumerable<ProductWithCartResponse>> GetSelectedProductsAsync(string userId);
         Task<IEnumerable<ProductWithCartResponse>> GetReviewedProductsAsync(string userId);
+        Task<ComparisonResponse> GetComparisonProductsAsync(string categorySlug, string userId);
+
+        Task<IEnumerable<ComparisonItemResponse>> GetComparisonAsync(string userId);
     }
 }

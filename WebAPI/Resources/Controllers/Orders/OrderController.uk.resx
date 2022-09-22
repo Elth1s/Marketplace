@@ -126,4 +126,7 @@
   <data name="DeleteSuccess" xml:space="preserve">
     <value>Замовлення успішно видалено</value>
   </data>
+  <data name="UpdateSuccess" xml:space="preserve">
+    <value>Замовлення успішно оновлено</value>
+  </data>
 </root>

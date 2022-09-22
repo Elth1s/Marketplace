@@ -9,11 +9,12 @@ namespace DAL.Entities
         public string ConsumerSecondName { get; set; }
         public string ConsumerPhone { get; set; }
         public string ConsumerEmail { get; set; }
+        public string TrackingNumber { get; set; }
 
+        public DateTime Date { get; set; }
         public int OrderStatusId { get; set; }
         public string UserId { get; set; }
         public int DeliveryTypeId { get; set; }
-
 
         [ForeignKey(nameof(OrderStatusId))]
         public OrderStatus OrderStatus { get; set; }

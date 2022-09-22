@@ -102,6 +102,7 @@ export interface IOrdersForUser {
     orderStatusName: null,
     deliveryType: string,
     totalPrice: number,
+    date: string,
     orderProductsResponse: Array<IProductForUser>
 }
 

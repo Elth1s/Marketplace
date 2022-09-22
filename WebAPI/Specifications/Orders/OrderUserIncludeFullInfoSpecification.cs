@@ -9,6 +9,7 @@ namespace WebAPI.Specifications.Orders
         public OrderUserIncludeFullInfoSpecification(string userId)
         {
             Query.Where(o => o.UserId == userId)
+                 .OrderByDescending(c => c.Id)
                  .Include(os => os.OrderStatus)
                  .ThenInclude(or => or.OrderStatusTranslations)
                  .Include(op => op.OrderProducts)

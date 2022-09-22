@@ -454,7 +454,7 @@ namespace WebAPI.Services.Products
         }
 
 
-        #region Selected And Reviewed Products
+        #region Selected, Reviewed And Comparison Products
 
         public async Task ChangeSelectProductAsync(string productSlug, string userId)
         {
@@ -514,7 +514,94 @@ namespace WebAPI.Services.Products
             return response;
         }
 
+        public async Task ChangeComparisonProductAsync(string productSlug, string userId)
+        {
+            var productSpec = new ProductGetByUrlSlugSpecification(productSlug);
+            var product = await _productRepository.GetBySpecAsync(productSpec);
+            product.ProductNullChecking();
 
+            var user = await _userManager.GetUserWithComparisonProductsAsync(userId);
+            user.UserNullChecking();
+
+            var isExist = user.ComparisonProducts.FirstOrDefault(p => p.Id == product.Id);
+            if (isExist != null)
+                user.ComparisonProducts.Remove(product);
+            else
+                user.ComparisonProducts.Add(product);
+
+            await _userManager.UpdateAsync(user);
+        }
+
+        public async Task<ComparisonResponse> GetComparisonProductsAsync(string categorySlug, string userId)
+        {
+            var user = await _userManager.GetUserWithComparisonProductsAsync(userId);
+            user.UserNullChecking();
+
+            var spec = new CategoryGetWithFilterValues(categorySlug);
+            var category = await _categoryRepository.GetBySpecAsync(spec);
+            category.CategoryNullChecking();
+
+            var categoryFilters = category.FilterValues.GroupBy(f => f.FilterName);
+
+            var products = user.ComparisonProducts.Where(p => p.CategoryId == category.Id);
+            var response = new ComparisonResponse()
+            {
+                CategoryName = category.CategoryTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).Name,
+                Products = _mapper.Map<IEnumerable<ComparisonProduct>>(products),
+                Shops = _mapper.Map<IEnumerable<ComparisonShop>>(products)
+            };
+            var filterResponse = new List<ComparisonFilter>();
+
+            foreach (var item in categoryFilters)
+            {
+                var filter = new ComparisonFilter()
+                {
+                    FilterName = item.Key.FilterNameTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).Name
+                };
+                var values = new List<string>();
+
+                foreach (var product in products)
+                {
+                    var value = product.FilterValueProducts.FirstOrDefault(f => f.FilterValue.FilterNameId == item.Key.Id);
+                    if (value != null)
+                    {
+                        values.Add(value.FilterValue.FilterValueTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).Value);
+                    }
+                    else
+                        values.Add("");
+                }
+
+                if (values.Any(c => !string.IsNullOrEmpty(c)))
+                {
+                    filter.Values = values;
+                    filterResponse.Add(filter);
+                }
+            }
+
+            response.Filters = filterResponse;
+            return response;
+        }
+
+        public async Task<IEnumerable<ComparisonItemResponse>> GetComparisonAsync(string userId)
+        {
+            var user = await _userManager.GetUserWithComparisonProductsAsync(userId);
+            user.UserNullChecking();
+
+            var groupedProducts = user.ComparisonProducts.GroupBy(p => p.Category);
+            var response = new List<ComparisonItemResponse>();
+            foreach (var group in groupedProducts)
+            {
+                var item = new ComparisonItemResponse()
+                {
+                    CategoryName = group.Key.CategoryTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).Name,
+                    UrlSlug = group.Key.UrlSlug,
+                    Count = group.Count()
+                };
+                response.Add(item);
+            }
+
+            return response;
+        }
 
         #endregion
     }

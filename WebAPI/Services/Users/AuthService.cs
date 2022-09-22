@@ -42,9 +42,9 @@ namespace WebAPI.Services.Users
                 throw new AppException(_errorMessagesLocalizer["CaptchaVerificationFailed"]);
 
 
-            var user = await _userManager.FindByEmailAsync(request.EmailOrPhone);
+            var user = await _userManager.GetByEmailAsync(request.EmailOrPhone);
             if (user == null)
-                user = await _userManager.FindByPhoneNumberAsync(_phoneNumberManager.GetPhoneE164Format(request.EmailOrPhone));
+                user = await _userManager.GetByPhoneNumberAsync(_phoneNumberManager.GetPhoneE164Format(request.EmailOrPhone));
 
 
             var resultPasswordCheck = await _userManager.CheckPasswordAsync(user, request.Password);
@@ -149,7 +149,7 @@ namespace WebAPI.Services.Users
 
             if (user == null)
             {
-                user = await _userManager.FindByEmailAsync(payload.Email);
+                user = await _userManager.GetByEmailAsync(payload.Email);
 
                 if (user == null)
                 {
@@ -191,7 +191,7 @@ namespace WebAPI.Services.Users
 
             if (user == null)
             {
-                user = await _userManager.FindByEmailAsync(payload.Email);
+                user = await _userManager.GetByEmailAsync(payload.Email);
 
                 if (user == null)
                 {

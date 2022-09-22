@@ -117,11 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Buyer" xml:space="preserve">
+    <value>Покупець</value>
+  </data>
   <data name="ConfirmEmailButton" xml:space="preserve">
     <value>Підтвердити email-адресу</value>
   </data>
   <data name="ConfrimEmailText" xml:space="preserve">
     <value>Будь ласка, підтвердіть свою email-адресу</value>
+  </data>
+  <data name="Count" xml:space="preserve">
+    <value>Кількість:</value>
+  </data>
+  <data name="Delivery" xml:space="preserve">
+    <value>Доставка</value>
   </data>
   <data name="EmailThemeConfirmEmail" xml:space="preserve">
     <value>Підтвердження електронної адреси</value>
@@ -135,6 +144,18 @@
   <data name="Greeting" xml:space="preserve">
     <value>Привіт, {0} </value>
   </data>
+  <data name="InProfile" xml:space="preserve">
+    <value>профілі</value>
+  </data>
+  <data name="Order" xml:space="preserve">
+    <value>Замовлення</value>
+  </data>
+  <data name="Payment" xml:space="preserve">
+    <value>Оплата</value>
+  </data>
+  <data name="Price" xml:space="preserve">
+    <value>Ціна:</value>
+  </data>
   <data name="ResetPasswordButton" xml:space="preserve">
     <value>Скинути пароль</value>
   </data>
@@ -143,5 +164,23 @@
   </data>
   <data name="ResetPasswordText" xml:space="preserve">
     <value>Ми чули, що ви втратили пароль. Нам шкода!</value>
+  </data>
+  <data name="Seller" xml:space="preserve">
+    <value>Продавець</value>
+  </data>
+  <data name="ThxOrder" xml:space="preserve">
+    <value>{0}, дякуємо за ваше замовлення!</value>
+  </data>
+  <data name="TotalAmount" xml:space="preserve">
+    <value>Загальна сума замовлення</value>
+  </data>
+  <data name="TrackOrder" xml:space="preserve">
+    <value>Ви можете відстежити  статус свого замовлення в</value>
+  </data>
+  <data name="UAH" xml:space="preserve">
+    <value>грн</value>
+  </data>
+  <data name="Unit" xml:space="preserve">
+    <value>од</value>
   </data>
 </root>

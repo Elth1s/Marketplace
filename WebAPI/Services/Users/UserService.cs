@@ -216,7 +216,25 @@ namespace WebAPI.Services.Users
             foreach (var item in ids)
             {
                 var user = await _userManager.GetByIdWithIncludeInfo(item);
-                await _userManager.DeleteAsync(user);
+                user.UserNullChecking();
+                var logins = await _userManager.GetLoginsAsync(user);
+                if (logins.Any())
+                {
+                    foreach (var login in logins)
+                    {
+                        await _userManager.RemoveLoginAsync(user, login.LoginProvider, login.ProviderKey);
+                    }
+                }
+
+                user.Shop.IsDeleted = true;
+                user.IsDeleted = true;
+                user.BasketItems = null;
+                user.RefreshTokens = null;
+                user.SelectedProducts = null;
+                user.ReviewedProducts = null;
+                user.ComparisonProducts = null;
+
+                await _userManager.UpdateAsync(user);
             }
         }
 
@@ -270,6 +288,57 @@ namespace WebAPI.Services.Users
             var resultAddLogin = await _userManager.AddLoginAsync(user, info);
             if (!resultAddLogin.Succeeded)
                 throw new AppException(_errorMessagesLocalizer["ExternalLoginAddFail"]);
+        }
+
+        public async Task<IEnumerable<UserReviewResponse>> GetUserReviewsAsync(string userId)
+        {
+            var user = await _userManager.GetUserReviewsAsync(userId);
+            user.UserNullChecking();
+
+            var reviews = user.Reviews.OrderByDescending(r => r.Date);
+            var products = user.Orders.SelectMany(o => o.OrderProducts).GroupBy(o => o.ProductId);
+
+            var result = new List<UserReviewResponse>();
+
+            foreach (var item in products)
+            {
+                var product = item.FirstOrDefault().Product;
+                var review = reviews.FirstOrDefault(r => r.ProductId == item.Key);
+                var response = new UserReviewResponse()
+                {
+                    ProductName = product.Name,
+                    ProductSlug = product.UrlSlug.ToString(),
+                    ProductImage = product.Images.Count != 0 ? Path.Combine(ImagePath.RequestProductsImagePath, product.Images.FirstOrDefault().Name) : "",
+                    HasReview = review != null,
+                    Review = review == null ? "" : review.Comment
+                };
+                result.Add(response);
+            }
+
+            return result;
+        }
+
+        public async Task RemoveProfileAsync(string userId)
+        {
+            var user = await _userManager.GetByIdWithIncludeInfo(userId);
+            user.UserNullChecking();
+            var logins = await _userManager.GetLoginsAsync(user);
+            if (logins.Any())
+            {
+                foreach (var item in logins)
+                {
+                    await _userManager.RemoveLoginAsync(user, item.LoginProvider, item.ProviderKey);
+                }
+            }
+            user.Shop.IsDeleted = true;
+            user.IsDeleted = true;
+            user.BasketItems = null;
+            user.RefreshTokens = null;
+            user.SelectedProducts = null;
+            user.ReviewedProducts = null;
+            user.ComparisonProducts = null;
+
+            await _userManager.UpdateAsync(user);
         }
     }
 }

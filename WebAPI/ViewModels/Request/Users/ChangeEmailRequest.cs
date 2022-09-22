@@ -2,6 +2,7 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
+using WebAPI.Extensions;
 
 namespace WebAPI.ViewModels.Request.Users
 {
@@ -48,7 +49,7 @@ namespace WebAPI.ViewModels.Request.Users
 
         private bool IsUniqueEmail(string email)
         {
-            return _userManager.FindByEmailAsync(email).Result == null;
+            return _userManager.GetByEmailAsync(email).Result == null;
         }
     }
 }

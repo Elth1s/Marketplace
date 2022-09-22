@@ -4,6 +4,7 @@ using DAL.Entities;
 using Google.Apis.Auth;
 using WebAPI.Constants;
 using WebAPI.Helpers;
+using WebAPI.ViewModels.Mails;
 using WebAPI.ViewModels.Request;
 using WebAPI.ViewModels.Request.Categories;
 using WebAPI.ViewModels.Request.Characteristics;
@@ -389,6 +390,12 @@ namespace WebAPI.Mapper
                 .ForMember(u => u.Discount, opt => opt.MapFrom(vm => vm.Discount > 0 ?
                         vm.Price - (vm.Price / 100f * vm.Discount) : (float?)null));
 
+            CreateMap<Product, ComparisonProduct>()
+                 .ForMember(u => u.Image, opt => opt.MapFrom(
+                        vm => vm.Images.Count != 0 ? Path.Combine(ImagePath.RequestProductsImagePath, vm.Images.FirstOrDefault().Name) : ""));
+
+            CreateMap<Product, ComparisonShop>()
+                 .ForMember(u => u.Name, opt => opt.MapFrom(vm => vm.Shop.Name));
 
             //ProductStatus
             CreateMap<ProductStatusRequest, ProductStatus>().ForMember(c => c.ProductStatusTranslations, opt => opt.MapFrom(
@@ -502,21 +509,50 @@ namespace WebAPI.Mapper
 
             //Order
             CreateMap<OrderCreateRequest, Order>()
-                .ForMember(o => o.OrderProducts, opt => opt.Ignore());
+                .ForMember(o => o.OrderProducts, opt => opt.Ignore())
+                .ForMember(o => o.Date, opt => opt.MapFrom(vm => DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Utc)));
 
             CreateMap<Order, OrderResponse>()
                 .ForMember(o => o.TotalPrice, opt => opt.MapFrom(
-                    vm => vm.OrderProducts.Sum(o => o.Price)))
+                    vm => vm.OrderProducts.Sum(o => o.Price * o.Count)))
                 .ForMember(o => o.OrderStatusName, opt => opt.MapFrom(
                     vm => vm.OrderStatus.OrderStatusTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).Name))
                 .ForMember(o => o.DeliveryType, opt => opt.MapFrom(
-                    vm => vm.DeliveryType.DeliveryTypeTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).Name));
+                    vm => vm.DeliveryType.DeliveryTypeTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).Name))
+                .ForMember(o => o.Date, opt => opt.MapFrom(vm => vm.Date.ToString("dd.MM.yyyy")))
+                .ForMember(o => o.OrderProductsResponse, opt => opt.MapFrom(vm => vm.OrderProducts));
 
             CreateMap<OrderProduct, OrderProductResponse>()
                 .ForMember(r => r.ProductId, opt => opt.MapFrom(o => o.Product.Id))
                 .ForMember(r => r.ProductName, opt => opt.MapFrom(o => o.Product.Name))
                 .ForMember(r => r.ProductUrlSlug, opt => opt.MapFrom(o => o.Product.UrlSlug))
-                .ForMember(r => r.ProductImage, opt => opt.MapFrom(vm => vm.Product.Images.Count != 0 ? Path.Combine(ImagePath.RequestProductsImagePath, vm.Product.Images.FirstOrDefault().Name) : ""));
+                .ForMember(r => r.ProductImage, opt => opt.MapFrom(vm =>
+                        vm.Product.Images.Count != 0 ? Path.Combine(ImagePath.RequestProductsImagePath, vm.Product.Images.FirstOrDefault().Name) : ""));
+
+            CreateMap<Order, OrderEmailRequest>()
+             .ForMember(o => o.BuyerName, opt => opt.MapFrom(
+                     vm => vm.ConsumerFirstName + " " + vm.ConsumerSecondName))
+             .ForMember(o => o.BuyerPhone, opt => opt.MapFrom(
+                     vm => vm.ConsumerPhone))
+             .ForMember(o => o.TotalPrice, opt => opt.MapFrom(
+                     vm => vm.OrderProducts.Sum(o => o.Price * o.Count)))
+             .ForMember(o => o.DeliveryType, opt => opt.MapFrom(
+                     vm => vm.DeliveryType.DeliveryTypeTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).Name))
+             .ForMember(o => o.Date, opt => opt.MapFrom(vm => vm.Date.ToString("dd MMMM yyyy")))
+             .ForMember(o => o.SellerName, opt => opt.MapFrom(vm => vm.OrderProducts.FirstOrDefault().Product.Shop.Name))
+             .ForMember(o => o.SellerImage, opt => opt.MapFrom(vm => !string.IsNullOrEmpty(vm.OrderProducts.FirstOrDefault().Product.Shop.Photo) ?
+                         Path.Combine(ImagePath.RequestShopsImagePath, vm.OrderProducts.FirstOrDefault().Product.Shop.Photo) : ""))
+             .ForMember(o => o.Products, opt => opt.MapFrom(vm => vm.OrderProducts));
+
+            CreateMap<OrderProduct, OrderProductRequest>()
+                .ForMember(r => r.Name, opt => opt.MapFrom(vm =>
+                       vm.Product.Name))
+                .ForMember(r => r.UrlSlug, opt => opt.MapFrom(vm =>
+                       vm.Product.UrlSlug))
+               .ForMember(r => r.Image, opt => opt.MapFrom(vm =>
+                       vm.Product.Images.Count != 0 ? Path.Combine(ImagePath.RequestProductsImagePath, vm.Product.Images.FirstOrDefault().Name) : ""))
+               .ForMember(r => r.TotalPrice, opt => opt.MapFrom(vm =>
+                       vm.Count * vm.Price));
 
             #endregion
 

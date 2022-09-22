@@ -81,6 +81,43 @@ namespace WebAPI.Controllers.Users
             return Ok(_userLocalizer["DeleteListSuccess"].Value);
         }
 
+        /// <summary>
+        /// Delete an existing user
+        /// </summary>
+        /// <response code="200">User deletion completed successfully</response>
+        /// <response code="401">You are not authorized</response>
+        /// <response code="404">User not found</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [Authorize]
+        [HttpDelete("RemoveProfile")]
+        public async Task<IActionResult> RemoveProfile()
+        {
+            await _userService.RemoveProfileAsync(UserId);
+            return Ok(_userLocalizer["RemoveProfileSuccess"].Value);
+        }
+
+        /// <summary>
+        /// Get user reviews
+        /// </summary>
+        /// <response code="200">Users reviews getting completed successfully</response>
+        /// <response code="401">You are not authorized</response>
+        /// <response code="404">User not found</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<UserReviewResponse>))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [Authorize]
+        [HttpGet("GetUserReviews")]
+        public async Task<IActionResult> GetUserReviews()
+        {
+            var result = await _userService.GetUserReviewsAsync(UserId);
+            return Ok(result);
+        }
         #region Profile
 
         /// <summary>

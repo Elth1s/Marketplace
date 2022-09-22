@@ -141,6 +141,9 @@
   <data name="PhoneConfirmSuccess" xml:space="preserve">
     <value>Phone confirmed</value>
   </data>
+  <data name="RemoveProfileSuccess" xml:space="preserve">
+    <value>Profile deleted successfully</value>
+  </data>
   <data name="ResetPasswordSuccess" xml:space="preserve">
     <value>Password reset successfully</value>
   </data>

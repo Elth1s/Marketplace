@@ -259,9 +259,11 @@ namespace WebAPI.Controllers.Products
         /// </summary>
         /// <param name="productSlug">Product slug</param>
         /// <response code="200">The change of the selected product completed successfully</response>
+        /// <response code="401">You are not authorized</response>
         /// <response code="404">Product or user not found</response>
         /// <response code="500">An internal error has occurred</response>
         [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize]
@@ -276,11 +278,11 @@ namespace WebAPI.Controllers.Products
         /// Returns user selected products
         /// </summary>
         /// <response code="200">Getting product completed successfully</response>
+        /// <response code="401">You are not authorized</response>
         /// <response code="404">User not found</response>
         /// <response code="500">An internal error has occurred</response>
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ProductWithCartResponse))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
-        [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize]
@@ -295,11 +297,11 @@ namespace WebAPI.Controllers.Products
         /// Returns user reviewed products
         /// </summary>
         /// <response code="200">Getting product completed successfully</response>
+        /// <response code="401">You are not authorized</response>
         /// <response code="404">User not found</response>
         /// <response code="500">An internal error has occurred</response>
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ProductWithCartResponse))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
-        [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
         [Authorize]
@@ -308,6 +310,66 @@ namespace WebAPI.Controllers.Products
         {
             var result = await _productService.GetReviewedProductsAsync(UserId);
             return Ok(result);
+        }
+
+
+        /// <summary>
+        /// Returns user comparison products
+        /// </summary>
+        /// <response code="200">Getting product completed successfully</response>
+        /// <response code="401">You are not authorized</response>
+        /// <response code="404">User or category not found</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ComparisonResponse))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [Authorize]
+        [HttpGet("GetComparisonProducts/{categorySlug}")]
+        public async Task<IActionResult> GetComparisonProducts(string categorySlug)
+        {
+            var result = await _productService.GetComparisonProductsAsync(categorySlug, UserId);
+            return Ok(result);
+        }
+
+
+        /// <summary>
+        /// Returns user comparison
+        /// </summary>
+        /// <response code="200">Getting comparison completed successfully</response>
+        /// <response code="401">You are not authorized</response>
+        /// <response code="404">User not found</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<ComparisonItemResponse>))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [Authorize]
+        [HttpGet("GetComparison")]
+        public async Task<IActionResult> GetComparison()
+        {
+            var result = await _productService.GetComparisonAsync(UserId);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Add to comparison
+        /// </summary>
+        /// <param name="productSlug">Product slug</param>
+        /// <response code="200">The change of the comparison product completed successfully</response>
+        /// <response code="401">You are not authorized</response>
+        /// <response code="404">Product or user not found</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [Authorize]
+        [HttpPut("ChangeComparisonProduct/{productSlug}")]
+        public async Task<IActionResult> ChangeComparisonProduct(string productSlug)
+        {
+            await _productService.ChangeComparisonProductAsync(productSlug, UserId);
+            return Ok(_productLocalizer["ChangeComparisonSuccess"].Value);
         }
     }
 }

@@ -119,6 +119,20 @@ namespace DAL.Data
                                 .WithMany()
                                 .HasForeignKey("UserId"))
                       .HasIndex("ProductId", "UserId").IsUnique();
+
+                entity.HasMany(p => p.ComparisonProducts)
+                      .WithMany(p => p.Comparison)
+                      .UsingEntity<Dictionary<string, object>>(
+                           "AppUserComparisonProducts",
+                            j => j
+                                .HasOne<Product>()
+                                .WithMany()
+                                .HasForeignKey("ProductId"),
+                            j => j
+                                .HasOne<AppUser>()
+                                .WithMany()
+                                .HasForeignKey("UserId"))
+                      .HasIndex("ProductId", "UserId").IsUnique();
             });
 
 

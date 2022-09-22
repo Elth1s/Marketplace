@@ -141,6 +141,9 @@
   <data name="PhoneConfirmSuccess" xml:space="preserve">
     <value>Телефон підтверджено</value>
   </data>
+  <data name="RemoveProfileSuccess" xml:space="preserve">
+    <value>Профіль успішно видалено</value>
+  </data>
   <data name="ResetPasswordSuccess" xml:space="preserve">
     <value>Пароль скинуто успішно</value>
   </data>

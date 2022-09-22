@@ -117,11 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Buyer" xml:space="preserve">
+    <value>Buyer</value>
+  </data>
   <data name="ConfirmEmailButton" xml:space="preserve">
     <value>Verify email</value>
   </data>
   <data name="ConfrimEmailText" xml:space="preserve">
     <value>Please verify your email</value>
+  </data>
+  <data name="Count" xml:space="preserve">
+    <value>Count:</value>
+  </data>
+  <data name="Delivery" xml:space="preserve">
+    <value>Delivery</value>
   </data>
   <data name="EmailThemeConfirmEmail" xml:space="preserve">
     <value>Confirm email</value>
@@ -135,6 +144,18 @@
   <data name="Greeting" xml:space="preserve">
     <value>Hey, {0}</value>
   </data>
+  <data name="InProfile" xml:space="preserve">
+    <value>profile</value>
+  </data>
+  <data name="Order" xml:space="preserve">
+    <value>Order</value>
+  </data>
+  <data name="Payment" xml:space="preserve">
+    <value>Payment</value>
+  </data>
+  <data name="Price" xml:space="preserve">
+    <value>Price:</value>
+  </data>
   <data name="ResetPasswordButton" xml:space="preserve">
     <value>Reset password</value>
   </data>
@@ -143,5 +164,23 @@
   </data>
   <data name="ResetPasswordText" xml:space="preserve">
     <value>We heard that you lost your password. Sorry about that!</value>
+  </data>
+  <data name="Seller" xml:space="preserve">
+    <value>Seller</value>
+  </data>
+  <data name="ThxOrder" xml:space="preserve">
+    <value>{0}, thank you for your order!</value>
+  </data>
+  <data name="TotalAmount" xml:space="preserve">
+    <value>The total amount of the order</value>
+  </data>
+  <data name="TrackOrder" xml:space="preserve">
+    <value>You can track the status of your order at</value>
+  </data>
+  <data name="UAH" xml:space="preserve">
+    <value>UAH</value>
+  </data>
+  <data name="Unit" xml:space="preserve">
+    <value>unit</value>
   </data>
 </root>

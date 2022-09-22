@@ -533,6 +533,7 @@ namespace WebAPI.Extensions
         }
         #endregion
 
+        #region Shop
         public static void ShopNullChecking(this Shop shop)
         {
             if (shop == null)
@@ -543,6 +544,18 @@ namespace WebAPI.Extensions
                     HttpStatusCode.NotFound);
             }
         }
+
+        public static void ShopNullChecking(this Shop shop, bool isDeleted)
+        {
+            if (shop == null || isDeleted)
+            {
+                var factory = StringLocalizerFactory.Create(typeof(ErrorMessages));
+                throw new AppException(
+                    factory["ShopNotFound"],
+                    HttpStatusCode.NotFound);
+            }
+        }
+        #endregion
 
 
         public static void SaleNullChecking(this Sale sale)

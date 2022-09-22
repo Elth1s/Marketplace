@@ -18,7 +18,7 @@ interface TabPanelProps {
 
 interface IAccordionItem {
     question: string;
-    answer: string;
+    answer: string | JSX.Element[];
 }
 
 function TabPanel(props: TabPanelProps) {
@@ -74,36 +74,33 @@ function a11yProps(index: number) {
     };
 }
 
-const faqMain = [
-    { question: "Sodales ut etiam sit amet", answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Dignissim cras tincidunt lobortis feugiat. Adipiscing elit duis tristique sollicitudin. Vel fringilla est ullamcorper eget nulla facilisi. Interdum velit euismod in pellentesque massa placerat duis. Ipsum dolor sit amet consectetur adipiscing elit duis. Nisi scelerisque eu ultrices vitae auctor eu augue ut. Convallis posuere morbi leo urna molestie at. Accumsan in nisl nisi scelerisque eu ultrices. Mi eget mauris pharetra et ultrices neque ornare aenean euismod." },
-    { question: "Non odio euismod lacinia at quis risus sed", answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Platea dictumst quisque sagittis purus sit amet volutpat consequat. Ut diam quam nulla porttitor massa id neque aliquam." },
-    { question: "Etiam erat velit scelerisque in dictum non consectetur a erat nam at", answer: "Integer feugiat scelerisque varius morbi enim nunc. Aenean vel elit scelerisque mauris pellentesque. Netus et malesuada fames ac turpis egestas maecenas. Etiam sit amet nisl purus in. Integer eget aliquet nibh praesent tristique magna sit. Vitae suscipit tellus mauris a diam maecenas sed enim ut." },
-    { question: "Porttitor massa id neque aliquam vestibulum", answer: "Nisi quis eleifend quam adipiscing vitae proin sagittis nisl. Duis tristique sollicitudin nibh sit amet." },
-]
-
-const faqOrder = [
-    { question: "Dolor sit amet consectetur adipiscing elit duis tristique sollicitudin.", answer: "Sed elementum tempus egestas sed sed risus. Dolor sit amet consectetur adipiscing elit ut aliquam purus. Ultricies mi quis hendrerit dolor magna eget est lorem ipsum. Imperdiet dui accumsan sit amet nulla facilisi morbi. Dui id ornare arcu odio ut. Sed euismod nisi porta lorem." },
-    { question: "Phasellus faucibus scelerisque eleifend donec pretium.", answer: "Elit ullamcorper dignissim cras tincidunt lobortis. Sed arcu non odio euismod lacinia at. Nunc congue nisi vitae suscipit tellus mauris a diam." },
-    { question: "Ante metus dictum at tempor commodo ullamcorper a. Porta lorem mollis aliquam ut porttitor leo.", answer: "Eget arcu dictum varius duis. In fermentum posuere urna nec. Tortor aliquam nulla facilisi cras. Mi in nulla posuere sollicitudin aliquam ultrices sagittis orci. Sit amet cursus sit amet dictum sit amet." },
-]
-
-const faqDeliver = [
-    { question: "Etiam tempor orci eu lobortis elementum nibh. Pellentesque pulvinar pellentesque habitant morbi tristique senectus et.", answer: "Hac habitasse platea dictumst vestibulum rhoncus est pellentesque. Lobortis scelerisque fermentum dui faucibus in ornare. Ornare massa eget egestas purus viverra accumsan in nisl nisi. Maecenas pharetra convallis posuere morbi leo urna. Vestibulum morbi blandit cursus risus at." },
-    { question: "In massa tempor nec feugiat nisl pretium fusce id.", answer: "Pulvinar elementum integer enim neque volutpat ac tincidunt. Pretium viverra suspendisse potenti nullam ac tortor vitae purus faucibus. Magna sit amet purus gravida quis blandit turpis." },
-    { question: "Diam quis enim lobortis scelerisque fermentum.", answer: "Egestas sed tempus urna et pharetra pharetra. Maecenas pharetra convallis posuere morbi leo. Ultricies integer quis auctor elit." },
-]
-
-const faqReturn = [
-    { question: "Auctor urna nunc id cursus metus aliquam eleifend mi in.", answer: "Luctus venenatis lectus magna fringilla urna porttitor. Vitae ultricies leo integer malesuada nunc vel risus. Nunc congue nisi vitae suscipit tellus." },
-    { question: "Aenean euismod elementum nisi quis eleifend quam adipiscing", answer: "Integer malesuada nunc vel risus commodo viverra. Nunc scelerisque viverra mauris in aliquam sem fringilla ut morbi. Vel pharetra vel turpis nunc eget lorem." },
-    { question: "Porta nibh venenatis cras sed felis.", answer: "In dictum non consectetur a erat nam at. At in tellus integer feugiat. Tempor orci dapibus ultrices in iaculis nunc sed. Dictum fusce ut placerat orci nulla pellentesque dignissim enim." },
-    { question: "Suscipit adipiscing bibendum est ultricies integer quis.", answer: "Lectus nulla at volutpat diam ut venenatis tellus. Orci eu lobortis elementum nibh tellus. Vel quam elementum pulvinar etiam non quam lacus suspendisse faucibus." },
-]
 
 const FAQ = () => {
     const { t } = useTranslation();
     const [value, setValue] = useState(0);
 
+    const faqMain = [
+        { question: t('pages.faq.main.mallWork.question'), answer: t('pages.faq.main.mallWork.answer').split('\n').map(line => <p>{line}</p>) },
+        { question: t('pages.faq.main.orderShipped.question'), answer: t('pages.faq.main.orderShipped.answer') },
+        { question: t('pages.faq.main.itemMissing.question'), answer: t('pages.faq.main.itemMissing.answer').split('\n').map(line => <p>{line}</p>) },
+        { question: t('pages.faq.main.changeOrder.question'), answer: t('pages.faq.main.changeOrder.answer') },
+    ]
+
+    const faqOrder = [
+        { question: t('pages.faq.order.orderCancelled.question'), answer: t('pages.faq.order.orderCancelled.answer') },
+        { question: t('pages.faq.order.notMyOrder.question'), answer: t('pages.faq.order.notMyOrder.answer') },
+    ]
+
+    const faqDeliver = [
+        { question: t('pages.faq.delivery.notReceiveOrder.question'), answer: t('pages.faq.delivery.notReceiveOrder.answer').split('\n').map(line => <p>{line}</p>) },
+        { question: t('pages.faq.delivery.changeShippingAddress.question'), answer: t('pages.faq.delivery.changeShippingAddress.answer') },
+        { question: t('pages.faq.delivery.combineOrders.question'), answer: t('pages.faq.delivery.combineOrders.answer') },
+    ]
+
+    const faqReturn = [
+        { question: t('pages.faq.return.returnPolicy.question'), answer: t('pages.faq.return.returnPolicy.answer') },
+        { question: t('pages.faq.return.exchangeOrder.question'), answer: t('pages.faq.return.exchangeOrder.answer') }
+    ]
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };

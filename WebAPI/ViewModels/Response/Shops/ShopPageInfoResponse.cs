@@ -41,6 +41,11 @@
         /// <example>4.5</example>
         public float AverageRating { get; set; }
         /// <summary>
+        /// Is shop deleted
+        /// </summary>
+        /// <example>false</example>
+        public bool IsDeleted { get; set; }
+        /// <summary>
         /// List of ratings
         /// </summary>
         public IEnumerable<Rating> Ratings { get; set; }

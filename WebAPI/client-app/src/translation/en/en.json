@@ -188,6 +188,58 @@
                     "order": "Order",
                     "deliver": "Delivery",
                     "return": "Return and exchange"
+                },
+                "main": {
+                    "mallWork": {
+                        "question": "How does the Mall work?",
+                        "answer": "Mall is a marketplace where any company can post information about itself and its products, and customers can place orders and purchase those products. \n How it works: \n Companies add information about themselves and their goods/services, which is placed: \n on a separate company website; \n in the catalog of Mall goods and services; \n is displayed during the search; \n will be found in all search engines. \n For sellers of goods and services, we offer a convenient product publication service. \n For buyers, we offer a convenient way to search and purchase goods."
+                    },
+                    "orderShipped": {
+                        "question": "When will my order be shipped?",
+                        "answer": "Once your payment is confirmed, it takes up to 24 hours for your order to be processed and shipped. This does not include weekends and holidays. Purchases made after 11pm will not be dispatched until the next business day."
+                    },
+                    "itemMissing": {
+                        "question": "Why is one item missing from my order?",
+                        "answer": "In the unlikely event that you do not have an item in your order, please first ensure that your order has not been sent in more than one package (this can happen from time to time if the item has been sent from a different warehouse). Your initial email would have stated \"some of the items in your order are still being shipped\". If you have this email, don't panic! The rest of your order will be with you shortly. \n If you are confident that all deliveries have been made but you are still missing an item, please contact us immediately with the following information to ensure we can resolve the issue quickly and efficiently: your order number, name goods, which you did not receive. \n Once we receive the above information, our customer support team will resolve it for you as soon as possible!"
+                    },
+                    "changeOrder": {
+                        "question": "I need to change something in my order. How can I do this?",
+                        "answer": "If you need to change or cancel an order, please contact us immediately. Once your order has been processed by our warehouse, we will not be able to make any changes."
+                    }
+                },
+                "order": {
+                    "orderCancelled": {
+                        "question": "Why was my order cancelled?",
+                        "answer": "If your order has been canceled unexpectedly, it is likely that we have identified your order as fraudulent. If you are sure that this is not the case, contact us and order again."
+                    },
+                    "notMyOrder": {
+                        "question": "I received the package, but it was not my order.",
+                        "answer": "We are very sorry to have confused your order! Please contact our customer support team with your order number and images of the following: initial/number stamped on the outside of the envelope or box, packing slip stamped with initials and images of the products you received. Please note, that all problems with the order must be reported within 14 days of delivery."
+                    }
+                },
+                "delivery": {
+                    "notReceiveOrder": {
+                        "question": "I was informed that the order was delivered, but I did not receive it, what should I do?",
+                        "answer": "Sometimes tracking information can be incorrect and orders are marked as delivered before they even arrive. Your package will most likely arrive within a few days, but in the meantime it would be great to contact the post office staff, to learn more! \n If you do not receive your order within a few days, please contact our customer service team within 14 days of the last tracking update with your order number so we can assist you!"
+                    },
+                    "changeShippingAddress": {
+                        "question": "Can I change the shipping address of my order?",
+                        "answer": "We will be happy to change the delivery address of your order! Please notify our customer support team as soon as possible, as we can only make changes to your order if it has not yet entered the packaging process."
+                    },
+                    "combineOrders": {
+                        "question": "Do you combine orders?",
+                        "answer": "Orders are automatically combined if packed on the same day and shipped to the same address. Please note that orders cannot be combined manually, and shipping charges for orders that our system can combine are non-refundable."
+                    }
+                },
+                "return": {
+                    "returnPolicy": {
+                        "question": "Mall return policy",
+                        "answer": "Unfortunately, we are unable to offer refunds, returns or exchanges at this time. All sales are final. If you would like to cancel your order before it ships or have any questions, please contact our customer service."
+                    },
+                    "exchangeOrder": {
+                        "question": "Can I exchange my order for another product?",
+                        "answer": "Unfortunately, we do not have a return, refund or exchange policy. We apologize for any inconvenience!"
+                    }
                 }
             },
             "contactInfo": {
@@ -196,7 +248,7 @@
                     "description": "The Marketing Mall presents a significant number of opportunities for people who want to be sellers. Start selling products and developing your own business now!",
                     "date": "Working hour:",
                     "work": "Mon - Fri: 9:00 to 18:00",
-                    "weekend": "Sat - Іun: Weekend"
+                    "weekend": "Sat - Sun: Weekend"
                 },
                 "buyers": {
                     "title": "Buyers",
@@ -334,7 +386,8 @@
                     "count": "Count",
                     "payment": "Payment",
                     "delivery": "Delivery",
-                    "total": "Total"
+                    "total": "Total",
+                    "from": "from"
                 }
             },
             "ordering": {

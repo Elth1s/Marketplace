@@ -10,7 +10,7 @@ namespace DAL.Entities
         public string Photo { get; set; }
         public string Email { get; set; }
         public string SiteUrl { get; set; }
-
+        public bool IsDeleted { get; set; }
 
         public int? CountryId { get; set; }
         public int? CityId { get; set; }

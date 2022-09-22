@@ -77,14 +77,13 @@ const Order = () => {
                         }}>
                         <Grid container>
                             <Grid item xs={4}>
-                                <Typography variant="h5">№{item.id}</Typography>
+                                <Typography variant="h5">№{item.id} {t("pages.user.order.from")} {item.date}</Typography>
                                 <Typography variant="h5">{item.orderStatusName}</Typography>
                             </Grid>
                             <Grid item xs={4}>
                                 <Typography variant="h5">{t("pages.user.order.totalPrice")}</Typography>
                                 <Typography variant="h5">
-                                    {item.totalPrice}
-                                    {t("currency")}
+                                    {item.totalPrice} {t("currency")}
                                 </Typography>
                             </Grid>
                             <Grid item xs={4}>
@@ -150,8 +149,7 @@ const Order = () => {
                                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                                     <Typography variant="subtitle1" sx={{ fontWeight: "700" }}>{t("pages.user.order.total")}</Typography>
                                     <Typography variant="subtitle1">
-                                        {item.totalPrice}
-                                        {t("currency")}
+                                        {item.totalPrice} {t("currency")}
                                     </Typography>
                                 </Box>
                             </Grid>

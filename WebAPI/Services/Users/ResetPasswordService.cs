@@ -47,7 +47,7 @@ namespace WebAPI.Services.Users
 
         public async Task SendResetPasswordByEmailAsync(EmailRequest request)
         {
-            var user = await _userManager.FindByEmailAsync(request.Email);
+            var user = await _userManager.GetByEmailAsync(request.Email);
 
             user.UserNullChecking();
 
@@ -69,7 +69,7 @@ namespace WebAPI.Services.Users
         {
             request.Phone = _phoneNumberManager.GetPhoneE164Format(request.Phone);
 
-            var user = await _userManager.FindByPhoneNumberAsync(request.Phone);
+            var user = await _userManager.GetByPhoneNumberAsync(request.Phone);
 
             user.UserNullChecking();
 
@@ -80,7 +80,7 @@ namespace WebAPI.Services.Users
         {
             request.Phone = _phoneNumberManager.GetPhoneE164Format(request.Phone);
 
-            var user = await _userManager.FindByPhoneNumberAsync(request.Phone);
+            var user = await _userManager.GetByPhoneNumberAsync(request.Phone);
 
             user.UserNullChecking();
 

@@ -54,7 +54,7 @@ namespace WebAPI.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<CityForSelectResponse>))]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         [HttpGet("GetByCountry/{countryId}")]
         public async Task<IActionResult> GetCitiesByCountry(int countryId)
         {

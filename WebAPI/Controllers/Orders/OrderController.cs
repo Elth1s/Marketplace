@@ -136,11 +136,35 @@ namespace WebAPI.Controllers.Orders
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [Authorize]
         [HttpPut("CancelOrder/{id}")]
         public async Task<IActionResult> CancelOrder(int id)
         {
             await _orderService.CancelOrderAsync(id, UserId);
             return Ok(_orderLocalizer["CancelSuccess"].Value);
+        }
+
+        /// <summary>
+        /// Update order
+        /// </summary>
+        /// <param name="id">Order identifier</param>
+        /// <param name="request">Order update info</param>
+        /// <response code="200">Order updating completed successfully</response>
+        /// <response code="401">You are not authorized</response>
+        /// <response code="403">You don't have permission</response>
+        /// <response code="404">Order not found</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = "Admin,Seller")]
+        [HttpPut("UpdateOrder/{id}")]
+        public async Task<IActionResult> UpdateOrder(int id, UpdateOrderRequest request)
+        {
+            await _orderService.UpdateAsync(id, request);
+            return Ok(_orderLocalizer["UpdateSuccess"].Value);
         }
 
         /// <summary>
