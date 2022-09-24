@@ -435,11 +435,21 @@
                     "delivery": "Delivery",
                     "total": "Total",
                     "from": "from"
+                },
+                "createProduct": {
+                    "title": "Створити продукт",
+                    "photoOrSearch": "Перемістити фото або здійснити пошук для завантаження",
+                    "imagesUploaded": "Зображення завантажені",
+                    "btn": "Створити"
                 }
             },
             "shortSellerInfo": {
                 "title": "Seller"
             },
+            "confirmEmail": {
+                "success": "Email Confirmed",
+                "failed": "Confirmation Failed"
+             },
             "ordering": {
                 "title": "Place an order",
                 "contactInfo": "Contact info",
@@ -500,8 +510,13 @@
                 "title": "Send a reply",
                 "button": "Send",
                 "exceptions": {
-                    "urlSlugError": "Щось пішло не так"
+                    "urlSlugError": "Something went wrong"
                 }
+            },
+            "cropperDialog": {
+                "selectPhoto": "Select photo",
+                "changePhoto": "Change photo",
+                "btn": "Save changes"
             }
         },
         "toastTitles": {

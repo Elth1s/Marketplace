@@ -206,7 +206,7 @@
                 "find": "Пошук",
                 "finded": "Знайдено"
             },
-            "about":{
+            "about": {
                 "aboutUs": {
                     "title": "Про нас",
                     "desc": "Mall — найбільший маркетплейс України, де продаються товари від десятків тисяч підприємців з усієї країни. У нас можна знайти буквально все. Надаємо гарантію, бо вважаємо, що онлайн-шопінг має бути максимально безпечним."
@@ -435,10 +435,20 @@
                     "delivery": "Доставка",
                     "total": "Всього",
                     "from": "від"
+                },
+                "createProduct": {
+                    "title": "Create Product",
+                    "photoOrSearch": "Move photo or search to upload",
+                    "imagesUploaded": "Images are uploaded",
+                    "btn": "Create"
                 }
             },
             "shortSellerInfo": {
                 "title": "Продавець"
+            },
+            "confirmEmail": {
+                "success": "Електронна пошта підтверджена",
+                "failed": "Помилка підтвердження"
             },
             "ordering": {
                 "title": "Оформлення замовлення",
@@ -502,6 +512,11 @@
                 "exceptions": {
                     "urlSlugError": "Щось пішло не так"
                 }
+            },
+            "cropperDialog": {
+                "selectPhoto": "Вибрати фото",
+                "changePhoto": "Змінити фото",
+                "btn": "Зберегти зміни"
             }
         },
         "toastTitles": {

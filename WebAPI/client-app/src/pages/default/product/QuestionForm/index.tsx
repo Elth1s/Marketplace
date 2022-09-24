@@ -100,7 +100,7 @@ const QuestionForm: FC<Props> = ({ getData }) => {
                             fullWidth
                             variant="outlined"
                             type="text"
-                            placeholder="Full name"
+                            placeholder={t("validationProps.fullName")}
                             {...getFieldProps('fullName')}
                             error={Boolean(touched.fullName && errors.fullName)}
                             helperText={touched.fullName && errors.fullName}
@@ -112,7 +112,7 @@ const QuestionForm: FC<Props> = ({ getData }) => {
                             fullWidth
                             variant="outlined"
                             type="text"
-                            placeholder="Email"
+                            placeholder={t("validationProps.email")}
                             autoComplete="email"
                             {...getFieldProps('email')}
                             error={Boolean(touched.email && errors.email)}
@@ -126,7 +126,7 @@ const QuestionForm: FC<Props> = ({ getData }) => {
                             rows={3}
                             variant="outlined"
                             type="text"
-                            placeholder="Message"
+                            placeholder={t("validationProps.message")}
                             {...getFieldProps('message')}
                             error={Boolean(touched.message && errors.message)}
                             helperText={touched.message && errors.message}
