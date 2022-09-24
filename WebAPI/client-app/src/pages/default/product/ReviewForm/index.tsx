@@ -115,7 +115,7 @@ const ReviewForm: FC<Props> = ({ getData }) => {
                         mb: "25px"
                     }}
                 >
-                    <Typography sx={{ mr: "18px" }}>{t('pages.product.reviewForm.generalImpression')}</Typography>
+                    <Typography color="inherit" sx={{ mr: "18px" }}>{t('pages.product.reviewForm.generalImpression')}</Typography>
                     <RatingStyle
                         sx={{ fontSize: "30px" }}
                         value={formik.values.productRating}

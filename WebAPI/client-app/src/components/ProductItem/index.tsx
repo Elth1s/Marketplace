@@ -1,4 +1,4 @@
-import { Box, IconButton, Typography, Paper } from '@mui/material'
+import { Box, IconButton, Typography, Paper, useTheme } from '@mui/material'
 import { FC } from 'react'
 
 import LinkRouter from '../LinkRouter'
@@ -23,6 +23,7 @@ interface Props {
 
 const ProductItem: FC<Props> = ({ isSelected, name, image, statusName, urlSlug, price, discount }) => {
     const { t } = useTranslation();
+    const { palette } = useTheme();
 
     const { ChangeIsSelectedProducts } = useActions();
 
@@ -43,8 +44,8 @@ const ProductItem: FC<Props> = ({ isSelected, name, image, statusName, urlSlug, 
                             alt="productImage"
                         />
                     </ImageBoxStyle>
-                    <Paper elevation={0} sx={{ minHeight: "46px", maxHeight: "46px", overflow: "hidden" }}>
-                        <Typography variant="h5" fontWeight="medium">
+                    <Paper elevation={0} sx={{ background: palette.mode == "dark" ? "#2D2D2D" : "transparent", minHeight: "46px", maxHeight: "46px", overflow: "hidden" }}>
+                        <Typography variant="h5" color="inherit" fontWeight="medium">
                             {name}
                         </Typography>
                     </Paper>
@@ -56,11 +57,11 @@ const ProductItem: FC<Props> = ({ isSelected, name, image, statusName, urlSlug, 
                             <Typography variant="subtitle1" color="#7e7e7e" sx={{ marginTop: "auto" }}>
                                 {price} {t("currency")}
                             </Typography>
-                            <Typography variant="h5">
+                            <Typography variant="h5" color="inherit">
                                 {discount} {t("currency")}
                             </Typography>
                         </>
-                        : <Typography variant="h5" sx={{ marginTop: "auto" }}>
+                        : <Typography variant="h5" color="inherit" sx={{ marginTop: "auto" }}>
                             {price} {t("currency")}
                         </Typography>}
                 </BoxStyle>

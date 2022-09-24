@@ -245,8 +245,9 @@ const EnhancedTable: FC<EnhancedTableProps> = ({ page, rowsPerPage, handleChange
                 sx={{
                     marginBottom: 2,
                     border: 1,
-                    borderColor: (theme) => `${theme.palette.common.black}`,
-                }} >
+                    borderColor: (theme) => `${theme.palette.mode == "dark" ? theme.palette.common.white : theme.palette.common.black}`,
+                }}
+            >
                 <EnhancedTableToolbar numSelected={numSelected} onChangeSearch={setName} onPageChange={handleChangePage} update={update} show={show} onDelete={() => onDelete()} />
                 <TableContainer>
                     <Table

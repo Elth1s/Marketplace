@@ -53,7 +53,6 @@ const Reviews = () => {
                 <Grid
                     key={index}
                     sx={{
-                        background: "#FFFFFF",
                         border: "1px solid #7E7E7E",
                         borderRadius: "10px",
                         padding: "36px 42px",
@@ -61,19 +60,19 @@ const Reviews = () => {
                     }}>
                     <Grid item container sx={{ justifyContent: "space-between" }}>
                         <Grid item sx={{ mb: "40px" }}>
-                            <Typography variant="h1" sx={{ mb: "20px" }}>{item.fullName}</Typography>
+                            <Typography variant="h1" color="inherit" sx={{ mb: "20px" }}>{item.fullName}</Typography>
                             <Box sx={{ display: "flex" }}>
-                                <Typography variant="h4" sx={{ display: "flex", alignItems: "center", mr: "40px" }}>
+                                <Typography variant="h4" color="inherit" sx={{ display: "flex", alignItems: "center", mr: "40px" }}>
                                     {t('pages.seller.reviews.service')}
                                     <StarRounded color="primary" sx={{ fontSize: "30px", mx: "10px" }} />
                                     {item.serviceQualityRating}
                                 </Typography>
-                                <Typography variant="h4" sx={{ display: "flex", alignItems: "center", mr: "40px" }}>
+                                <Typography variant="h4" color="inherit" sx={{ display: "flex", alignItems: "center", mr: "40px" }}>
                                     {t('pages.seller.reviews.terms')}
                                     <StarRounded color="primary" sx={{ fontSize: "30px", mx: "10px" }} />
                                     {item.timelinessRating}
                                 </Typography>
-                                <Typography variant="h4" sx={{ display: "flex", alignItems: "center" }}>
+                                <Typography variant="h4" color="inherit" sx={{ display: "flex", alignItems: "center" }}>
                                     {t('pages.seller.reviews.information')}
                                     <StarRounded color="primary" sx={{ fontSize: "30px", mx: "10px" }} />
                                     {item.informationRelevanceRating}
@@ -81,11 +80,11 @@ const Reviews = () => {
                             </Box>
                         </Grid>
                         <Grid item>
-                            <Typography variant="h5">{item.date}</Typography>
+                            <Typography variant="h5" color="inherit">{item.date}</Typography>
                         </Grid>
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="h4">{item.comment}</Typography>
+                        <Typography variant="h4" color="inherit">{item.comment}</Typography>
                     </Grid>
                 </Grid>
             ))}

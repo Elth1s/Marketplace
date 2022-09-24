@@ -130,7 +130,7 @@ const ProductTable = () => {
     return (
         <>
             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", my: "30px" }}>
-                <Typography variant="h1">{t('containers.admin_seller.sideBar.products')}</Typography>
+                <Typography variant="h1" color="inherit">{t('containers.admin_seller.sideBar.products')}</Typography>
                 <LinkRouter underline="none" to="/seller/products/create" >
                     <IconButton
                         sx={{ borderRadius: '12px', background: "#F45626", "&:hover": { background: "#CB2525" }, "&& .MuiTouchRipple-child": { backgroundColor: "transparent" } }}

@@ -2,6 +2,7 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
+import { useTheme } from "@mui/material";
 
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -12,7 +13,7 @@ import {
     black_eye, orange_eye,
     black_shopping_cart, orange_shopping_cart,
     black_heart, orange_heart,
-    black_review, orange_review,
+    black_review, orange_review, white_admin_user, black_admin_user, white_admin_eye, black_admin_eye, white_admin_shopping_cart, black_admin_shopping_cart, white_admin_heart, black_admin_heart,
 } from '../../../assets/icons';
 
 import { ListItemButtonStyle } from './styled';
@@ -30,14 +31,34 @@ interface IMenuItem {
 
 const Sidebar = () => {
     const { t } = useTranslation();
-
+    const { palette } = useTheme();
     const { user } = useTypedSelector(state => state.auth);
 
     const [menuItems, setMenuItems] = useState<Array<IMenuItem>>([
-        { label: `${user.firstName} ${user.secondName}`, path: '/profile/information', icon: black_user, activeIcon: orange_user },
-        { label: `${t("pages.user.menu.reviewedProducts")}`, path: '/profile/reviewed-products', icon: black_eye, activeIcon: orange_eye },
-        { label: `${t("pages.user.menu.myOrders")}`, path: '/profile/orders', icon: black_shopping_cart, activeIcon: orange_shopping_cart },
-        { label: `${t("pages.user.menu.selectedProducts")}`, path: '/profile/selected-products', icon: black_heart, activeIcon: orange_heart },
+        {
+            label: `${user.firstName} ${user.secondName}`,
+            path: '/profile/information',
+            icon: palette.mode == "dark" ? white_admin_user : black_admin_user,
+            activeIcon: orange_user
+        },
+        {
+            label: `${t("pages.user.menu.reviewedProducts")}`,
+            path: '/profile/reviewed-products',
+            icon: palette.mode == "dark" ? white_admin_eye : black_admin_eye,
+            activeIcon: orange_eye
+        },
+        {
+            label: `${t("pages.user.menu.myOrders")}`,
+            path: '/profile/orders',
+            icon: palette.mode == "dark" ? white_admin_shopping_cart : black_admin_shopping_cart,
+            activeIcon: orange_shopping_cart
+        },
+        {
+            label: `${t("pages.user.menu.selectedProducts")}`,
+            path: '/profile/selected-products',
+            icon: palette.mode == "dark" ? white_admin_heart : black_admin_heart,
+            activeIcon: orange_heart
+        },
         // { label: `${t("pages.user.menu.myReviews")}`, path: '/profile/reviews', icon: black_review, activeIcon: orange_review },
     ]);
 
@@ -82,7 +103,14 @@ const Sidebar = () => {
                                     alt="icon"
                                 />
                             </ListItemIcon>
-                            <ListItemText primary={item.label} />
+                            <ListItemText
+                                sx={{
+                                    "& .MuiListItemText-primary": {
+                                        color: palette.mode == "dark" ? palette.common.white : palette.common.black
+                                    }
+                                }}
+                                primary={item.label}
+                            />
                         </ListItemButtonStyle>
                     </ListItem>
                 </LinkRouter>

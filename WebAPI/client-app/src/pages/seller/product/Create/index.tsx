@@ -117,7 +117,7 @@ const ProductCreate = () => {
 
     return (
         <Box sx={{ flexGrow: 1, m: 1, mx: 3, }}>
-            <Typography variant="h4" gutterBottom sx={{ my: "auto" }}>
+            <Typography variant="h4" color="inherit" gutterBottom sx={{ my: "auto" }}>
                 Create Product
             </Typography>
 
@@ -210,14 +210,14 @@ const ProductCreate = () => {
                                     filters.map((filterGroup, index) => {
                                         return (
                                             <>
-                                                <Typography key={`filter_group_${index}`} variant="h2">
+                                                <Typography key={`filter_group_${index}`} variant="h2" color="inherit">
                                                     {filterGroup.name}
                                                 </Typography>
                                                 {filterGroup.filterNames.map((filterName, index) => {
                                                     return (
                                                         <Grid key={`filter_name_${index}`} container>
                                                             <Grid item xs={6}>
-                                                                <Typography variant="h4">
+                                                                <Typography variant="h4" color="inherit">
                                                                     {filterName.name}
                                                                 </Typography>
                                                             </Grid>
@@ -260,7 +260,7 @@ const ProductCreate = () => {
                                                 src={upload_cloud}
                                                 alt="icon"
                                                 style={{ width: "25px", height: "25px" }} />
-                                            <Typography variant="subtitle1" align="center">
+                                            <Typography variant="subtitle1" color="inherit" align="center">
                                                 Move photo or search to upload
                                             </Typography>
                                         </Box>

@@ -2,14 +2,13 @@ import { Box, DialogActions, DialogContent, DialogTitle, IconButton, Typography,
 import { Close, StarRounded } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 
+import * as Yup from 'yup';
 import { FC, useState } from "react";
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Form, FormikProvider, useFormik } from "formik";
 
-import { reviewValidationFields } from "../validation";
-import { IReview } from "../types";
 import { ServerError } from '../../../../store/types';
 
 import { ReviewQustionDialogStyle } from '../../../../components/Dialog/styled';
@@ -21,6 +20,7 @@ import { useTypedSelector } from '../../../../hooks/useTypedSelector';
 import { useActions } from "../../../../hooks/useActions";
 import CropperDialog from '../../../../components/CropperDialog';
 
+import { IReview } from "../types";
 
 interface Props {
     getData: any
@@ -56,6 +56,14 @@ const AddReview: FC<Props> = ({ getData }) => {
     const handleClickClose = () => {
         setDialogOpen(false);
     };
+
+    const reviewValidationFields = Yup.object().shape({
+        fullName: Yup.string().required().min(2).max(60).label(t('validationProps.fullName')),
+        email: Yup.string().required().label(t('validationProps.email')),
+        advantages: Yup.string().max(100).label(t('validationProps.advantages')),
+        disadvantages: Yup.string().max(100).label(t('validationProps.disadvantages')),
+        comment: Yup.string().required().min(1).max(850).label(t('validationProps.comment')),
+    });
 
     const onHandleSubmit = async (values: IReview) => {
         try {
@@ -125,7 +133,7 @@ const AddReview: FC<Props> = ({ getData }) => {
                 aria-describedby="alert-dialog-slide-description"
             >
                 <DialogTitle sx={{ pt: "26px", pb: "20px", px: "30px" }}>
-                    <Typography fontSize="30px">
+                    <Typography color="inherit" fontSize="30px">
                         {t("components.reviewDialog.title")}
                     </Typography>
                     <IconButton
@@ -145,7 +153,7 @@ const AddReview: FC<Props> = ({ getData }) => {
                     <Form autoComplete="off" noValidate onSubmit={handleSubmit} >
                         <DialogContent sx={{ width: "690px", mx: "auto", p: 0 }}>
                             <Box sx={{ display: "flex", mb: "30px" }}>
-                                <Typography variant="h4" sx={{ pr: "18px" }}>
+                                <Typography variant="h4" color="inherit" sx={{ pr: "18px" }}>
                                     {t("components.reviewDialog.overview")}
                                 </Typography>
                                 <RatingStyle
@@ -167,7 +175,7 @@ const AddReview: FC<Props> = ({ getData }) => {
                                         fullWidth
                                         variant="outlined"
                                         type="text"
-                                        placeholder="Full name"
+                                        placeholder={t('validationProps.fullName')}
                                         {...getFieldProps('fullName')}
                                         error={Boolean(touched.fullName && errors.fullName)}
                                         helperText={touched.fullName && errors.fullName}
@@ -179,7 +187,7 @@ const AddReview: FC<Props> = ({ getData }) => {
                                         fullWidth
                                         variant="outlined"
                                         type="text"
-                                        placeholder="Email"
+                                        placeholder={t('validationProps.email')}
                                         autoComplete="email"
                                         {...getFieldProps('email')}
                                         error={Boolean(touched.email && errors.email)}
@@ -193,7 +201,7 @@ const AddReview: FC<Props> = ({ getData }) => {
                                         rows={3}
                                         variant="outlined"
                                         type="text"
-                                        placeholder="Comment"
+                                        placeholder={t('validationProps.comment')}
                                         {...getFieldProps('comment')}
                                         error={Boolean(touched.comment && errors.comment)}
                                         helperText={touched.comment && errors.comment}
@@ -204,7 +212,7 @@ const AddReview: FC<Props> = ({ getData }) => {
                                         fullWidth
                                         variant="outlined"
                                         type="text"
-                                        placeholder="Advantages"
+                                        placeholder={t('validationProps.advantages')}
                                         {...getFieldProps('advantages')}
                                         error={Boolean(touched.advantages && errors.advantages)}
                                         helperText={touched.advantages && errors.advantages}
@@ -215,7 +223,7 @@ const AddReview: FC<Props> = ({ getData }) => {
                                         fullWidth
                                         variant="outlined"
                                         type="text"
-                                        placeholder="Disadvantages"
+                                        placeholder={t('validationProps.disadvantages')}
                                         {...getFieldProps('disadvantages')}
                                         error={Boolean(touched.disadvantages && errors.disadvantages)}
                                         helperText={touched.disadvantages && errors.disadvantages}
@@ -226,7 +234,7 @@ const AddReview: FC<Props> = ({ getData }) => {
                                         fullWidth
                                         variant="outlined"
                                         type="text"
-                                        placeholder="Video URL"
+                                        placeholder={t('validationProps.videoURL')}
                                         {...getFieldProps('videoURL')}
                                         error={Boolean(touched.videoURL && errors.videoURL)}
                                         helperText={touched.videoURL && errors.videoURL}

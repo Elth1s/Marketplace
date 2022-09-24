@@ -141,7 +141,7 @@ const AddShopReview: FC<Props> = ({ getData }) => {
                         justifyContent: "space-between",
                         alignItems: "flex-start"
                     }}>
-                        <Typography sx={{ fontSize: "30px", lineHeight: "38px" }}>
+                        <Typography color="inherit" sx={{ fontSize: "30px", lineHeight: "38px" }}>
                             {t('pages.seller.addReview.dialogTitle')}
                         </Typography>
                         <IconButton aria-label="close" onClick={handleClickClose}>
@@ -155,7 +155,7 @@ const AddShopReview: FC<Props> = ({ getData }) => {
                             <Grid container>
                                 <Grid item container xs={12} sx={{ justifyContent: "space-between", textAlig: "center", mb: "45px" }}>
                                     <Grid item sx={{ textAlign: "center" }}>
-                                        <Typography variant="h5" sx={{ mb: "10px" }}>{t('pages.seller.addReview.service')}</Typography>
+                                        <Typography variant="h5" color="inherit" sx={{ mb: "10px" }}>{t('pages.seller.addReview.service')}</Typography>
                                         <RatingStyle
                                             sx={{ fontSize: "30px" }}
                                             value={formik.values.serviceQualityRating}
@@ -169,7 +169,7 @@ const AddShopReview: FC<Props> = ({ getData }) => {
                                         />
                                     </Grid>
                                     <Grid item sx={{ textAlign: "center" }}>
-                                        <Typography>{t('pages.seller.addReview.terms')}</Typography>
+                                        <Typography color="inherit">{t('pages.seller.addReview.terms')}</Typography>
                                         <RatingStyle
                                             sx={{ fontSize: "30px" }}
                                             value={formik.values.timelinessRating}
@@ -183,7 +183,7 @@ const AddShopReview: FC<Props> = ({ getData }) => {
                                         />
                                     </Grid>
                                     <Grid item sx={{ textAlign: "center" }}>
-                                        <Typography>{t('pages.seller.addReview.information')}</Typography>
+                                        <Typography color="inherit">{t('pages.seller.addReview.information')}</Typography>
                                         <RatingStyle
                                             sx={{ fontSize: "30px" }}
                                             value={formik.values.informationRelevanceRating}

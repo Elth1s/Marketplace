@@ -30,7 +30,7 @@ const Catalog = () => {
     return (
         <>
             <BreadcrumbsComponent parents={[]} />
-            <Typography variant='h1' sx={{ marginBottom: "30px" }}>
+            <Typography variant='h1' color="inherit" sx={{ marginBottom: "30px" }}>
                 {t("components.breadcrumbs.catalog")}
             </Typography>
             <BoxCatalogStyle>

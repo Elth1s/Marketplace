@@ -14,13 +14,13 @@ export const TabsStyle = styled(Tabs)(() => ({
     }
 }));
 
-export const TabStyle = styled(Tab)(() => ({
+export const TabStyle = styled(Tab)(({ theme }) => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     width: "355px",
     height: "220px",
-    color: "#000000",
+    color: theme.palette.mode == "dark" ? "inherit" : "#000000",
     fontSize: "18px",
     lineHeight: "23px",
     fontWeight: "500",
@@ -30,8 +30,8 @@ export const TabStyle = styled(Tab)(() => ({
         marginBottom: "15px",
     },
     "&.Mui-selected": {
-        color: "#000000",
-        background: "#DFDFDF",
+        color: theme.palette.mode == "dark" ? "inherit" : "#000000",
+        background: theme.palette.mode == "dark" ? "none" : "#DFDFDF"
     }
 }));
 
@@ -40,6 +40,7 @@ export const AccordionStyle = styled(Accordion)(() => ({
         width: "1030px",
         marginBottom: "20px",
         boxShadow: "none",
+        backgroundImage: "none",
         "&:before": {
             content: "none",
         },

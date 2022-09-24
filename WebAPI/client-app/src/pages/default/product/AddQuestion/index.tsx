@@ -2,14 +2,13 @@ import { Box, DialogActions, DialogContent, DialogTitle, IconButton, Typography,
 import { Close, StarRounded } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 
-import { FC, useEffect, useState } from "react";
+import * as Yup from 'yup';
+import { FC, useState } from "react";
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Form, FormikProvider, useFormik } from "formik";
 
-import { questionValidationFields } from "../validation";
-import { IQuestion } from "../types";
 import { ServerError } from '../../../../store/types';
 
 import { ReviewQustionDialogStyle } from '../../../../components/Dialog/styled';
@@ -22,6 +21,7 @@ import { useActions } from "../../../../hooks/useActions";
 import { upload_cloud } from '../../../../assets/icons';
 import CropperDialog from '../../../../components/CropperDialog';
 
+import { IQuestion } from "../types";
 
 interface Props {
     getData: any
@@ -53,6 +53,12 @@ const AddQuestion: FC<Props> = ({ getData }) => {
     const handleClickClose = () => {
         setDialogOpen(false);
     };
+
+    const questionValidationFields = Yup.object().shape({
+        fullName: Yup.string().required().min(2).max(80).label(t('validationProps.fullName')),
+        email: Yup.string().required().label(t('validationProps.email')),
+        message: Yup.string().required().min(2).max(500).label(t('validationProps.message')),
+    });
 
     const onHandleSubmit = async (values: IQuestion) => {
         try {
@@ -118,7 +124,7 @@ const AddQuestion: FC<Props> = ({ getData }) => {
                 aria-describedby="alert-dialog-slide-description"
             >
                 <DialogTitle sx={{ pt: "26px", pb: "20px", px: "30px" }}>
-                    <Typography fontSize="30px">
+                    <Typography color="inherit" fontSize="30px">
                         {t("components.questionDialog.title")}
                     </Typography>
                     <IconButton
@@ -143,7 +149,7 @@ const AddQuestion: FC<Props> = ({ getData }) => {
                                         fullWidth
                                         variant="outlined"
                                         type="text"
-                                        placeholder="Full name"
+                                        placeholder={t('validationProps.fullName')}
                                         {...getFieldProps('fullName')}
                                         error={Boolean(touched.fullName && errors.fullName)}
                                         helperText={touched.fullName && errors.fullName}
@@ -155,7 +161,7 @@ const AddQuestion: FC<Props> = ({ getData }) => {
                                         fullWidth
                                         variant="outlined"
                                         type="text"
-                                        placeholder="Email"
+                                        placeholder={t('validationProps.email')}
                                         autoComplete="email"
                                         {...getFieldProps('email')}
                                         error={Boolean(touched.email && errors.email)}
@@ -169,7 +175,7 @@ const AddQuestion: FC<Props> = ({ getData }) => {
                                         rows={3}
                                         variant="outlined"
                                         type="text"
-                                        placeholder="Message"
+                                        placeholder={t('validationProps.message')}
                                         {...getFieldProps('message')}
                                         error={Boolean(touched.message && errors.message)}
                                         helperText={touched.message && errors.message}

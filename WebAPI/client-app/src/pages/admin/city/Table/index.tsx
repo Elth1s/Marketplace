@@ -111,7 +111,7 @@ const CityTable = () => {
     return (
         <>
             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", my: "30px" }}>
-                <Typography variant="h1">{t('containers.admin_seller.sideBar.cities')}</Typography>
+                <Typography variant="h1" color="inherit">{t('containers.admin_seller.sideBar.cities')}</Typography>
                 <Create afterCreate={() => { getData() }} />
             </Box>
             <EnhancedTable

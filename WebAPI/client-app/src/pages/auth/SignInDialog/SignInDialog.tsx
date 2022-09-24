@@ -6,16 +6,17 @@ import {
     Grid,
     IconButton,
     InputAdornment,
-    Typography
+    Typography,
+    useTheme 
 } from '@mui/material';
-import {
-    FC,
-    useState
-} from 'react'
 import { Close, VisibilityOffOutlined, VisibilityOutlined } from '@mui/icons-material';
+
+import * as Yup from 'yup';
+import { FC, useState } from 'react'
 import { Form, FormikProvider, useFormik } from 'formik';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
 import { useActions } from '../../../hooks/useActions';
@@ -24,7 +25,6 @@ import { toLowerFirstLetter } from '../../../http_comon';
 
 import { ServerError } from '../../../store/types';
 import { ILoginModel } from '../types';
-import { LogInSchema } from '../validation';
 
 import { TextFieldFirstStyle } from '../../../components/TextField/styled';
 import { LoadingButtonStyle } from '../../../components/LoadingButton/styled';
@@ -40,6 +40,9 @@ interface Props {
 }
 
 const SignInDialog: FC<Props> = ({ changeDialog, forgotPasswordOpen }) => {
+    const { t } = useTranslation();
+    const { palette } = useTheme();
+
     const { LoginUser, AuthDialogChange, GetBasketItems } = useActions();
     const { executeRecaptcha } = useGoogleReCaptcha();
 
@@ -47,6 +50,11 @@ const SignInDialog: FC<Props> = ({ changeDialog, forgotPasswordOpen }) => {
 
     const [showPassword, setShowPassword] = useState(false);
     const loginModel: ILoginModel = { emailOrPhone: '', password: '' };
+
+    const LogInSchema = Yup.object().shape({
+        emailOrPhone: Yup.string().required().label(t('validationProps.emailOrPhone')),
+        password: Yup.string().required().label(t('validationProps.password'))
+    });
 
     const formik = useFormik({
         initialValues: loginModel,
@@ -94,9 +102,9 @@ const SignInDialog: FC<Props> = ({ changeDialog, forgotPasswordOpen }) => {
 
     return (
         <>
-            <DialogTitle sx={{ py: "36px" }}>
-                <Typography fontSize="30px" align="center" lineHeight="38px">
-                    Sign In
+            <DialogTitle color="inherit" sx={{ py: "36px" }}>
+                <Typography color="inherit" fontSize="30px" align="center" lineHeight="38px">
+                {t('pages.signIn.title')}
                 </Typography>
                 <IconButton
                     color="inherit"
@@ -120,7 +128,7 @@ const SignInDialog: FC<Props> = ({ changeDialog, forgotPasswordOpen }) => {
                                     fullWidth
                                     variant="standard"
                                     type="text"
-                                    label="Email address or phone"
+                                    label={t('validationProps.emailOrPhone')}
                                     {...getFieldProps('emailOrPhone')}
                                     error={Boolean(touched.emailOrPhone && errors.emailOrPhone)}
                                     helperText={touched.emailOrPhone && errors.emailOrPhone}
@@ -131,7 +139,7 @@ const SignInDialog: FC<Props> = ({ changeDialog, forgotPasswordOpen }) => {
                                     fullWidth
                                     variant="standard"
                                     type={showPassword ? 'text' : 'password'}
-                                    label="Password"
+                                    label={t('validationProps.password')}
                                     {...getFieldProps('password')}
                                     InputProps={{
                                         endAdornment: (
@@ -163,18 +171,18 @@ const SignInDialog: FC<Props> = ({ changeDialog, forgotPasswordOpen }) => {
                                         forgotPasswordOpen();
                                     }}
                                 >
-                                    Forgot password?
+                                    {t('pages.signIn.forgotPassword')}
                                 </Typography>
-                                <Typography variant='subtitle1' lineHeight="25px" sx={{ cursor: "pointer" }}
+                                <Typography variant='subtitle1' color="inherit" lineHeight="25px" sx={{ cursor: "pointer" }}
                                     onClick={changeDialog}
                                 >
-                                    Don't have an account?
+                                    {t('pages.signIn.DoNotHaveAnAccount')}
                                 </Typography>
                             </Grid>
                             <Grid item xs={12} display="flex" justifyContent="center" >
-                                <Box sx={{ width: "98px", height: "14px", borderBottom: "2px solid #000" }} />
-                                <Typography variant="h5" sx={{ padding: "0 7px" }}>or</Typography>
-                                <Box sx={{ width: "98px", height: "14px", borderBottom: "2px solid #000" }} />
+                                <Box sx={{ width: "98px", height: "14px", borderBottom: `2px solid ${palette.mode == "dark" ? "#FFF" : "#000"}`}} />
+                                <Typography variant="h5" color="inherit" sx={{ padding: "0 7px" }}>{t('pages.signIn.or')}</Typography>
+                                <Box sx={{ width: "98px", height: "14px", borderBottom: `2px solid ${palette.mode == "dark" ? "#FFF" : "#000"}` }} />
                             </Grid>
                             <Grid item xs={12} display="flex" justifyContent="center" >
                                 <GoogleExternalLogin />
@@ -190,7 +198,7 @@ const SignInDialog: FC<Props> = ({ changeDialog, forgotPasswordOpen }) => {
                             type="submit"
                             sx={{ width: "auto", px: "74px", py: "15px", ml: "auto" }}
                         >
-                            Sign In
+                            {t('pages.signIn.btnSignIn')}
                         </LoadingButtonStyle>
                     </DialogActions>
                 </Form>

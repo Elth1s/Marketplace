@@ -96,7 +96,7 @@ const Novelties = () => {
 
     return (
         <>
-            <Typography variant="h1">
+            <Typography variant="h1" color="inherit">
                 {t("pages.home.novelty.title")}
             </Typography>
             <Box sx={{ display: "flex", mt: "20px" }}>
@@ -139,7 +139,7 @@ const Novelties = () => {
                                                     )
                                                 }
                                             </Box>
-                                            <Typography variant="h4" fontWeight="bold" sx={{ pl: "10px" }}>
+                                            <Typography variant="h4" color="inherit" fontWeight="bold" sx={{ pl: "10px" }}>
                                                 {parent.name}
                                             </Typography>
                                         </AccordionSummary>
@@ -152,6 +152,7 @@ const Novelties = () => {
                                                             <Typography
                                                                 key={`child_category_${index}`}
                                                                 variant="h4"
+                                                                color="inherit"
                                                                 sx={{
                                                                     mt: "10px",
                                                                     cursor: "pointer"
@@ -175,7 +176,7 @@ const Novelties = () => {
                             {filterNames.map((item) => {
                                 return (
                                     <Box key={`fn${item.id}`} sx={{ paddingTop: "40px" }}>
-                                        <Typography variant="h3" fontWeight="bold" sx={{ paddingBottom: "5px" }} >
+                                        <Typography variant="h3" color="inherit" fontWeight="bold" sx={{ paddingBottom: "5px" }} >
                                             {item.name} {item.unitMeasure != null && `(${item.unitMeasure})`}
                                         </Typography>
                                         {item.filterValues.map((filterValue) => {
@@ -197,7 +198,7 @@ const Novelties = () => {
                                                         }}
                                                         checked={isItemSelected}
                                                     />
-                                                    <Typography variant="h4">
+                                                    <Typography variant="h4" color="inherit">
                                                         {filterValue.value}
                                                     </Typography>
                                                 </Box>

@@ -1,6 +1,9 @@
 import { DialogActions, DialogContent, DialogTitle, Grid, IconButton, Typography } from "@mui/material";
 import { Close } from "@mui/icons-material";
+
+import * as Yup from 'yup';
 import { FC } from "react";
+import { useTranslation } from "react-i18next";
 import { Form, FormikProvider, useFormik } from "formik";
 
 import { useActions } from "../../../hooks/useActions";
@@ -8,10 +11,11 @@ import { useActions } from "../../../hooks/useActions";
 import { toLowerFirstLetter } from "../../../http_comon";
 import { ServerError } from "../../../store/types";
 
-import { IResetPasswordEmail } from "./types";
-import { ResetPasswordEmailSchema } from "./validation";
 import { TextFieldFirstStyle } from "../../../components/TextField/styled";
 import { LoadingButtonStyle } from "../../../components/LoadingButton/styled";
+
+import { IResetPasswordEmail } from "./types";
+// import { ResetPasswordEmailSchema } from "./validation";
 
 interface Props {
     dialogClose: any,
@@ -19,8 +23,14 @@ interface Props {
 }
 
 const EmailDialog: FC<Props> = ({ dialogClose, changeDialog }) => {
+    const { t } = useTranslation();
     const { SendResetPasswordByEmail } = useActions();
+
     const resetPasswordModel: IResetPasswordEmail = { email: '' };
+
+    const ResetPasswordEmailSchema = Yup.object().shape({
+        email: Yup.string().email().required().label(t('validationProps.email')),
+    });
 
     const formik = useFormik({
         initialValues: resetPasswordModel,
@@ -53,9 +63,9 @@ const EmailDialog: FC<Props> = ({ dialogClose, changeDialog }) => {
 
     return (
         <>
-            <DialogTitle sx={{ py: "36px" }}>
-                <Typography fontSize="30px" align="center" lineHeight="38px">
-                    Reset password
+            <DialogTitle color="inherit" sx={{ py: "36px" }}>
+                <Typography color="inherit" fontSize="30px" align="center" lineHeight="38px">
+                    {t('pages.forgotPassword.title')}
                 </Typography>
                 <IconButton
                     color="inherit"
@@ -79,7 +89,7 @@ const EmailDialog: FC<Props> = ({ dialogClose, changeDialog }) => {
                                     fullWidth
                                     variant="standard"
                                     type="text"
-                                    label="Email address"
+                                    label={t('validationProps.email')}
                                     {...getFieldProps('email')}
                                     error={Boolean(touched.email && errors.email)}
                                     helperText={touched.email && errors.email}
@@ -95,12 +105,12 @@ const EmailDialog: FC<Props> = ({ dialogClose, changeDialog }) => {
                             type="submit"
                             sx={{ width: "auto", fontSize: "20px", lineHeight: "25px", py: "15px", px: "120px", mx: "auto", textTransform: "none" }}
                         >
-                            Reset
+                            {t('pages.forgotPassword.email.btn')}
                         </LoadingButtonStyle>
                     </DialogActions>
-                    <Typography variant='subtitle1' align="center" sx={{ cursor: "pointer", mb: "36px" }}
+                    <Typography variant='subtitle1' color="inherit" align="center" sx={{ cursor: "pointer", mb: "36px" }}
                         onClick={changeDialog}>
-                        Reset password by phone number
+                        {t('pages.forgotPassword.email.resetByPhone')}
                     </Typography>
                 </Form>
             </FormikProvider>
