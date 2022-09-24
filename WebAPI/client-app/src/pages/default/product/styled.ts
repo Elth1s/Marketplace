@@ -8,12 +8,12 @@ export const PriceBox = styled(Box)(() => ({
     marginTop: "70px"
 }))
 
-export const RatingBox = styled(Box)(({ theme }) => ({
+export const RatingBox = styled(Box)(() => ({
     display: "flex",
     mb: "45px"
 }))
 
-export const CharacteristicGrid = styled(Grid)(({ theme }) => ({
+export const CharacteristicGrid = styled(Grid)(() => ({
     position: "relative",
     marginBottom: "60px",
 }))
@@ -22,12 +22,12 @@ export const CharacteristicTypography = styled(Typography)(() => ({
     background: "#FFF",
 }))
 
-export const CharacteristicDivider = styled(Divider)(() => ({
+export const CharacteristicDivider = styled(Divider)(({theme}) => ({
     position: "absolute",
     height: "1px",
     width: "100%",
     top: "20px",
-    borderColor: "#000000",
+    borderColor: theme.palette.mode == "dark" ? "#FFF" : "#000",
     borderStyle: "dotted",
     borderBottomWidth: "revert",
     zIndex: "-1",

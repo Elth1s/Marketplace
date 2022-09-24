@@ -6,16 +6,17 @@ import {
     Grid,
     IconButton,
     InputAdornment,
-    Typography
+    Typography,
+    useTheme 
 } from '@mui/material';
-import {
-    FC,
-    useState
-} from 'react'
 import { Close, VisibilityOffOutlined, VisibilityOutlined } from '@mui/icons-material';
+
+import * as Yup from 'yup';
+import { FC, useState } from 'react'
 import { Form, FormikProvider, useFormik } from 'formik';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
 import { useActions } from '../../../hooks/useActions';
@@ -39,6 +40,9 @@ interface Props {
 }
 
 const SignUpDialog: FC<Props> = ({ changeDialog }) => {
+    const { t } = useTranslation();
+    const { palette } = useTheme();
+
     const { RegisterUser, AuthDialogChange, GetBasketItems } = useActions();
     const { executeRecaptcha } = useGoogleReCaptcha();
 
@@ -46,6 +50,15 @@ const SignUpDialog: FC<Props> = ({ changeDialog }) => {
 
     const [showPassword, setShowPassword] = useState(false);
     const registerModel: IRegisterModel = { firstName: '', secondName: '', emailOrPhone: '', password: '' };
+
+    const passwordRegExp = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-_]).{8,}$/
+
+    const SignUpSchema = Yup.object().shape({
+        firstName: Yup.string().min(3).max(50).required().label(t('validationProps.firstName')),
+        secondName: Yup.string().min(3).max(75).required().label(t('validationProps.secondName')),
+        emailOrPhone: Yup.string().required().label(t('validationProps.emailOrPhone')),
+        password: Yup.string().matches(passwordRegExp, 'Password is not valid').required().label(t('validationProps.password')),
+    });
 
     const formik = useFormik({
         initialValues: registerModel,
@@ -92,9 +105,9 @@ const SignUpDialog: FC<Props> = ({ changeDialog }) => {
     return (
         <>
 
-            <DialogTitle sx={{ py: "36px" }}>
-                <Typography fontSize="30px" align="center" lineHeight="38px">
-                    Sign Up
+            <DialogTitle color="inherit" sx={{ py: "36px" }}>
+                <Typography color="inherit" fontSize="30px" align="center" lineHeight="38px">
+                    {t('pages.signUp.title')}
                 </Typography>
                 <IconButton
                     color="inherit"
@@ -119,7 +132,7 @@ const SignUpDialog: FC<Props> = ({ changeDialog }) => {
                                     variant="standard"
                                     autoComplete="firstName"
                                     type="text"
-                                    label="First Name"
+                                    label={t('validationProps.firstName')}
                                     {...getFieldProps('firstName')}
                                     error={Boolean(touched.firstName && errors.firstName)}
                                     helperText={touched.firstName && errors.firstName}
@@ -131,7 +144,7 @@ const SignUpDialog: FC<Props> = ({ changeDialog }) => {
                                     variant="standard"
                                     autoComplete="secondName"
                                     type="text"
-                                    label="Second Name"
+                                    label={t('validationProps.secondName')}
                                     {...getFieldProps('secondName')}
                                     error={Boolean(touched.secondName && errors.secondName)}
                                     helperText={touched.secondName && errors.secondName}
@@ -143,7 +156,7 @@ const SignUpDialog: FC<Props> = ({ changeDialog }) => {
                                     variant="standard"
                                     autoComplete="emailOrPhone"
                                     type="text"
-                                    label="Email address ot phone number"
+                                    label={t('validationProps.emailOrPhone')}
                                     {...getFieldProps('emailOrPhone')}
                                     error={Boolean(touched.emailOrPhone && errors.emailOrPhone)}
                                     helperText={touched.emailOrPhone && errors.emailOrPhone}
@@ -155,7 +168,7 @@ const SignUpDialog: FC<Props> = ({ changeDialog }) => {
                                     variant="standard"
                                     autoComplete="password"
                                     type={showPassword ? 'text' : 'password'}
-                                    label="Password"
+                                    label={t('validationProps.password')}
                                     {...getFieldProps('password')}
                                     InputProps={{
                                         endAdornment: (
@@ -181,15 +194,15 @@ const SignUpDialog: FC<Props> = ({ changeDialog }) => {
                                 />
                             </Grid>
                             <Grid item xs={12} sx={{ width: "100%", display: "flex", justifyContent: "end" }} >
-                                <Typography variant='subtitle1' lineHeight="25px" sx={{ cursor: "pointer" }}
+                                <Typography variant='subtitle1' color="inherit" lineHeight="25px" sx={{ cursor: "pointer" }}
                                     onClick={changeDialog}>
-                                    Have an account?
+                                    {t('pages.signUp.haveAnAccount')}
                                 </Typography>
                             </Grid>
                             <Grid item xs={12} display="flex" justifyContent="center" >
-                                <Box sx={{ width: "98px", height: "14px", borderBottom: "2px solid #000" }} />
-                                <Typography variant="h5" sx={{ padding: "0 7px" }}>or</Typography>
-                                <Box sx={{ width: "98px", height: "14px", borderBottom: "2px solid #000" }} />
+                                <Box sx={{ width: "98px", height: "14px", borderBottom: `2px solid  ${palette.mode == "dark" ? "#FFF" : "#000"}` }} />
+                                <Typography variant="h5" color="inherit" sx={{ padding: "0 7px" }}>{t('pages.signUp.or')}</Typography>
+                                <Box sx={{ width: "98px", height: "14px", borderBottom: `2px solid ${palette.mode == "dark" ? "#FFF" : "#000"}` }} />
                             </Grid>
                             <Grid item xs={12} display="flex" justifyContent="center" >
                                 <GoogleExternalLogin />
@@ -205,7 +218,7 @@ const SignUpDialog: FC<Props> = ({ changeDialog }) => {
                             type="submit"
                             sx={{ width: "auto", px: "51px", py: "15px", ml: "auto", fontSize: "20px", lineHeight: "25px", textTransform: "none" }}
                         >
-                            Sign Up
+                            {t('pages.signUp.btnSignUp')}
                         </LoadingButtonStyle>
                     </DialogActions>
                 </Form>

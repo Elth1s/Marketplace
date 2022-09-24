@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 
 export const TextFieldStyle = styled(TextField)<TextFieldProps>(({ theme }) => ({
     "& .MuiInputLabel-root": {
-        color: "#000",
+        color: theme.palette.mode == "dark" ? "#FFF" : "#000",
         "&.Mui-focused": {
             color: theme.palette.secondary.main
         },
@@ -13,20 +13,20 @@ export const TextFieldStyle = styled(TextField)<TextFieldProps>(({ theme }) => (
     },
     "& .MuiInput-underline": {
         ":before": {
-            borderBottom: "2px solid #000"
+            borderBottom: `2px solid ${theme.palette.mode == "dark" ? "#FFF" : "#000"}`
         },
         ":after": {
             borderBottom: `2px solid ${theme.palette.secondary.main}`
         },
     },
     "& .MuiIconButton-root": {
-        color: "#000",
+        color: theme.palette.mode == "dark" ? "#FFF" : "#000",
     },
 }));
 
 export const TextFieldFirstStyle = styled(TextField)<TextFieldProps>(({ theme }) => ({
     "& .MuiInputLabel-root": {
-        color: "#000",
+        color: theme.palette.mode == "dark" ? "#FFF" : "#000",
         "&.Mui-focused": {
             color: theme.palette.secondary.main
         },
@@ -35,7 +35,7 @@ export const TextFieldFirstStyle = styled(TextField)<TextFieldProps>(({ theme })
         },
     },
     "& .MuiInput-underline:before": {
-        borderBottom: "2px solid #000"
+        borderBottom: `2px solid ${theme.palette.mode == "dark" ? "#FFF" : "#000"}`
     },
     "& .MuiInput-underline:after": {
         borderBottom: `2px solid ${theme.palette.secondary.main}`
@@ -44,15 +44,15 @@ export const TextFieldFirstStyle = styled(TextField)<TextFieldProps>(({ theme })
         borderBottom: "2px solid blue"
     },
     "& .MuiIconButton-root": {
-        color: "#000",
+        color: theme.palette.mode == "dark" ? "#FFF" : "#000",
     },
 }));
 
 export const TextFieldSecondStyle = styled(TextField)<TextFieldProps>(({ theme }) => ({
     "& .MuiInputLabel-root": {
-        color: "black",
+        color: theme.palette.mode == "dark" ? "#FFF" : "#000",
         "&.Mui-focused": {
-            color: "black"
+            color: theme.palette.mode == "dark" ? "#FFF" : "#000",
         },
         "&.Mui-error ": {
             color: `${theme.palette.error.main}`
@@ -62,16 +62,16 @@ export const TextFieldSecondStyle = styled(TextField)<TextFieldProps>(({ theme }
         },
     },
     "& .MuiOutlinedInput-root": {
-        color: "black",
+        color: theme.palette.mode == "dark" ? "#FFF" : "#000",
         "& fieldset": {
             borderRadius: "10px",
-            borderColor: "black"
+            borderColor: theme.palette.mode == "dark" ? "#FFF" : "#000",
         },
         "&:hover fieldset": {
-            borderColor: "black"
+            color: theme.palette.mode == "dark" ? "#FFF" : "#000",
         },
         "&.Mui-focused fieldset": {
-            borderColor: "black"
+            color: theme.palette.mode == "dark" ? "#FFF" : "#000",
         },
         "&.Mui-disabled fieldset": {
             borderColor: "#7e7e7e"

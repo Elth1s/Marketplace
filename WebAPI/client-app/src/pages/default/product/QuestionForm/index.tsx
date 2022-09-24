@@ -2,13 +2,13 @@ import { Box, DialogActions, DialogContent, DialogTitle, IconButton, Typography,
 import { Close, StarRounded } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 
+import * as Yup from 'yup';
 import { FC, useState } from "react";
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Form, FormikProvider, useFormik } from "formik";
 
-import { questionValidationFields, reviewValidationFields } from "../validation";
 import { IQuestion, IReview } from "../types";
 import { ServerError } from '../../../../store/types';
 
@@ -43,6 +43,12 @@ const QuestionForm: FC<Props> = ({ getData }) => {
         images: [],
         productSlug: ""
     };
+
+    const questionValidationFields = Yup.object().shape({
+        fullName: Yup.string().required().min(2).max(80).label(t("validationProps.filterName")),
+        email: Yup.string().required().label(t("validationProps.email")),
+        message: Yup.string().required().min(2).max(500).label(t("validationProps.message")),
+    });
 
     const onHandleSubmit = async (values: IQuestion) => {
         try {

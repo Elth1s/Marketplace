@@ -68,11 +68,12 @@ const ProductReviewsPage: FC<Props> = ({ addInCart }) => {
 
     return (
         <>
-            <Typography variant="h1" sx={{ mt: "30px", mb: "15px" }}>{reviews.length !== 0 ? t("pages.product.menu.reviews") : t("pages.product.menu.leaveReview")} {product.name}</Typography>
+            <Typography color="inherit" variant="h1" sx={{ mt: "30px", mb: "15px" }}>{reviews.length !== 0 ? t("pages.product.menu.reviews") : t("pages.product.menu.leaveReview")} {product.name}</Typography>
             {reviews.length !== 0
                 && <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Typography variant="h4" fontWeight="bold" display="inline" sx={{ marginRight: "70px" }}>{t("pages.product.seller")}:&nbsp;
+                    <Typography variant="h4" color="inherit" fontWeight="bold" display="inline" sx={{ marginRight: "70px" }}>{t("pages.product.seller")}:&nbsp;
                         <Typography
+                            color="inherit"
                             fontWeight="normal"
                             display="inline"
                             sx={{ fontSize: "20px" }}
@@ -82,7 +83,7 @@ const ProductReviewsPage: FC<Props> = ({ addInCart }) => {
                             </LinkRouter>
                         </Typography>
                     </Typography>
-                    <Typography variant="h4" fontWeight="bold">{t("pages.product.sellerRating")}: </Typography>
+                    <Typography variant="h4" color="inherit" fontWeight="bold">{t("pages.product.sellerRating")}: </Typography>
                     <RatingStyle
                         sx={{ ml: 1, fontSize: "30px", mr: "40px" }}
                         value={product.shopRating}
@@ -159,9 +160,9 @@ const ProductReviewsPage: FC<Props> = ({ addInCart }) => {
                                 {product.discount != null
                                     ? <Box sx={{ mr: "35px" }}>
                                         <Typography variant="h1" color="#7e7e7e">{product.price} {t("currency")}</Typography>
-                                        <Typography fontSize="50px" lineHeight="63px" sx={{ mr: "35px" }}>{product.discount} {t("currency")}</Typography>
+                                        <Typography color="inherit" fontSize="50px" lineHeight="63px" sx={{ mr: "35px" }}>{product.discount} {t("currency")}</Typography>
                                     </Box>
-                                    : <Typography fontSize="50px" lineHeight="63px" sx={{ mr: "35px" }}>{product.price} {t("currency")}</Typography>
+                                    : <Typography color="inherit" fontSize="50px" lineHeight="63px" sx={{ mr: "35px" }}>{product.price} {t("currency")}</Typography>
                                 }
                                 <IconButton color="primary" sx={{ borderRadius: "12px", mt: "auto" }}>
                                     <img
@@ -184,7 +185,12 @@ const ProductReviewsPage: FC<Props> = ({ addInCart }) => {
                                     icon={<StarRounded sx={{ fontSize: "30px" }} />}
                                     emptyIcon={<StarRounded sx={{ fontSize: "30px" }} />}
                                 />
-                                <Typography variant="h4" fontWeight="bold" display="inline">{productRating.rating} <Typography fontWeight="medium" display="inline" sx={{ fontSize: "20px" }}>({productRating.countReviews} {t("pages.product.ratings")})</Typography></Typography>
+                                <Typography variant="h4" color="inherit" fontWeight="bold" display="inline">
+                                    {productRating.rating}
+                                    <Typography color="inherit" fontWeight="medium" display="inline" sx={{ fontSize: "20px" }}>
+                                        ({productRating.countReviews} {t("pages.product.ratings")})
+                                    </Typography>
+                                </Typography>
                             </Box>
                             {product.isInBasket
                                 ? <BuyButtonSecondStyle fullWidth color="secondary" variant="contained"

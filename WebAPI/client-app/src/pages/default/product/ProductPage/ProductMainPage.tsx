@@ -1,4 +1,4 @@
-import { Box, Grid, Typography, IconButton } from "@mui/material";
+import { Box, Grid, Typography, IconButton, useTheme } from "@mui/material";
 import { StarRounded } from "@mui/icons-material";
 import { FC, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -19,7 +19,10 @@ import {
 } from "../styled";
 import { RatingStyle } from "../../../../components/Rating/styled";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
-import { arrow_right, buy_cart, credit_card, dollar_sign, filled_orange_heart, orange_heart, package_delivery, truck_delivery } from "../../../../assets/icons";
+import {
+    arrow_right, black_credit_card, black_dollar_sign, black_package_delivery, black_truck_delivery,
+    buy_cart, filled_orange_heart, orange_heart, white_credit_card, white_dollar_sign, white_package_delivery, white_truck_delivery
+} from "../../../../assets/icons";
 import { useActions } from "../../../../hooks/useActions";
 
 import ShowInfo from "../../ShortSellerInfo"
@@ -34,6 +37,7 @@ interface Props {
 
 const ProductMainPage: FC<Props> = ({ addInCart, moveToReview }) => {
     const { t } = useTranslation();
+    const { palette } = useTheme();
 
     const { GetReviews, BasketMenuChange, AddProductInSelected, GetProductRatingByUrlSlug } = useActions();
     const { product, reviews, productRating } = useTypedSelector(state => state.product);
@@ -60,10 +64,11 @@ const ProductMainPage: FC<Props> = ({ addInCart, moveToReview }) => {
 
     return (
         <>
-            <Typography variant="h1" sx={{ mt: "30px", mb: "15px" }}>{product.name}</Typography>
+            <Typography variant="h1" color="inherit" sx={{ mt: "30px", mb: "15px" }}>{product.name}</Typography>
             <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Typography variant="h4" fontWeight="bold" display="inline" sx={{ marginRight: "70px" }}>{t("pages.product.seller")}:&nbsp;
+                <Typography variant="h4" color="inherit" fontWeight="bold" display="inline" sx={{ marginRight: "70px" }}>{t("pages.product.seller")}:&nbsp;
                     <Typography
+                        color="inherit"
                         fontWeight="normal"
                         display="inline"
                         sx={{ fontSize: "20px" }}
@@ -73,7 +78,7 @@ const ProductMainPage: FC<Props> = ({ addInCart, moveToReview }) => {
                         </LinkRouter>
                     </Typography>
                 </Typography>
-                <Typography variant="h4" fontWeight="bold">{t("pages.product.sellerRating")}: </Typography>
+                <Typography variant="h4" color="inherit" fontWeight="bold">{t("pages.product.sellerRating")}: </Typography>
                 <RatingStyle
                     sx={{ ml: 1, fontSize: "30px", mr: "40px" }}
                     value={product.shopRating}
@@ -135,9 +140,9 @@ const ProductMainPage: FC<Props> = ({ addInCart, moveToReview }) => {
                         {product.discount != null
                             ? <Box sx={{ mr: "35px" }}>
                                 <Typography variant="h1" color="#7e7e7e">{product.price} {t("currency")}</Typography>
-                                <Typography fontSize="50px" lineHeight="63px" sx={{ mr: "35px" }}>{product.discount} {t("currency")}</Typography>
+                                <Typography color="inherit" fontSize="50px" lineHeight="63px" sx={{ mr: "35px" }}>{product.discount} {t("currency")}</Typography>
                             </Box>
-                            : <Typography fontSize="50px" lineHeight="63px" sx={{ mr: "35px" }}>{product.price} {t("currency")}</Typography>
+                            : <Typography color="inherit" fontSize="50px" lineHeight="63px" sx={{ mr: "35px" }}>{product.price} {t("currency")}</Typography>
                         }
                         <IconButton color="primary" sx={{ borderRadius: "12px", mt: "auto" }}>
                             <img
@@ -160,7 +165,11 @@ const ProductMainPage: FC<Props> = ({ addInCart, moveToReview }) => {
                             icon={<StarRounded sx={{ fontSize: "30px" }} />}
                             emptyIcon={<StarRounded sx={{ fontSize: "30px" }} />}
                         />
-                        <Typography variant="h4" fontWeight="bold" display="inline">{productRating.rating} <Typography fontWeight="medium" display="inline" sx={{ fontSize: "20px" }}>({productRating.countReviews} {t("pages.product.ratings")})</Typography></Typography>
+                        <Typography variant="h4" color="inherit" fontWeight="bold" display="inline">{productRating.rating}
+                            <Typography color="inherit" fontWeight="medium" display="inline" sx={{ fontSize: "20px" }}>
+                                ({productRating.countReviews} {t("pages.product.ratings")})
+                            </Typography>
+                        </Typography>
                     </Box>
                     <ShowInfo isMainPage={true} id={product.shopId} />
                     {product.isInBasket
@@ -191,43 +200,43 @@ const ProductMainPage: FC<Props> = ({ addInCart, moveToReview }) => {
                 </Grid>
                 <Grid item xs={4}>
                     <Box sx={{ width: "500px", ml: "auto" }}>
-                        <Typography variant="h1">
+                        <Typography variant="h1" color="inherit">
                             {t("pages.product.payment")}
                         </Typography>
                         <ListStyle>
                             <ListItemStyle>
                                 <img
                                     style={{ width: "30px", height: "30px", marginRight: "70px" }}
-                                    src={credit_card}
+                                    src={palette.mode == "dark" ? white_credit_card : black_credit_card}
                                     alt="icon"
                                 />
-                                <Typography variant="h4" fontWeight="medium">
+                                <Typography variant="h4" color="inherit" fontWeight="medium">
                                     {t("pages.product.paymentVariants.postpaidNovaPoshta")}
                                 </Typography>
                             </ListItemStyle>
                             <ListItemStyle>
                                 <img
                                     style={{ width: "30px", height: "30px", marginRight: "70px" }}
-                                    src={credit_card}
+                                    src={palette.mode == "dark" ? white_credit_card : black_credit_card}
                                     alt="icon"
                                 />
-                                <Typography variant="h4" fontWeight="medium">
+                                <Typography variant="h4" color="inherit" fontWeight="medium">
                                     {t("pages.product.paymentVariants.postpaidUkrposhta")}
                                 </Typography>
                             </ListItemStyle>
                             <ListItemStyle>
                                 <img
                                     style={{ width: "30px", height: "30px", marginRight: "70px" }}
-                                    src={dollar_sign}
+                                    src={palette.mode == "dark" ? white_dollar_sign : black_dollar_sign}
                                     alt="icon"
                                 />
-                                <Typography variant="h4" fontWeight="medium">
+                                <Typography variant="h4" color="inherit" fontWeight="medium">
                                     {t("pages.product.paymentVariants.postpaid")}
                                 </Typography>
                             </ListItemStyle>
                         </ListStyle>
 
-                        <Typography variant="h1" sx={{ marginTop: "80px" }}>
+                        <Typography variant="h1" color="inherit" sx={{ marginTop: "80px" }}>
                             {t("pages.product.delivery")}
                         </Typography>
                         <ListStyle>
@@ -238,7 +247,7 @@ const ProductMainPage: FC<Props> = ({ addInCart, moveToReview }) => {
                                         src={item.darkIcon}
                                         alt="icon"
                                     />
-                                    <Typography variant="h4" fontWeight="medium">
+                                    <Typography color="inherit" variant="h4" fontWeight="medium">
                                         {item.name}
                                     </Typography>
                                 </ListItemStyle>
@@ -250,17 +259,38 @@ const ProductMainPage: FC<Props> = ({ addInCart, moveToReview }) => {
 
             <Grid container sx={{ mb: "42px" }}>
                 <Grid item xs={7}>
-                    <Typography variant="h1" lineHeight="56px" sx={{ mb: "40px" }}>
+                    <Typography variant="h1" color="inherit" lineHeight="56px" sx={{ mb: "40px" }}>
                         {t("pages.product.characterictics")}
                     </Typography>
                     {product.filters.map((item, index) => (
                         <CharacteristicGrid container columns={7} key={index} >
                             <Grid item xs={5}>
-                                <Typography variant="h4" fontWeight="bold" sx={{ display: "inline", background: "#fff", pr: 1 }}>{item.filterName}</Typography>
+                                <Typography
+                                    variant="h4"
+                                    color="inherit"
+                                    fontWeight="bold"
+                                    sx={{
+                                        display: "inline",
+                                        background: palette.mode == "dark" ? "#181a1b" : "#fff",
+                                        pr: 1
+                                    }}
+                                >
+                                    {item.filterName}
+                                </Typography>
                                 <CharacteristicDivider />
                             </Grid>
                             <Grid item xs={2}>
-                                <Typography variant="h4" align="left" sx={{ background: "#fff", pl: 1 }}>{item.value} {item.unitMeasure}</Typography>
+                                <Typography
+                                    variant="h4"
+                                    color="inherit"
+                                    align="left"
+                                    sx={{
+                                        background: palette.mode == "dark" ? "#181a1b" : "#fff",
+                                        pl: 1
+                                    }}
+                                >
+                                    {item.value} {item.unitMeasure}
+                                </Typography>
                             </Grid>
                         </CharacteristicGrid>
                     ))}
@@ -270,22 +300,22 @@ const ProductMainPage: FC<Props> = ({ addInCart, moveToReview }) => {
                     <Box sx={{ width: "590px", ml: "auto" }}>
                         {(reviews.length === 0) ? (
                             <>
-                                <Typography variant="h1">{t("pages.product.reviews")}</Typography>
+                                <Typography variant="h1" color="inherit">{t("pages.product.reviews")}</Typography>
                                 <ReviewsForm getData={getData} />
                             </>
                         ) : (
                             <>
                                 <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: "40px" }}>
-                                    <Typography variant="h1">  {t("pages.product.reviews")} </Typography>
+                                    <Typography variant="h1" color="inherit">{t("pages.product.reviews")}</Typography>
                                     <AddReview getData={getData} />
                                 </Box>
                                 {reviews?.length != 0 && reviews.map((item, index) => {
                                     return (
                                         <Box key={`main_page_review_${index}`} sx={{ border: "1px solid #7e7e7e", borderRadius: "10px", mb: "20px", px: "33px", pt: "35px", pb: "34px" }}>
                                             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                                                <Typography variant="h1">{item.fullName}</Typography>
+                                                <Typography variant="h1" color="inherit">{item.fullName}</Typography>
                                                 <Box>
-                                                    <Typography variant="h5" align="center">{item.date}</Typography>
+                                                    <Typography variant="h5" color="inherit" align="center">{item.date}</Typography>
                                                     <RatingStyle
                                                         value={item.productRating}
                                                         precision={0.5}
@@ -296,7 +326,7 @@ const ProductMainPage: FC<Props> = ({ addInCart, moveToReview }) => {
                                                     />
                                                 </Box>
                                             </Box>
-                                            <Typography variant="h4" sx={{ mt: "21px" }}>{item.comment}</Typography>
+                                            <Typography variant="h4" color="inherit" sx={{ mt: "21px" }}>{item.comment}</Typography>
                                         </Box>
                                     )
                                 })}

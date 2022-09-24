@@ -24,7 +24,7 @@ const Profile = () => {
 
     return (
         <>
-            <Typography variant="h1" sx={{ mb: "30px" }}>{t("pages.user.personalInformation.title")}</Typography>
+            <Typography variant="h1" color="inherit" sx={{ mb: "30px" }}>{t("pages.user.personalInformation.title")}</Typography>
             <TabContext value={valueTab} >
                 <TabList onChange={handleChange} >
                     {tabs.map((item, index) => (

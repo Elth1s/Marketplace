@@ -24,14 +24,14 @@ const RatingProgress: FC<IRatingProgress> = ({ ratingValue, ratingValueCount, al
         <Box sx={{ display: 'flex', alignItems: 'center', mb: "65px" }}>
             <Box sx={{ display: 'flex', alignItems: 'center', mr: "10px" }}>
                 <StarRounded color="primary" sx={{ fontSize: "30px", mr: "10px" }} />
-                <Typography variant="h2">{ratingValue}</Typography>
+                <Typography variant="h2" color="inherit">{ratingValue}</Typography>
             </Box>
             <BorderLinearProgress
                 variant="determinate"
                 value={allRatingCount > 0 ? (ratingValueCount / allRatingCount * 100) : 0}
                 sx={{ mr: "14px" }}
             />
-            <Typography variant="h2">{ratingValueCount}</Typography>
+            <Typography variant="h2" color="inherit">{ratingValueCount}</Typography>
         </Box>
     )
 }
@@ -64,7 +64,7 @@ const About = () => {
                 mb: "150px"
             }}>
             <Grid item>
-                <Typography variant="h1" sx={{ mb: "30px" }}>{t('pages.seller.about.rating.title')}</Typography>
+                <Typography variant="h1" color="inherit" sx={{ mb: "30px" }}>{t('pages.seller.about.rating.title')}</Typography>
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: "20px" }}>
                     <RatingStyle
                         sx={{ fontSize: "30px", mr: "10px" }}
@@ -74,16 +74,16 @@ const About = () => {
                         icon={<StarRounded sx={{ fontSize: "30px" }} />}
                         emptyIcon={<StarRounded sx={{ fontSize: "30px" }} />}
                     />
-                    <Typography variant="h2">{shopPageInfo.averageRating} ({shopPageInfo.countReviews}  {t('pages.seller.about.rating.assessments')})</Typography>
+                    <Typography variant="h2" color="inherit">{shopPageInfo.averageRating} ({shopPageInfo.countReviews}  {t('pages.seller.about.rating.assessments')})</Typography>
                 </Box>
                 {shopPageInfo.ratings?.map((item, index) => (
                     <RatingProgress key={index} ratingValue={item.number} ratingValueCount={item.count} allRatingCount={shopPageInfo.countReviews} />
                 ))}
             </Grid>
             <Grid item>
-                <Typography variant="h1" sx={{ mb: "30px" }}>{t('pages.seller.about.assessment.title')}</Typography>
+                <Typography variant="h1" color="inherit" sx={{ mb: "30px" }}>{t('pages.seller.about.assessment.title')}</Typography>
                 <Box sx={{ bm: "65px" }}>
-                    <Typography variant="h2" sx={{ mb: "15px" }}>{t('pages.seller.about.assessment.product')}</Typography>
+                    <Typography variant="h2" color="inherit" sx={{ mb: "15px" }}>{t('pages.seller.about.assessment.product')}</Typography>
                     <RatingStyle
                         sx={{ fontSize: "30px" }}
                         value={shopPageInfo.averageInformationRelevanceRating}
@@ -94,7 +94,7 @@ const About = () => {
                     />
                 </Box>
                 <Box sx={{ bm: "65px" }}>
-                    <Typography variant="h2" sx={{ mb: "15px" }}>{t('pages.seller.about.assessment.delivery')}</Typography>
+                    <Typography variant="h2" color="inherit" sx={{ mb: "15px" }}>{t('pages.seller.about.assessment.delivery')}</Typography>
                     <RatingStyle
                         sx={{ fontSize: "30px" }}
                         value={shopPageInfo.averageTimelinessRating}
@@ -105,7 +105,7 @@ const About = () => {
                     />
                 </Box>
                 <Box sx={{ bm: "65px" }}>
-                    <Typography variant="h2" sx={{ mb: "15px" }}>{t('pages.seller.about.assessment.service')}</Typography>
+                    <Typography variant="h2" color="inherit" sx={{ mb: "15px" }}>{t('pages.seller.about.assessment.service')}</Typography>
                     <RatingStyle
                         sx={{ fontSize: "30px" }}
                         value={shopPageInfo.averageServiceQualityRating}
@@ -117,7 +117,7 @@ const About = () => {
                 </Box>
             </Grid>
             <Grid item>
-                <Typography variant="h2" sx={{ mb: "30px" }}>{t('pages.seller.about.schedule.title')}</Typography>
+                <Typography variant="h2" color="inherit" sx={{ mb: "30px" }}>{t('pages.seller.about.schedule.title')}</Typography>
                 {shopPageInfo.schedule.map((item, index) => (
                     (!item.isWeekend
                         ? <Typography key={index} variant="h2" sx={{ mb: "20px" }}>{item.shortNames} {item.start} - {item.end}</Typography>
@@ -126,8 +126,8 @@ const About = () => {
                 ))}
             </Grid>
             <Grid item xs={12}>
-                <Typography variant="h1" sx={{ mb: "30px" }}>{t('pages.seller.about.description.title')}</Typography>
-                <Typography variant="h2">{shopPageInfo.description}</Typography>
+                <Typography variant="h1" color="inherit" sx={{ mb: "30px" }}>{t('pages.seller.about.description.title')}</Typography>
+                <Typography variant="h2" color="inherit">{shopPageInfo.description}</Typography>
             </Grid>
         </Grid>
     );

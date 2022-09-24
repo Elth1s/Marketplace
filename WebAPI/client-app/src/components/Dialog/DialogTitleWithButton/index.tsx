@@ -17,6 +17,7 @@ const DialogTitleWithButton: FC<props> = ({ title, onClick }) => {
     return (
         <DialogTitle
             component={Box}
+            color="inherit"
             sx={{
                 display: "flex",
                 justifyContent: "space-between",
@@ -25,7 +26,7 @@ const DialogTitleWithButton: FC<props> = ({ title, onClick }) => {
                 pr: "16px"
             }}
         >
-            <Typography variant="h1" >
+            <Typography variant="h1" color="inherit">
                 {title}
             </Typography>
             <IconButton onClick={onClick}

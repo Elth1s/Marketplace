@@ -146,6 +146,30 @@
                     "updateTitle": "Update sale"
                 }
             },
+            "signIn": {
+                "title": "Sign in",
+                "forgotPassword": "Forgot password ?",
+                "DoNotHaveAnAccount": "Do't have an account?",
+                "or": "or",
+                "btnSignIn": "Sign in"
+            },
+            "signUp": {
+                "title": "Sign Up",
+                "haveAnAccount": "Have an account?",
+                "or": "or",
+                "btnSignUp": "Sign up"
+            },
+            "forgotPassword": {
+                "title": "Reset password",
+                "email": {
+                    "btn": "Reset",
+                    "resetByPhone": "Password recovery by phone number"
+                },
+                "phone": {
+                    "btn": "Send code",
+                    "resetByEmail": "Password recovery by phone number"
+                }
+            },
             "home": {
                 "allCategories": "All categories",
                 "novelty": {
@@ -181,6 +205,23 @@
                 "showMore": "Show more",
                 "find": "Find",
                 "finded": "Finded"
+            },
+            "about": {
+                "aboutUs": {
+                    "title": "About us",
+                    "desc": "Mall is the largest marketplace in Ukraine, where goods from tens of thousands of entrepreneurs from all over the country are sold. You can find literally everything here. We provide a guarantee because we believe that online shopping should be as safe as possible."
+                },
+                "ourGoal": {
+                    "title": "Our goal",
+                    "desc": "We do everything to make it pleasant and easy for customers to find what they want. After all, we have everything! We always fulfill the wishes of our customers and try to save them from unpleasant situations."
+                },
+                "convenientDelivery": {
+                    "title": "Convenient delivery",
+                    "desc": "Of course, any product can be ordered with delivery. We deliver orders within one day in Kyiv, in Ukraine - the next day. All - without prepayment, if necessary - on credit. Payment in cash or non-cash, as you prefer."
+                },
+                "ourTeam": {
+                    "title": "Our team is our everything!"
+                }
             },
             "faq": {
                 "tabs": {
@@ -310,6 +351,12 @@
                     "createTitle": "Create characteristic value",
                     "updateTitle": "Update characteristic value"
                 },
+                "createShop": {
+                    "title": "Register shop",
+                    "store": "Store information",
+                    "seller": "Seller information",
+                    "btn": "Register"
+                },
                 "title": "Seller",
                 "tabs": {
                     "about": "About",
@@ -389,6 +436,9 @@
                     "total": "Total",
                     "from": "from"
                 }
+            },
+            "shortSellerInfo": {
+                "title": "Seller"
             },
             "ordering": {
                 "title": "Place an order",
@@ -503,7 +553,12 @@
             "address": "Address",
             "gender": "Gender",
             "city": "City",
-            "deliveryType": "Delivery type"
+            "deliveryType": "Delivery type",
+            "message": "Message",
+            "phone": "Phone",
+            "emailOrPhone": "Email or phone",
+            "password": "Password",
+            "siteURL": "Site URL"
         },
         "validationMessages": {
             "required": "is required"

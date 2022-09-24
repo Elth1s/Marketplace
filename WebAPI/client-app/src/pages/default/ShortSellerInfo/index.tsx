@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import Slide from '@mui/material/Slide';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
+import { useTheme } from "@mui/material"
 
 import { TransitionProps } from '@mui/material/transitions';
 import { Close } from '@mui/icons-material';
@@ -13,7 +14,11 @@ import { styled } from '@mui/system';
 
 import { FC, forwardRef, useEffect, useState } from 'react';
 
-import { globe, mail, map_pin, phone } from '../../../assets/icons'
+import {
+    black_globe, black_mail, black_map_pin, black_phone,
+    white_globe, white_mail, white_map_pin, white_phone
+} from '../../../assets/icons'
+
 import { useActions } from '../../../hooks/useActions'
 import { useTypedSelector } from '../../../hooks/useTypedSelector';
 
@@ -43,6 +48,7 @@ interface Props {
 
 const SellerInfo: FC<Props> = ({ id, isMainPage }) => {
     const { t } = useTranslation();
+    const { palette } = useTheme();
 
     const { ShopInfoFromProduct } = useActions();
     const { shopInfo } = useTypedSelector(state => state.shopInfo);
@@ -82,7 +88,7 @@ const SellerInfo: FC<Props> = ({ id, isMainPage }) => {
                         justifyContent: "space-between",
                         alignItems: "flex-start"
                     }}>
-                        <Typography sx={{ fontSize: "30px", lineHeight: "38px" }}>Продавець</Typography>
+                        <Typography sx={{ fontSize: "30px", lineHeight: "38px" }}>{t('pages.shortSellerInfo.title')}</Typography>
                         <IconButton aria-label="close" onClick={handleClickClose}>
                             <Close />
                         </IconButton>
@@ -101,15 +107,15 @@ const SellerInfo: FC<Props> = ({ id, isMainPage }) => {
                             </Grid>
                             <Grid item xs={6} sx={{ display: "block" }}>
                                 <Box sx={{ display: "flex", mb: "30px" }}>
-                                    <img src={mail} alt="icon mail" />
+                                    <img src={palette.mode == "dark" ? white_mail : black_mail} alt="icon mail" />
                                     <Typography variant='h5' sx={{ ml: "10px" }}>{shopInfo.email}</Typography>
                                 </Box>
                                 <Box sx={{ display: "flex", mb: "30px" }}>
-                                    <img src={globe} alt="icon globe" />
+                                    <img src={palette.mode == "dark" ? white_globe : black_globe} alt="icon globe" />
                                     <Typography variant='h5' sx={{ ml: "10px" }}>{shopInfo.siteUrl}</Typography>
                                 </Box>
                                 <Box sx={{ display: "flex" }}>
-                                    <img src={map_pin} alt="icon map pin" />
+                                    <img src={palette.mode == "dark" ? white_map_pin : black_map_pin} alt="icon map pin" />
                                     <Typography variant='h5' sx={{ ml: "10px" }}>{shopInfo.adress}</Typography>
                                 </Box>
                             </Grid>
@@ -138,7 +144,7 @@ const SellerInfo: FC<Props> = ({ id, isMainPage }) => {
                                         >
                                             {index === 0 ? (
                                                 <>
-                                                    <img src={phone} alt="icon phone" />
+                                                    <img src={palette.mode == "dark" ? white_phone : black_phone} alt="icon phone" />
                                                     <Typography variant='h5' sx={{ ml: "10px" }}>{item}</Typography>
                                                 </>
                                             ) : (
@@ -149,15 +155,15 @@ const SellerInfo: FC<Props> = ({ id, isMainPage }) => {
                                 </Grid>
                                 <Grid item xs="auto" sx={{ display: "block" }}>
                                     <Box sx={{ display: "flex", mb: "30px" }}>
-                                        <img src={mail} alt="icon mail" />
+                                        <img src={palette.mode == "dark" ? white_mail : black_mail} alt="icon mail" />
                                         <Typography variant='h5' sx={{ ml: "10px" }}>{shopInfo.email}</Typography>
                                     </Box>
                                     <Box sx={{ display: "flex", mb: "30px" }}>
-                                        <img src={globe} alt="icon globe" />
+                                        <img src={palette.mode == "dark" ? white_globe : black_globe} alt="icon globe" />
                                         <Typography variant='h5' sx={{ ml: "10px" }}>{shopInfo.siteUrl}</Typography>
                                     </Box>
                                     <Box sx={{ display: "flex" }}>
-                                        <img src={map_pin} alt="icon map pin" />
+                                        <img src={palette.mode == "dark" ? white_map_pin : black_map_pin} alt="icon map pin" />
                                         <Typography variant='h5' sx={{ ml: "10px" }}>{shopInfo.adress}</Typography>
                                     </Box>
                                 </Grid>

@@ -8,7 +8,11 @@ import {
 } from '@mui/material'
 import { FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { selected_dislike, dislike, selected_like, like, link, reply } from '../../assets/icons'
+import {
+    selected_dislike, selected_like,
+    white_dislike, black_dislike,
+    white_like, black_like
+} from '../../assets/icons'
 import { useActions } from '../../hooks/useActions'
 import { ShowMoreButton } from '../../pages/default/Catalog/styled'
 import AddReply from '../../pages/default/product/AddReply'
@@ -78,7 +82,7 @@ const ReviewItem: FC<Props> = ({ id, reviewLink, fullName, date, productRating, 
     return (
         <Box sx={{ border: "1px solid #7e7e7e", borderRadius: "10px", p: "37px 41px", mb: "20px" }}>
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Typography variant="h1">
+                <Typography variant="h1" color="inherit">
                     {fullName}
                 </Typography>
                 <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -91,7 +95,7 @@ const ReviewItem: FC<Props> = ({ id, reviewLink, fullName, date, productRating, 
                             />
                         </IconButton>
                     </LinkRouter> */}
-                    <Typography variant="h5" sx={{ ml: "30px" }}>
+                    <Typography variant="h5" color="inherit" sx={{ ml: "30px" }}>
                         {date}
                     </Typography>
                 </Box>
@@ -106,24 +110,24 @@ const ReviewItem: FC<Props> = ({ id, reviewLink, fullName, date, productRating, 
                     emptyIcon={<StarRounded sx={{ fontSize: "30px" }} />}
                 />
             </Box>
-            <Typography variant="h4" sx={{ mt: "21px" }}>
+            <Typography variant="h4" color="inherit" sx={{ mt: "21px" }}>
                 {comment}
             </Typography>
             {advantages != "" &&
                 <>
-                    <Typography variant="h4" fontWeight="bold" sx={{ mt: "25px" }}>
+                    <Typography variant="h4" color="inherit" fontWeight="bold" sx={{ mt: "25px" }}>
                         {t("components.reviewItem.advantages")}:
                     </Typography>
-                    <Typography variant="h4" sx={{ mt: "10px" }}>
+                    <Typography variant="h4" color="inherit" sx={{ mt: "10px" }}>
                         {advantages}
                     </Typography>
                 </>
             }
             {disadvantages != "" &&
-                <><Typography variant="h4" fontWeight="bold" sx={{ mt: "25px" }}>
+                <><Typography variant="h4" color="inherit" fontWeight="bold" sx={{ mt: "25px" }}>
                     {t("components.reviewItem.disadvantages")}:
                 </Typography>
-                    <Typography variant="h4" sx={{ mt: "10px", mb: "25px" }}>
+                    <Typography variant="h4" color="inherit" sx={{ mt: "10px", mb: "25px" }}>
                         {disadvantages}
                     </Typography>
                 </>
@@ -168,7 +172,7 @@ const ReviewItem: FC<Props> = ({ id, reviewLink, fullName, date, productRating, 
                         startIcon={
                             <img
                                 style={{ width: "30px", height: "30px" }}
-                                src={isLiked ? selected_like : like}
+                                src={isLiked ? selected_like : (palette.mode == "dark" ? white_like : black_like)}
                                 alt="likeIcon"
                             />
                         }
@@ -187,7 +191,7 @@ const ReviewItem: FC<Props> = ({ id, reviewLink, fullName, date, productRating, 
                         startIcon={
                             <img
                                 style={{ width: "30px", height: "30px" }}
-                                src={isDisliked ? selected_dislike : dislike}
+                                src={isDisliked ? selected_dislike : (palette.mode == "dark" ? white_dislike : black_dislike)}
                                 alt="dislikeIcon"
                             />
                         }
@@ -202,14 +206,14 @@ const ReviewItem: FC<Props> = ({ id, reviewLink, fullName, date, productRating, 
                     return (
                         <Box sx={{ pt: "30px", pb: "15px" }}>
                             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                                <Typography variant="h1">
+                                <Typography variant="h1" color="inherit">
                                     {reply.fullName}
                                 </Typography>
-                                <Typography variant="h5">
+                                <Typography variant="h5" color="inherit">
                                     {reply.date}
                                 </Typography>
                             </Box>
-                            <Typography variant="h4" sx={{ pt: "20px" }}>
+                            <Typography variant="h4" color="inherit" sx={{ pt: "20px" }}>
                                 {reply.text}
                             </Typography>
                         </Box>

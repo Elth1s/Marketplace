@@ -139,7 +139,7 @@ const Change = () => {
                     </Grid>
                     <Grid container item xs={5} rowSpacing="25px">
                         <Grid item xs={12}>
-                            <Typography variant="subtitle1">
+                            <Typography variant="subtitle1" color="inherit">
                                 {t("pages.user.personalInformation.connectText")}
                             </Typography>
                         </Grid>
@@ -156,7 +156,7 @@ const Change = () => {
                                     alignItems: "center",
                                 }}>
                                     <img src={icon_color_google} alt="google-icon" />
-                                    <Typography variant="subtitle1" sx={{ fontWeight: "500", marginLeft: "11px" }}>Google</Typography>
+                                    <Typography variant="subtitle1" color="inherit" sx={{ fontWeight: "500", marginLeft: "11px" }}>Google</Typography>
                                 </Box>
                                 {userInfo.isGoogleConnected ?
                                     <img src={check} alt="check-icon" />
@@ -191,7 +191,7 @@ const Change = () => {
                                     alignItems: "center",
                                 }}>
                                     <img src={icon_color_facebook} alt="facebook-icon" />
-                                    <Typography variant="subtitle1" sx={{ fontWeight: "500", marginLeft: "11px" }}>Facebook</Typography>
+                                    <Typography variant="subtitle1" color="inherit" sx={{ fontWeight: "500", marginLeft: "11px" }}>Facebook</Typography>
                                 </Box>
 
                                 {userInfo.isFacebookConnected ?

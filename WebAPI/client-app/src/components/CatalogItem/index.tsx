@@ -24,7 +24,7 @@ const CatalogItem: FC<Props> = ({ name, image, urlSlug }) => {
                     />
                 </ImageBoxStyle>
                 <Paper elevation={0} sx={{ minHeight: "69px", maxHeight: "69px", overflow: "hidden" }}>
-                    <Typography variant="h5" fontWeight="medium" align="center">
+                    <Typography variant="h5" color="inherit" fontWeight="medium" align="center">
                         {name}
                     </Typography>
                 </Paper>

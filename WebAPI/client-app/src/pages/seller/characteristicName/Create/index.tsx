@@ -51,9 +51,9 @@ const CharacteristicCreate: FC<CreateProps> = ({ afterCreate }) => {
     };
 
     const validationFields = Yup.object().shape({
-        name: Yup.string().min(2).max(30).required().label('Name'),
-        characteristicGroupId: Yup.number().required().label('Characteristic group'),
-        unitId: Yup.number().nullable().label('Unit measure'),
+        name: Yup.string().min(2).max(30).required().label(t('validationProps.name')),
+        characteristicGroupId: Yup.number().required().label(t('validationProps.characteristicGroup')),
+        unitId: Yup.number().nullable().label(t('validationProps.unitMeasure')),
     });
 
     const onHandleSubmit = async (values: ICharacteristicName) => {

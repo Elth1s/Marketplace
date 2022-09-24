@@ -10,22 +10,24 @@ import EnhancedTable from '../../../../components/EnhancedTable';
 import { TableCellStyle } from '../../../../components/EnhancedTable/styled';
 import Create from '../Create';
 import Update from '../Update';
-
-
-const headCells: HeadCell<IOrderStatusInfo>[] = [
-    {
-        id: 'id',
-        numeric: true,
-        label: 'Identifier',
-    },
-    {
-        id: 'name',
-        numeric: false,
-        label: 'Name',
-    }
-];
+import { useTranslation } from 'react-i18next';
 
 const OrderStatusTable = () => {
+    const { t } = useTranslation();
+
+    const headCells: HeadCell<IOrderStatusInfo>[] = [
+        {
+            id: 'id',
+            numeric: true,
+            label: `${t('containers.admin_seller.tableHeadCell.identifier')}`,
+        },
+        {
+            id: 'name',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.name')}`,
+        }
+    ];
+
     const [page, setPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(8);
     const [name, setName] = useState("");
@@ -38,7 +40,7 @@ const OrderStatusTable = () => {
     const { orderStatuses, count } = useTypedSelector((store) => store.orderStatus);
 
     useEffect(() => {
-        document.title = "OrderStatuses";
+        document.title = `${t('containers.admin_seller.sideBar.orderStatuses')}`;
         getData();
     }, [page, rowsPerPage, name, isAscOrder, orderBy]);
 

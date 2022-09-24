@@ -161,28 +161,28 @@ const SaleUpdate: FC<UpdateProps> = ({ id, afterUpdate }) => {
                                             />
                                         </Grid>
                                         <Grid item xs={3} sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-between" }}>
-                                            <Typography variant="h4" align="center">
+                                            <Typography variant="h4" color="inherit" align="center">
                                                 {t("validationProps.ukrainianHorizontalImage")}
                                             </Typography>
-                                            <CropperDialog imgSrc={formik.values.ukrainianHorizontalImage} onDialogSave={onSaveUkrainianHorizontalImage} />
+                                            <CropperDialog imgSrc={formik.values.ukrainianHorizontalImage} onDialogSave={onSaveUkrainianHorizontalImage} isDark={true} />
                                         </Grid>
                                         <Grid item xs={3} sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-between" }}>
-                                            <Typography variant="h4" align="center">
+                                            <Typography variant="h4" color="inherit" align="center">
                                                 {t("validationProps.ukrainianVerticalImage")}
                                             </Typography>
-                                            <CropperDialog imgSrc={formik.values.ukrainianVerticalImage} onDialogSave={onSaveUkrainianVerticalImage} />
+                                            <CropperDialog imgSrc={formik.values.ukrainianVerticalImage} onDialogSave={onSaveUkrainianVerticalImage} isDark={true} />
                                         </Grid>
                                         <Grid item xs={3} sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-between" }}>
-                                            <Typography variant="h4" align="center">
+                                            <Typography variant="h4" color="inherit" align="center">
                                                 {t("validationProps.englishHorizontalImage")}
                                             </Typography>
-                                            <CropperDialog imgSrc={formik.values.englishHorizontalImage} onDialogSave={onSaveEnglishHorizontalImage} />
+                                            <CropperDialog imgSrc={formik.values.englishHorizontalImage} onDialogSave={onSaveEnglishHorizontalImage} isDark={true} />
                                         </Grid>
                                         <Grid item xs={3} sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-between" }}>
-                                            <Typography variant="h4" align="center">
+                                            <Typography variant="h4" color="inherit" align="center">
                                                 {t("validationProps.englishVerticalImage")}
                                             </Typography>
-                                            <CropperDialog imgSrc={formik.values.englishVerticalImage} onDialogSave={onSaveEnglishVerticalImage} />
+                                            <CropperDialog imgSrc={formik.values.englishVerticalImage} onDialogSave={onSaveEnglishVerticalImage} isDark={true} />
                                         </Grid>
                                     </Grid>
                                 </AdminSellerDialogContentStyle>

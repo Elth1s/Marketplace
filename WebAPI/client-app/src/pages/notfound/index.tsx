@@ -23,9 +23,9 @@ const NotFound = () => {
                 }}
             >
                 <Box>
-                    <Typography fontSize="150px" lineHeight="188px" fontWeight="600" sx={{ marginBottom: "20px" }}>404</Typography>
-                    <Typography variant="h1" sx={{ marginBottom: "20px" }}>{`${t('pages.notFound.title')}`}</Typography>
-                    <Typography variant="h4" fontWeight="medium" sx={{ marginBottom: "95px" }}>
+                    <Typography color="inherit" fontSize="150px" lineHeight="188px" fontWeight="600" sx={{ marginBottom: "20px" }}>404</Typography>
+                    <Typography variant="h1" color="inherit" sx={{ marginBottom: "20px" }}>{`${t('pages.notFound.title')}`}</Typography>
+                    <Typography variant="h4" color="inherit" fontWeight="medium" sx={{ marginBottom: "95px" }}>
                         {`${t('pages.notFound.descriptionTop')}`}
                         <br />
                         {`${t('pages.notFound.descriptionBottom')}`}

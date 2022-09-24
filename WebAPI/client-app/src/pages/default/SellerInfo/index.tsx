@@ -63,7 +63,7 @@ const SellerInfo = () => {
 
     return (
         <>
-            <Typography variant='h1' sx={{ mb: "30px" }}>{t('pages.seller.title')} {shopPageInfo.name}</Typography>
+            <Typography variant='h1' color="inherit" sx={{ mb: "30px" }}>{t('pages.seller.title')} {shopPageInfo.name}</Typography>
 
             <Grid container sx={{ justifyContent: "space-between" }}>
                 <Grid item>

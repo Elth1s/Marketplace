@@ -1,6 +1,6 @@
 import {
     ListItem,
-    ListItemText,
+    Typography,
     ListItemIcon
 } from '@mui/material';
 
@@ -65,7 +65,7 @@ const Sidebar: FC<IDrawer> = ({ open }) => {
                             <ListItemIcon sx={{ minWidth: "auto" }}>
                                 <RotatedBox rotate={item.rotate} isRotated={selected === item.lable ? true : false} />
                             </ListItemIcon>
-                            <ListItemText primary={item.lable} />
+                            <Typography color="inherit">{item.lable}</Typography>
                         </ListItemButtonStyle>
                     </ListItem>
                 </LinkRouter>

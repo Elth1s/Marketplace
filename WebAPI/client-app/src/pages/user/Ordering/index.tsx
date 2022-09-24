@@ -138,13 +138,13 @@ const Ordering = () => {
             </Box>
             <FormikProvider value={formik} >
                 <Form autoComplete="off" noValidate onSubmit={handleSubmit} >
-                    <Typography variant="h1" sx={{ mt: "25px" }}>
+                    <Typography variant="h1" color="inherit" sx={{ mt: "25px" }}>
                         {t("pages.ordering.title")}
                     </Typography>
                     <Grid container sx={{ mt: "35px" }}>
                         <Grid item container xs={8} rowSpacing="35px">
                             <Grid item xs={12} sx={{ mt: "15px" }}>
-                                <Typography variant="h2">{t("pages.ordering.contactInfo")}</Typography>
+                                <Typography variant="h2" color="inherit">{t("pages.ordering.contactInfo")}</Typography>
                             </Grid>
                             <Grid item xs={4}>
                                 <TextFieldSecondStyle

@@ -82,7 +82,7 @@ const CatalogWithProducts = () => {
     return (
         <Box>
             <BreadcrumbsComponent parents={parents} />
-            <Typography variant='h1' sx={{ marginBottom: "30px" }}>
+            <Typography variant='h1' color="inherit" sx={{ marginBottom: "30px" }}>
                 {name}
             </Typography>
             {catalogItems.length != 0
@@ -129,7 +129,7 @@ const CatalogWithProducts = () => {
                             {filterNames.map((item) => {
                                 return (
                                     <Box key={`fn${item.id}`} sx={{ paddingTop: "50px" }}>
-                                        <Typography variant="h3" fontWeight="bold" sx={{ paddingBottom: "5px" }} >
+                                        <Typography variant="h3" color="inherit" fontWeight="bold" sx={{ paddingBottom: "5px" }} >
                                             {item.name} {item.unitMeasure != null && `(${item.unitMeasure})`}
                                         </Typography>
                                         {item.filterValues.map((filterValue) => {
@@ -151,7 +151,7 @@ const CatalogWithProducts = () => {
                                                         }}
                                                         checked={isItemSelected}
                                                     />
-                                                    <Typography variant="h4">
+                                                    <Typography variant="h4" color="inherit">
                                                         {filterValue.value}
                                                     </Typography>
                                                 </Box>

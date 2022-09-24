@@ -132,7 +132,7 @@ const Product = () => {
             </TabContext>
 
             <Box>
-                <Typography variant="h1" sx={{ mb: "40px" }}>{t("pages.product.similarProducts")}</Typography>
+                <Typography variant="h1" color="inherit" sx={{ mb: "40px" }}>{t("pages.product.similarProducts")}</Typography>
                 <Swiper
                     modules={[Navigation]}
                     navigation={true}

@@ -103,14 +103,14 @@ const SearchProducts = () => {
 
     return (
         <>
-            <Typography variant="h2" display="inline">
+            <Typography variant="h2" color="inherit" display="inline">
                 &laquo;
-                <Typography display="inline" sx={{ fontSize: "30px", lineHeight: "38px" }}>
+                <Typography display="inline" color="inherit" sx={{ fontSize: "30px", lineHeight: "38px" }}>
                     {productName}
                 </Typography>
                 &raquo;
             </Typography>
-            <Typography variant="h4">
+            <Typography variant="h4" color="inherit">
                 {t("pages.catalog.finded")} {countProducts} {countProducts == 1 ? t("pages.ordering.countProductsOne") : (lastCharOfCountProducts(countProducts) ? t("pages.ordering.countProductsLessFive") : t("pages.ordering.countProducts"))}
             </Typography>
             <Box sx={{ display: "flex", mt: "20px" }}>
@@ -153,7 +153,7 @@ const SearchProducts = () => {
                                                     )
                                                 }
                                             </Box>
-                                            <Typography variant="h4" fontWeight="bold" sx={{ pl: "10px" }}>
+                                            <Typography variant="h4" color="inherit" fontWeight="bold" sx={{ pl: "10px" }}>
                                                 {parent.name}
                                             </Typography>
                                         </AccordionSummary>
@@ -166,6 +166,7 @@ const SearchProducts = () => {
                                                             <Typography
                                                                 key={`child_category_${index}`}
                                                                 variant="h4"
+                                                                color="inherit"
                                                                 sx={{
                                                                     mt: "10px",
                                                                     cursor: "pointer"
@@ -189,7 +190,7 @@ const SearchProducts = () => {
                             {filterNames.map((item) => {
                                 return (
                                     <Box key={`fn${item.id}`} sx={{ paddingTop: "40px" }}>
-                                        <Typography variant="h3" fontWeight="bold" sx={{ paddingBottom: "5px" }} >
+                                        <Typography variant="h3" color="inherit" fontWeight="bold" sx={{ paddingBottom: "5px" }} >
                                             {item.name} {item.unitMeasure != null && `(${item.unitMeasure})`}
                                         </Typography>
                                         {item.filterValues.map((filterValue) => {
@@ -211,7 +212,7 @@ const SearchProducts = () => {
                                                         }}
                                                         checked={isItemSelected}
                                                     />
-                                                    <Typography variant="h4">
+                                                    <Typography variant="h4" color="inherit">
                                                         {filterValue.value}
                                                     </Typography>
                                                 </Box>

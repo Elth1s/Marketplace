@@ -107,7 +107,7 @@ const ProductStatusTable = () => {
     return (
         <>
             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", my: "30px" }}>
-                <Typography variant="h1">{t('containers.admin_seller.sideBar.productStatuses')}</Typography>
+                <Typography variant="h1" color="inherit">{t('containers.admin_seller.sideBar.productStatuses')}</Typography>
                 <Create afterCreate={() => { getData() }} />
             </Box>
             <EnhancedTable

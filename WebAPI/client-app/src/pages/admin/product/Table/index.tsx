@@ -126,7 +126,7 @@ const AdminProductTable = () => {
 
     return (
         <>
-            <Typography variant="h1" sx={{ my: "30px", py: "4.5px" }}>{t('containers.admin_seller.sideBar.products')}</Typography>
+            <Typography variant="h1" color="inherit" sx={{ my: "30px", py: "4.5px" }}>{t('containers.admin_seller.sideBar.products')}</Typography>
             <EnhancedTable
                 page={page}
                 rowsPerPage={rowsPerPage}

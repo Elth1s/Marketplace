@@ -20,7 +20,7 @@ import { ToastError, ToastWarning } from '../../../../components/ToastComponent'
 
 import { useTypedSelector } from '../../../../hooks/useTypedSelector';
 import { useActions } from "../../../../hooks/useActions";
-import { reply, upload_cloud } from '../../../../assets/icons';
+import { black_reply, upload_cloud, white_reply } from '../../../../assets/icons';
 import CropperDialog from '../../../../components/CropperDialog';
 
 
@@ -30,7 +30,7 @@ interface Props {
 
 const AddReply: FC<Props> = ({ create }) => {
     const { t } = useTranslation();
-
+    const { palette } = useTheme();
     const { user } = useTypedSelector(state => state.auth)
 
     const [dialogOpen, setDialogOpen] = useState(false);
@@ -95,7 +95,7 @@ const AddReply: FC<Props> = ({ create }) => {
                 startIcon={
                     <img
                         style={{ width: "30px", height: "30px" }}
-                        src={reply}
+                        src={palette.mode == "dark" ? white_reply : black_reply}
                         alt="replyIcon"
                     />
                 }
@@ -108,8 +108,8 @@ const AddReply: FC<Props> = ({ create }) => {
                 onClose={handleClickClose}
                 aria-describedby="alert-dialog-slide-description"
             >
-                <DialogTitle sx={{ pt: "26px", pb: "20px", px: "30px" }}>
-                    <Typography fontSize="30px">
+                <DialogTitle color="inherit" sx={{ pt: "26px", pb: "20px", px: "30px" }}>
+                    <Typography color="inherit" fontSize="30px">
                         {t("components.replyDialog.title")}
                     </Typography>
                     <IconButton

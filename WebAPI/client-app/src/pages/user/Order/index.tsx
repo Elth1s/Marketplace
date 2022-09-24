@@ -77,17 +77,17 @@ const Order = () => {
                         }}>
                         <Grid container>
                             <Grid item xs={4}>
-                                <Typography variant="h5">№{item.id} {t("pages.user.order.from")} {item.date}</Typography>
-                                <Typography variant="h5">{item.orderStatusName}</Typography>
+                                <Typography variant="h5" color="inherit">№{item.id} {t("pages.user.order.from")} {item.date}</Typography>
+                                <Typography variant="h5" color="inherit">{item.orderStatusName}</Typography>
                             </Grid>
                             <Grid item xs={4}>
-                                <Typography variant="h5">{t("pages.user.order.totalPrice")}</Typography>
-                                <Typography variant="h5">
+                                <Typography variant="h5" color="inherit">{t("pages.user.order.totalPrice")}</Typography>
+                                <Typography variant="h5" color="inherit">
                                     {item.totalPrice} {t("currency")}
                                 </Typography>
                             </Grid>
                             <Grid item xs={4}>
-                                <Paper elevation={0} sx={{ display: "flex", flexDirection: 'row-reverse', overflow: 'hidden', '&::-webkit-scrollbar': { display: "none" } }} >
+                                <Paper elevation={0} sx={{ backgroundColor: "inherit", display: "flex", flexDirection: 'row-reverse', overflow: 'hidden', '&::-webkit-scrollbar': { display: "none" } }} >
                                     {item.orderProductsResponse?.map((orderProduct, index) => {
                                         return (
                                             (orderProduct.productImage != "" && <Box key={`preview_image_${index}`} >
@@ -104,16 +104,16 @@ const Order = () => {
                     <AccordionDetails sx={{ padding: "12px 0px 8px" }}>
                         <Grid container>
                             <Grid item xs={6}>
-                                <Typography variant="subtitle1" sx={{ mb: "20px" }}>{item.deliveryType}</Typography>
-                                <Typography variant="subtitle1" sx={{ mb: "20px" }}>
+                                <Typography variant="subtitle1" color="inherit" sx={{ mb: "20px" }}>{item.deliveryType}</Typography>
+                                <Typography variant="subtitle1" color="inherit" sx={{ mb: "20px" }}>
                                     {index == 0 && "Київ 2 віділення"}
                                     {index == 1 && "Львів 13 віділення"}
                                     {index == 2 && "Рівне 9 віділення"}
                                     {/* {item.address} */}
                                 </Typography>
-                                <Typography variant="subtitle1" sx={{ mb: "20px" }}>{item.consumerFirstName} {item.consumerSecondName}</Typography>
-                                <Typography variant="subtitle1" sx={{ mb: "20px" }}>{item.consumerPhone}</Typography>
-                                <Typography variant="subtitle1">{item.consumerEmail}</Typography>
+                                <Typography variant="subtitle1" color="inherit" sx={{ mb: "20px" }}>{item.consumerFirstName} {item.consumerSecondName}</Typography>
+                                <Typography variant="subtitle1" color="inherit" sx={{ mb: "20px" }}>{item.consumerPhone}</Typography>
+                                <Typography variant="subtitle1" color="inherit">{item.consumerEmail}</Typography>
                             </Grid>
                             <Grid item xs={6}>
                                 {item.orderProductsResponse?.map((orderProduct, index) => {
@@ -124,31 +124,31 @@ const Order = () => {
                                                     <Img alt={`image `} src={orderProduct.productImage != "" ? orderProduct.productImage : small_empty} />
                                                 </Box>
                                                 <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                                                    <Typography variant="subtitle1">{t("pages.user.order.price")}</Typography>
-                                                    <Typography variant="subtitle1">{orderProduct.price} {t("currency")}</Typography>
+                                                    <Typography color="inherit" variant="subtitle1">{t("pages.user.order.price")}</Typography>
+                                                    <Typography color="inherit" variant="subtitle1">{orderProduct.price} {t("currency")}</Typography>
                                                 </Box>
                                             </Box>
                                             <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                                                <Typography variant="subtitle1">{t("pages.user.order.count")}</Typography>
-                                                <Typography variant="subtitle1">{orderProduct.count}</Typography>
+                                                <Typography color="inherit" variant="subtitle1">{t("pages.user.order.count")}</Typography>
+                                                <Typography color="inherit" variant="subtitle1">{orderProduct.count}</Typography>
                                             </Box>
                                         </Box>
                                     )
                                 })}
                                 <Box sx={{ display: "flex", justifyContent: "space-between", mb: "20px" }}>
-                                    <Typography variant="subtitle1" sx={{ fontWeight: "700" }}>{t("pages.user.order.payment")}</Typography>
-                                    <Typography variant="subtitle1">
+                                    <Typography variant="subtitle1" color="inherit" sx={{ fontWeight: "700" }}>{t("pages.user.order.payment")}</Typography>
+                                    <Typography variant="subtitle1" color="inherit">
                                         Оплата при отриманні товару
                                         {/* {item.paymentType} */}
                                     </Typography>
                                 </Box>
                                 <Box sx={{ display: "flex", justifyContent: "space-between", mb: "20px" }}>
-                                    <Typography variant="subtitle1" sx={{ fontWeight: "700" }}>{t("pages.user.order.delivery")}</Typography>
-                                    <Typography variant="subtitle1">{item.deliveryType}</Typography>
+                                    <Typography variant="subtitle1" color="inherit" sx={{ fontWeight: "700" }}>{t("pages.user.order.delivery")}</Typography>
+                                    <Typography variant="subtitle1" color="inherit">{item.deliveryType}</Typography>
                                 </Box>
                                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                                    <Typography variant="subtitle1" sx={{ fontWeight: "700" }}>{t("pages.user.order.total")}</Typography>
-                                    <Typography variant="subtitle1">
+                                    <Typography variant="subtitle1" color="inherit" sx={{ fontWeight: "700" }}>{t("pages.user.order.total")}</Typography>
+                                    <Typography variant="subtitle1" color="inherit">
                                         {item.totalPrice} {t("currency")}
                                     </Typography>
                                 </Box>

@@ -2,6 +2,7 @@ import { Box, styled } from "@mui/material";
 
 
 export const BoxStyle = styled(Box)(({ theme }) => ({
+    background: theme.palette.mode == "dark" ? "#2D2D2D" : "transparent",
     height: "413px",
     [theme.breakpoints.only('xl')]: {
         width: "298px",
@@ -10,7 +11,7 @@ export const BoxStyle = styled(Box)(({ theme }) => ({
         width: "285px",
     },
 
-    border: "1px solid #7e7e7e",
+    border: `1px solid ${theme.palette.mode == "dark" ? "#AEAEAE" : "#7e7e7e"}`,
     borderRadius: "10px",
     paddingLeft: "21px",
     paddingRight: "21px",
@@ -21,6 +22,7 @@ export const BoxStyle = styled(Box)(({ theme }) => ({
 }));
 
 export const SmallBoxStyle = styled(Box)(({ theme }) => ({
+    background: theme.palette.mode == "dark" ? "#2D2D2D" : "transparent",
     height: "298px",
     [theme.breakpoints.only('xl')]: {
         width: "216px",
@@ -29,7 +31,7 @@ export const SmallBoxStyle = styled(Box)(({ theme }) => ({
         width: "175pxpx",
     },
 
-    border: "1px solid #7e7e7e",
+    border: `1px solid ${theme.palette.mode == "dark" ? "#2D2D2D" : "#7e7e7e"}`,
     borderRadius: "10px",
     paddingLeft: "15px",
     paddingRight: "15px",

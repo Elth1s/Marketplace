@@ -52,8 +52,8 @@ const ProductItem: FC<Props> = ({ isInCart, isSelected, name, image, statusName,
                             alt="productImage"
                         />
                     </SmallImageBoxStyle>
-                    <Paper elevation={0} sx={{ minHeight: "36px", maxHeight: "36px", overflow: "hidden" }}>
-                        <Typography variant="subtitle1" fontWeight="medium">
+                    <Paper elevation={0} sx={{ backgroundColor: "inherit", minHeight: "36px", maxHeight: "36px", overflow: "hidden" }}>
+                        <Typography variant="subtitle1" color="inherit" fontWeight="medium">
                             {name}
                         </Typography>
                     </Paper>
@@ -65,11 +65,11 @@ const ProductItem: FC<Props> = ({ isInCart, isSelected, name, image, statusName,
                             <Typography variant="subtitle1" color="#7e7e7e" sx={{ marginTop: "auto" }}>
                                 {price} {t("currency")}
                             </Typography>
-                            <Typography variant="h5">
+                            <Typography variant="h5" color="inherit">
                                 {discount} {t("currency")}
                             </Typography>
                         </>
-                        : <Typography variant="h5" sx={{ marginTop: "auto" }}>
+                        : <Typography variant="h5" color="inherit" sx={{ marginTop: "auto" }}>
                             {price} {t("currency")}
                         </Typography>}
                 </SmallBoxStyle>

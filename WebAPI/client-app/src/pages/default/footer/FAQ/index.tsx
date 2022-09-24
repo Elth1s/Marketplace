@@ -1,6 +1,8 @@
 import Box from '@mui/material/Box';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
+import { useTheme } from "@mui/material"
+
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import { useTranslation } from 'react-i18next';
@@ -8,7 +10,12 @@ import { FC, useState } from 'react';
 
 import { AccordionStyle, AccordionSummaryStyle, TabsStyle, TabStyle } from './styled';
 
-import { info_45, package_45, shopping_bag_45, truck_45 } from '../../../../assets/icons';
+import {
+    info_45_dark, info_45_light,
+    package_45_dark, package_45_light,
+    shopping_bag_45_dark, shopping_bag_45_light,
+    truck_45_dark, truck_45_light
+} from '../../../../assets/icons';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -56,10 +63,10 @@ const AccordionItem: FC<IAccordionItem> = ({ question, answer }) => {
                 aria-controls="panel1a-content"
                 id="panel1a-header"
             >
-                <Typography variant="h5">{question}</Typography>
+                <Typography variant="h5" color="inherit">{question}</Typography>
             </AccordionSummaryStyle>
             <AccordionDetails sx={{ padding: "30px 0px 10px" }}>
-                <Typography variant="h5">
+                <Typography variant="h5" color="inherit">
                     {answer}
                 </Typography>
             </AccordionDetails>
@@ -77,6 +84,8 @@ function a11yProps(index: number) {
 
 const FAQ = () => {
     const { t } = useTranslation();
+    const { palette } = useTheme();
+
     const [value, setValue] = useState(0);
 
     const faqMain = [
@@ -108,10 +117,10 @@ const FAQ = () => {
     return (
         <>
             <TabsStyle value={value} onChange={handleChange} sx={{ minHeight: "0" }} >
-                <TabStyle icon={<img src={info_45} alt="icon info" />} label={t('pages.faq.tabs.main')} {...a11yProps(0)} />
-                <TabStyle icon={<img src={shopping_bag_45} alt="icon info" />} label={t('pages.faq.tabs.order')} {...a11yProps(1)} />
-                <TabStyle icon={<img src={truck_45} alt="icon shopping bag" />} label={t('pages.faq.tabs.deliver')} {...a11yProps(2)} />
-                <TabStyle icon={<img src={package_45} alt="icon package" />} label={t('pages.faq.tabs.return')} {...a11yProps(3)} />
+                <TabStyle icon={<img src={palette.mode == "dark" ? (info_45_dark) : (info_45_light)} alt="icon info" />} label={t('pages.faq.tabs.main')} {...a11yProps(0)} />
+                <TabStyle icon={<img src={palette.mode == "dark" ? (shopping_bag_45_dark) : (shopping_bag_45_light)} alt="icon info" />} label={t('pages.faq.tabs.order')} {...a11yProps(1)} />
+                <TabStyle icon={<img src={palette.mode == "dark" ? (truck_45_dark) : (truck_45_light)} alt="icon shopping bag" />} label={t('pages.faq.tabs.deliver')} {...a11yProps(2)} />
+                <TabStyle icon={<img src={palette.mode == "dark" ? (package_45_dark) : (package_45_light)} alt="icon package" />} label={t('pages.faq.tabs.return')} {...a11yProps(3)} />
             </TabsStyle>
 
             <TabPanel value={value} index={0}>
