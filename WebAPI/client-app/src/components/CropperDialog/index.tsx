@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import { Close } from "@mui/icons-material";
 
+import { useTranslation } from "react-i18next";
 import { LegacyRef, forwardRef, useRef, useState, useEffect } from "react";
 import Cropper from "cropperjs";
 import { TransitionProps } from "@mui/material/transitions";
@@ -41,6 +42,8 @@ export interface ICropperDialog {
 }
 
 const CropperDialog: React.FC<ICropperDialog> = ({ imgSrc, aspectRation = 1 / 1, onDialogSave, isDark = false, isGreen = false }) => {
+    const { t } = useTranslation();
+
     const [cropperObj, setCropperObj] = useState<Cropper>();
     const imgRef = useRef<HTMLImageElement>(null);
     const prevRef = useRef<HTMLDivElement>();
@@ -111,7 +114,7 @@ const CropperDialog: React.FC<ICropperDialog> = ({ imgSrc, aspectRation = 1 / 1,
                                 alt="icon"
                                 style={{ width: "25px", height: "25px" }} />
                             <Typography variant="subtitle1" align="center" color={isDark ? "white" : "black"}>
-                                Select photo
+                                {t('components.cropperDialog.selectPhoto')}
                             </Typography>
                         </Box>}
                 </div>
@@ -133,7 +136,7 @@ const CropperDialog: React.FC<ICropperDialog> = ({ imgSrc, aspectRation = 1 / 1,
                 }}
             >
                 <DialogTitle sx={{ m: 0, px: 3 }}>
-                    Change photo
+                    {t('components.cropperDialog.changePhoto')}
                     <IconButton
                         aria-label="close"
                         onClick={cropperDialogClose}
@@ -177,7 +180,7 @@ const CropperDialog: React.FC<ICropperDialog> = ({ imgSrc, aspectRation = 1 / 1,
                         variant="contained"
                         onClick={cropperDialogSave}
                     >
-                        Save changes
+                        {t('components.cropperDialog.btn')}
                     </Button>
                 </DialogActions>
 

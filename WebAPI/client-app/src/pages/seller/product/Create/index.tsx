@@ -3,6 +3,7 @@ import { Box, Grid, Typography } from "@mui/material";
 import { Form, FormikProvider, useFormik } from "formik";
 import { FC, useEffect, useState } from "react"
 import { useDropzone } from "react-dropzone";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { upload_cloud } from "../../../../assets/icons";
 import AutocompleteComponent from "../../../../components/Autocomplete";
@@ -14,6 +15,7 @@ import { ServerError } from "../../../../store/types";
 import { IProductCreate, IProductImage } from "../types";
 
 const ProductCreate = () => {
+    const { t } = useTranslation();
     const { GetCategoriesWithoutChildren, GetProductStatusesSeller, GetFiltersByCategoryId, CreateProductImage, CreateProduct } = useActions();
 
     const { categories, productStatuses, filters } = useTypedSelector((store) => store.productSeller);
@@ -70,7 +72,7 @@ const ProductCreate = () => {
         }
     });
     useEffect(() => {
-        document.title = "Product create";
+        document.title = t('pages.user.createProduct.title');
         getData();
     }, [imagesLoading, formik.values.images]);
 
@@ -118,7 +120,7 @@ const ProductCreate = () => {
     return (
         <Box sx={{ flexGrow: 1, m: 1, mx: 3, }}>
             <Typography variant="h4" color="inherit" gutterBottom sx={{ my: "auto" }}>
-                Create Product
+                {t('pages.user.createProduct.title')}
             </Typography>
 
             <Box sx={{ mt: 3 }} >
@@ -261,13 +263,13 @@ const ProductCreate = () => {
                                                 alt="icon"
                                                 style={{ width: "25px", height: "25px" }} />
                                             <Typography variant="subtitle1" color="inherit" align="center">
-                                                Move photo or search to upload
+                                                {t('pages.user.createProduct.photoOrSearch')}
                                             </Typography>
                                         </Box>
                                     </div>
                                 </Box>
                                 {imagesLoading > 0
-                                    ? <div>зоображення завантажуються</div>
+                                    ? <div>{t('pages.user.createProduct.imagesUploaded')}</div>
                                     : (formik.values.images?.length != 0 &&
                                         formik.values.images.map((row, index) => {
                                             return (
@@ -288,7 +290,7 @@ const ProductCreate = () => {
                             variant="contained"
                             loading={isSubmitting}
                         >
-                            Create
+                            {t('pages.user.createProduct.btn')}
                         </LoadingButton>
                     </Form>
                 </FormikProvider>
