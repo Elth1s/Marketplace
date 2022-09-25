@@ -434,7 +434,8 @@
                     "confirmPhone": "Confirm phone",
                     "confirmEmail": "Confirm email",
                     "connectText": "You can link your personal account with social network accounts to further log in to the site.",
-                    "connect": "Connect"
+                    "connect": "Connect",
+                    "cancel": "Cancel"
                 },
                 "order": {
                     "title": "Order",
@@ -459,7 +460,7 @@
             "confirmEmail": {
                 "success": "Email Confirmed",
                 "failed": "Confirmation Failed"
-             },
+            },
             "ordering": {
                 "title": "Place an order",
                 "contactInfo": "Contact info",
@@ -592,7 +593,8 @@
             "category": "Category",
             "productStatus": "Product status",
             "filterValue": "Filter value",
-            "characteristicValue": "Characteristic value"
+            "characteristicValue": "Characteristic value",
+            "department": "Department"
         },
         "validationMessages": {
             "required": "is required"

@@ -55,7 +55,9 @@ export interface IOrderCreate {
     consumerPhone: string,
     consumerEmail: string,
     basketItems: Array<IBasketOrderItem>,
-    deliveryTypeId: number | string
+    deliveryTypeId: number | string,
+    city: string,
+    department: string,
 }
 
 export interface IBasketOrderItem {
@@ -101,8 +103,11 @@ export interface IOrdersForUser {
     consumerEmail: string,
     orderStatusName: null,
     deliveryType: string,
+    city: string,
+    department: string,
     totalPrice: number,
     date: string,
+    canUpdate: boolean,
     orderProductsResponse: Array<IProductForUser>
 }
 

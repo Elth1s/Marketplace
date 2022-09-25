@@ -86,7 +86,7 @@ const Footer = () => {
                                 <ItemBoxStyled key={index} display="flex">
                                     <LinkRouter
                                         underline="none"
-                                        color="inherit"
+                                        color="white"
                                         to={item.path}
                                         onClick={() => {
                                             window.scrollTo({

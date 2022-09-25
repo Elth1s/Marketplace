@@ -2,6 +2,7 @@ import { Box, styled } from "@mui/material";
 
 
 export const BoxStyle = styled(Box)(({ theme }) => ({
+    background: theme.palette.mode == "dark" ? "#2D2D2D" : "transparent",
     height: "415px",
     [theme.breakpoints.only('xl')]: {
         width: "300px",

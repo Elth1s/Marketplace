@@ -1,4 +1,4 @@
-import { Paper, Typography } from '@mui/material'
+import { Paper, Typography, useTheme } from '@mui/material'
 import { FC } from 'react'
 
 import LinkRouter from '../LinkRouter'
@@ -13,6 +13,8 @@ interface Props {
 }
 
 const CatalogItem: FC<Props> = ({ name, image, urlSlug }) => {
+    const { palette } = useTheme();
+
     return (
         <LinkRouter underline="none" color="unset" to={`/catalog/${urlSlug}`} sx={{ marginRight: "15px", marginBottom: "15px", }}>
             <BoxStyle>
@@ -23,7 +25,7 @@ const CatalogItem: FC<Props> = ({ name, image, urlSlug }) => {
                         alt="categoryImage"
                     />
                 </ImageBoxStyle>
-                <Paper elevation={0} sx={{ minHeight: "69px", maxHeight: "69px", overflow: "hidden" }}>
+                <Paper elevation={0} sx={{ backgroundColor: palette.mode == "dark" ? "#2D2D2D !important" : "transparent", minHeight: "69px", maxHeight: "69px", overflow: "hidden" }}>
                     <Typography variant="h5" color="inherit" fontWeight="medium" align="center">
                         {name}
                     </Typography>

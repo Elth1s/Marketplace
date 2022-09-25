@@ -226,6 +226,25 @@ export const CreateOrder = (values: IOrderCreate) => {
     }
 }
 
+export const CancelOrder = (orderId: number) => {
+    return async () => {
+        try {
+            let response = await http.put(`/api/Order/CancelOrder/${orderId}`)
+
+            return Promise.resolve();
+        }
+        catch (error) {
+            if (axios.isAxiosError(error)) {
+                const serverError = error as AxiosError<ServerError>;
+                if (serverError && serverError.response) {
+                    return Promise.reject(serverError.response.data);
+                }
+            }
+            return Promise.reject(error)
+        }
+    }
+}
+
 export const GetGenders = () => {
     return async (dispatch: Dispatch<GenderAction>) => {
         try {

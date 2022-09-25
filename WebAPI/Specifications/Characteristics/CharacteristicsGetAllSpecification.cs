@@ -8,7 +8,6 @@ namespace WebAPI.Specifications.Characteristics
         public CharacteristicsGetAllSpecification(string userId)
         {
             Query.Where(item => item.UserId == userId)
-                  .Include(c => c.CharacteristicName)
                   .Include(c => c.CharacteristicName).ThenInclude(c => c.Unit).ThenInclude(c => c.UnitTranslations)
                   .Include(c => c.CharacteristicName).ThenInclude(c => c.CharacteristicGroup)
                   .AsSplitQuery();

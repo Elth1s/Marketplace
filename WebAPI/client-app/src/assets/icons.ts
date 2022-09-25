@@ -146,3 +146,6 @@ export const basket_empty_light = "/assets/icons/basket-empty-light.png"
 export const trash_light = "/assets/icons/trash-light.png"
 export const minus_light = "/assets/icons/minus-light.png"
 export const plus_light = "/assets/icons/plus-light.png"
+
+export const eye_light = "/assets/icons/eye-light.png"
+export const eye_off_light = "/assets/icons/eye-off-light.png"

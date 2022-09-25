@@ -1,4 +1,4 @@
-import { Box, IconButton, Typography, Paper } from '@mui/material'
+import { Box, IconButton, Typography, Paper, useTheme } from '@mui/material'
 import { FC } from 'react'
 
 import LinkRouter from '../LinkRouter'
@@ -24,6 +24,7 @@ interface Props {
 
 const ProductItem: FC<Props> = ({ isInCart, isSelected, name, image, statusName, urlSlug, price, discount }) => {
     const { t } = useTranslation();
+    const { palette } = useTheme();
 
     const { ChangeIsSelectedUserProducts, AddProductInCart, GetBasketItems, ChangeIsInCartUserProducts } = useActions();
 
@@ -52,7 +53,7 @@ const ProductItem: FC<Props> = ({ isInCart, isSelected, name, image, statusName,
                             alt="productImage"
                         />
                     </SmallImageBoxStyle>
-                    <Paper elevation={0} sx={{ backgroundColor: "inherit", minHeight: "36px", maxHeight: "36px", overflow: "hidden" }}>
+                    <Paper elevation={0} sx={{ background: palette.mode == "dark" ? "#2D2D2D !important" : "transparent", minHeight: "36px", maxHeight: "36px", overflow: "hidden" }}>
                         <Typography variant="subtitle1" color="inherit" fontWeight="medium">
                             {name}
                         </Typography>

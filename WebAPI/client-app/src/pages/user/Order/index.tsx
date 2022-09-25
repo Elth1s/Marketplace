@@ -14,17 +14,18 @@ import { useTypedSelector } from "../../../hooks/useTypedSelector";
 
 import { PaperStyled, Img } from "../styled";
 import Grid from "@mui/material/Grid";
-import { Paper } from "@mui/material";
+import { Button, Paper } from "@mui/material";
 import { small_empty } from "../../../assets/backgrounds";
+import LinkRouter from "../../../components/LinkRouter";
 
 const Order = () => {
     const { t } = useTranslation();
 
+    const { GetOrderForUser, CancelOrder } = useActions();
     const { ordersForUser } = useTypedSelector(state => state.profile);
-    const { GetOrderForUser } = useActions();
 
     useEffect(() => {
-        document.title = `${t("pages.ordering.title")}`;
+        document.title = `${t("pages.user.order.title")}`;
         getData();
     }, [])
 
@@ -103,30 +104,32 @@ const Order = () => {
                     </AccordionSummary>
                     <AccordionDetails sx={{ padding: "12px 0px 8px" }}>
                         <Grid container>
-                            <Grid item xs={6}>
+                            <Grid item xs={4}>
                                 <Typography variant="subtitle1" color="inherit" sx={{ mb: "20px" }}>{item.deliveryType}</Typography>
                                 <Typography variant="subtitle1" color="inherit" sx={{ mb: "20px" }}>
-                                    {index == 0 && "Київ 2 віділення"}
-                                    {index == 1 && "Львів 13 віділення"}
-                                    {index == 2 && "Рівне 9 віділення"}
-                                    {/* {item.address} */}
+                                    {item.city} {item.department}
                                 </Typography>
                                 <Typography variant="subtitle1" color="inherit" sx={{ mb: "20px" }}>{item.consumerFirstName} {item.consumerSecondName}</Typography>
                                 <Typography variant="subtitle1" color="inherit" sx={{ mb: "20px" }}>{item.consumerPhone}</Typography>
                                 <Typography variant="subtitle1" color="inherit">{item.consumerEmail}</Typography>
                             </Grid>
-                            <Grid item xs={6}>
+                            <Grid item xs={8} sx={{ pl: "18px" }}>
                                 {item.orderProductsResponse?.map((orderProduct, index) => {
                                     return (
                                         <Box key={index} sx={{ display: "flex", justifyContent: "space-between", alignItems: "stretch", mb: "10px" }}>
                                             <Box sx={{ display: "flex" }}>
-                                                <Box sx={{ width: 52, height: 52, mr: "8px" }}>
+                                                <Box sx={{ width: 52, height: 52, mr: "10px" }}>
                                                     <Img alt={`image `} src={orderProduct.productImage != "" ? orderProduct.productImage : small_empty} />
                                                 </Box>
-                                                <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                                                    <Typography color="inherit" variant="subtitle1">{t("pages.user.order.price")}</Typography>
-                                                    <Typography color="inherit" variant="subtitle1">{orderProduct.price} {t("currency")}</Typography>
+                                                <Box sx={{ display: "flex", alignItems: "center" }}>
+                                                    <LinkRouter underline="hover" color="inherit" to={`/product/${orderProduct.productUrlSlug}`}>
+                                                        <Typography color="inherit" variant="subtitle1" sx={{ width: "200px", mr: "10px" }}>{orderProduct.productName}</Typography>
+                                                    </LinkRouter>
                                                 </Box>
+                                            </Box>
+                                            <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center", width: "90px" }}>
+                                                <Typography color="inherit" variant="subtitle1">{t("pages.user.order.price")}</Typography>
+                                                <Typography color="inherit" variant="subtitle1">{orderProduct.price} {t("currency")}</Typography>
                                             </Box>
                                             <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
                                                 <Typography color="inherit" variant="subtitle1">{t("pages.user.order.count")}</Typography>
@@ -138,13 +141,12 @@ const Order = () => {
                                 <Box sx={{ display: "flex", justifyContent: "space-between", mb: "20px" }}>
                                     <Typography variant="subtitle1" color="inherit" sx={{ fontWeight: "700" }}>{t("pages.user.order.payment")}</Typography>
                                     <Typography variant="subtitle1" color="inherit">
-                                        Оплата при отриманні товару
-                                        {/* {item.paymentType} */}
+                                        {t("pages.ordering.paymentUponReceipt")}
                                     </Typography>
                                 </Box>
                                 <Box sx={{ display: "flex", justifyContent: "space-between", mb: "20px" }}>
                                     <Typography variant="subtitle1" color="inherit" sx={{ fontWeight: "700" }}>{t("pages.user.order.delivery")}</Typography>
-                                    <Typography variant="subtitle1" color="inherit">{item.deliveryType}</Typography>
+                                    <Typography variant="subtitle1" color="inherit">{t("pages.ordering.accordingCarrierTariffs")}</Typography>
                                 </Box>
                                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                                     <Typography variant="subtitle1" color="inherit" sx={{ fontWeight: "700" }}>{t("pages.user.order.total")}</Typography>
@@ -152,6 +154,29 @@ const Order = () => {
                                         {item.totalPrice} {t("currency")}
                                     </Typography>
                                 </Box>
+                                {item.canUpdate && <Box sx={{ display: "flex", justifyContent: "end" }}>
+                                    <Button
+                                        color="primary"
+                                        variant="outlined"
+                                        sx={{
+                                            width: "auto",
+                                            px: "15.5px",
+                                            py: "8.5px",
+                                            textTransform: "none",
+                                            borderRadius: "10px",
+                                            fontSize: "18px",
+                                            height: "40px",
+                                            border: "1px solid #F45626",
+                                            mt: "10px"
+                                        }}
+                                        onClick={async () => {
+                                            await CancelOrder(item.id)
+                                            await GetOrderForUser()
+                                        }}
+                                    >
+                                        {t("pages.user.order.cancel")}
+                                    </Button>
+                                </Box>}
                             </Grid>
                         </Grid>
                     </AccordionDetails>

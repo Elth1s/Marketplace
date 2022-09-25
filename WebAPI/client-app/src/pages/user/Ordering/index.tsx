@@ -72,7 +72,9 @@ const Ordering = () => {
         consumerEmail: user.isEmailExist ? user.emailOrPhone : "",
         consumerPhone: !user.isEmailExist ? user.emailOrPhone : "",
         basketItems: [],
-        deliveryTypeId: ""
+        deliveryTypeId: "",
+        city: "",
+        department: ""
     };
 
     const OrderSchema = Yup.object().shape({
@@ -80,7 +82,9 @@ const Ordering = () => {
         consumerSecondName: Yup.string().required().min(2).max(40).label(t('validationProps.secondName')),
         consumerEmail: Yup.string().email().label(t('validationProps.email')),
         consumerPhone: Yup.string().required().phone().label(t('validationProps.phone')),
-        deliveryTypeId: Yup.mixed().required().label(t('validationProps.deliveryType'))
+        deliveryTypeId: Yup.mixed().required().label(t('validationProps.deliveryType')),
+        city: Yup.string().required().label(t('validationProps.city')),
+        department: Yup.string().required().label(t('validationProps.department')),
     });
 
     const formik = useFormik({
@@ -379,10 +383,10 @@ const Ordering = () => {
                                             fullWidth
                                             variant="outlined"
                                             type="text"
-                                            placeholder="Місто"
-                                        // {...getFieldProps('consumerSecondName')}
-                                        // error={Boolean(touched.consumerSecondName && errors.consumerSecondName)}
-                                        // helperText={touched.consumerSecondName && errors.consumerSecondName}
+                                            placeholder={t("validationProps.city")}
+                                            {...getFieldProps('city')}
+                                            error={Boolean(touched.city && errors.city)}
+                                            helperText={touched.city && errors.city}
                                         />
                                     </Grid>
                                     <Grid item xs={4}>
@@ -390,10 +394,10 @@ const Ordering = () => {
                                             fullWidth
                                             variant="outlined"
                                             type="text"
-                                            placeholder="Віділення"
-                                        // {...getFieldProps('consumerSecondName')}
-                                        // error={Boolean(touched.consumerSecondName && errors.consumerSecondName)}
-                                        // helperText={touched.consumerSecondName && errors.consumerSecondName}
+                                            placeholder={t("validationProps.department")}
+                                            {...getFieldProps('department')}
+                                            error={Boolean(touched.department && errors.department)}
+                                            helperText={touched.department && errors.department}
                                         />
                                     </Grid>
                                 </Grid>

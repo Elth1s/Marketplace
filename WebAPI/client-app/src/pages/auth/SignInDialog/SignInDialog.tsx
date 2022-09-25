@@ -7,7 +7,7 @@ import {
     IconButton,
     InputAdornment,
     Typography,
-    useTheme 
+    useTheme
 } from '@mui/material';
 import { Close, VisibilityOffOutlined, VisibilityOutlined } from '@mui/icons-material';
 
@@ -32,7 +32,7 @@ import { LoadingButtonStyle } from '../../../components/LoadingButton/styled';
 import GoogleExternalLogin from '../../../components/Google';
 import FacebookExternalLogin from '../../../components/Facebook';
 
-import { black_eye, eye_off } from "../../../assets/icons";
+import { black_eye, eye_light, eye_off, eye_off_light } from "../../../assets/icons";
 
 interface Props {
     changeDialog: any,
@@ -104,7 +104,7 @@ const SignInDialog: FC<Props> = ({ changeDialog, forgotPasswordOpen }) => {
         <>
             <DialogTitle color="inherit" sx={{ py: "36px" }}>
                 <Typography color="inherit" fontSize="30px" align="center" lineHeight="38px">
-                {t('pages.signIn.title')}
+                    {t('pages.signIn.title')}
                 </Typography>
                 <IconButton
                     color="inherit"
@@ -148,12 +148,12 @@ const SignInDialog: FC<Props> = ({ changeDialog, forgotPasswordOpen }) => {
                                                     {showPassword
                                                         ? <img
                                                             style={{ width: "30px", height: "30px" }}
-                                                            src={eye_off}
+                                                            src={palette.mode != "dark" ? eye_off : eye_off_light}
                                                             alt="icon"
                                                         />
                                                         : <img
                                                             style={{ width: "30px", height: "30px" }}
-                                                            src={black_eye}
+                                                            src={palette.mode != "dark" ? black_eye : eye_light}
                                                             alt="icon"
                                                         />}
                                                 </IconButton>
@@ -180,7 +180,7 @@ const SignInDialog: FC<Props> = ({ changeDialog, forgotPasswordOpen }) => {
                                 </Typography>
                             </Grid>
                             <Grid item xs={12} display="flex" justifyContent="center" >
-                                <Box sx={{ width: "98px", height: "14px", borderBottom: `2px solid ${palette.mode == "dark" ? "#FFF" : "#000"}`}} />
+                                <Box sx={{ width: "98px", height: "14px", borderBottom: `2px solid ${palette.mode == "dark" ? "#FFF" : "#000"}` }} />
                                 <Typography variant="h5" color="inherit" sx={{ padding: "0 7px" }}>{t('pages.signIn.or')}</Typography>
                                 <Box sx={{ width: "98px", height: "14px", borderBottom: `2px solid ${palette.mode == "dark" ? "#FFF" : "#000"}` }} />
                             </Grid>

@@ -18,7 +18,6 @@ const ProductCreate = () => {
     const { t } = useTranslation();
 
     const { GetCategoriesWithoutChildren, GetProductStatusesSeller, GetFiltersByCategoryId, CreateProductImage, CreateProduct, GetCharacteristicsByUser } = useActions();
-
     const { categories, productStatuses, filters, characteristics } = useTypedSelector((store) => store.productSeller);
 
     const navigate = useNavigate();

@@ -233,7 +233,12 @@ const CatalogWithProducts = () => {
                                     p: 1,
                                     mt: 2
                                 }}
-                                onClick={() => { getData() }}
+                                onClick={() => {
+                                    if (page != 1)
+                                        setPage(1)
+                                    else
+                                        getData();
+                                }}
                             >
                                 {t("pages.catalog.find")}
                             </Button>

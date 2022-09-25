@@ -44,7 +44,7 @@ const ProductItem: FC<Props> = ({ isSelected, name, image, statusName, urlSlug, 
                             alt="productImage"
                         />
                     </ImageBoxStyle>
-                    <Paper elevation={0} sx={{ background: palette.mode == "dark" ? "#2D2D2D" : "transparent", minHeight: "46px", maxHeight: "46px", overflow: "hidden" }}>
+                    <Paper elevation={0} sx={{ backgroundColor: palette.mode == "dark" ? "#2D2D2D !important" : "transparent", minHeight: "46px", maxHeight: "46px", overflow: "hidden" }}>
                         <Typography variant="h5" color="inherit" fontWeight="medium">
                             {name}
                         </Typography>
@@ -83,7 +83,7 @@ const ProductItem: FC<Props> = ({ isSelected, name, image, statusName, urlSlug, 
                     alt="icon"
                 />
             </IconButton>
-        </Box>
+        </Box >
     )
 }
 

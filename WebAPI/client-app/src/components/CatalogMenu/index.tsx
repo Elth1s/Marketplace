@@ -110,8 +110,8 @@ const CatalogMenu = () => {
                         px: "auto",
                         minWidth: "1560px",
                         maxWidth: "1560px",
-                        minHeight: "670px",
-                        maxHeight: "670px",
+                        minHeight: "570px",
+                        maxHeight: "570px",
                         position: "static",
                         mx: "auto"
                     },
@@ -126,7 +126,7 @@ const CatalogMenu = () => {
                     <Grid item xs={3}>
                         <Paper elevation={0}
                             sx={{
-                                height: "622px",
+                                height: "522px",
                                 px: "20px",
                                 my: "24px",
                                 overflow: 'auto',
@@ -145,7 +145,7 @@ const CatalogMenu = () => {
                                         onMouseEnter={() => changeParentCategory(index)}
                                         onClick={handleClose}
                                     >
-                                        <Box sx={{ display: "flex", mb: "14px", alignItems: "center" }}>
+                                        <Box sx={{ display: "flex", mb: "18px", alignItems: "center" }}>
                                             {row.lightIcon == "" || row.darkIcon == ""
                                                 ? <PhotoOutlined color={isItemSelected ? "primary" : "inherit"} sx={{ fontSize: "20px" }} />
                                                 : (palette.mode == "dark"
@@ -168,12 +168,12 @@ const CatalogMenu = () => {
                         </Paper>
                     </Grid>
                     <Grid item xs={1}>
-                        <Divider sx={{ height: "622px", borderColor: "inherit", my: "24px", mr: "20px" }} orientation="vertical" />
+                        <Divider sx={{ height: "522px", borderColor: "inherit", my: "24px", mr: "20px" }} orientation="vertical" />
                     </Grid>
-                    <Grid item xs={8} sx={{ maxHeight: "622px", my: "24px", display: "flex", flexDirection: "column", flexWrap: "wrap" }}>
+                    <Grid item xs={8} sx={{ maxHeight: "522px", my: "24px", display: "flex", flexDirection: "column", flexWrap: "wrap", overflow: "hidden" }}>
                         {fullCatalogItems[selectedCategory]?.children && fullCatalogItems[selectedCategory].children.map((childF, indexF) => {
                             return (
-                                <Box key={`$catalog_children_f_${indexF}`} sx={{ mb: "23px" }}>
+                                <Box key={`$catalog_children_f_${indexF}`} sx={{ minWidth: "347px", maxWidth: "347px", mb: "23px" }}>
                                     <LinkRouter underline="none" color="inherit" to={`/catalog/${childF.urlSlug}`} onClick={handleClose}>
                                         <Typography variant="h4" fontWeight="bold" color="inherit">{childF.name}</Typography>
                                     </LinkRouter>

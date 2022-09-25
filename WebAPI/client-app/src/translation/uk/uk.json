@@ -444,7 +444,8 @@
                     "payment": "Оплата",
                     "delivery": "Доставка",
                     "total": "Всього",
-                    "from": "від"
+                    "from": "від",
+                    "cancel": "Скасувати"
                 },
                 "createProduct": {
                     "title": "Create Product",
@@ -591,7 +592,8 @@
             "category": "Категорія",
             "productStatus": "Статус товару",
             "filterValue": "Значення фільтру",
-            "characteristicValue": "Значення характеристики"
+            "characteristicValue": "Значення характеристики",
+            "department": "Відділення"
         },
         "validationMessages": {
             "required": "є обов'язковим"

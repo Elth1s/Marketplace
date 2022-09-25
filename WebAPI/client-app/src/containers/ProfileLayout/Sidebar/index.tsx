@@ -23,7 +23,8 @@ import { useTypedSelector } from '../../../hooks/useTypedSelector';
 interface IMenuItem {
     label: string,
     path: string,
-    icon: string,
+    darkIcon: string,
+    lightIcon: string,
     activeIcon: string,
 }
 
@@ -38,25 +39,29 @@ const Sidebar = () => {
         {
             label: `${user.firstName} ${user.secondName}`,
             path: '/profile/information',
-            icon: palette.mode == "dark" ? white_admin_user : black_admin_user,
+            darkIcon: black_admin_user,
+            lightIcon: white_admin_user,
             activeIcon: orange_user
         },
         {
             label: `${t("pages.user.menu.reviewedProducts")}`,
             path: '/profile/reviewed-products',
-            icon: palette.mode == "dark" ? white_admin_eye : black_admin_eye,
+            darkIcon: black_eye,
+            lightIcon: white_admin_eye,
             activeIcon: orange_eye
         },
         {
             label: `${t("pages.user.menu.myOrders")}`,
             path: '/profile/orders',
-            icon: palette.mode == "dark" ? white_admin_shopping_cart : black_admin_shopping_cart,
+            darkIcon: black_admin_shopping_cart,
+            lightIcon: white_admin_shopping_cart,
             activeIcon: orange_shopping_cart
         },
         {
             label: `${t("pages.user.menu.selectedProducts")}`,
             path: '/profile/selected-products',
-            icon: palette.mode == "dark" ? white_admin_heart : black_admin_heart,
+            darkIcon: black_admin_heart,
+            lightIcon: white_admin_heart,
             activeIcon: orange_heart
         },
         // { label: `${t("pages.user.menu.myReviews")}`, path: '/profile/reviews', icon: black_review, activeIcon: orange_review },
@@ -99,7 +104,7 @@ const Sidebar = () => {
                             >
                                 <img
                                     style={{ width: "20px", height: "20px" }}
-                                    src={selectedItem === item.path ? item.activeIcon : item.icon}
+                                    src={selectedItem === item.path ? item.activeIcon : (palette.mode != "dark" ? item.darkIcon : item.lightIcon)}
                                     alt="icon"
                                 />
                             </ListItemIcon>
