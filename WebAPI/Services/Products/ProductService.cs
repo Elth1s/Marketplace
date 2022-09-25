@@ -24,6 +24,7 @@ namespace WebAPI.Services.Products
         private readonly UserManager<AppUser> _userManager;
         private readonly IRepository<Sale> _saleRepository;
         private readonly IRepository<Product> _productRepository;
+        private readonly IRepository<CharacteristicValue> _characteristicValueRepository;
         private readonly IRepository<ProductImage> _productImageRepository;
         private readonly IRepository<Shop> _shopRepository;
         private readonly IRepository<ProductStatus> _productStatusRepository;
@@ -44,7 +45,8 @@ namespace WebAPI.Services.Products
             IRepository<BasketItem> basketRepository,
             UserManager<AppUser> userManager,
             IMapper mapper,
-            IRepository<Sale> saleRepository)
+            IRepository<Sale> saleRepository,
+            IRepository<CharacteristicValue> characteristicValueRepository)
         {
             _userManager = userManager;
             _productRepository = productRepository;
@@ -59,6 +61,7 @@ namespace WebAPI.Services.Products
             _basketRepository = basketRepository;
             _mapper = mapper;
             _saleRepository = saleRepository;
+            _characteristicValueRepository = characteristicValueRepository;
         }
 
         public async Task<IEnumerable<ProductResponse>> GetAsync()
@@ -115,10 +118,10 @@ namespace WebAPI.Services.Products
                     }
             }
 
-            var productSearchSpec = new ProductSearchSpecification(request.ShopId, request.ProductName, request.Categories == null ? null : categories, request.Filters == null ? null : filters, null, null);
+            var productSearchSpec = new ProductSearchSpecification(request.ShopId, request.ProductName, request.Categories == null ? null : categories, request.Filters == null ? null : filters, null, null, request.Min, request.Max);
             response.Count = await _productRepository.CountAsync(productSearchSpec);
 
-            productSearchSpec = new ProductSearchSpecification(request.ShopId, request.ProductName, request.Categories == null ? null : categories, request.Filters == null ? null : filters, request.Page, request.RowsPerPage);
+            productSearchSpec = new ProductSearchSpecification(request.ShopId, request.ProductName, request.Categories == null ? null : categories, request.Filters == null ? null : filters, request.Page, request.RowsPerPage, request.Min, request.Max);
             products = await _productRepository.ListAsync(productSearchSpec);
 
             response.Values = _mapper.Map<IEnumerable<ProductCatalogResponse>>(products);
@@ -131,7 +134,16 @@ namespace WebAPI.Services.Products
                     item.IsSelected = await _userManager.IsProductSelectedByUserAsync(user.Id, item.Id);
                 }
             }
+            if (products.Count > 0)
+            {
+                var spec = new ProductSearchSpecification(request.ShopId, request.ProductName, request.Categories == null ? null : categories, request.Filters == null ? null : filters, request.Min, request.Max);
+                var list = await _productRepository.ListAsync(spec);
 
+                var min = list.FirstOrDefault();
+                var max = list.LastOrDefault();
+                response.Min = (int)(min.Discount > 0 ? min.Price - (min.Price / 100f * min.Discount) : min.Price);
+                response.Max = (int)(max.Discount > 0 ? max.Price - (max.Price / 100f * max.Discount) : max.Price);
+            }
             return response;
         }
         public async Task<ProductRatingResponse> GetProductRatingByUrlSlugAsync(string urlSlug)
@@ -228,13 +240,24 @@ namespace WebAPI.Services.Products
                     }
             }
 
-            var productSearchSpec = new ProductSearchSpecification(request.SaleId, request.Categories == null ? null : categories, request.Filters == null ? null : filters, null, null);
+            var productSearchSpec = new ProductSearchSpecification(request.SaleId, request.Categories == null ? null : categories, request.Filters == null ? null : filters, null, null, request.Min, request.Max);
             response.Count = await _productRepository.CountAsync(productSearchSpec);
 
-            productSearchSpec = new ProductSearchSpecification(request.SaleId, request.Categories == null ? null : categories, request.Filters == null ? null : filters, request.Page, request.RowsPerPage);
+            productSearchSpec = new ProductSearchSpecification(request.SaleId, request.Categories == null ? null : categories, request.Filters == null ? null : filters, request.Page, request.RowsPerPage, request.Min, request.Max);
             products = await _productRepository.ListAsync(productSearchSpec);
 
             response.Values = _mapper.Map<IEnumerable<ProductCatalogResponse>>(products);
+
+            if (products.Count > 0)
+            {
+                var spec = new ProductSearchSpecification(request.SaleId, request.Categories == null ? null : categories, request.Filters == null ? null : filters, request.Min, request.Max);
+                var list = await _productRepository.ListAsync(spec);
+
+                var min = list.FirstOrDefault();
+                var max = list.LastOrDefault();
+                response.Min = (int)(min.Discount > 0 ? min.Price - (min.Price / 100f * min.Discount) : min.Price);
+                response.Max = (int)(max.Discount > 0 ? max.Price - (max.Price / 100f * max.Discount) : max.Price);
+            }
 
             var user = await _userManager.GetUserWithSelectedProductsAsync(userId);
             if (user != null)
@@ -261,8 +284,9 @@ namespace WebAPI.Services.Products
             };
 
             response.Product.DeliveryTypes = _mapper.Map<IEnumerable<DeliveryTypeResponse>>(product.Shop.DeliveryTypes);
+            var filters = new List<ProductFilterValue>();
 
-            response.Product.Filters = product.FilterValueProducts.Select(f => new ProductFilterValue()
+            filters = product.FilterValueProducts.Select(f => new ProductFilterValue()
             {
                 Value = f.CustomValue == null ? f.FilterValue.FilterValueTranslations.FirstOrDefault(
                                                 f => f.LanguageId == CurrentLanguage.Id)?.Value : f.CustomValue.ToString(),
@@ -270,7 +294,10 @@ namespace WebAPI.Services.Products
                                                 f => f.LanguageId == CurrentLanguage.Id)?.Name,
                 UnitMeasure = f.FilterValue.FilterName.Unit?.UnitTranslations.FirstOrDefault(
                                                 f => f.LanguageId == CurrentLanguage.Id)?.Measure
-            });
+            }).ToList();
+            filters.AddRange(_mapper.Map<IEnumerable<ProductFilterValue>>(product.CharacteristicValues));
+
+            response.Product.Filters = filters;
 
             var categories = new List<Category>();
             var category = product.Category;
@@ -348,6 +375,15 @@ namespace WebAPI.Services.Products
             product.ShopId = shop.Id;
             product.UrlSlug = Guid.NewGuid();
 
+
+            var charValues = new List<CharacteristicValue>();
+            foreach (var charValue in request.CharacteristicsValue)
+            {
+                var characteristic = await _characteristicValueRepository.GetByIdAsync(charValue.ValueId);
+                charValues.Add(characteristic);
+            }
+            product.CharacteristicValues = charValues;
+
             await _productRepository.AddAsync(product);
             await _productRepository.SaveChangesAsync();
 
@@ -362,6 +398,7 @@ namespace WebAPI.Services.Products
                     });
             }
             await _filterValueProductRepository.SaveChangesAsync();
+
 
             foreach (var image in request.Images)
             {

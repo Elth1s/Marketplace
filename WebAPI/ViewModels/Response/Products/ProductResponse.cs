@@ -29,7 +29,7 @@
         /// Product price
         /// </summary>
         /// <example>1000</example>
-        public float Price { get; set; }
+        public int Price { get; set; }
         /// <summary>
         /// Product discount
         /// </summary>

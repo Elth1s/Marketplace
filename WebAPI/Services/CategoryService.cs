@@ -125,13 +125,24 @@ namespace WebAPI.Services
                     var filterValuesSpec = new FilterValueGetByIdsSpecification(filterPredicate);
                     filters = await _filterValueRepository.ListAsync(filterValuesSpec);
                 }
-                var productCategoryIdSpec = new ProductGetByCategoryIdSpecification(category.Id, request.Filters == null ? null : filters, null, null);
+                var productCategoryIdSpec = new ProductGetByCategoryIdSpecification(category.Id, request.Filters == null ? null : filters, null, null, request.Min, request.Max);
                 response.CountProducts = await _productRepository.CountAsync(productCategoryIdSpec);
 
-                productCategoryIdSpec = new ProductGetByCategoryIdSpecification(category.Id, request.Filters == null ? null : filters, request.Page, request.RowsPerPage);
+                productCategoryIdSpec = new ProductGetByCategoryIdSpecification(category.Id, request.Filters == null ? null : filters, request.Page, request.RowsPerPage, request.Min, request.Max);
                 products = await _productRepository.ListAsync(productCategoryIdSpec);
 
                 response.Products = _mapper.Map<IEnumerable<ProductCatalogResponse>>(products);
+
+                if (products.Count > 0)
+                {
+                    var spec = new ProductGetByCategoryIdSpecification(category.Id, filters);
+                    var list = await _productRepository.ListAsync(spec);
+
+                    var min = list.FirstOrDefault();
+                    var max = list.LastOrDefault();
+                    response.Min = (int)(min.Discount > 0 ? min.Price - (min.Price / 100f * min.Discount) : min.Price);
+                    response.Max = (int)(max.Discount > 0 ? max.Price - (max.Price / 100f * max.Discount) : max.Price);
+                }
             }
             else
             {

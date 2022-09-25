@@ -34,12 +34,12 @@
         /// Product price
         /// </summary>
         /// <example>1000</example>
-        public float Price { get; set; }
+        public int Price { get; set; }
         /// <summary>
         /// Discount
         /// </summary>
         /// <example>900</example>
-        public float? Discount { get; set; }
+        public int? Discount { get; set; }
         /// <summary>
         /// Url slug
         /// </summary>

@@ -6,7 +6,7 @@ namespace WebAPI.Specifications.Products
 {
     public class ProductGetByCategoryIdSpecification : Specification<Product>
     {
-        public ProductGetByCategoryIdSpecification(int categoryId, List<FilterValue> filters, int? page, int? rowsPerPage, int? productId = null)
+        public ProductGetByCategoryIdSpecification(int categoryId, List<FilterValue> filters, int? page, int? rowsPerPage, int? productId = null, int? min = null, int? max = null)
         {
             Query.Where(item => categoryId == item.CategoryId)
                  .Include(c => c.Category)
@@ -16,6 +16,10 @@ namespace WebAPI.Specifications.Products
 
             if (productId != null)
                 Query.Where(item => productId != item.Id);
+
+            if (min.HasValue && max.HasValue)
+                Query.Where(p => (p.Discount > 0 ? p.Price - (p.Price / 100f * p.Discount) : p.Price) >= min.Value
+                && (p.Discount > 0 ? p.Price - (p.Price / 100f * p.Discount) : p.Price) <= max.Value);
 
             if (filters != null)
             {
@@ -44,6 +48,33 @@ namespace WebAPI.Specifications.Products
                      .Take(rowsPerPage.Value);
             }
         }
+        public ProductGetByCategoryIdSpecification(int categoryId, List<FilterValue> filters)
+        {
+            Query.Where(item => categoryId == item.CategoryId)
+                 .Where(item => !item.IsDeleted);
+
+            if (filters != null)
+            {
+                var gropedFilters = filters.GroupBy(f => f.FilterNameId);
+
+                foreach (var item in gropedFilters)
+                {
+                    var productPredicate = PredicateBuilder.False<Product>();
+                    foreach (var filterValue in item)
+                    {
+                        productPredicate = productPredicate
+                            .Or(p => p.FilterValueProducts
+                                    .Any(f => f.FilterValueId == filterValue.Id));
+                    }
+                    Query.Where(productPredicate);
+                }
+            }
+
+            Query.OrderBy(p => p.Discount > 0 ? p.Price - (p.Price / 100f * p.Discount) : p.Price);
+
+            Query.PostProcessingAction(p => new List<Product>() { p.FirstOrDefault(), p.LastOrDefault() });
+        }
+
 
         public ProductGetByCategoryIdSpecification(string productName, int categoryId, int? shopId = null)
         {

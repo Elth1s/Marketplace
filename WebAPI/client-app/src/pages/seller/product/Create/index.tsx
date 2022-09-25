@@ -16,7 +16,6 @@ import { IProductRequest, IProductImage } from "../types";
 
 const ProductCreate = () => {
     const { t } = useTranslation();
-    const { GetCategoriesWithoutChildren, GetProductStatusesSeller, GetFiltersByCategoryId, CreateProductImage, CreateProduct } = useActions();
 
     const { GetCategoriesWithoutChildren, GetProductStatusesSeller, GetFiltersByCategoryId, CreateProductImage, CreateProduct, GetCharacteristicsByUser } = useActions();
 

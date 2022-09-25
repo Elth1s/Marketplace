@@ -48,6 +48,10 @@ namespace WebAPI.ViewModels.Request.Products
         /// </summary>
         public IEnumerable<FilterValueProductCreate> FiltersValue { get; set; }
         /// <summary>
+        /// Product characteristics value
+        /// </summary>
+        public IEnumerable<CharacteristicValueProductCreate> CharacteristicsValue { get; set; }
+        /// <summary>
         /// Product filters value
         /// </summary>
         public IEnumerable<ImageProductCreate> Images { get; set; }
@@ -73,6 +77,23 @@ namespace WebAPI.ViewModels.Request.Products
         /// </summary>
         /// <example>15.7</example>
         public float? CustomValue { get; set; }
+    }
+
+    /// <summary>
+    /// Filter value class to create a product 
+    /// </summary>
+    public class CharacteristicValueProductCreate
+    {
+        /// <summary>
+        /// Characteristic name identifier
+        /// </summary>
+        /// <example>1</example>
+        public int NameId { get; set; }
+        /// <summary>
+        /// Characteristic value identifier
+        /// </summary>
+        /// <example>1</example>
+        public int ValueId { get; set; }
     }
 
     /// <summary>

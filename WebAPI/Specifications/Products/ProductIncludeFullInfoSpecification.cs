@@ -57,6 +57,9 @@ namespace WebAPI.Specifications.Products
                             .ThenInclude(p => p.Unit)
                                 .ThenInclude(u => u.UnitTranslations)
                 .Include(pc => pc.CharacteristicValues)
+                    .ThenInclude(c => c.CharacteristicName)
+                        .ThenInclude(n => n.Unit)
+                            .ThenInclude(u => u.UnitTranslations)
                 .Include(pc => pc.Reviews)
                 .AsSplitQuery();
         }

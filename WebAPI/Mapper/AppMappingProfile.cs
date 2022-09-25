@@ -155,6 +155,12 @@ namespace WebAPI.Mapper
             CreateMap<CharacteristicValue, CharacteristicValueSellerResponse>();
             CreateMap<CharacteristicValue, CharacteristicValueResponse>()
                 .ForMember(u => u.CharacteristicName, opt => opt.MapFrom(vm => vm.CharacteristicName.Name));
+
+            CreateMap<CharacteristicValue, ProductFilterValue>()
+                .ForMember(u => u.FilterName, opt => opt.MapFrom(vm => vm.CharacteristicName.Name))
+                .ForMember(u => u.Value, opt => opt.MapFrom(vm => vm.Value))
+                .ForMember(u => u.UnitMeasure, opt => opt.MapFrom(vm => vm.CharacteristicName.Unit.UnitTranslations.FirstOrDefault(
+                           c => c.LanguageId == CurrentLanguage.Id).Measure));
             #endregion
 
             #region Country

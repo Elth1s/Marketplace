@@ -17,7 +17,17 @@ namespace WebAPI.ViewModels.Request.Categories
         /// Page
         /// </summary>
         /// <example>1</example>
-        public int Page { get; set; }
+        public int? Page { get; set; }
+        /// <summary>
+        /// Min price
+        /// </summary>
+        /// <example>100</example>
+        public int? Min { get; set; }
+        /// <summary>
+        /// Max price
+        /// </summary>
+        /// <example>10000</example>
+        public int? Max { get; set; }
         /// <summary>
         /// Row per page
         /// </summary>

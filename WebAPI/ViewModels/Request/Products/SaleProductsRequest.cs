@@ -21,6 +21,16 @@
         /// <example>40</example>
         public int RowsPerPage { get; set; }
         /// <summary>
+        /// Min price
+        /// </summary>
+        /// <example>100</example>
+        public int? Min { get; set; }
+        /// <summary>
+        /// Max price
+        /// </summary>
+        /// <example>10000</example>
+        public int? Max { get; set; }
+        /// <summary>
         /// List identifier of categories
         /// </summary>
         public IEnumerable<int> Categories { get; set; }
