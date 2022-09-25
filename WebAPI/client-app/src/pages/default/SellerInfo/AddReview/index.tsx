@@ -23,8 +23,7 @@ import { useTranslation } from 'react-i18next';
 
 import { ServerError } from '../../../../store/types';
 import { RatingStyle } from '../../../../components/Rating/styled';
-
-import { shopReviewValidationFields } from '../validation';
+import * as Yup from 'yup';
 import { IShopReview } from '../types';
 import { useParams } from 'react-router-dom';
 import { useActions } from '../../../../hooks/useActions';
@@ -106,6 +105,12 @@ const AddShopReview: FC<Props> = ({ getData }) => {
                 });
         }
     }
+    const shopReviewValidationFields = Yup.object().shape({
+        fullName: Yup.string().required().min(2).max(60).label(t('validationProps.fullName')),
+        email: Yup.string().required().label(t('validationProps.email')),
+        comment: Yup.string().max(450).label(t('validationProps.comment')),
+    });
+
     const formik = useFormik({
         initialValues: item,
         validationSchema: shopReviewValidationFields,

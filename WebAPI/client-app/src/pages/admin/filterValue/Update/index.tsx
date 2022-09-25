@@ -26,6 +26,7 @@ import { UpdateProps, ServerError, } from '../../../../store/types';
 import { toLowerFirstLetter } from '../../../../http_comon';
 
 import { IFilterValue } from "../types";
+import { MenuItem } from '@mui/material';
 
 const Transition = forwardRef(function Transition(
     props: TransitionProps & {
@@ -165,17 +166,20 @@ const FilterValueUpdate: FC<UpdateProps> = ({ id, afterUpdate }) => {
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <AutocompleteComponent
+                                    <TextFieldFirstStyle
+                                        select
+                                        fullWidth
+                                        variant="standard"
                                         label={t('validationProps.filterName')}
-                                        name="filterNameId"
-                                        error={errors.filterNameId}
-                                        touched={touched.filterNameId}
-                                        options={filterNames}
-                                        getOptionLabel={(option) => option.name}
-                                        isOptionEqualToValue={(option, value) => option?.id === value.id}
-                                        defaultValue={filterNames.find(value => value.id === selectedFilterValue.filterNameId)}
-                                        onChange={(e, value) => { setFieldValue("filterNameId", value?.id) }}
-                                    />
+                                        error={Boolean(touched.filterNameId && errors.filterNameId)}
+                                        helperText={touched.filterNameId && errors.filterNameId}
+                                        {...getFieldProps('filterNameId')}
+                                    >
+                                        {filterNames && filterNames.map((item) =>
+                                            <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                                        )}
+                                    </TextFieldFirstStyle>
+
                                 </Grid>
                             </Grid>
                         </DialogContent>

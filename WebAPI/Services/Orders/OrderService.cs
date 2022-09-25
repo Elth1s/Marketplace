@@ -21,6 +21,7 @@ namespace WebAPI.Services.Orders
 {
     public class OrderService : IOrderService
     {
+        private readonly IStringLocalizer<MailResources> _mailResourcesLocalizer;
         private readonly IStringLocalizer<ErrorMessages> _errorLocalizer;
         private readonly IRepository<Order> _orderRepository;
         private readonly IRepository<OrderStatus> _orderStatusRepository;
@@ -203,13 +204,17 @@ namespace WebAPI.Services.Orders
             var request = _mapper.Map<OrderEmailRequest>(order);
             request.Name = user.FirstName;
             request.Uri = _clientUrl.ApplicationUrl;
-            await _emailService.SendEmailAsync(new MailRequest()
+            var email = !string.IsNullOrEmpty(order.ConsumerEmail) ? order.ConsumerEmail : !string.IsNullOrEmpty(user.Email) ? user.Email : null;
+            if (email != null)
             {
-                ToEmail = user.Email,
-                Subject = "123",
-                Body = await _templateService.GetTemplateHtmlAsStringAsync("Mails/Order",
-                    request)
-            });
+                await _emailService.SendEmailAsync(new MailRequest()
+                {
+                    ToEmail = email,
+                    Subject = _mailResourcesLocalizer["Order"],
+                    Body = await _templateService.GetTemplateHtmlAsStringAsync("Mails/Order",
+                        request)
+                });
+            }
         }
 
         public async Task UpdateAsync(int id, UpdateOrderRequest request)

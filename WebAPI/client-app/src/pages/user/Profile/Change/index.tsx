@@ -10,7 +10,6 @@ import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import { ServerError } from '../../../../store/types';
 import { toLowerFirstLetter } from '../../../../http_comon';
 
-import { ProfileSchema } from "../../validation";
 import { IProfile } from "../../types";
 
 import TextFieldComponent from "../../../../components/TextField";
@@ -88,13 +87,12 @@ const Change = () => {
         }
     }
 
+
     const formik = useFormik({
         initialValues: userInfo,
-        validationSchema: ProfileSchema,
         enableReinitialize: true,
         onSubmit: onHandleSubmit
     });
-
     const { errors, touched, isSubmitting, handleSubmit, setFieldError, getFieldProps } = formik;
 
     return (

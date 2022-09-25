@@ -597,7 +597,12 @@
             "department": "Department"
         },
         "validationMessages": {
-            "required": "is required"
+            "required": "is required",
+            "min": "must be at least",
+            "max": "must be less than",
+            "characters": "characters",
+            "urlSlugMatch": "Invalid format of  url slug",
+            "passwordNotValid": "Invalid format of password"
         },
         "currency": "uah"
     }

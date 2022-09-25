@@ -123,6 +123,9 @@
   <data name="CategoryUrlSlugPropName" xml:space="preserve">
     <value>Веб-адреса категорії</value>
   </data>
+  <data name="CityPropName" xml:space="preserve">
+    <value>Місто</value>
+  </data>
   <data name="CodeExactLengthMessage" xml:space="preserve">
     <value>Код має бути довжиною 2 символи</value>
   </data>
@@ -161,6 +164,9 @@
   </data>
   <data name="DateStartPropName" xml:space="preserve">
     <value>Дата початку</value>
+  </data>
+  <data name="DepartmentPropName" xml:space="preserve">
+    <value>Відділення</value>
   </data>
   <data name="DescriptionNameProp" xml:space="preserve">
     <value>Опис</value>

@@ -123,6 +123,9 @@
   <data name="CategoryUrlSlugPropName" xml:space="preserve">
     <value>Category url slug</value>
   </data>
+  <data name="CityPropName" xml:space="preserve">
+    <value>City</value>
+  </data>
   <data name="CodeExactLengthMessage" xml:space="preserve">
     <value>Code must be 2 characters long</value>
   </data>
@@ -161,6 +164,9 @@
   </data>
   <data name="DateStartPropName" xml:space="preserve">
     <value>Start date</value>
+  </data>
+  <data name="DepartmentPropName" xml:space="preserve">
+    <value>Department</value>
   </data>
   <data name="DescriptionNameProp" xml:space="preserve">
     <value>Description</value>

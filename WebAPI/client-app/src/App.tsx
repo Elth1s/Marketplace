@@ -106,6 +106,14 @@ const App = () => {
     mixed: {
       required: label => `${label.label} ${t("validationMessages.required")}`,
     },
+    string: {
+      min: label => `${label.label} ${t("validationMessages.min")} ${label.min}  ${t("validationMessages.characters")}`,
+      max: label => `${label.label} ${t("validationMessages.max")} ${label.max}  ${t("validationMessages.characters")}`,
+    },
+    number: {
+      min: label => `${label.label} ${t("validationMessages.min")} ${label.min}`,
+      max: label => `${label.label} ${t("validationMessages.max")} ${label.max}`,
+    }
   })
 
   return (

@@ -22,6 +22,8 @@ import { CreateProps, ServerError } from '../../../../store/types';
 import { toLowerFirstLetter } from '../../../../http_comon';
 
 import { ICharacteristicValue } from "../types";
+import { TextFieldFirstStyle } from '../../../../components/TextField/styled';
+import { MenuItem } from '@mui/material';
 
 const CharacteristicValueCreate: FC<CreateProps> = ({ afterCreate }) => {
     const { t } = useTranslation();
@@ -111,17 +113,19 @@ const CharacteristicValueCreate: FC<CreateProps> = ({ afterCreate }) => {
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <AutocompleteComponent
+                                    <TextFieldFirstStyle
+                                        select
+                                        fullWidth
+                                        variant="standard"
                                         label={t('validationProps.characteristicName')}
-                                        name="characteristicNameId"
-                                        error={errors.characteristicNameId}
-                                        touched={touched.characteristicNameId}
-                                        options={characteristicNames}
-                                        getOptionLabel={(option) => option.name}
-                                        isOptionEqualToValue={(option, value) => option?.id === value.id}
-                                        defaultValue={undefined}
-                                        onChange={(e, value) => { setFieldValue("characteristicNameId", value?.id) }}
-                                    />
+                                        error={Boolean(touched.characteristicNameId && errors.characteristicNameId)}
+                                        helperText={touched.characteristicNameId && errors.characteristicNameId}
+                                        {...getFieldProps('characteristicNameId')}
+                                    >
+                                        {characteristicNames && characteristicNames.map((item) =>
+                                            <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                                        )}
+                                    </TextFieldFirstStyle>
                                 </Grid>
                             </Grid>
                         </DialogContent>

@@ -3104,6 +3104,60 @@ namespace DAL.Data
                        CategoryId=58,
                     },
 
+/*45*/          new(){ Name = "Ноутбук Lenovo V14 G2 ITL (Intel i3-1115G4/8/128F/int/W10Pro) Black",
+                       ShopId=2,
+                       StatusId=1,
+                       UrlSlug=Guid.NewGuid(),
+                       Description="Lenovo V14 ідеально поєднує в собі стиль, потужність і компактність. Працюйте швидко та ефективно, розслабтеся та насолоджуйтесь яскравими кольорами на 14-дюймовому дисплеї завдяки потужному центральному процесору Intel. Тонкий корпус і тривала робота від батареї дають змогу завжди носити цей пристрій із собою, хай де ви будете.\r\n\r\nШарнір для горизонтального розташування пристрою\r\nКонструкція Lenovo V14 дає нагоду повертати екран аж до 180°, маючи у своєму розпорядженні його горизонтально. Чудове рішення, щоб ділитися зображенням із колегами та друзями.\r\n\r\nДинамічний звук\r\nПриготуйтеся зануритися до світу мультимедійних розваг. Завдяки якісній аудіосистемі V14 забезпечує гучне звучання музики та фільмів.\r\n\r\nВисока швидкість передачі даних\r\nНоутбук обладнаний роз'ємом USB 3.2, що дає змогу обмінюватися даними з іншими пристроями зі швидкістю, яка вдесятеро перевищує швидкість інтерфейсів USB більш ранніх версій.\r\n\r\nІнтернет із надвисокими швидкостями\r\nНоутбук V14 обладнаний вбудованим модулем Wi-Fi 802.11 ac, який забезпечує блискавичну швидкість для вебсерфінгу, відтворення потокового відео та завантаження файлів. Швидкість пересилання даних стандарту Wi-Fi 802.11 ac майже втричі вища, ніж 802.11 b/g/n.\r\n\r\nУважність до деталей\r\nV14 має простий, але водночас елегантний дизайн. Попри свою компактність, ноутбук може похвалитися багатою функціональністю й підтриманням сучасних інтерфейсів, включно з USB 3.2, USB Type-C і HDMI.",
+                       Price=19999f,
+                       SaleId=2,
+                       Discount=15,
+                       Count=25,
+                       CategoryId=21,
+                    },
+/*46*/          new(){ Name = "Ноутбук ASUS TUF Gaming F15 FX506HC-HN006 (90NR0723-M01150) Eclipse Gray",
+                       ShopId=2,
+                       StatusId=1,
+                       UrlSlug=Guid.NewGuid(),
+                       Description="Потужний арсенал для будь-яких завдань\r\nСучасна конфігурація робить TUF Gaming F15 універсальним пристроєм, який готовий забезпечити відмінну швидкість у широкому спектрі додатків, будь то ігри, стрімінг чи щось інше.\r\n\r\nДля активного життя\r\nКорпус TUF Gaming F15 став компактнішим і легшим, ніж у попередніх моделей серії, проте в нього вбудований акумулятор більшої місткості – 48 Вт*год. Це забезпечує тривалий час автономної роботи. Невелика вага і місткий акумулятор роблять цей ноутбук справді мобільним пристроєм.\r\n\r\nАрмійський стандарт надійності\r\nЯк і всі ноутбуки серії TUF Gaming, модель F15 відрізняється максимальною надійністю та стабільністю роботи. Вона пройшла суворі тести якості, у тому числі за американським військово-промисловим стандартом MIL-STD-810H. Такий пристрій легко витримає всі недоліки не дуже дбайливого повсякденного користування.\r\n\r\nБачити більше\r\nНоутбук TUF Gaming F15 оснащуватиметься IPS-екраном із частотою оновлення 144 Гц, який відмінно підходить для динамічних комп'ютерних ігор. При підключенні зовнішнього монітора за інтерфейсом USB 3.2 Gen2 Type-C в режимі DisplayPort 1.4 підтримується частота оновлення 120 Гц, роздільна здатність до 4K та технологія адаптивної синхронізації G-Sync, що усуває неприємний ефект розриву кадру. Ще один монітор чи телевізор можна під'єднати за інтерфейсом HDMI 2.0b – він дозволяє виводити зображення формату 4K із частотою оновлення до 60 Гц.\r\n\r\nОптимізовано під ігри\r\nРозкладка, як у звичайних зовнішніх клавіатур, персоналізоване повнокольорове підсвічування, виділена комбінація WSAD – клавіатура ноутбука TUF Gaming F15 спеціально оптимізована під ігри. Технологія Overstroke забезпечує прискорене спрацювання клавіш, що буде особливо корисним для швидкого керування динамічними сценами. Відповідно до духу серії TUF, клавіатура також може похвалитися особливою довговічністю – її ресурс становить понад 20 мільйонів натискань.\r\n\r\nЧарівне просторове звучання\r\nВбудована аудіосистема ноутбука складається з двох оптимізованих динаміків, чиє звучання перевершує попередні моделі за максимальною гучністю та насиченістю басів. Реалізована у ній технологія DTS:X Ultra формує віртуальний 7. 1-канальний просторовий звук під час використання звичайних стереонавушників. Є встановлені режими, оптимізовані під ігри різних жанрів, музику та фільми, а також вбудований еквалайзер для додаткового підстроювання звучання.\r\n\r\nДля тривалого користування\r\nЗавдяки повноцінній системі охолодження кожен ноутбук серії TUF Gaming зможе підтримувати високу продуктивність протягом тривалого терміну служби. У ній застосовуються два радіатори та кілька теплових трубок, а технологія самоочищення перешкоджає накопиченню пилу. Система охолодження може працювати в кількох режимах, призначених для різних сценаріїв використання ноутбука і відрізняються один від одного рівнем продуктивності та шуму.\r\n\r\nЗручний доступ до компонентів\r\nЦей ноутбук підтримує апгрейд пам'яті та накопичувачів. Для доступу до них потрібно лише зняти нижню панель за допомогою звичайної викрутки. Цей процес полегшується тим, що один із кутів панелі кріпиться спеціальним пружним гвинтом і піднімається при його відкручуванні.\r\n\r\nБездротовий модуль Wi-Fi 6\r\nДаний ноутбук оснащується бездротовим модулем Intel Wi-Fi 6 (802. 11ax), який забезпечує високу швидкість з'єднання з мінімальними лагами, що так важливо для онлайн-ігор. Крім того, стандарт Wi-Fi 6 ефективніший у порівнянні з Wi-Fi 5 у завантажених мережах.\r\n\r\nПовноцінний комплект інтерфейсів\r\nНоутбук пропонує велику кількість інтерфейсів для підключення всілякої периферії, серед яких три високошвидкісні порти USB 3. 2 Type-A. Для виведення зображення на зовнішній монітор з технологією G-Sync можна скористатися портом USB 3. 2 Gen2 Type-C, що підтримує режим DisplayPort 1. 4. Також ноутбук має інтерфейс Bluetooth для бездротового підключення мишок, гарнітур та інших сумісних пристроїв.\r\n\r\nЄдиний центр управління\r\nДодаток Armoury Crate є єдиним програмним центром управління ноутбуком. З його допомогою можна встановити системні параметри, відрегулювати роботу підсвічування і навіть створити профілі з налаштуваннями, які будуть автоматично застосовуватися при запуску певних програм.",
+                       Price=49999f,
+                       SaleId=2,
+                       Discount=10,
+                       Count=25,
+                       CategoryId=21,
+                    },
+/*47*/          new(){ Name = "Ноутбук Acer Aspire 7 A715-42G-R0VS (NH.QBFEU.00A) Charcoal Black",
+                       ShopId=2,
+                       StatusId=1,
+                       UrlSlug=Guid.NewGuid(),
+                       Description="",
+                       Price=38000f,
+                       SaleId=2,
+                       Discount=10,
+                       Count=25,
+                       CategoryId=21,
+                    },
+/*48*/          new(){ Name = "Ноутбук Apple MacBook Air 13\" M1 256GB 2020 (MGN63) Space Gray",
+                       ShopId=2,
+                       StatusId=1,
+                       UrlSlug=Guid.NewGuid(),
+                       Description="",
+                       Price=42999f,
+                       Count=25,
+                       CategoryId=21,
+                    },
+/*49*/          new(){ Name = "Ноутбук ASUS Laptop X515JA-EJ1814 (90NB0SR3-M34690) Peacock Blue",
+                       ShopId=2,
+                       StatusId=1,
+                       UrlSlug=Guid.NewGuid(),
+                       Description="ASUS Laptop 15 X515JA - це універсальний ноутбук початкового рівня, що поєднує у собі стильний дизайн та сучасні технології.\r\n\r\nСучасні компоненти\r\nНоутбук ASUS Laptop 15 X515JA оснащується процесором Intel, що дозволяє йому з успіхом справлятися з різними завданнями.\r\n\r\nДля мобільного способу життя\r\nНоутбук ASUS Laptop 15 X515JA виконаний у компактному корпусі вагою всього 1. 8 кг, що робить цю модель ідеальним вибором для мобільних користувачів.\r\n\r\nПродумана ергономіка\r\nПовнорозмірна клавіатура ноутбука ASUS Laptop 15 X515JA відрізняється продуманою ергономікою, міцною конструкцією та оптимальною глибиною ходу клавіш – 1. 4 мм.\r\n\r\nПідключення будь-якої периферії\r\nДля швидкого обміну даними з периферійними пристроями ASUS Laptop 15 X515JA пропонує високошвидкісний інтерфейс USB 3.2, виконаний у вигляді зручного оборотного роз'єму Type-C. Його пропускна здатність у 10 разів перевищує можливості USB 2.0. Також є роз'єми USB 3.2 Type-A, порти USB 2.0 та відеовихід HDMI, який слугує для підключення зовнішніх моніторів або проекторів.\r\n\r\nПосилений корпус\r\nПід клавіатурою ноутбука розташовується металева опорна скоба, яка збільшує структурну міцність корпусу при інтенсивному використанні та захищає від пошкоджень дисплейний шарнір та внутрішні компоненти.\r\n\r\nПосилена кришка\r\nБічні грані кришки ноутбука спеціально посилені, щоб захистити дисплей та його шарнір від фізичних пошкоджень.",
+                       Price=18900f,
+                       SaleId=2,
+                       Discount=5,
+                       Count=25,
+                       CategoryId=21,
+                    },
+
 
 
             };
@@ -3113,7 +3167,9 @@ namespace DAL.Data
         {
             var productImages = new List<ProductImage>
             {
-/*1*/          new(){ Name = "HM_XAZ309535KOJO_1.jpg", ProductId=1 },
+                #region Dress
+              
+ /*1*/         new(){ Name = "HM_XAZ309535KOJO_1.jpg", ProductId=1 },
                new(){ Name = "HM_XAZ309535KOJO_2.jpg", ProductId=1 },
 
 /*2*/          new(){ Name = "HM_0716597_01_1.jpg", ProductId=2 },
@@ -3251,13 +3307,60 @@ namespace DAL.Data
                new(){ Name = "Bershka_XAZ303662NTME_2.jpg", ProductId=44 },
 
 
+    #endregion
 
 
 
+/*45*/         new(){ Name = "Lenovo_V14_G2_ITL_1.jpg", ProductId=45 },
+               new(){ Name = "Lenovo_V14_G2_ITL_2.jpg", ProductId=45 },
+               new(){ Name = "Lenovo_V14_G2_ITL_3.jpg", ProductId=45 },
+               new(){ Name = "Lenovo_V14_G2_ITL_4.jpg", ProductId=45 },
+               new(){ Name = "Lenovo_V14_G2_ITL_5.jpg", ProductId=45 },
+               new(){ Name = "Lenovo_V14_G2_ITL_6.jpg", ProductId=45 },
+               new(){ Name = "Lenovo_V14_G2_ITL_7.jpg", ProductId=45 },
+               new(){ Name = "Lenovo_V14_G2_ITL_8.jpg", ProductId=45 },
+               new(){ Name = "Lenovo_V14_G2_ITL_9.jpg", ProductId=45 },
+
+/*46*/         new(){ Name = "ASUS_FX506HC-HN006_1.jpg", ProductId=46 },
+               new(){ Name = "ASUS_FX506HC-HN006_2.jpg", ProductId=46 },
+               new(){ Name = "ASUS_FX506HC-HN006_3.jpg", ProductId=46 },
+               new(){ Name = "ASUS_FX506HC-HN006_4.jpg", ProductId=46 },
+               new(){ Name = "ASUS_FX506HC-HN006_5.jpg", ProductId=46 },
+               new(){ Name = "ASUS_FX506HC-HN006_6.jpg", ProductId=46 },
+               new(){ Name = "ASUS_FX506HC-HN006_7.jpg", ProductId=46 },
+               new(){ Name = "ASUS_FX506HC-HN006_8.jpg", ProductId=46 },
+               new(){ Name = "ASUS_FX506HC-HN006_9.jpg", ProductId=46 },
+               new(){ Name = "ASUS_FX506HC-HN006_10.jpg", ProductId=46 },
+               new(){ Name = "ASUS_FX506HC-HN006_11.jpg", ProductId=46 },
+               new(){ Name = "ASUS_FX506HC-HN006_12.jpg", ProductId=46 },
 
 
+/*47*/         new(){ Name = "Acer_A715-42G-R0VS_1.jpg", ProductId=47 },
+               new(){ Name = "Acer_A715-42G-R0VS_2.jpg", ProductId=47 },
+               new(){ Name = "Acer_A715-42G-R0VS_3.jpg", ProductId=47 },
+               new(){ Name = "Acer_A715-42G-R0VS_4.jpg", ProductId=47 },
+               new(){ Name = "Acer_A715-42G-R0VS_5.jpg", ProductId=47 },
+               new(){ Name = "Acer_A715-42G-R0VS_6.jpg", ProductId=47 },
+               new(){ Name = "Acer_A715-42G-R0VS_7.jpg", ProductId=47 },
+               new(){ Name = "Acer_A715-42G-R0VS_8.jpg", ProductId=47 },
 
+/*48*/         new(){ Name = "Apple_MGN63_1.jpg", ProductId=48 },
+               new(){ Name = "Apple_MGN63_2.jpg", ProductId=48 },
+               new(){ Name = "Apple_MGN63_3.jpg", ProductId=48 },
+               new(){ Name = "Apple_MGN63_4.jpg", ProductId=48 },
+               new(){ Name = "Apple_MGN63_5.jpg", ProductId=48 },
+               new(){ Name = "Apple_MGN63_6.jpg", ProductId=48 },
 
+/*49*/         new(){ Name = "ASUS_X515JA-EJ1814_1.jpg", ProductId=49 },
+               new(){ Name = "ASUS_X515JA-EJ1814_2.jpg", ProductId=49 },
+               new(){ Name = "ASUS_X515JA-EJ1814_3.jpg", ProductId=49 },
+               new(){ Name = "ASUS_X515JA-EJ1814_4.jpg", ProductId=49 },
+               new(){ Name = "ASUS_X515JA-EJ1814_5.jpg", ProductId=49 },
+               new(){ Name = "ASUS_X515JA-EJ1814_6.jpg", ProductId=49 },
+               new(){ Name = "ASUS_X515JA-EJ1814_7.jpg", ProductId=49 },
+               new(){ Name = "ASUS_X515JA-EJ1814_8.jpg", ProductId=49 },
+               new(){ Name = "ASUS_X515JA-EJ1814_9.jpg", ProductId=49 },
+               new(){ Name = "ASUS_X515JA-EJ1814_10.jpg",ProductId=49 },
 
             };
             return productImages;
@@ -3268,7 +3371,19 @@ namespace DAL.Data
             {
 /* 1 */         new(){ UnitTranslations= new List<UnitTranslation>(){
                         new (){LanguageId=LanguageId.English, Measure = "UA" },
-                        new (){LanguageId=LanguageId.Ukrainian, Measure="UA"} } },
+                        new (){LanguageId=LanguageId.Ukrainian, Measure="UA"}
+                        }
+                },
+/*2*/           new(){ UnitTranslations= new List<UnitTranslation>(){
+                        new (){LanguageId=LanguageId.English, Measure = "Hz" },
+                        new (){LanguageId=LanguageId.Ukrainian, Measure="Гц"}
+                        }
+                },
+/*3*/           new(){ UnitTranslations= new List<UnitTranslation>(){
+                        new (){LanguageId=LanguageId.English, Measure = "GB" },
+                        new (){LanguageId=LanguageId.Ukrainian, Measure="ГБ"}
+                        }
+                },
             };
             return units;
         }
@@ -3278,8 +3393,25 @@ namespace DAL.Data
             {
 /* 1 */         new(){FilterGroupTranslations= new List<FilterGroupTranslation>(){
                         new (){LanguageId=LanguageId.English, Name = "The main" },
-                        new (){LanguageId=LanguageId.Ukrainian, Name="Основна"} } },
+                        new (){LanguageId=LanguageId.Ukrainian, Name="Основна"}
+                      }
+                },
 
+/* 2 */         new(){FilterGroupTranslations= new List<FilterGroupTranslation>(){
+                        new (){LanguageId=LanguageId.English, Name = "Screen" },
+                        new (){LanguageId=LanguageId.Ukrainian, Name="Екран"}
+                       }
+                },
+/* 3 */         new(){FilterGroupTranslations= new List<FilterGroupTranslation>(){
+                        new (){LanguageId=LanguageId.English, Name = "Processor" },
+                        new (){LanguageId=LanguageId.Ukrainian, Name="Процесор"}
+                       }
+                },
+/* 4 */         new(){FilterGroupTranslations= new List<FilterGroupTranslation>(){
+                        new (){LanguageId=LanguageId.English, Name = "RAM" },
+                        new (){LanguageId=LanguageId.Ukrainian, Name="Оперативна пам'ять"}
+                       }
+                },
             };
             return filterGroups;
         }
@@ -3330,7 +3462,40 @@ namespace DAL.Data
                        }
                 },
 
+/*-2- 8*/       new(){ FilterGroupId=2,
+                       UnitId=2,
+                       FilterNameTranslations=new List<FilterNameTranslation>(){
+                                    new() { LanguageId=LanguageId.English, Name = "Screen refresh rate" } ,
+                                    new() { LanguageId=LanguageId.Ukrainian, Name="Частота оновлення екрана" }
+                       },
 
+                },
+/*-2- 9*/       new(){ FilterGroupId=2,
+                       FilterNameTranslations=new List<FilterNameTranslation>(){
+                                    new() { LanguageId=LanguageId.English, Name = "Screen diagonal" } ,
+                                    new() { LanguageId=LanguageId.Ukrainian, Name="Діагональ екрана" }
+                       },
+
+                },
+/*-3- 10*/      new(){ FilterGroupId=3,
+                       FilterNameTranslations=new List<FilterNameTranslation>(){
+                                    new() { LanguageId=LanguageId.English, Name = "Processor" } ,
+                                    new() { LanguageId=LanguageId.Ukrainian, Name="Процесор" }
+                       },
+                     },
+/*-2- 11*/      new(){ FilterGroupId=2,
+                            FilterNameTranslations=new List<FilterNameTranslation>(){
+                                    new() { LanguageId=LanguageId.English, Name = "Screen type" } ,
+                                    new() { LanguageId=LanguageId.Ukrainian, Name="Тип екрана" }
+                            },
+                      },
+/*-4- 12*/      new(){ FilterGroupId=4,
+                            UnitId=3,
+                            FilterNameTranslations=new List<FilterNameTranslation>(){
+                                    new() { LanguageId=LanguageId.English, Name = "The amount of RAM" } ,
+                                    new() { LanguageId=LanguageId.Ukrainian, Name="Обсяг оперативної пам'яті" }
+                            },
+                      },
             };
             return filterNames;
         }
@@ -3420,6 +3585,7 @@ namespace DAL.Data
                        },
                        Categories=new List<Category>(){
                             categoryDress,
+                            categoryLaptop
                        }
                    },
 /*-2- 10*/        new(){ FilterNameId=2,
@@ -3724,6 +3890,7 @@ namespace DAL.Data
                          },
                        Categories=new List<Category>(){
                             categoryDress,
+                            categoryLaptop
                        }
                   },
 /*-2- 43*/        new(){ FilterNameId = 2,
@@ -3802,7 +3969,168 @@ namespace DAL.Data
                       }
                   },
 
-
+/*-6- 51*/        new(){ FilterNameId = 6,
+                      FilterValueTranslations=new List<FilterValueTranslation>(){
+                           new(){ LanguageId=LanguageId.English, Value = "Lenovo" },
+                           new(){ LanguageId=LanguageId.Ukrainian, Value="Lenovo"}
+                      },
+                       Categories=new List<Category>(){
+                            categoryLaptop,
+                       }
+                  },
+/*-8- 52*/        new(){ FilterNameId = 8,
+                      FilterValueTranslations=new List<FilterValueTranslation>(){
+                           new(){ LanguageId=LanguageId.English, Value = "60" },
+                           new(){ LanguageId=LanguageId.Ukrainian, Value="60"}
+                      },
+                       Categories=new List<Category>(){
+                            categoryLaptop,
+                       }
+                  },
+/*-9- 53*/        new(){ FilterNameId = 9,
+                      FilterValueTranslations=new List<FilterValueTranslation>(){
+                           new(){ LanguageId=LanguageId.English, Value = "14\"" },
+                           new(){ LanguageId=LanguageId.Ukrainian, Value="14\""}
+                      },
+                       Categories=new List<Category>(){
+                            categoryLaptop,
+                       }
+                  },
+/*-10- 54*/        new(){ FilterNameId = 10,
+                      FilterValueTranslations=new List<FilterValueTranslation>(){
+                           new(){ LanguageId=LanguageId.English, Value = "Intel Core i3" },
+                           new(){ LanguageId=LanguageId.Ukrainian, Value="Intel Core i3"}
+                      },
+                       Categories=new List<Category>(){
+                            categoryLaptop,
+                       }
+                  },
+/*-11- 55*/        new(){ FilterNameId = 11,
+                      FilterValueTranslations=new List<FilterValueTranslation>(){
+                           new(){ LanguageId=LanguageId.English, Value = "IPS" },
+                           new(){ LanguageId=LanguageId.Ukrainian, Value="IPS"}
+                      },
+                       Categories=new List<Category>(){
+                            categoryLaptop,
+                       }
+                  },
+/*-12- 56*/        new(){ FilterNameId = 12,
+                      FilterValueTranslations=new List<FilterValueTranslation>(){
+                           new(){ LanguageId=LanguageId.English, Value = "8" },
+                           new(){ LanguageId=LanguageId.Ukrainian, Value="8"}
+                      },
+                       Categories=new List<Category>(){
+                            categoryLaptop,
+                       }
+                  },
+/*-6- 57*/        new(){ FilterNameId = 6,
+                      FilterValueTranslations=new List<FilterValueTranslation>(){
+                           new(){ LanguageId=LanguageId.English, Value = "ASUS" },
+                           new(){ LanguageId=LanguageId.Ukrainian, Value="ASUS"}
+                      },
+                       Categories=new List<Category>(){
+                            categoryLaptop,
+                       }
+                  },
+/*-8- 58*/        new(){ FilterNameId = 8,
+                      FilterValueTranslations=new List<FilterValueTranslation>(){
+                           new(){ LanguageId=LanguageId.English, Value = "144" },
+                           new(){ LanguageId=LanguageId.Ukrainian, Value="144"}
+                      },
+                       Categories=new List<Category>(){
+                            categoryLaptop,
+                       }
+                  },
+/*-9- 59*/        new(){ FilterNameId = 9,
+                      FilterValueTranslations=new List<FilterValueTranslation>(){
+                           new(){ LanguageId=LanguageId.English, Value = "15.6\"" },
+                           new(){ LanguageId=LanguageId.Ukrainian, Value="15.6\""}
+                      },
+                       Categories=new List<Category>(){
+                            categoryLaptop,
+                       }
+                  },
+/*-10- 60*/        new(){ FilterNameId = 10,
+                      FilterValueTranslations=new List<FilterValueTranslation>(){
+                           new(){ LanguageId=LanguageId.English, Value = "Intel Core i5" },
+                           new(){ LanguageId=LanguageId.Ukrainian, Value="Intel Core i5"}
+                      },
+                       Categories=new List<Category>(){
+                            categoryLaptop,
+                       }
+                  },
+/*-12- 61*/        new(){ FilterNameId = 12,
+                      FilterValueTranslations=new List<FilterValueTranslation>(){
+                           new(){ LanguageId=LanguageId.English, Value = "16" },
+                           new(){ LanguageId=LanguageId.Ukrainian, Value="16"}
+                      },
+                       Categories=new List<Category>(){
+                            categoryLaptop,
+                       }
+                  },
+/*-6- 62*/        new(){ FilterNameId = 6,
+                      FilterValueTranslations=new List<FilterValueTranslation>(){
+                           new(){ LanguageId=LanguageId.English, Value = "Acer" },
+                           new(){ LanguageId=LanguageId.Ukrainian, Value="Acer"}
+                      },
+                       Categories=new List<Category>(){
+                            categoryLaptop,
+                       }
+                  },
+/*-10- 63*/        new(){ FilterNameId = 10,
+                      FilterValueTranslations=new List<FilterValueTranslation>(){
+                           new(){ LanguageId=LanguageId.English, Value = "AMD Ryzen 5" },
+                           new(){ LanguageId=LanguageId.Ukrainian, Value="AMD Ryzen 5"}
+                      },
+                       Categories=new List<Category>(){
+                            categoryLaptop,
+                       }
+                  },
+/*-6- 64*/        new(){ FilterNameId = 6,
+                      FilterValueTranslations=new List<FilterValueTranslation>(){
+                           new(){ LanguageId=LanguageId.English, Value = "Apple" },
+                           new(){ LanguageId=LanguageId.Ukrainian, Value="Apple"}
+                      },
+                       Categories=new List<Category>(){
+                            categoryLaptop,
+                       }
+                  },
+/*-9- 65*/        new(){ FilterNameId = 9,
+                      FilterValueTranslations=new List<FilterValueTranslation>(){
+                           new(){ LanguageId=LanguageId.English, Value = "13.3\"" },
+                           new(){ LanguageId=LanguageId.Ukrainian, Value="13.3\""}
+                      },
+                       Categories=new List<Category>(){
+                            categoryLaptop,
+                       }
+                  },
+/*-10- 66*/        new(){ FilterNameId = 10,
+                      FilterValueTranslations=new List<FilterValueTranslation>(){
+                           new(){ LanguageId=LanguageId.English, Value = "Apple M1" },
+                           new(){ LanguageId=LanguageId.Ukrainian, Value="Apple M1"}
+                      },
+                       Categories=new List<Category>(){
+                            categoryLaptop,
+                       }
+                  },
+/*-11- 67*/        new(){ FilterNameId = 11,
+                      FilterValueTranslations=new List<FilterValueTranslation>(){
+                           new(){ LanguageId=LanguageId.English, Value = "Retina" },
+                           new(){ LanguageId=LanguageId.Ukrainian, Value="Retina"}
+                      },
+                       Categories=new List<Category>(){
+                            categoryLaptop,
+                       }
+                  },
+/*-11- 68*/        new(){ FilterNameId = 11,
+                      FilterValueTranslations=new List<FilterValueTranslation>(){
+                           new(){ LanguageId=LanguageId.English, Value = "Intel Pentium Gold" },
+                           new(){ LanguageId=LanguageId.Ukrainian, Value="Intel Pentium Gold"}
+                      },
+                       Categories=new List<Category>(){
+                            categoryLaptop,
+                       }
+                  },
 
 
             };
@@ -4174,7 +4502,45 @@ namespace DAL.Data
 
 #endregion
 
+ /*45*/           new(){ FilterValueId = 6,  ProductId= 45 },
+                  new(){ FilterValueId = 51, ProductId= 45 },
+                  new(){ FilterValueId = 52, ProductId= 45 },
+                  new(){ FilterValueId = 53, ProductId= 45 },
+                  new(){ FilterValueId = 54, ProductId= 45 },
+                  new(){ FilterValueId = 55, ProductId= 45 },
+                  new(){ FilterValueId = 56, ProductId= 45 },
 
+/*46*/           new(){ FilterValueId = 42,  ProductId= 46},
+                  new(){ FilterValueId = 57, ProductId= 46 },
+                  new(){ FilterValueId = 58, ProductId= 46 },
+                  new(){ FilterValueId = 59, ProductId= 46 },
+                  new(){ FilterValueId = 60, ProductId= 46 },
+                  new(){ FilterValueId = 55, ProductId= 46 },
+                  new(){ FilterValueId = 61, ProductId= 46 },
+
+/*47*/            new(){ FilterValueId = 6,  ProductId=  47},
+                  new(){ FilterValueId = 62, ProductId= 47 },
+                  new(){ FilterValueId = 52, ProductId= 47 },
+                  new(){ FilterValueId = 59, ProductId= 47 },
+                  new(){ FilterValueId = 63, ProductId= 47 },
+                  new(){ FilterValueId = 55, ProductId= 47 },
+                  new(){ FilterValueId = 56, ProductId= 47 },
+
+/*48*/            new(){ FilterValueId = 42,  ProductId= 48},
+                  new(){ FilterValueId = 64, ProductId= 48 },
+                  new(){ FilterValueId = 52, ProductId= 48 },
+                  new(){ FilterValueId = 65, ProductId= 48 },
+                  new(){ FilterValueId = 66, ProductId= 48 },
+                  new(){ FilterValueId = 67, ProductId= 48 },
+                  new(){ FilterValueId = 56, ProductId= 48 },
+
+/*49*/            new(){ FilterValueId = 9,  ProductId=49},
+                  new(){ FilterValueId = 57, ProductId= 49 },
+                  new(){ FilterValueId = 52, ProductId= 49 },
+                  new(){ FilterValueId = 59, ProductId= 49 },
+                  new(){ FilterValueId = 68, ProductId= 49 },
+                  new(){ FilterValueId = 55, ProductId= 49 },
+                  new(){ FilterValueId = 56, ProductId= 49 },
             };
             return filterValueProducts;
         }
@@ -4187,9 +4553,9 @@ namespace DAL.Data
                   new(){ Id=OrderStatusId.InProcess, OrderStatusTranslations=new List<OrderStatusTranslation>(){
                         new (){ LanguageId=LanguageId.English, Name="In Process" },
                         new (){LanguageId=LanguageId.Ukrainian, Name="В процесі"} } },
-                  new(){ Id=OrderStatusId.PendingPayment, OrderStatusTranslations=new List<OrderStatusTranslation>(){
-                        new (){ LanguageId=LanguageId.English, Name="Pending Payment"},
-                        new (){LanguageId=LanguageId.Ukrainian, Name="Очікування платежу"} } },
+                  new(){ Id=OrderStatusId.Sent, OrderStatusTranslations=new List<OrderStatusTranslation>(){
+                        new (){ LanguageId=LanguageId.English, Name="Sent"},
+                        new (){LanguageId=LanguageId.Ukrainian, Name="Відправлено"} } },
                   new(){ Id=OrderStatusId.Completed, OrderStatusTranslations=new List<OrderStatusTranslation>(){
                         new (){ LanguageId=LanguageId.English, Name="Completed"},
                         new (){LanguageId=LanguageId.Ukrainian, Name="Виконано"} } },

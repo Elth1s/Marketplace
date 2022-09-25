@@ -596,7 +596,12 @@
             "department": "Відділення"
         },
         "validationMessages": {
-            "required": "є обов'язковим"
+            "required": "є обов'язковим",
+            "min": "має бути не меншою ніж",
+            "max": "має бути меншою ніж",
+            "characters": "символів",
+            "urlSlugMatch": "Не вірний формат веб-посилання",
+            "passwordNotValid": "Невірний формат пароля"
         },
         "currency": "грн"
     }

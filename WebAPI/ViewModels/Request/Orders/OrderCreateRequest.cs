@@ -85,6 +85,14 @@ namespace WebAPI.ViewModels.Request.Orders
             RuleFor(x => x.ConsumerEmail).Cascade(CascadeMode.Stop)
                .EmailAddress().When(c => !string.IsNullOrEmpty(c.ConsumerEmail)).WithName(_validationResources["EmailAddressPropName"]);
 
+            //City
+            RuleFor(x => x.City).Cascade(CascadeMode.Stop)
+               .NotEmpty().WithName(_validationResources["CityPropName"]);
+
+            //Department
+            RuleFor(x => x.Department).Cascade(CascadeMode.Stop)
+               .NotEmpty().WithName(_validationResources["DepartmentPropName"]);
+
         }
         private bool IsValidPhone(string phone)
         {

@@ -22,6 +22,8 @@ import { CreateProps, ServerError } from '../../../../store/types';
 import { toLowerFirstLetter } from '../../../../http_comon';
 
 import { ICharacteristicName } from "../types";
+import { MenuItem } from '@mui/material';
+import { TextFieldFirstStyle } from '../../../../components/TextField/styled';
 
 const CharacteristicCreate: FC<CreateProps> = ({ afterCreate }) => {
     const { t } = useTranslation();
@@ -105,42 +107,47 @@ const CharacteristicCreate: FC<CreateProps> = ({ afterCreate }) => {
                     <Form onSubmit={handleSubmit}>
                         <DialogContent sx={{ padding: "10px 40px 45px" }}>
                             <Grid container spacing={5.25}>
-                                    <Grid item xs={12}>
-                                        <TextFieldComponent
-                                            type="text"
-                                            label={t('validationProps.name')}
-                                            error={errors.name}
-                                            touched={touched.name}
-                                            getFieldProps={{ ...getFieldProps('name') }}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <AutocompleteComponent
-                                            label={t('validationProps.characteristicGroup')}
-                                            name="characteristicGroupId"
-                                            error={errors.characteristicGroupId}
-                                            touched={touched.characteristicGroupId}
-                                            options={characteristicGroups}
-                                            getOptionLabel={(option) => option.name}
-                                            isOptionEqualToValue={(option, value) => option?.id === value.id}
-                                            defaultValue={undefined}
-                                            onChange={(e, value) => { setFieldValue("characteristicGroupId", value?.id) }}
-                                        />
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <AutocompleteComponent
-                                            label={t('validationProps.unitMeasure')}
-                                            name="unitId"
-                                            error={errors.unitId}
-                                            touched={touched.unitId}
-                                            options={units}
-                                            getOptionLabel={(option) => option.measure}
-                                            isOptionEqualToValue={(option, value) => option?.id === value.id}
-                                            defaultValue={undefined}
-                                            onChange={(e, value) => { setFieldValue("unitId", value?.id) }}
-                                        />
-                                    </Grid>
+                                <Grid item xs={12}>
+                                    <TextFieldComponent
+                                        type="text"
+                                        label={t('validationProps.name')}
+                                        error={errors.name}
+                                        touched={touched.name}
+                                        getFieldProps={{ ...getFieldProps('name') }}
+                                    />
                                 </Grid>
+                                <Grid item xs={12}>
+                                    <TextFieldFirstStyle
+                                        select
+                                        fullWidth
+                                        variant="standard"
+                                        label={t('validationProps.characteristicGroup')}
+                                        error={Boolean(touched.characteristicGroupId && errors.characteristicGroupId)}
+                                        helperText={touched.characteristicGroupId && errors.characteristicGroupId}
+                                        {...getFieldProps('characteristicGroupId')}
+                                    >
+                                        {characteristicGroups && characteristicGroups.map((item) =>
+                                            <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                                        )}
+                                    </TextFieldFirstStyle>
+
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextFieldFirstStyle
+                                        select
+                                        fullWidth
+                                        variant="standard"
+                                        label={t('validationProps.unitMeasure')}
+                                        error={Boolean(touched.unitId && errors.unitId)}
+                                        helperText={touched.unitId && errors.unitId}
+                                        {...getFieldProps('unitId')}
+                                    >
+                                        {units && units.map((item) =>
+                                            <MenuItem key={item.id} value={item.id}>{item.measure}</MenuItem>
+                                        )}
+                                    </TextFieldFirstStyle>
+                                </Grid>
+                            </Grid>
                         </DialogContent>
                         <DialogActions sx={{ padding: "0 40px 45px" }}>
                             <AdminDialogButton

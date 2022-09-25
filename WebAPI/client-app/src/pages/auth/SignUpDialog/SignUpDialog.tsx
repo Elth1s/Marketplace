@@ -7,7 +7,7 @@ import {
     IconButton,
     InputAdornment,
     Typography,
-    useTheme 
+    useTheme
 } from '@mui/material';
 import { Close, VisibilityOffOutlined, VisibilityOutlined } from '@mui/icons-material';
 
@@ -57,7 +57,7 @@ const SignUpDialog: FC<Props> = ({ changeDialog }) => {
         firstName: Yup.string().min(3).max(50).required().label(t('validationProps.firstName')),
         secondName: Yup.string().min(3).max(75).required().label(t('validationProps.secondName')),
         emailOrPhone: Yup.string().required().label(t('validationProps.emailOrPhone')),
-        password: Yup.string().matches(passwordRegExp, 'Password is not valid').required().label(t('validationProps.password')),
+        password: Yup.string().matches(passwordRegExp, t('validationMessages.passwordNotValid')).required().label(t('validationProps.password')),
     });
 
     const formik = useFormik({

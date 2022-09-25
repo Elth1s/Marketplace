@@ -55,12 +55,12 @@ namespace WebAPI.ViewModels.Response.Products
         /// Price of product
         /// </summary>
         /// <example>1200</example>
-        public float Price { get; set; }
+        public int Price { get; set; }
         /// <summary>
         /// Product discount
         /// </summary>
         /// <example>1000</example>
-        public float? Discount { get; set; }
+        public int? Discount { get; set; }
         /// <summary>
         /// List of product filters
         /// </summary>

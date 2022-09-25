@@ -14,7 +14,6 @@ import { Form, FormikProvider, useFormik } from "formik";
 import { TextFieldFirstStyle } from '../../../../components/TextField/styled';
 import { AdminDialogButton } from '../../../../components/Button/style';
 import DialogTitleWithButton from '../../../../components/Dialog/DialogTitleWithButton';
-import AutocompleteComponent from '../../../../components/Autocomplete';
 import IconButtonPlus from '../../../../components/Button/IconButtonPlus';
 
 import { useActions } from "../../../../hooks/useActions";
@@ -25,6 +24,7 @@ import { CreateProps, ServerError } from '../../../../store/types';
 import { toLowerFirstLetter } from '../../../../http_comon';
 
 import { ICity } from "../types";
+import { MenuItem } from '@mui/material';
 
 const Transition = forwardRef(function Transition(
     props: TransitionProps & {
@@ -141,17 +141,19 @@ const CityCreate: FC<CreateProps> = ({ afterCreate }) => {
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <AutocompleteComponent
+                                    <TextFieldFirstStyle
+                                        select
+                                        fullWidth
+                                        variant="standard"
                                         label={t('validationProps.country')}
-                                        name="countryId"
-                                        error={errors.countryId}
-                                        touched={touched.countryId}
-                                        options={countries}
-                                        getOptionLabel={(option) => option.name}
-                                        isOptionEqualToValue={(option, value) => option?.id === value.id}
-                                        defaultValue={undefined}
-                                        onChange={(e, value) => { setFieldValue("countryId", value?.id) }}
-                                    />
+                                        error={Boolean(touched.countryId && errors.countryId)}
+                                        helperText={touched.countryId && errors.countryId}
+                                        {...getFieldProps('countryId')}
+                                    >
+                                        {countries && countries.map((item) =>
+                                            <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                                        )}
+                                    </TextFieldFirstStyle>
                                 </Grid>
                             </Grid>
                         </DialogContent>

@@ -21,7 +21,7 @@ import AdminSellerDialog from "../../../../components/Dialog";
 import DialogTitleWithButton from "../../../../components/Dialog/DialogTitleWithButton";
 import { AdminSellerDialogActionsStyle, AdminSellerDialogContentStyle } from "../../../../components/Dialog/styled";
 import { AdminDialogButton } from "../../../../components/Button/style";
-import { Typography } from "@mui/material";
+import { MenuItem, Typography } from "@mui/material";
 import CropperDialog from "../../../../components/CropperDialog";
 
 const CategoryUpdate: FC<UpdateProps> = ({ id, afterUpdate }) => {
@@ -50,7 +50,7 @@ const CategoryUpdate: FC<UpdateProps> = ({ id, afterUpdate }) => {
     const validationFields = Yup.object().shape({
         englishName: Yup.string().min(2).max(50).required().label(t('validationProps.englishName')),
         ukrainianName: Yup.string().min(2).max(50).required().label(t('validationProps.englishName')),
-        urlSlug: Yup.string().min(2).max(50).matches(urlSlugRegExp, 'Invalid format of  url slug').required().label(t('validationProps.urlSlug')),
+        urlSlug: Yup.string().min(2).max(50).matches(urlSlugRegExp, t('validationMessages.urlSlugMatch')).required().label(t('validationProps.urlSlug')),
     });
 
     const formik = useFormik({
@@ -144,17 +144,19 @@ const CategoryUpdate: FC<UpdateProps> = ({ id, afterUpdate }) => {
                                             />
                                         </Grid>
                                         <Grid item xs={12}>
-                                            <AutocompleteComponent
+                                            <TextFieldFirstStyle
+                                                select
+                                                fullWidth
+                                                variant="standard"
                                                 label={t('validationProps.categotyParent')}
-                                                name="parentId"
-                                                error={errors.parentId}
-                                                touched={touched.parentId}
-                                                options={categoriesForSelect}
-                                                getOptionLabel={(option) => option.name}
-                                                isOptionEqualToValue={(option, value) => option?.id === value.id}
-                                                defaultValue={undefined}
-                                                onChange={(e, value) => { setFieldValue("parentId", value?.id) }}
-                                            />
+                                                error={Boolean(touched.parentId && errors.parentId)}
+                                                helperText={touched.parentId && errors.parentId}
+                                                {...getFieldProps('parentId')}
+                                            >
+                                                {categoriesForSelect && categoriesForSelect.map((item) =>
+                                                    <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                                                )}
+                                            </TextFieldFirstStyle>
                                         </Grid>
                                         <Grid item xs={3} sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-between" }}>
                                             <Typography variant="h4" color="inherit" align="center">

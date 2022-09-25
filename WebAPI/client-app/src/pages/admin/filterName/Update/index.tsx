@@ -27,6 +27,7 @@ import { UpdateProps, ServerError, } from '../../../../store/types';
 import { toLowerFirstLetter } from '../../../../http_comon';
 
 import { IFilterName } from "../types";
+import { MenuItem } from '@mui/material';
 
 const Transition = forwardRef(function Transition(
     props: TransitionProps & {
@@ -144,30 +145,35 @@ const FilterUpdate: FC<UpdateProps> = ({ id, afterUpdate }) => {
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <AutocompleteComponent
+                                    <TextFieldFirstStyle
+                                        select
+                                        fullWidth
+                                        variant="standard"
                                         label={t('validationProps.filterGroup')}
-                                        name="filterGroupId"
-                                        error={errors.filterGroupId}
-                                        touched={touched.filterGroupId}
-                                        options={filterGroups}
-                                        getOptionLabel={(option) => option.name}
-                                        isOptionEqualToValue={(option, value) => option?.id === value.id}
-                                        defaultValue={filterGroups.find(value => value.id === selectedFilterName.filterGroupId)}
-                                        onChange={(e, value) => { setFieldValue("filterGroupId", value?.id) }}
-                                    />
+                                        error={Boolean(touched.filterGroupId && errors.filterGroupId)}
+                                        helperText={touched.filterGroupId && errors.filterGroupId}
+                                        {...getFieldProps('filterGroupId')}
+                                    >
+                                        {filterGroups && filterGroups.map((item) =>
+                                            <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                                        )}
+                                    </TextFieldFirstStyle>
+
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <AutocompleteComponent
+                                    <TextFieldFirstStyle
+                                        select
+                                        fullWidth
+                                        variant="standard"
                                         label={t('validationProps.unitMeasure')}
-                                        name="unitId"
-                                        error={errors.unitId}
-                                        touched={touched.unitId}
-                                        options={units}
-                                        getOptionLabel={(option) => option.measure}
-                                        isOptionEqualToValue={(option, value) => option.id === value.id}
-                                        defaultValue={units.find(value => value.id === selectedFilterName.unitId)}
-                                        onChange={(e, value) => { setFieldValue("unitId", value?.id || null) }}
-                                    />
+                                        error={Boolean(touched.unitId && errors.unitId)}
+                                        helperText={touched.unitId && errors.unitId}
+                                        {...getFieldProps('unitId')}
+                                    >
+                                        {units && units.map((item) =>
+                                            <MenuItem key={item.id} value={item.id}>{item.measure}</MenuItem>
+                                        )}
+                                    </TextFieldFirstStyle>
                                 </Grid>
                             </Grid>
                         </DialogContent>

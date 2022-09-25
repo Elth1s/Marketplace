@@ -8,8 +8,7 @@ import { useActions } from "../../../../hooks/useActions";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import { ServerError } from '../../../../store/types';
 import { toLowerFirstLetter } from '../../../../http_comon';
-
-import { ProfileSchema } from "../../validation";
+import * as Yup from 'yup';
 import { IProfile } from "../../types";
 
 import TextFieldComponent from "../../../../components/TextField";
@@ -49,7 +48,10 @@ const Information = () => {
             }
         }
     }
-
+    const ProfileSchema = Yup.object().shape({
+        firstName: Yup.string().min(2).max(15).required().label(t('validationProps.firstName')),
+        secondName: Yup.string().min(2).max(40).required().label(t('validationProps.secondName'))
+    });
     const formik = useFormik({
         initialValues: userInfo,
         validationSchema: ProfileSchema,

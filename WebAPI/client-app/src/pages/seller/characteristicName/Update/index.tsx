@@ -23,6 +23,8 @@ import { UpdateProps, ServerError } from '../../../../store/types';
 import { toLowerFirstLetter } from '../../../../http_comon';
 
 import { ICharacteristicName } from '../types';
+import { TextFieldFirstStyle } from '../../../../components/TextField/styled';
+import { MenuItem } from '@mui/material';
 
 const CharacteristicUpdate: FC<UpdateProps> = ({ id, afterUpdate }) => {
     const { t } = useTranslation();
@@ -114,30 +116,34 @@ const CharacteristicUpdate: FC<UpdateProps> = ({ id, afterUpdate }) => {
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <AutocompleteComponent
+                                    <TextFieldFirstStyle
+                                        select
+                                        fullWidth
+                                        variant="standard"
                                         label={t('validationProps.characteristicGroup')}
-                                        name="characteristicGroupId"
-                                        error={errors.characteristicGroupId}
-                                        touched={touched.characteristicGroupId}
-                                        options={characteristicGroups}
-                                        getOptionLabel={(option) => option.name}
-                                        isOptionEqualToValue={(option, value) => option?.id === value.id}
-                                        defaultValue={characteristicGroups.find(value => value.id === selectedCharacteristicName.characteristicGroupId)}
-                                        onChange={(e, value) => { setFieldValue("characteristicGroupId", value?.id) }}
-                                    />
+                                        error={Boolean(touched.characteristicGroupId && errors.characteristicGroupId)}
+                                        helperText={touched.characteristicGroupId && errors.characteristicGroupId}
+                                        {...getFieldProps('characteristicGroupId')}
+                                    >
+                                        {characteristicGroups && characteristicGroups.map((item) =>
+                                            <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                                        )}
+                                    </TextFieldFirstStyle>
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <AutocompleteComponent
+                                    <TextFieldFirstStyle
+                                        select
+                                        fullWidth
+                                        variant="standard"
                                         label={t('validationProps.unitMeasure')}
-                                        name="unitId"
-                                        error={errors.unitId}
-                                        touched={touched.unitId}
-                                        options={units}
-                                        getOptionLabel={(option) => option.measure}
-                                        isOptionEqualToValue={(option, value) => option.id === value.id}
-                                        defaultValue={units.find(value => value.id === selectedCharacteristicName.unitId)}
-                                        onChange={(e, value) => { setFieldValue("unitId", value?.id || null) }}
-                                    />
+                                        error={Boolean(touched.unitId && errors.unitId)}
+                                        helperText={touched.unitId && errors.unitId}
+                                        {...getFieldProps('unitId')}
+                                    >
+                                        {units && units.map((item) =>
+                                            <MenuItem key={item.id} value={item.id}>{item.measure}</MenuItem>
+                                        )}
+                                    </TextFieldFirstStyle>
                                 </Grid>
                             </Grid>
                         </DialogContent>
