@@ -45,7 +45,7 @@ const QuestionForm: FC<Props> = ({ getData }) => {
     };
 
     const questionValidationFields = Yup.object().shape({
-        fullName: Yup.string().required().min(2).max(80).label(t("validationProps.filterName")),
+        fullName: Yup.string().required().min(2).max(80).label(t("validationProps.fullName")),
         email: Yup.string().required().label(t("validationProps.email")),
         message: Yup.string().required().min(2).max(500).label(t("validationProps.message")),
     });

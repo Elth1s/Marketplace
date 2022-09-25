@@ -810,6 +810,9 @@ namespace DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ConsumerEmail")
                         .HasColumnType("nvarchar(max)");
 
@@ -827,6 +830,9 @@ namespace DAL.Migrations
 
                     b.Property<int>("DeliveryTypeId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Department")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("OrderStatusId")
                         .HasColumnType("int");

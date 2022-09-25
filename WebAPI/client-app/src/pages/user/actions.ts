@@ -3,7 +3,7 @@ import { Dispatch } from "react"
 import http from "../../http_comon"
 import { ServerError } from "../../store/types"
 import { AuthUser } from "../auth/actions"
-import { AuthAction, IExternalLoginModel } from "../auth/types"
+import { AuthAction, AuthActionTypes, IExternalLoginModel } from "../auth/types"
 import {
     ConfirmEmailActionTypes,
     EmailConfirmAction,
@@ -234,6 +234,28 @@ export const GetGenders = () => {
             dispatch({
                 type: GenderActionTypes.GET_GENDERS,
                 payload: response.data
+            })
+            return Promise.resolve();
+        }
+        catch (error) {
+            if (axios.isAxiosError(error)) {
+                const serverError = error as AxiosError<ServerError>;
+                if (serverError && serverError.response) {
+                    return Promise.reject(serverError.response.data);
+                }
+            }
+            return Promise.reject(error)
+        }
+    }
+}
+
+export const RemoveProfile = () => {
+    return async (dispatch: Dispatch<AuthAction>) => {
+        try {
+            await http.delete(`/api/User/RemoveProfile`)
+
+            dispatch({
+                type: AuthActionTypes.AUTH_LOGOUT
             })
             return Promise.resolve();
         }

@@ -3,7 +3,7 @@ import Grid from "@mui/material/Grid";
 import { useEffect } from "react";
 
 import { Form, FormikProvider, useFormik } from "formik";
-
+import { useNavigate } from "react-router-dom";
 import { useActions } from "../../../../hooks/useActions";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import { ServerError } from '../../../../store/types';
@@ -23,8 +23,9 @@ import { TextFieldFirstStyle } from "../../../../components/TextField/styled";
 const Information = () => {
     const { t } = useTranslation();
     const { palette } = useTheme();
+    const navigate = useNavigate();
 
-    const { GetProfile, UpdateProfile, GetCountries, GetCitiesByCountry, GetGenders } = useActions();
+    const { GetProfile, UpdateProfile, GetCountries, GetCitiesByCountry, GetGenders, RemoveProfile, ResetBasket } = useActions();
     const { userInfo } = useTypedSelector((store) => store.profile);
     const { countries } = useTypedSelector((store) => store.country);
     const { cityForSelect } = useTypedSelector((store) => store.city);
@@ -61,6 +62,13 @@ const Information = () => {
 
         getData();
     }, [formik.values.countryId]);
+
+
+    const removeProfile = async () => {
+        await RemoveProfile();
+        ResetBasket();
+        navigate("/");
+    }
 
     const getData = async () => {
         try {
@@ -227,6 +235,7 @@ const Information = () => {
                                 height: "50px",
                                 border: "1px solid #0E7C3A"
                             }}
+                            onClick={removeProfile}
                         >
                             {t("pages.user.personalInformation.deleteProfile")}
                         </Button>

@@ -11,6 +11,9 @@ namespace DAL.Entities
         public string ConsumerEmail { get; set; }
         public string TrackingNumber { get; set; }
 
+        public string City { get; set; }
+        public string Department { get; set; }
+
         public DateTime Date { get; set; }
         public int OrderStatusId { get; set; }
         public string UserId { get; set; }

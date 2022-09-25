@@ -520,7 +520,8 @@ namespace WebAPI.Mapper
                 .ForMember(o => o.DeliveryType, opt => opt.MapFrom(
                     vm => vm.DeliveryType.DeliveryTypeTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).Name))
                 .ForMember(o => o.Date, opt => opt.MapFrom(vm => vm.Date.ToString("dd.MM.yyyy")))
-                .ForMember(o => o.OrderProductsResponse, opt => opt.MapFrom(vm => vm.OrderProducts));
+                .ForMember(o => o.OrderProductsResponse, opt => opt.MapFrom(vm => vm.OrderProducts))
+                .ForMember(o => o.CanUpdate, opt => opt.MapFrom(vm => vm.OrderStatusId != OrderStatusId.Canceled && vm.OrderStatusId != OrderStatusId.Completed));
 
             CreateMap<OrderProduct, OrderProductResponse>()
                 .ForMember(r => r.ProductId, opt => opt.MapFrom(o => o.Product.Id))

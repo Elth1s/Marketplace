@@ -330,7 +330,9 @@ namespace WebAPI.Services.Users
                     await _userManager.RemoveLoginAsync(user, item.LoginProvider, item.ProviderKey);
                 }
             }
-            user.Shop.IsDeleted = true;
+            if (user.Shop != null)
+                user.Shop.IsDeleted = true;
+
             user.IsDeleted = true;
             user.BasketItems = null;
             user.RefreshTokens = null;

@@ -49,11 +49,25 @@
         /// <example>123</example>
         public string TrackingNumber { get; set; }
         /// <summary>
+        /// City name
+        /// </summary>
+        /// <example>Atlanta</example>
+        public string City { get; set; }
+        /// <summary>
+        /// Department
+        /// </summary>
+        /// <example>Main St 6</example>
+        public string Department { get; set; }
+        /// <summary>
         /// Name of delivery type
         /// </summary>
         /// <example>By courier</example>
         public float TotalPrice { get; set; }
-
+        /// <summary>
+        /// Can order update
+        /// </summary>
+        /// <example>false</example>
+        public bool CanUpdate { get; set; }
         /// <summary>
         /// Date of order
         /// </summary>

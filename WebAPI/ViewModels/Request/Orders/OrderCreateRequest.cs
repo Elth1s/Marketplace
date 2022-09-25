@@ -31,6 +31,16 @@ namespace WebAPI.ViewModels.Request.Orders
         /// <example>email@gmail.com</example>
         public string ConsumerEmail { get; set; }
         /// <summary>
+        /// City name
+        /// </summary>
+        /// <example>Atlanta</example>
+        public string City { get; set; }
+        /// <summary>
+        /// Department
+        /// </summary>
+        /// <example>Main St 6</example>
+        public string Department { get; set; }
+        /// <summary>
         /// Delivery type identifier
         /// </summary>
         /// <example>1</example>
