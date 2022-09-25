@@ -277,19 +277,19 @@ const SaleCreate: FC<CreateProps> = ({ afterCreate }) => {
                                             </Paper>
                                         </Grid>
                                         <Grid item xs={6}>
-                                            <Paper sx={{ maxHeight: "240px", minHeight: "240px", overflow: 'auto', '&::-webkit-scrollbar': { display: "none" } }}>
-                                                <TextFieldSecondStyle
-                                                    fullWidth
-                                                    sx={{
-                                                        pt: "10px",
-                                                        px: "15px"
-                                                    }}
-                                                    size="small"
-                                                    placeholder={t('containers.admin_seller.table.search')}
-                                                    onChange={(event => {
-                                                        setSelectedCategorySearch(event.target.value);
-                                                    })}
-                                                />
+                                            <TextFieldSecondStyle
+                                                fullWidth
+                                                sx={{
+                                                    pt: "10px",
+                                                    px: "15px",
+                                                }}
+                                                size="small"
+                                                placeholder={t('containers.admin_seller.table.search')}
+                                                onChange={(event => {
+                                                    setSelectedCategorySearch(event.target.value);
+                                                })}
+                                            />
+                                            <Paper elevation={0} sx={{ maxHeight: "240px", minHeight: "240px", overflow: 'auto', mt: "5px" }}>
                                                 {selectedCategories.map((value, index) => {
                                                     if (value.name.includes(selectedCategorySearch))
                                                         return (

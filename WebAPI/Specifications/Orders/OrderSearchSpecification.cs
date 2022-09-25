@@ -8,7 +8,8 @@ namespace WebAPI.Specifications.Orders
     {
         public OrderSearchSpecification(string name, bool isAscOrder, string orderBy, bool isSeller, int? shopId, int? skip = null, int? take = null)
         {
-            Query.Include(os => os.OrderStatus)
+            Query.Include(o => o.DeliveryType).ThenInclude(o => o.DeliveryTypeTranslations)
+                 .Include(os => os.OrderStatus).ThenInclude(o => o.OrderStatusTranslations)
                  .Include(op => op.OrderProducts)
                  .ThenInclude(p => p.Product)
                  .AsSplitQuery();

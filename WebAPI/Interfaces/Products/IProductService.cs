@@ -17,7 +17,7 @@ namespace WebAPI.Interfaces.Products
         Task<ProductWithCategoryParentsResponse> GetByUrlSlugAsync(string urlSlug, string userId);
         Task<IEnumerable<ProductCatalogResponse>> GetSimilarProductsAsync(string urlSlug, string userId);
         Task CreateAsync(ProductCreateRequest request, string userId);
-        //Task UpdateAsync(int id, ProductUpdateRequest request);
+        Task UpdateDiscountAsync(int id, ProductDiscountRequest request, string userId);
         Task DeleteAsync(int id);
         Task DeleteProductsAsync(IEnumerable<int> ids);
 

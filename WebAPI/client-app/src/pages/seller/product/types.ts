@@ -40,6 +40,7 @@ export interface IProductInfo {
     image: string,
     price: number,
     discount: number,
+    saleId: number,
     count: number,
     statusName: string,
     categoryName: string
@@ -55,6 +56,11 @@ export interface IProductRequest {
     images: Array<IProductImage>,
     filtersValue: Array<IFilterRequest>,
     characteristicsValue: Array<ICharacteristicRequest>
+}
+
+export interface IProductDiscountRequest {
+    discount: number,
+    saleId: number,
 }
 
 export interface IFilterGroupSeller {

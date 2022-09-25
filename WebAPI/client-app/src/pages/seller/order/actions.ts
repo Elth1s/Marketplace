@@ -5,7 +5,7 @@ import http from "../../../http_comon"
 
 import { ServerError } from "../../../store/types"
 
-import { ISearchOrders, OrderAction, OrderActionTypes } from "./type"
+import { IOrderFullInfo, IOrderUpdate, ISearchOrders, OrderAction, OrderActionTypes } from "./type"
 
 export const AdminSellerSearchOrders = (page: number, rowsPerPage: number, name: string, isAscOrder: boolean, orderBy: string) => {
     return async (dispatch: Dispatch<OrderAction>) => {
@@ -27,6 +27,37 @@ export const AdminSellerSearchOrders = (page: number, rowsPerPage: number, name:
                 type: OrderActionTypes.SEARCH_ORDERS,
                 payload: response.data
             })
+
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
+        }
+    }
+}
+
+export const GetOrderByIdForSeller = (id: number) => {
+    return async (dispatch: Dispatch<OrderAction>) => {
+        try {
+            let response = await http.get<IOrderFullInfo>(`api/Order/GetByIdOrder/${id}`)
+
+            dispatch({
+                type: OrderActionTypes.GET_BY_ID,
+                payload: response.data
+            })
+
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
+        }
+    }
+}
+
+export const UpdateOrderForSeller = (id: number, values: IOrderUpdate) => {
+    return async () => {
+        try {
+            let response = await http.put(`api/Order/UpdateOrder/${id}`, values)
 
             return Promise.resolve();
         }

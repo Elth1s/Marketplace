@@ -203,13 +203,27 @@ namespace WebAPI.Controllers.Products
             return Ok(_productLocalizer["CreateSuccess"].Value);
         }
 
-        //[Authorize(Roles = "Admin,Seller")]
-        //[HttpPut("Update/{id}")]
-        //public async Task<IActionResult> Update(int id, [FromBody] ProductUpdateRequest request)
-        //{
-        //    await _productService.UpdateAsync(id, request);
-        //    return Ok("Product updated successfully");
-        //}
+        /// <summary>
+        /// Update product discount
+        /// </summary>
+        /// <param name="id">Product identifier</param>
+        /// <response code="200">Product update completed successfully</response>
+        /// <response code="401">You are not authorized</response>
+        /// <response code="403">You don't have permission</response>
+        /// <response code="404">Shop, product status or category not found</response>
+        /// <response code="500">An internal error has occurred</response>
+        [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+        [SwaggerResponse(StatusCodes.Status403Forbidden)]
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = "Admin,Seller")]
+        [HttpPut("UpdateDiscount/{id}")]
+        public async Task<IActionResult> UpdateDiscount(int id, [FromBody] ProductDiscountRequest request)
+        {
+            await _productService.UpdateDiscountAsync(id, request, UserId);
+            return Ok(_productLocalizer["CreateSuccess"].Value);
+        }
 
         /// <summary>
         /// Delete an existing product

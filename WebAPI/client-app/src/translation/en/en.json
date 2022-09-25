@@ -95,7 +95,11 @@
                     "discountMax": "Maximum discount",
                     "discount": "Discount",
                     "dateStart": "Start date",
-                    "dateEnd": "End date"
+                    "dateEnd": "End date",
+                    "deliveryType": "Delivery type",
+                    "totalPrice": "Total price",
+                    "department": "Department",
+                    "orderStatus": "Order status"
                 }
             }
         },
@@ -359,7 +363,11 @@
                     "createTitle": "Create product",
                     "updateTitle": "Update product",
                     "filters": "Filters",
-                    "characterictics": "Characterictics"
+                    "characterictics": "Characterictics",
+                    "updateDiscount": "Update discount"
+                },
+                "order": {
+                    "updateTitle": "Update order"
                 },
                 "createShop": {
                     "title": "Register shop",
@@ -434,8 +442,7 @@
                     "confirmPhone": "Confirm phone",
                     "confirmEmail": "Confirm email",
                     "connectText": "You can link your personal account with social network accounts to further log in to the site.",
-                    "connect": "Connect",
-                    "cancel": "Cancel"
+                    "connect": "Connect"
                 },
                 "order": {
                     "title": "Order",
@@ -445,7 +452,10 @@
                     "payment": "Payment",
                     "delivery": "Delivery",
                     "total": "Total",
-                    "from": "from"
+                    "from": "from",
+                    "cancel": "Cancel order",
+                    "complete": "Complete",
+                    "addTrackingNumber": "Add tracking number"
                 },
                 "createProduct": {
                     "title": "Створити продукт",
@@ -594,7 +604,9 @@
             "productStatus": "Product status",
             "filterValue": "Filter value",
             "characteristicValue": "Characteristic value",
-            "department": "Department"
+            "department": "Department",
+            "trackingNumber": "Tracking number",
+            "discount": "Discount"
         },
         "validationMessages": {
             "required": "is required",

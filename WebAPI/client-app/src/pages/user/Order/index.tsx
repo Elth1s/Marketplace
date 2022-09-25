@@ -39,7 +39,7 @@ const Order = () => {
 
     return (
         <>
-            <Typography variant="h1" color="primary" sx={{ mb: "27px" }}>{t("pages.user.order.title")}</Typography>
+            <Typography variant="h1" color="inherit" sx={{ mb: "27px" }}>{t("pages.user.order.title")}</Typography>
             {ordersForUser?.map((item, index) => (
                 <Accordion key={index}
                     sx={{
@@ -105,6 +105,7 @@ const Order = () => {
                     <AccordionDetails sx={{ padding: "12px 0px 8px" }}>
                         <Grid container>
                             <Grid item xs={4}>
+                                {item.trackingNumber != "" && <Typography variant="subtitle1" color="inherit" sx={{ mb: "20px" }}>{t("validationProps.trackingNumber")}: {item.trackingNumber}</Typography>}
                                 <Typography variant="subtitle1" color="inherit" sx={{ mb: "20px" }}>{item.deliveryType}</Typography>
                                 <Typography variant="subtitle1" color="inherit" sx={{ mb: "20px" }}>
                                     {item.city} {item.department}

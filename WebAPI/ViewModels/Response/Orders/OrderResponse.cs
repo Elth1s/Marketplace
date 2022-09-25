@@ -33,6 +33,11 @@
         public string ConsumerEmail { get; set; }
 
         /// <summary>
+        /// Order Status Identifier
+        /// </summary>
+        /// <example>1</example>
+        public string OrderStatusId { get; set; }
+        /// <summary>
         /// Order Status Name
         /// </summary>
         /// <example>"In Process</example>

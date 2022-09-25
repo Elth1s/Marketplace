@@ -95,7 +95,11 @@
                     "discountMax": "Максимальна знижка",
                     "discount": "Знижка",
                     "dateStart": "Дата початку",
-                    "dateEnd": "Дата закінчення"
+                    "dateEnd": "Дата закінчення",
+                    "deliveryType": "Тип доставки",
+                    "totalPrice": "Сума замовлення",
+                    "department": "Відділення",
+                    "orderStatus": "Статус замовлення"
                 }
             }
         },
@@ -359,7 +363,11 @@
                     "createTitle": "Створити товар",
                     "updateTitle": "Редагувати товар",
                     "filters": "Фільтри",
-                    "characterictics": "Характеристики"
+                    "characterictics": "Характеристики",
+                    "updateDiscount": "Оновити знижку"
+                },
+                "order": {
+                    "updateTitle": "Редагувати замовлення"
                 },
                 "createShop": {
                     "title": "Зареєструвати Магазин",
@@ -445,7 +453,9 @@
                     "delivery": "Доставка",
                     "total": "Всього",
                     "from": "від",
-                    "cancel": "Скасувати"
+                    "cancel": "Скасувати замовлення",
+                    "complete": "Завершити",
+                    "addTrackingNumber": "Додати трек номер"
                 },
                 "createProduct": {
                     "title": "Create Product",
@@ -593,7 +603,9 @@
             "productStatus": "Статус товару",
             "filterValue": "Значення фільтру",
             "characteristicValue": "Значення характеристики",
-            "department": "Відділення"
+            "department": "Відділення",
+            "trackingNumber": "Трек номер",
+            "discount": "Знижка"
         },
         "validationMessages": {
             "required": "є обов'язковим",

@@ -13,6 +13,7 @@ import {
     IFilterGroupSeller,
     IProductRequest,
     ICharacteristicGroupSeller,
+    IProductDiscountRequest,
 } from "./types"
 import { ServerError } from "../../../store/types"
 
@@ -137,7 +138,7 @@ export const GetProducts = () => {
 }
 
 export const CreateProductImage = (base64: string) => {
-    return async (dispatch: Dispatch<ProductAction>) => {
+    return async () => {
         try {
             let response = await http.post<IProductImage>(`api/ProductImage/Create`, base64)
 
@@ -150,9 +151,22 @@ export const CreateProductImage = (base64: string) => {
 }
 
 export const CreateProduct = (values: IProductRequest) => {
-    return async (dispatch: Dispatch<ProductAction>) => {
+    return async () => {
         try {
             let response = await http.post(`api/Product/Create`, values)
+
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
+        }
+    }
+}
+
+export const UpdateDiscountForSeller = (productId: number, values: IProductDiscountRequest) => {
+    return async () => {
+        try {
+            let response = await http.put(`api/Product/UpdateDiscount/${productId}`, { discount: values.discount, saleId: values.saleId == 0 ? null : values.saleId })
 
             return Promise.resolve();
         }

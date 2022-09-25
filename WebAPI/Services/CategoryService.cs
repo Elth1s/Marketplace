@@ -125,10 +125,10 @@ namespace WebAPI.Services
                     var filterValuesSpec = new FilterValueGetByIdsSpecification(filterPredicate);
                     filters = await _filterValueRepository.ListAsync(filterValuesSpec);
                 }
-                var productCategoryIdSpec = new ProductGetByCategoryIdSpecification(category.Id, request.Filters == null ? null : filters, null, null, request.Min, request.Max);
+                var productCategoryIdSpec = new ProductGetByCategoryIdSpecification(category.Id, request.Filters == null ? null : filters, null, null, null, request.Min, request.Max);
                 response.CountProducts = await _productRepository.CountAsync(productCategoryIdSpec);
 
-                productCategoryIdSpec = new ProductGetByCategoryIdSpecification(category.Id, request.Filters == null ? null : filters, request.Page, request.RowsPerPage, request.Min, request.Max);
+                productCategoryIdSpec = new ProductGetByCategoryIdSpecification(category.Id, request.Filters == null ? null : filters, request.Page, request.RowsPerPage, null, request.Min, request.Max);
                 products = await _productRepository.ListAsync(productCategoryIdSpec);
 
                 response.Products = _mapper.Map<IEnumerable<ProductCatalogResponse>>(products);

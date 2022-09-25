@@ -20,15 +20,15 @@ const CatalogWithProducts = () => {
     const { t } = useTranslation();
 
     const { GetParents, GetCatalogWithProducts, GetMoreProducts, GetFiltersByCategory } = useActions();
-    const { parents, name, catalogItems, products, countProducts, filterNames } = useTypedSelector(state => state.catalog);
+    const { parents, name, catalogItems, products, countProducts, filterNames, min, max } = useTypedSelector(state => state.catalog);
 
     const [page, setPage] = useState(1);
     const [catalogPage, setCatalogPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(40);
     const [filters, setFilters] = useState<Array<number>>([]);
 
-    const [minPrice, setMinPrice] = useState<number>(1);
-    const [maxPrice, setMaxPrice] = useState<number>(10000);
+    const [minPrice, setMinPrice] = useState<number>(min);
+    const [maxPrice, setMaxPrice] = useState<number>(max);
 
 
     let { urlSlug } = useParams();
@@ -47,7 +47,11 @@ const CatalogWithProducts = () => {
                 behavior: 'smooth'
             });
             await GetParents(urlSlug)
-            await GetCatalogWithProducts(urlSlug, page, rowsPerPage, filters);
+            await GetCatalogWithProducts(urlSlug, minPrice, maxPrice, page, rowsPerPage, filters);
+            if (minPrice == 0 || maxPrice == 0) {
+                setMinPrice(min)
+                setMaxPrice(max)
+            }
             await GetFiltersByCategory(urlSlug)
         } catch (ex) {
         }
@@ -82,7 +86,7 @@ const CatalogWithProducts = () => {
         let value = e.target.value;
 
         if (value == "") {
-            setMinPrice(1)
+            setMinPrice(min)
             return
         }
 
@@ -100,17 +104,17 @@ const CatalogWithProducts = () => {
         let value = e.target.value;
 
         if (value == "") {
-            setMaxPrice(10000)
+            setMaxPrice(max)
             return
         }
 
         if (numberRegex.test(value))
-            if (+value < minPrice) {
-                setMaxPrice(minPrice + 1);
-            }
-            else {
-                setMaxPrice(+value);
-            }
+            setMaxPrice(+value);
+        // if (+value < minPrice) {
+        //     setMaxPrice(minPrice + 1);
+        // }
+        // else {
+        // }
     }
 
     const handleChangePage = (event: unknown, newPage: number) => {

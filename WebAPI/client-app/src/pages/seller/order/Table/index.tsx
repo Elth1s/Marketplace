@@ -12,6 +12,7 @@ import EnhancedTable from '../../../../components/EnhancedTable';
 
 import { IOrderInfo } from '../type';
 import { TableCellStyle } from '../../../../components/EnhancedTable/styled';
+import Update from '../Update';
 
 const OrdersTable = () => {
     const { t } = useTranslation();
@@ -23,14 +24,44 @@ const OrdersTable = () => {
             label: `${t('containers.admin_seller.tableHeadCell.identifier')}`,
         },
         {
+            id: 'orderStatusName',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.orderStatus')}`,
+        },
+        {
             id: 'consumerFirstName',
             numeric: false,
-            label: `${t('containers.admin_seller.tableHeadCell.value')}`,
+            label: `${t('containers.admin_seller.tableHeadCell.firstName')}`,
         },
         {
             id: 'consumerSecondName',
             numeric: false,
-            label: `${t('containers.admin_seller.tableHeadCell.characteristicName')}`,
+            label: `${t('containers.admin_seller.tableHeadCell.secondName')}`,
+        },
+        {
+            id: 'consumerPhone',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.phone')}`,
+        },
+        {
+            id: 'city',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.city')}`,
+        },
+        {
+            id: 'department',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.department')}`,
+        },
+        {
+            id: 'totalPrice',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.totalPrice')}`,
+        },
+        {
+            id: 'deliveryType',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.deliveryType')}`,
         },
     ];
 
@@ -115,8 +146,9 @@ const OrdersTable = () => {
                 headCells={headCells}
                 numSelected={selected.length}
                 count={count}
+                isDelete={false}
                 onDelete={() => { }}
-                update={() => { }}
+                update={<Update id={selected[selected.length - 1]} afterUpdate={() => { getData() }} />}
                 tableBody={
                     orders.map((row, index) => {
                         const isItemSelected = isSelected(row.id);
@@ -149,8 +181,14 @@ const OrdersTable = () => {
                                 >
                                     {row.id}
                                 </TableCellStyle>
+                                <TableCellStyle align="center">{row.orderStatusName}</TableCellStyle>
                                 <TableCellStyle align="center">{row.consumerFirstName}</TableCellStyle>
-                                <TableCellStyle align="center">{row.consumerFirstName}</TableCellStyle>
+                                <TableCellStyle align="center">{row.consumerSecondName}</TableCellStyle>
+                                <TableCellStyle align="center">{row.consumerPhone}</TableCellStyle>
+                                <TableCellStyle align="center">{row.city}</TableCellStyle>
+                                <TableCellStyle align="center">{row.department}</TableCellStyle>
+                                <TableCellStyle align="center">{row.totalPrice} {t("currency")}</TableCellStyle>
+                                <TableCellStyle align="center">{row.deliveryType}</TableCellStyle>
                             </TableRow>
                         );
                     })

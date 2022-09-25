@@ -522,6 +522,8 @@ namespace WebAPI.Mapper
             CreateMap<Order, OrderResponse>()
                 .ForMember(o => o.TotalPrice, opt => opt.MapFrom(
                     vm => vm.OrderProducts.Sum(o => o.Price * o.Count)))
+                 .ForMember(o => o.OrderStatusId, opt => opt.MapFrom(
+                    vm => vm.OrderStatus.Id))
                 .ForMember(o => o.OrderStatusName, opt => opt.MapFrom(
                     vm => vm.OrderStatus.OrderStatusTranslations.FirstOrDefault(c => c.LanguageId == CurrentLanguage.Id).Name))
                 .ForMember(o => o.DeliveryType, opt => opt.MapFrom(

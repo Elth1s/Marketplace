@@ -29,9 +29,9 @@ const CreateShopDialog: FC<Props> = ({ dialogOpen, dialogClose }) => {
     const shopModel: ICreateShop = { name: '', siteUrl: '', fullName: '', email: '', password: '' };
 
     const CreateShopSchema = Yup.object().shape({
-    //     firstName: Yup.string().min(3).max(50).required().label(t('validationProps.firstName')),
-    //     secondName: Yup.string().min(3).max(75).required().label(t('validationProps.lastName')),
-    //     emailOrPhone: Yup.string().required().label(t('validationProps.emailOrPhone')),
+        //     firstName: Yup.string().min(3).max(50).required().label(t('validationProps.firstName')),
+        //     secondName: Yup.string().min(3).max(75).required().label(t('validationProps.lastName')),
+        //     emailOrPhone: Yup.string().required().label(t('validationProps.emailOrPhone')),
     });
 
     const formik = useFormik({

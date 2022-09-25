@@ -18,6 +18,7 @@ namespace WebAPI.Specifications.Orders
         {
             Query.Where(_ => _.Id == id)
                  .Include(_ => _.OrderStatus)
+                    .ThenInclude(_ => _.OrderStatusTranslations)
                  .Include(_ => _.OrderProducts)
                     .ThenInclude(_ => _.Product)
                         .ThenInclude(_ => _.Images)

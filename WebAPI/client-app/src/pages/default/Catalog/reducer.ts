@@ -10,7 +10,9 @@ const initialState: CatalogState = {
     filterNames: [],
     searchField: "",
     searchCatalog: [],
-    userProducts: []
+    userProducts: [],
+    min: 0,
+    max: 0
 }
 
 export const catalogReducer = (state = initialState, action: CatalogAction): CatalogState => {
@@ -42,6 +44,8 @@ export const catalogReducer = (state = initialState, action: CatalogAction): Cat
                 catalogItems: action.payload.catalogItems,
                 products: action.payload.products,
                 countProducts: action.payload.countProducts,
+                min: action.payload.min,
+                max: action.payload.max
             }
         case CatalogActionTypes.GET_MORE_PRODUCTS:
             return {

@@ -84,14 +84,18 @@ export interface CatalogState {
     filterNames: Array<IFilterName>,
     searchField: string,
     searchCatalog: Array<IFullCatalogItem>,
-    userProducts: Array<IUserProductItem>
+    userProducts: Array<IUserProductItem>,
+    min: number,
+    max: number
 }
 
 export interface ICatalogWithProducts {
     name: string,
     catalogItems: Array<ICatalogItem>,
     products: Array<IProductItem>,
-    countProducts: number
+    countProducts: number,
+    min: number,
+    max: number
 }
 
 export interface IProductResponse {

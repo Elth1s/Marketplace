@@ -25,7 +25,7 @@ import { saleReducer } from "../../pages/admin/sale/reducer";
 import { shopPageReducer } from "../../pages/default/SellerInfo/reducer";
 import { uiReducer } from "../../UISettings/reducer";
 import { shopInfoReducer } from "../../pages/default/ShortSellerInfo/reducer";
-import { orderReducer } from "../../pages/seller/order/redecer";
+import { orderReducer } from "../../pages/seller/order/reducer";
 
 export const rootReducer = combineReducers({
     auth: authReducer,

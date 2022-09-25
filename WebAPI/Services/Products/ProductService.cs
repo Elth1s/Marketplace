@@ -409,34 +409,23 @@ namespace WebAPI.Services.Products
             await _productImageRepository.SaveChangesAsync();
         }
 
-        //public async Task UpdateAsync(int id, ProductUpdateRequest request)
-        //{
-        //    var product = await _productRepository.GetByIdAsync(id);
-        //    product.ProductNullChecking();
+        public async Task UpdateDiscountAsync(int id, ProductDiscountRequest request, string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            user.UserNullChecking();
 
-        //    var shop = await _shopRepository.GetByIdAsync(request.ShopId);
-        //    shop.ShopNullChecking();
+            var shop = await _shopRepository.GetByIdAsync(user.ShopId);
+            shop.ShopNullChecking();
 
-        //    var productStatus = await _productStatusRepository.GetByIdAsync(request.StatusId);
-        //    productStatus.ProductStatusNullChecking();
+            var product = await _productRepository.GetByIdAsync(id);
 
-        //    if (request.CategoryId != null)
-        //    {
-        //        var category = await _categoryRepository.GetByIdAsync(request.CategoryId);
-        //        category.CategotyNullChecking();
-        //    }
+            if (request.SaleId.HasValue)
+                product.SaleId = request.SaleId.Value;
+            product.Discount = request.Discount;
 
-        //    _mapper.Map(request, product);
-
-        //    await _productRepository.UpdateAsync(product);
-        //    await _productRepository.SaveChangesAsync();
-
-        //    //foreach (ProductImageForProductUpdateRequest imageRequest in request.ProductImages)
-        //    //{
-        //    //    var productImage = _mapper.Map<ProductImageRequest>(imageRequest);
-        //    //    await _productImageService.UpdateAsync(imageRequest.Id, productImage);
-        //    //}
-        //}
+            await _productRepository.UpdateAsync(product);
+            await _productRepository.SaveChangesAsync();
+        }
 
         public async Task DeleteAsync(int id)
         {
@@ -639,6 +628,8 @@ namespace WebAPI.Services.Products
 
             return response;
         }
+
+
 
         #endregion
     }

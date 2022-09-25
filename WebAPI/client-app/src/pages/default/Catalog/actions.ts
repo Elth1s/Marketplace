@@ -102,12 +102,14 @@ export const ResetCatalogFilters = () => {
     }
 }
 
-export const GetCatalogWithProducts = (urlSlug: string, page: number, rowsPerPage: number, filters: Array<number>) => {
+export const GetCatalogWithProducts = (urlSlug: string, min: number, max: number, page: number, rowsPerPage: number, filters: Array<number>) => {
     return async (dispatch: Dispatch<CatalogAction>) => {
         try {
             let response = await http.get<ICatalogWithProducts>(`api/Category/GetCatalogWithProducts`, {
                 params: {
                     urlSlug: urlSlug,
+                    min: min == 0 ? null : min,
+                    max: max == 0 ? null : max,
                     page: page,
                     rowsPerPage: rowsPerPage,
                     filters: filters

@@ -12,6 +12,7 @@ import EnhancedTable from '../../../../components/EnhancedTable';
 import { TableCellStyle } from '../../../../components/EnhancedTable/styled';
 import LinkRouter from '../../../../components/LinkRouter';
 import { white_plus } from '../../../../assets/icons';
+import UpdateProductDiscount from '../UpdateDiscount';
 
 
 const ProductTable = () => {
@@ -165,7 +166,7 @@ const ProductTable = () => {
                 numSelected={selected.length}
                 count={count}
                 show={null}
-                update={null}
+                update={<UpdateProductDiscount id={selected[selected.length - 1]} discount={products[selected.length - 1]?.discount} saleId={0} afterUpdate={() => { getData() }} />}
                 onDelete={onDelete}
                 tableBody={products.map((row, index) => {
                     const isItemSelected = isSelected(row.id);

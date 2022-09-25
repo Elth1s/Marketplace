@@ -88,13 +88,14 @@ interface EnhancedTableToolbarProps {
     numSelected: number;
     onChangeSearch: any;
     onPageChange: any;
+    isDelete: boolean;
     onDelete: any;
     update: any;
     show: any
 }
 
 const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
-    const { numSelected, onChangeSearch, onPageChange, update, show, onDelete } = props;
+    const { numSelected, onChangeSearch, onPageChange, update, show, isDelete, onDelete } = props;
     const { t } = useTranslation();
     return (
         <Toolbar
@@ -140,7 +141,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
                         }}>
                         {show}
                     </IconButton>}
-                <IconButton size="medium"
+                {isDelete && <IconButton size="medium"
                     onClick={onDelete}
                     sx={{
                         borderRadius: "12px",
@@ -149,7 +150,7 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
                         }),
                     }}>
                     <Delete />
-                </IconButton>
+                </IconButton>}
             </Box>
 
         </Toolbar >
@@ -221,6 +222,7 @@ interface EnhancedTableProps {
 
     count: number,
 
+    isDelete?: boolean,
     onDelete: any,
     update: any | null,
     show?: any | null,
@@ -228,51 +230,71 @@ interface EnhancedTableProps {
     tableBody: any
 }
 
-const EnhancedTable: FC<EnhancedTableProps> = ({ page, rowsPerPage, handleChangePage, handleChangeRowsPerPage, isAscOrder, setIsAscOrder, orderBy, setOrderBy, handleSelectAllClick, setName, headCells, numSelected, count, onDelete, update, show, tableBody }) => {
+const EnhancedTable: FC<EnhancedTableProps> =
+    ({
+        page,
+        rowsPerPage,
+        handleChangePage,
+        handleChangeRowsPerPage,
+        isAscOrder,
+        setIsAscOrder,
+        orderBy,
+        setOrderBy,
+        handleSelectAllClick,
+        setName,
+        headCells,
+        numSelected,
+        count,
+        isDelete = true,
+        onDelete,
+        update,
+        show,
+        tableBody
+    }) => {
 
-    const handleRequestSort = (
-        event: React.MouseEvent<unknown>,
-        property: string,
-    ) => {
-        const isAsc = orderBy === property && ((isAscOrder ? 'asc' : 'desc') === 'asc');
-        setIsAscOrder(!isAsc);
-        setOrderBy(property);
-    };
+        const handleRequestSort = (
+            event: React.MouseEvent<unknown>,
+            property: string,
+        ) => {
+            const isAsc = orderBy === property && ((isAscOrder ? 'asc' : 'desc') === 'asc');
+            setIsAscOrder(!isAsc);
+            setOrderBy(property);
+        };
 
-    return (
-        <Box sx={{ width: '100%' }}>
-            <PaperStyle elevation={0}
-                sx={{
-                    marginBottom: 2,
-                    border: 1,
-                    borderColor: (theme) => `${theme.palette.mode == "dark" ? theme.palette.common.white : theme.palette.common.black}`,
-                }}
-            >
-                <EnhancedTableToolbar numSelected={numSelected} onChangeSearch={setName} onPageChange={handleChangePage} update={update} show={show} onDelete={() => onDelete()} />
-                <TableContainer>
-                    <Table
-                        sx={{ minWidth: 750 }}
-                        aria-labelledby="tableTitle"
-                        size={'medium'}
-                    >
-                        <EnhancedTableHead
-                            numSelected={numSelected}
-                            isAscOrder={isAscOrder}
-                            orderBy={orderBy}
-                            onSelectAllClick={handleSelectAllClick}
-                            onRequestSort={handleRequestSort}
-                            rowCount={count}
-                            headCells={headCells}
-                        />
-                        <TableBody sx={{ paddingLeft: 3 }}>
-                            {tableBody}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-                <FooterTableToolbar rowsPerPageOptions={[8, 16, 24]} page={page} rowsPerPage={rowsPerPage} count={count} onPageChange={handleChangePage} onRowsPerPageChange={handleChangeRowsPerPage} />
-            </PaperStyle>
-        </Box>
-    );
-}
+        return (
+            <Box sx={{ width: '100%' }}>
+                <PaperStyle elevation={0}
+                    sx={{
+                        marginBottom: 2,
+                        border: 1,
+                        borderColor: (theme) => `${theme.palette.mode == "dark" ? theme.palette.common.white : theme.palette.common.black}`,
+                    }}
+                >
+                    <EnhancedTableToolbar numSelected={numSelected} onChangeSearch={setName} onPageChange={handleChangePage} update={update} show={show} isDelete={isDelete} onDelete={() => onDelete()} />
+                    <TableContainer>
+                        <Table
+                            sx={{ minWidth: 750 }}
+                            aria-labelledby="tableTitle"
+                            size={'medium'}
+                        >
+                            <EnhancedTableHead
+                                numSelected={numSelected}
+                                isAscOrder={isAscOrder}
+                                orderBy={orderBy}
+                                onSelectAllClick={handleSelectAllClick}
+                                onRequestSort={handleRequestSort}
+                                rowCount={count}
+                                headCells={headCells}
+                            />
+                            <TableBody sx={{ paddingLeft: 3 }}>
+                                {tableBody}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    <FooterTableToolbar rowsPerPageOptions={[8, 16, 24]} page={page} rowsPerPage={rowsPerPage} count={count} onPageChange={handleChangePage} onRowsPerPageChange={handleChangeRowsPerPage} />
+                </PaperStyle>
+            </Box>
+        );
+    }
 
 export default EnhancedTable;

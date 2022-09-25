@@ -174,7 +174,7 @@ namespace WebAPI.Controllers.Characteristics
         [SwaggerResponse(StatusCodes.Status403Forbidden)]
         [SwaggerResponse(StatusCodes.Status404NotFound)]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Seller")]
         [HttpDelete("Delete")]
         public async Task<IActionResult> Delete([FromQuery] IEnumerable<int> ids)
         {
