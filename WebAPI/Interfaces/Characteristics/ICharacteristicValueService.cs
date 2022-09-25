@@ -9,6 +9,7 @@ namespace WebAPI.Interfaces.Characteristics
     {
         Task<IEnumerable<CharacteristicValueResponse>> GetAsync();
         Task<SearchResponse<CharacteristicValueResponse>> SearchAsync(SellerSearchRequest request, string userId);
+        Task<IEnumerable<CharacteristicGroupSellerResponse>> GetCharacteristicsByUserAsync(string userId);
         Task<CharacteristicValueResponse> GetByIdAsync(int id);
         Task CreateAsync(CharacteristicValueRequest request, string userId);
         Task UpdateAsync(int id, CharacteristicValueRequest request, string userId);

@@ -189,7 +189,7 @@ const FooterTableToolbar = (props: FooterTableToolbarProps) => {
                         <MenuItem key={`${element}`} value={element}>{element}</MenuItem>
                     ))}
                 </SelectStyle>
-                <Typography sx={{ px: 1 }}>{t('containers.admin_seller.table.rowsPerPage')} {((page - 1) * rowsPerPage) + 1}-{page * rowsPerPage} {t('containers.admin_seller.table.of')} {count}</Typography>
+                <Typography color="inherit" sx={{ px: 1 }}>{t('containers.admin_seller.table.rowsPerPage')} {((page - 1) * rowsPerPage) + 1}-{page * rowsPerPage} {t('containers.admin_seller.table.of')} {count}</Typography>
             </Box>
             <Pagination count={Math.ceil(count / rowsPerPage)} page={page} shape="rounded" size="large" showFirstButton showLastButton
                 onChange={(event: any, value: number) => {

@@ -9,6 +9,7 @@ namespace WebAPI.Specifications.Sales
         public SaleIncludeFullInfoSpecification()
         {
             Query.Include(p => p.Products)
+                 .Where(p => p.Products.Count != 0)
                  .Include(s => s.SaleTranslations)
                  .Include(c => c.Categories)
                     .ThenInclude(c => c.CategoryTranslations);

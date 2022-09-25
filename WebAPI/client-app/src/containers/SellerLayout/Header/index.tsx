@@ -42,11 +42,7 @@ const Header: FC<IHeader> = ({ handleDrawerToggle }) => {
                         aria-label="search"
                         color="inherit"
                     >
-                        <img
-                            style={{ width: "25px" }}
-                            src={admin_list}
-                            alt="icon"
-                        />
+                        <Menu />
                     </IconButton>
                 </LeftBox>
 

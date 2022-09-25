@@ -40,6 +40,24 @@ export const SearchSales = (page: number, rowsPerPage: number, name: string, isA
     }
 }
 
+export const GetSaleByIdForUser = (id: string) => {
+    return async (dispatch: Dispatch<SaleAction>) => {
+        try {
+            let response = await http.get<ISaleInfo>(`api/Sale/GetSale/${id}`)
+
+            dispatch({
+                type: SaleActionTypes.GET_BY_ID_SALE_FOR_USER,
+                payload: response.data
+            })
+
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
+        }
+    }
+}
+
 export const GetSaleById = (id: number) => {
     return async (dispatch: Dispatch<SaleAction>) => {
         try {

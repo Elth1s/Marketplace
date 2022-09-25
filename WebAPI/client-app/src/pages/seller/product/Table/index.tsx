@@ -39,6 +39,11 @@ const ProductTable = () => {
             label: `${t('containers.admin_seller.tableHeadCell.price')}`,
         },
         {
+            id: 'discount',
+            numeric: false,
+            label: `${t('containers.admin_seller.tableHeadCell.discount')}`,
+        },
+        {
             id: 'count',
             numeric: false,
             label: `${t('containers.admin_seller.tableHeadCell.count')}`,
@@ -200,6 +205,7 @@ const ProductTable = () => {
                                 />
                             </TableCellStyle>
                             <TableCellStyle align="center">{row.price}</TableCellStyle>
+                            <TableCellStyle align="center">{row.discount}</TableCellStyle>
                             <TableCellStyle align="center">{row.count}</TableCellStyle>
                             <TableCellStyle align="center">{row.statusName}</TableCellStyle>
                             <TableCellStyle align="center">{row.categoryName}</TableCellStyle>

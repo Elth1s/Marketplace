@@ -8,6 +8,7 @@ import {
     CategoryAction,
     CategoryActionTypes,
     ISearchCategories,
+    ICategoryFilterValue,
 } from "./types"
 import { ServerError } from "../../../store/types"
 import qs from "qs"
@@ -95,6 +96,24 @@ export const GetCategoryForSelect = () => {
     }
 }
 
+export const GetCategoryFiltersById = (id: number) => {
+    return async (dispatch: Dispatch<CategoryAction>) => {
+        try {
+            let response = await http.get<Array<ICategoryFilterValue>>(`api/Category/GetFilters/${id}`)
+
+            dispatch({
+                type: CategoryActionTypes.GET_BY_ID_CATEGORY_FILTERS,
+                payload: response.data
+            })
+
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
+        }
+    }
+}
+
 export const CreateCategory = (data: ICategory) => {
     return async () => {
         try {
@@ -110,7 +129,19 @@ export const CreateCategory = (data: ICategory) => {
 export const UpdateCategory = (id: number, data: ICategory) => {
     return async () => {
         try {
-            await http.put<ICategory>(`api/Category/Update/${id}`, data);
+            await http.put(`api/Category/Update/${id}`, data);
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
+        }
+    }
+}
+
+export const UpdateCategoryFilters = (id: number, data: Array<ICategoryFilterValue>) => {
+    return async () => {
+        try {
+            await http.put(`api/Category/UpdateFilters/${id}`, data);
             return Promise.resolve();
         }
         catch (error) {

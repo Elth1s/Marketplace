@@ -77,7 +77,7 @@
                     "max": "Максимум",
                     "price": "Ціна",
                     "count": "Кількість",
-                    "productStatus": "Статус продукту",
+                    "productStatus": "Статус товару",
                     "category": "Категорія",
                     "photo": "Фото",
                     "siteURL": "Веб-адреса",
@@ -93,6 +93,7 @@
                     "verticalImage": "Вертикальне зображення",
                     "discountMin": "Мінімальна знижка",
                     "discountMax": "Максимальна знижка",
+                    "discount": "Знижка",
                     "dateStart": "Дата початку",
                     "dateEnd": "Дата закінчення"
                 }
@@ -107,7 +108,8 @@
                 },
                 "category": {
                     "createTitle": "Створити категорію",
-                    "updateTitle": "Редагувати категорію"
+                    "updateTitle": "Редагувати категорію",
+                    "updateFiltersTitle": "Редагувати фільтри категорії"
                 },
                 "city": {
                     "createTitle": "Створити місто",
@@ -134,8 +136,8 @@
                     "updateTitle": "Редагувати статус замовлення"
                 },
                 "productStatus": {
-                    "createTitle": "Створити статус продукту",
-                    "updateTitle": "Редагувати статус продукту"
+                    "createTitle": "Створити статус товару",
+                    "updateTitle": "Редагувати статус товару"
                 },
                 "unit": {
                     "createTitle": "Створити одиницю вимірування",
@@ -204,7 +206,9 @@
             "catalog": {
                 "showMore": "Показати ще",
                 "find": "Пошук",
-                "finded": "Знайдено"
+                "finded": "Знайдено",
+                "allProducts": "Всі товари",
+                "price": "Ціна"
             },
             "about": {
                 "aboutUs": {
@@ -298,7 +302,7 @@
                 "description": "Якщо у вас є скарги, пропозиції чи коментарі на рахунок роботи маркетплейсу Mall - обов'язково повідомте нам про це по телефону!"
             },
             "product": {
-                "title": "Продукт",
+                "title": "Товар",
                 "menu": {
                     "allAboutTheProduct": "Все про товар",
                     "characteristics": "Характеристики",
@@ -350,6 +354,12 @@
                 "characteristicValue": {
                     "createTitle": "Створити значення характеристики",
                     "updateTitle": "Редагувати значення характеристики"
+                },
+                "product": {
+                    "createTitle": "Створити товар",
+                    "updateTitle": "Редагувати товар",
+                    "filters": "Фільтри",
+                    "characterictics": "Характеристики"
                 },
                 "createShop": {
                     "title": "Зареєструвати Магазин",
@@ -469,7 +479,8 @@
                 "price": "Ціна",
                 "sum": "Сума",
                 "delivery": "Спосіб доставки",
-                "payment": "Оплата"
+                "paymentType": "Тип оплата",
+                "paymentUponReceipt": "Оплата при отриманні товару"
             }
         },
         "components": {
@@ -573,7 +584,14 @@
             "phone": "Телефон",
             "emailOrPhone": "Е-майл або телефон",
             "password": "Пароль",
-            "siteURL": "Адресса сайту"
+            "siteURL": "Адресса сайту",
+            "description": "Опис",
+            "price": "Ціна",
+            "count": "Кількість",
+            "category": "Категорія",
+            "productStatus": "Статус товару",
+            "filterValue": "Значення фільтру",
+            "characteristicValue": "Значення характеристики"
         },
         "validationMessages": {
             "required": "є обов'язковим"

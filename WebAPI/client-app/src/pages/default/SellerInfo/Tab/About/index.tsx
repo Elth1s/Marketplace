@@ -120,8 +120,8 @@ const About = () => {
                 <Typography variant="h2" color="inherit" sx={{ mb: "30px" }}>{t('pages.seller.about.schedule.title')}</Typography>
                 {shopPageInfo.schedule.map((item, index) => (
                     (!item.isWeekend
-                        ? <Typography key={index} variant="h2" sx={{ mb: "20px" }}>{item.shortNames} {item.start} - {item.end}</Typography>
-                        : <Typography key={index} variant="h2">{item.shortNames} {t('pages.seller.about.schedule.weekend')}</Typography>
+                        ? <Typography key={index} color="inherit" variant="h2" sx={{ mb: "20px" }}>{item.shortNames} {item.start} - {item.end}</Typography>
+                        : <Typography key={index} color="inherit" variant="h2">{item.shortNames} {t('pages.seller.about.schedule.weekend')}</Typography>
                     )
                 ))}
             </Grid>

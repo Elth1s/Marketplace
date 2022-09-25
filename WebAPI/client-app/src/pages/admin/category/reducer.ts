@@ -12,6 +12,7 @@ const initialState: CategoryState = {
         activeIcon: "",
         parentId: 0
     },
+    selectedCategoryFilters: [],
     categories: [],
     categoriesForSelect: [],
     count: 0,
@@ -40,15 +41,10 @@ export const categoryReducer = (state = initialState, action: CategoryAction): C
                 ...state,
                 selectedCategory: action.payload,
             }
-        case CategoryActionTypes.CREATE_CATEGOTY:
+        case CategoryActionTypes.GET_BY_ID_CATEGORY_FILTERS:
             return {
                 ...state,
-                ...action.payload
-            }
-        case CategoryActionTypes.UPDATE_CATEGORY:
-            return {
-                ...state,
-                ...action.payload
+                selectedCategoryFilters: action.payload,
             }
         default:
             return state;

@@ -52,7 +52,7 @@ export const TextFieldSecondStyle = styled(TextField)<TextFieldProps>(({ theme }
     "& .MuiInputLabel-root": {
         color: theme.palette.mode == "dark" ? "#FFF" : "#000",
         "&.Mui-focused": {
-            color: theme.palette.mode == "dark" ? "#FFF" : "#000",
+            color: theme.palette.primary.main
         },
         "&.Mui-error ": {
             color: `${theme.palette.error.main}`

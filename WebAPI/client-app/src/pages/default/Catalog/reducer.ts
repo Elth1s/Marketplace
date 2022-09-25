@@ -30,6 +30,11 @@ export const catalogReducer = (state = initialState, action: CatalogAction): Cat
                 ...state,
                 filterNames: action.payload,
             }
+        case CatalogActionTypes.RESET_FILTERS:
+            return {
+                ...state,
+                filterNames: [],
+            }
         case CatalogActionTypes.GET_CATALOG_WITH_PRODUCTS:
             return {
                 ...state,
@@ -125,6 +130,18 @@ export const catalogReducer = (state = initialState, action: CatalogAction): Cat
             return {
                 ...state,
                 userProducts: action.payload,
+            }
+        case CatalogActionTypes.GET_SALE_PRODUCTS:
+            return {
+                ...state,
+                countProducts: action.payload.count,
+                products: action.payload.values
+            }
+        case CatalogActionTypes.GET_SALE_CATEGORIES:
+            return {
+                ...state,
+                searchCatalog: action.payload,
+                filterNames: []
             }
         default:
             return state;

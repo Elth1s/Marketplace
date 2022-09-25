@@ -12,13 +12,15 @@ import { useActions } from "../../../../hooks/useActions";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import { toLowerFirstLetter } from "../../../../http_comon";
 import { ServerError } from "../../../../store/types";
-import { IProductCreate, IProductImage } from "../types";
+import { IProductRequest, IProductImage } from "../types";
 
 const ProductCreate = () => {
     const { t } = useTranslation();
     const { GetCategoriesWithoutChildren, GetProductStatusesSeller, GetFiltersByCategoryId, CreateProductImage, CreateProduct } = useActions();
 
-    const { categories, productStatuses, filters } = useTypedSelector((store) => store.productSeller);
+    const { GetCategoriesWithoutChildren, GetProductStatusesSeller, GetFiltersByCategoryId, CreateProductImage, CreateProduct, GetCharacteristicsByUser } = useActions();
+
+    const { categories, productStatuses, filters, characteristics } = useTypedSelector((store) => store.productSeller);
 
     const navigate = useNavigate();
 
@@ -30,12 +32,13 @@ const ProductCreate = () => {
         try {
             await GetCategoriesWithoutChildren();
             await GetProductStatusesSeller();
+            await GetCharacteristicsByUser();
         }
         catch (ex) {
         }
     }
 
-    const item: IProductCreate = {
+    const item: IProductRequest = {
         name: "",
         description: "",
         price: 0,
@@ -43,7 +46,8 @@ const ProductCreate = () => {
         statusId: 0,
         categoryId: 0,
         images: [],
-        filtersValue: []
+        filtersValue: [],
+        characteristicsValue: []
     }
 
     const formik = useFormik({
@@ -72,7 +76,7 @@ const ProductCreate = () => {
         }
     });
     useEffect(() => {
-        document.title = t('pages.user.createProduct.title');
+        document.title = `${t("pages.seller.product.createTitle")}`;
         getData();
     }, [imagesLoading, formik.values.images]);
 
@@ -90,6 +94,21 @@ const ProductCreate = () => {
         }
 
         setFieldValue("filtersValue", tmpList);
+    };
+
+    const selectCharacteristicValue = (nameId: number, valueId: number) => {
+        const index = formik.values.characteristicsValue.map(object => object.nameId).indexOf(nameId);
+
+        const tmpList = formik.values.characteristicsValue.slice();
+
+        if (index === -1)
+            tmpList.push({ nameId: nameId, valueId: valueId })
+        else {
+            tmpList.splice(index, 1);
+            tmpList.push({ nameId: nameId, valueId: valueId })
+        }
+
+        setFieldValue("characteristicsValue", tmpList);
     };
 
     const { getRootProps, getInputProps } = useDropzone({
@@ -120,7 +139,7 @@ const ProductCreate = () => {
     return (
         <Box sx={{ flexGrow: 1, m: 1, mx: 3, }}>
             <Typography variant="h4" color="inherit" gutterBottom sx={{ my: "auto" }}>
-                {t('pages.user.createProduct.title')}
+                {t("pages.seller.product.createTitle")}
             </Typography>
 
             <Box sx={{ mt: 3 }} >
@@ -133,7 +152,7 @@ const ProductCreate = () => {
                                     variant="standard"
                                     autoComplete="name"
                                     type="text"
-                                    label="Name"
+                                    label={t('validationProps.name')}
                                     {...getFieldProps('name')}
                                     error={Boolean(touched.name && errors.name)}
                                     helperText={touched.name && errors.name}
@@ -147,7 +166,7 @@ const ProductCreate = () => {
                                     variant="standard"
                                     autoComplete="description"
                                     type="text"
-                                    label="Description"
+                                    label={t('validationProps.description')}
                                     {...getFieldProps('description')}
                                     error={Boolean(touched.description && errors.description)}
                                     helperText={touched.description && errors.description}
@@ -159,7 +178,7 @@ const ProductCreate = () => {
                                     variant="standard"
                                     autoComplete="price"
                                     type="text"
-                                    label="Price"
+                                    label={t('validationProps.price')}
                                     {...getFieldProps('price')}
                                     error={Boolean(touched.price && errors.price)}
                                     helperText={touched.price && errors.price}
@@ -171,7 +190,7 @@ const ProductCreate = () => {
                                     variant="standard"
                                     autoComplete="count"
                                     type="text"
-                                    label="Count"
+                                    label={t('validationProps.count')}
                                     {...getFieldProps('count')}
                                     error={Boolean(touched.count && errors.count)}
                                     helperText={touched.count && errors.count}
@@ -179,7 +198,7 @@ const ProductCreate = () => {
                             </Grid>
                             <Grid item xs={6}>
                                 <AutocompleteComponent
-                                    label="Categoty"
+                                    label={t('validationProps.category')}
                                     name="categoryId"
                                     error={errors.categoryId}
                                     touched={touched.categoryId}
@@ -196,7 +215,7 @@ const ProductCreate = () => {
                             </Grid>
                             <Grid item xs={6}>
                                 <AutocompleteComponent
-                                    label="Product status"
+                                    label={t('validationProps.productStatus')}
                                     name="statusId"
                                     error={errors.statusId}
                                     touched={touched.statusId}
@@ -209,40 +228,84 @@ const ProductCreate = () => {
                             </Grid>
                             <Grid item xs={6}>
                                 {filters?.length != 0 &&
-                                    filters.map((filterGroup, index) => {
-                                        return (
-                                            <>
-                                                <Typography key={`filter_group_${index}`} variant="h2" color="inherit">
-                                                    {filterGroup.name}
-                                                </Typography>
-                                                {filterGroup.filterNames.map((filterName, index) => {
-                                                    return (
-                                                        <Grid key={`filter_name_${index}`} container>
-                                                            <Grid item xs={6}>
-                                                                <Typography variant="h4" color="inherit">
-                                                                    {filterName.name}
-                                                                </Typography>
+                                    <>
+                                        <Typography variant="h2" color="secondary" align="center">
+                                            {t("pages.seller.product.filters")}
+                                        </Typography>
+                                        {filters.map((filterGroup, index) => {
+                                            return (
+                                                <>
+                                                    <Typography key={`filter_group_${index}`} variant="h2" color="inherit">
+                                                        {filterGroup.name}
+                                                    </Typography>
+                                                    {filterGroup.filterNames.map((filterName, index) => {
+                                                        return (
+                                                            <Grid key={`filter_name_${index}`} container sx={{ display: "flex", alignItems: "center" }} >
+                                                                <Grid item xs={6}>
+                                                                    <Typography variant="h4" color="inherit">
+                                                                        {filterName.name}
+                                                                    </Typography>
+                                                                </Grid>
+                                                                <Grid item xs={6}>
+                                                                    <AutocompleteComponent
+                                                                        label={t('validationProps.filterValue')}
+                                                                        name="value"
+                                                                        // error={errors.statusId}
+                                                                        // touched={touched.statusId}
+                                                                        options={filterName.filterValues}
+                                                                        getOptionLabel={(option) => option.value}
+                                                                        isOptionEqualToValue={(option, value) => option?.id === value.id}
+                                                                        defaultValue={undefined}
+                                                                        onChange={(e, value) => { selectFilterValue(filterName.id, value?.id) }}
+                                                                    />
+                                                                </Grid>
                                                             </Grid>
-                                                            <Grid item xs={6}>
-                                                                <AutocompleteComponent
-                                                                    label="Filter value"
-                                                                    name="value"
-                                                                    // error={errors.statusId}
-                                                                    // touched={touched.statusId}
-                                                                    options={filterName.filterValues}
-                                                                    getOptionLabel={(option) => option.value}
-                                                                    isOptionEqualToValue={(option, value) => option?.id === value.id}
-                                                                    defaultValue={undefined}
-                                                                    onChange={(e, value) => { selectFilterValue(filterName.id, value?.id) }}
-                                                                />
+                                                        );
+                                                    })}
+                                                </>
+                                            );
+                                        })}
+                                    </>
+                                }
+                                {characteristics?.length != 0 &&
+                                    <>
+                                        <Typography variant="h2" color="secondary" align="center" sx={{ mt: "10px" }}>
+                                            {t("pages.seller.product.characterictics")}
+                                        </Typography>
+                                        {characteristics.map((characteristicGroup, index) => {
+                                            return (
+                                                <>
+                                                    <Typography key={`characteristic_group_${index}`} variant="h2" color="inherit">
+                                                        {characteristicGroup.name}
+                                                    </Typography>
+                                                    {characteristicGroup.characteristicNames.map((characteristicName, index) => {
+                                                        return (
+                                                            <Grid key={`characteristic_name_${index}`} container sx={{ display: "flex", alignItems: "center" }}>
+                                                                <Grid item xs={6}>
+                                                                    <Typography variant="h4" color="inherit">
+                                                                        {characteristicName.name}
+                                                                    </Typography>
+                                                                </Grid>
+                                                                <Grid item xs={6}>
+                                                                    <AutocompleteComponent
+                                                                        label={t('validationProps.characteristicValue')}
+                                                                        name="value"
+                                                                        // error={errors.statusId}
+                                                                        // touched={touched.statusId}
+                                                                        options={characteristicName.characteristicValues}
+                                                                        getOptionLabel={(option) => option.value}
+                                                                        isOptionEqualToValue={(option, value) => option?.id === value.id}
+                                                                        defaultValue={undefined}
+                                                                        onChange={(e, value) => { selectCharacteristicValue(characteristicName.id, value?.id) }}
+                                                                    />
+                                                                </Grid>
                                                             </Grid>
-                                                        </Grid>
-                                                    );
-                                                })}
-                                            </>
-                                        );
-                                    })
-
+                                                        );
+                                                    })}
+                                                </>
+                                            );
+                                        })}
+                                    </>
                                 }
                             </Grid>
                             <Grid item xs={6}>
@@ -268,30 +331,51 @@ const ProductCreate = () => {
                                         </Box>
                                     </div>
                                 </Box>
-                                {imagesLoading > 0
-                                    ? <div>{t('pages.user.createProduct.imagesUploaded')}</div>
-                                    : (formik.values.images?.length != 0 &&
-                                        formik.values.images.map((row, index) => {
-                                            return (
-                                                <img
-                                                    key={`product_image_${index}`}
-                                                    src={row.name}
-                                                    alt="icon"
-                                                    style={{ width: "136px", height: "136px", marginTop: "15px", marginRight: "15px", borderRadius: "10px", border: "1px solid #F45626" }} />
-                                            );
-                                        }))
-                                }
+                                <Box sx={{ display: "flex" }}>
+                                    {imagesLoading > 0
+                                        ? <div>{t('pages.user.createProduct.imagesUploaded')}</div>
+                                        : (formik.values.images?.length != 0 &&
+                                            formik.values.images.map((row, index) => {
+                                                return (
+                                                    <Box
+                                                        sx={{
+                                                            width: "136px",
+                                                            height: "136px",
+                                                            marginTop: "10px",
+                                                            marginRight: "10px",
+                                                            borderRadius: "10px",
+                                                            border: "1px solid #F45626",
+                                                        }}
+                                                    >
+                                                        <img
+                                                            key={`product_image_${index}`}
+                                                            src={row.name}
+                                                            alt="icon"
+                                                            style={{
+                                                                width: "134px",
+                                                                height: "134px",
+                                                                borderRadius: "10px",
+                                                                objectFit: "scale-down"
+                                                            }}
+                                                        />
+                                                    </Box>
+                                                );
+                                            }))
+                                    }
+                                </Box>
                             </Grid>
                         </Grid>
-                        <LoadingButton
-                            sx={{ paddingX: "35px", mt: "30px" }}
-                            size="large"
-                            type="submit"
-                            variant="contained"
-                            loading={isSubmitting}
-                        >
-                            {t('pages.user.createProduct.btn')}
-                        </LoadingButton>
+                        <Grid item xs={12} sx={{ display: "flex", justifyContent: "end" }}>
+                            <LoadingButton
+                                sx={{ paddingX: "35px", mt: "30px" }}
+                                size="large"
+                                type="submit"
+                                variant="contained"
+                                loading={isSubmitting}
+                            >
+                                {t("pages.seller.main.btnCreate")}
+                            </LoadingButton>
+                        </Grid>
                     </Form>
                 </FormikProvider>
             </Box >

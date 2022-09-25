@@ -93,6 +93,7 @@
                     "verticalImage": "Vertical image",
                     "discountMin": "Minimum discount",
                     "discountMax": "Maximum discount",
+                    "discount": "Discount",
                     "dateStart": "Start date",
                     "dateEnd": "End date"
                 }
@@ -107,7 +108,8 @@
                 },
                 "category": {
                     "createTitle": "Create category",
-                    "updateTitle": "Update category"
+                    "updateTitle": "Update category",
+                    "updateFiltersTitle": "Update category filters"
                 },
                 "city": {
                     "createTitle": "Create city",
@@ -204,7 +206,9 @@
             "catalog": {
                 "showMore": "Show more",
                 "find": "Find",
-                "finded": "Finded"
+                "finded": "Finded",
+                "allProducts": "All products",
+                "price": "Price"
             },
             "about": {
                 "aboutUs": {
@@ -351,6 +355,12 @@
                     "createTitle": "Create characteristic value",
                     "updateTitle": "Update characteristic value"
                 },
+                "product": {
+                    "createTitle": "Create product",
+                    "updateTitle": "Update product",
+                    "filters": "Filters",
+                    "characterictics": "Characterictics"
+                },
                 "createShop": {
                     "title": "Register shop",
                     "store": "Store information",
@@ -469,7 +479,9 @@
                 "price": "Price",
                 "sum": "Sum",
                 "delivery": "Delivery",
-                "payment": "Payment"
+                "payment": "Payment",
+                "paymentType": "Payment type",
+                "paymentUponReceipt": "Payment upon receipt of goods"
             }
         },
         "components": {
@@ -573,7 +585,14 @@
             "phone": "Phone",
             "emailOrPhone": "Email or phone",
             "password": "Password",
-            "siteURL": "Site URL"
+            "siteURL": "Site URL",
+            "description": "Description",
+            "price": "Price",
+            "count": "Count",
+            "category": "Category",
+            "productStatus": "Product status",
+            "filterValue": "Filter value",
+            "characteristicValue": "Characteristic value"
         },
         "validationMessages": {
             "required": "is required"

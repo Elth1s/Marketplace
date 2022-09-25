@@ -92,6 +92,16 @@ export const GetFiltersByCategoryIdForUser = (id: number) => {
     }
 }
 
+export const ResetCatalogFilters = () => {
+    return async (dispatch: Dispatch<CatalogAction>) => {
+        dispatch({
+            type: CatalogActionTypes.RESET_FILTERS
+        })
+
+        return Promise.resolve();
+    }
+}
+
 export const GetCatalogWithProducts = (urlSlug: string, page: number, rowsPerPage: number, filters: Array<number>) => {
     return async (dispatch: Dispatch<CatalogAction>) => {
         try {
@@ -424,6 +434,53 @@ export const GetReviewedProducts = () => {
 
             dispatch({
                 type: CatalogActionTypes.GET_REVIEWED_PRODUCTS,
+                payload: response.data
+            })
+
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
+        }
+    }
+}
+
+export const GetCategoriesBySaleId = (saleId: string) => {
+    return async (dispatch: Dispatch<CatalogAction>) => {
+        try {
+            let response = await http.get<Array<IFullCatalogItem>>(`api/Category/GetCategoriesBySale/${saleId}`);
+
+            dispatch({
+                type: CatalogActionTypes.GET_SALE_CATEGORIES,
+                payload: response.data
+            })
+
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
+        }
+    }
+}
+
+export const SaleProducts = (saleId: string, page: number, rowsPerPage: number, categories: Array<number>, filters: Array<number>) => {
+    return async (dispatch: Dispatch<CatalogAction>) => {
+        try {
+            let response = await http.get<IProductResponse>(`api/Product/GetProductsBySale`, {
+                params: {
+                    saleId: saleId,
+                    page: page,
+                    rowsPerPage: rowsPerPage,
+                    categories: categories,
+                    filters: filters
+                },
+                paramsSerializer: params => {
+                    return qs.stringify({ ...params })
+                }
+            });
+
+            dispatch({
+                type: CatalogActionTypes.GET_SALE_PRODUCTS,
                 payload: response.data
             })
 

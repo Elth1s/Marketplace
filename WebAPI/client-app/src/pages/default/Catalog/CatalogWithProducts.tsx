@@ -12,8 +12,9 @@ import CatalogItem from '../../../components/CatalogItem';
 
 import { useActions } from '../../../hooks/useActions';
 import { useTypedSelector } from '../../../hooks/useTypedSelector';
-import { BoxCatalogStyle, BoxFilterStyle, BoxProductStyle, PaginationItemStyle, ShowMoreButton } from './styled';
+import { BoxCatalogStyle, BoxFilterStyle, BoxProductStyle, PaginationItemStyle, ShowMoreButton, TextFieldStyle } from './styled';
 import ProductItem from '../../../components/ProductItem';
+import { TextFieldSecondStyle } from '../../../components/TextField/styled';
 
 const CatalogWithProducts = () => {
     const { t } = useTranslation();
@@ -25,6 +26,10 @@ const CatalogWithProducts = () => {
     const [catalogPage, setCatalogPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(40);
     const [filters, setFilters] = useState<Array<number>>([]);
+
+    const [minPrice, setMinPrice] = useState<number>(1);
+    const [maxPrice, setMaxPrice] = useState<number>(10000);
+
 
     let { urlSlug } = useParams();
 
@@ -71,6 +76,42 @@ const CatalogWithProducts = () => {
 
         setFilters(tmpList);
     };
+
+    const changeMinPrice = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const numberRegex = /^[1-9][0-9]*$/;
+        let value = e.target.value;
+
+        if (value == "") {
+            setMinPrice(1)
+            return
+        }
+
+        if (numberRegex.test(value))
+            if (+value > maxPrice) {
+                setMinPrice(maxPrice - 1);
+            }
+            else {
+                setMinPrice(+value);
+            }
+    }
+
+    const changeMaxPrice = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const numberRegex = /^[1-9][0-9]*$/;
+        let value = e.target.value;
+
+        if (value == "") {
+            setMaxPrice(10000)
+            return
+        }
+
+        if (numberRegex.test(value))
+            if (+value < minPrice) {
+                setMaxPrice(minPrice + 1);
+            }
+            else {
+                setMaxPrice(+value);
+            }
+    }
 
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
@@ -126,6 +167,29 @@ const CatalogWithProducts = () => {
                 : <>
                     <Box sx={{ display: "flex" }}>
                         <BoxFilterStyle>
+                            <Typography variant="h3" color="inherit" fontWeight="bold" >
+                                {t("pages.catalog.price")}
+                            </Typography>
+                            <Box
+                                sx={{
+                                    pt: "20px",
+                                    display: "flex"
+                                }}
+                            >
+                                <TextFieldStyle
+                                    value={minPrice}
+                                    sx={{ width: "75px" }}
+                                    onChange={changeMinPrice}
+                                />
+                                <Typography color="inherit">
+                                    &nbsp;&nbsp;-&nbsp;&nbsp;
+                                </Typography>
+                                <TextFieldStyle
+                                    value={maxPrice}
+                                    sx={{ width: "75px" }}
+                                    onChange={changeMaxPrice}
+                                />
+                            </Box>
                             {filterNames.map((item) => {
                                 return (
                                     <Box key={`fn${item.id}`} sx={{ paddingTop: "50px" }}>

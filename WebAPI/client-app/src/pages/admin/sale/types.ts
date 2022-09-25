@@ -2,6 +2,7 @@ export enum SaleActionTypes {
     GET_SALES = "GET_SALES",
     SEARCH_SALES = "SEARCH_SALES",
     GET_BY_ID_SALE = "GET_BY_ID_SALE",
+    GET_BY_ID_SALE_FOR_USER = "GET_BY_ID_SALE_FOR_USER",
     CREATE_SALE = "CREATE_SALE",
     UPDATE_SALE = "UPDATE_SALE",
 }
@@ -15,7 +16,8 @@ export interface ISale {
     discountMin: number,
     discountMax: number,
     dateStart: Date | string,
-    dateEnd: Date | string
+    dateEnd: Date | string,
+    categories: Array<number>
 }
 
 export interface ISaleInfo {
@@ -36,6 +38,7 @@ export interface ISearchSales {
 
 export interface SaleState {
     selectedSale: ISale,
+    selectedSaleForUser: ISaleInfo,
     sales: Array<ISaleInfo>,
     count: number
 }
@@ -55,6 +58,11 @@ export interface GetByIdSaleAction {
     payload: ISale
 }
 
+export interface GetByIdSaleForUserAction {
+    type: SaleActionTypes.GET_BY_ID_SALE_FOR_USER,
+    payload: ISaleInfo
+}
+
 export interface CreateSaleAction {
     type: SaleActionTypes.CREATE_SALE,
     payload: ISale
@@ -69,5 +77,6 @@ export interface UpdateSaleAction {
 export type SaleAction = GetSalesAction |
     SearchSalesAction |
     GetByIdSaleAction |
+    GetByIdSaleForUserAction |
     CreateSaleAction |
     UpdateSaleAction;

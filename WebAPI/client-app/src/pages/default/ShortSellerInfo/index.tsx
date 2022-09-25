@@ -82,14 +82,14 @@ const SellerInfo: FC<Props> = ({ id, isMainPage }) => {
                     sx: { minWidth: { sm: "660px" } },
                     style: { borderRadius: 10 }
                 }}>
-                <DialogTitle sx={{ p: "34px 28px" }}>
+                <DialogTitle sx={{ p: "34px 28px" }} color="inherit">
                     <Box sx={{
                         display: "flex",
                         justifyContent: "space-between",
                         alignItems: "flex-start"
                     }}>
-                        <Typography sx={{ fontSize: "30px", lineHeight: "38px" }}>{t('pages.shortSellerInfo.title')}</Typography>
-                        <IconButton aria-label="close" onClick={handleClickClose}>
+                        <Typography color="inherit" sx={{ fontSize: "30px", lineHeight: "38px" }}>{t('pages.shortSellerInfo.title')}</Typography>
+                        <IconButton sx={{ borderRadius: "10px" }} color="inherit" onClick={handleClickClose}>
                             <Close />
                         </IconButton>
                     </Box>
@@ -102,21 +102,21 @@ const SellerInfo: FC<Props> = ({ id, isMainPage }) => {
                                     <Box sx={{ width: 90, height: 90 }}>
                                         <Img src={shopInfo.photo} alt={"image shop"} />
                                     </Box>
-                                    <Typography variant='h5' sx={{ ml: "40px" }}>{shopInfo.name}</Typography>
+                                    <Typography variant='h5' color="inherit" sx={{ ml: "40px" }}>{shopInfo.name}</Typography>
                                 </Box>
                             </Grid>
                             <Grid item xs={6} sx={{ display: "block" }}>
                                 <Box sx={{ display: "flex", mb: "30px" }}>
                                     <img src={palette.mode == "dark" ? white_mail : black_mail} alt="icon mail" />
-                                    <Typography variant='h5' sx={{ ml: "10px" }}>{shopInfo.email}</Typography>
+                                    <Typography variant='h5' color="inherit" sx={{ ml: "10px" }}>{shopInfo.email}</Typography>
                                 </Box>
                                 <Box sx={{ display: "flex", mb: "30px" }}>
                                     <img src={palette.mode == "dark" ? white_globe : black_globe} alt="icon globe" />
-                                    <Typography variant='h5' sx={{ ml: "10px" }}>{shopInfo.siteUrl}</Typography>
+                                    <Typography variant='h5' color="inherit" sx={{ ml: "10px" }}>{shopInfo.siteUrl}</Typography>
                                 </Box>
                                 <Box sx={{ display: "flex" }}>
                                     <img src={palette.mode == "dark" ? white_map_pin : black_map_pin} alt="icon map pin" />
-                                    <Typography variant='h5' sx={{ ml: "10px" }}>{shopInfo.adress}</Typography>
+                                    <Typography variant='h5' color="inherit" sx={{ ml: "10px" }}>{shopInfo.adress}</Typography>
                                 </Box>
                             </Grid>
                         </Grid>

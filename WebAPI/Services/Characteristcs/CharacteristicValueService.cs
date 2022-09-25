@@ -6,6 +6,7 @@ using Microsoft.Extensions.Localization;
 using System.Net;
 using WebAPI.Exceptions;
 using WebAPI.Extensions;
+using WebAPI.Helpers;
 using WebAPI.Interfaces.Characteristics;
 using WebAPI.Specifications.Characteristics;
 using WebAPI.ViewModels.Request;
@@ -42,6 +43,28 @@ namespace WebAPI.Services.Characteristcs
             var characteristicValues = await _characteristicValueRepository.ListAsync(spec);
 
             return _mapper.Map<IEnumerable<CharacteristicValueResponse>>(characteristicValues);
+        }
+        public async Task<IEnumerable<CharacteristicGroupSellerResponse>> GetCharacteristicsByUserAsync(string userId)
+        {
+            var spec = new CharacteristicsGetAllSpecification(userId);
+            var characteristicValues = await _characteristicValueRepository.ListAsync(spec);
+
+            var gropedCharactericNames = characteristicValues.GroupBy(f => f.CharacteristicName);
+            var gropedCharacteristicGroups = gropedCharactericNames.GroupBy(f => f.Key.CharacteristicGroup);
+            var response = gropedCharacteristicGroups.Select(g => new CharacteristicGroupSellerResponse()
+            {
+                Id = g.Key.Id,
+                Name = g.Key.Name,
+                CharacteristicNames = g.Select(n => new CharacteristicNameSellerResponse()
+                {
+                    Id = n.Key.Id,
+                    Name = n.Key.Name,
+                    UnitMeasure = n.Key.Unit?.UnitTranslations.FirstOrDefault(f => f.LanguageId == CurrentLanguage.Id).Measure,
+                    CharacteristicValues = _mapper.Map<IEnumerable<CharacteristicValueSellerResponse>>(n.Key.CharacteristicValues)
+                })
+            });
+
+            return response;
         }
 
         public async Task<CharacteristicValueResponse> GetByIdAsync(int id)

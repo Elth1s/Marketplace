@@ -1,12 +1,8 @@
-import Box from '@mui/material/Box';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import Typography from '@mui/material/Typography';
-import { useTheme } from "@mui/material"
+import { Breadcrumbs, useTheme, Typography, AccordionDetails, Box } from "@mui/material"
+import { NavigateNext, ExpandMore } from '@mui/icons-material';
 
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
-import { useTranslation } from 'react-i18next';
 import { FC, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { AccordionStyle, AccordionSummaryStyle, TabsStyle, TabStyle } from './styled';
 
@@ -16,6 +12,7 @@ import {
     shopping_bag_45_dark, shopping_bag_45_light,
     truck_45_dark, truck_45_light
 } from '../../../../assets/icons';
+import LinkRouter from '../../../../components/LinkRouter';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -59,7 +56,7 @@ const AccordionItem: FC<IAccordionItem> = ({ question, answer }) => {
     return (
         <AccordionStyle>
             <AccordionSummaryStyle
-                expandIcon={<ExpandMoreIcon />}
+                expandIcon={<ExpandMore />}
                 aria-controls="panel1a-content"
                 id="panel1a-header"
             >
@@ -116,6 +113,14 @@ const FAQ = () => {
 
     return (
         <>
+            <Breadcrumbs aria-label="breadcrumb" color="inherit" sx={{ marginBottom: "50px" }} separator={<NavigateNext sx={{ color: "#7e7e7e" }} fontSize="small" />} >
+                <LinkRouter underline="none" color="inherit" to="/">
+                    {t("components.breadcrumbs.home")}
+                </LinkRouter>
+                <Typography color="#7e7e7e">
+                    {t("containers.default.footer.about.title")}
+                </Typography>
+            </Breadcrumbs>
             <TabsStyle value={value} onChange={handleChange} sx={{ minHeight: "0" }} >
                 <TabStyle icon={<img src={palette.mode == "dark" ? (info_45_dark) : (info_45_light)} alt="icon info" />} label={t('pages.faq.tabs.main')} {...a11yProps(0)} />
                 <TabStyle icon={<img src={palette.mode == "dark" ? (shopping_bag_45_dark) : (shopping_bag_45_light)} alt="icon info" />} label={t('pages.faq.tabs.order')} {...a11yProps(1)} />

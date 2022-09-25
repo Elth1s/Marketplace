@@ -185,7 +185,7 @@ const CategoryTable = () => {
                                 <TableCellStyle align="center">{row.urlSlug}</TableCellStyle>
                                 <TableCellStyle align="center">
                                     <Avatar
-                                        sx={{ mx: "auto" }}
+                                        sx={{ mx: "auto", objectFit: "scale-down" }}
                                         src={row.image}
                                         alt="Image"
                                     />

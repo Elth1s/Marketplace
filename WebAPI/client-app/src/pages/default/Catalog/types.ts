@@ -5,6 +5,7 @@ export enum CatalogActionTypes {
     GET_MORE_PRODUCTS = "GET_MORE_PRODUCTS",
     GET_PARENTS = "GET_PARENTS",
     GET_FILTERS_BY_CATEGORY = "GET_FILTERS_BY_CATEGORY",
+    RESET_FILTERS = "RESET_FILTERS",
     UPDATE_SEARCH = "UPDATE_SEARCH",
     SEARCH_PRODUCTS = "SEARCH_PRODUCTS",
     GET_CATEGORIES_FOR_SEARCH = "GET_CATEGORIES_FOR_SEARCH",
@@ -15,7 +16,10 @@ export enum CatalogActionTypes {
     GET_SIMILAR_PRODUCTS = "GET_SIMILAR_PRODUCTS",
 
     GET_SELECTED_PRODUCTS = "GET_SELECTED_PRODUCTS",
-    GET_REVIEWED_PRODUCTS = "GET_REVIEWED_PRODUCTS"
+    GET_REVIEWED_PRODUCTS = "GET_REVIEWED_PRODUCTS",
+
+    GET_SALE_CATEGORIES = "GET_SALE_CATEGORIES",
+    GET_SALE_PRODUCTS = "GET_SALE_PRODUCTS",
 }
 
 export interface ICatalogItem {
@@ -110,6 +114,10 @@ export interface GetFilterByCategoryAction {
     payload: Array<IFilterName>
 }
 
+export interface ResetFiltersAction {
+    type: CatalogActionTypes.RESET_FILTERS
+}
+
 export interface GetCatalogWithProductsAction {
     type: CatalogActionTypes.GET_CATALOG_WITH_PRODUCTS,
     payload: ICatalogWithProducts
@@ -176,12 +184,24 @@ export interface GetReviewedProductsAction {
     payload: Array<IUserProductItem>
 }
 
+export interface GetSaleProductsAction {
+    type: CatalogActionTypes.GET_SALE_PRODUCTS,
+    payload: IProductResponse
+}
+
+export interface GetSaleCategoriesAction {
+    type: CatalogActionTypes.GET_SALE_CATEGORIES,
+    payload: Array<IFullCatalogItem>
+}
+
+
 
 export type CatalogAction = GetCatalogAction |
     GetFullCatalogAction |
     GetCatalogWithProductsAction |
     GetMoreProductsAction |
     GetFilterByCategoryAction |
+    ResetFiltersAction |
     GetParentsAction |
     UpdateSearchAction |
     SearchProductsAction |
@@ -192,4 +212,6 @@ export type CatalogAction = GetCatalogAction |
     GetReviewedProductsAction |
     GetSelectedProductsAction |
     ChangeIsSelectedUserProductsAction |
-    ChangeIsInCartUserProductsAction;
+    ChangeIsInCartUserProductsAction |
+    GetSaleProductsAction |
+    GetSaleCategoriesAction;

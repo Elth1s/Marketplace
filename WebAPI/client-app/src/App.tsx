@@ -25,7 +25,7 @@ import ChangePassword from './pages/user/ChangePassword';
 import Ordering from './pages/user/Ordering';
 
 import HomePage from './pages/default/HomePage';
-import About from './pages/default/About';
+import About from './pages/default/footer/About';
 import Catalog from './pages/default/Catalog';
 import CatalogWithProducts from './pages/default/Catalog/CatalogWithProducts';
 import Product from './pages/default/product';
@@ -76,6 +76,7 @@ import Novelties from './pages/default/Catalog/Novelties';
 import * as Yup from "yup"
 import { useTranslation } from 'react-i18next';
 import SelectedProducts from './pages/user/SelectedProducts';
+import Sale from './pages/default/Sale';
 
 
 const App = () => {
@@ -141,6 +142,8 @@ const App = () => {
             <Route path="novelties" element={<Novelties />} />
 
             <Route path="seller-info/:shopId" element={<SellerInfo />} />
+
+            <Route path="sale/:saleId" element={<Sale />} />
           </Route>
 
 
@@ -160,7 +163,7 @@ const App = () => {
 
           {isAuth &&
             <>
-              {user.role == "Seller" || user.role == "Admin" && <Route path="/seller/" element={<SellerLayout />}>
+              {(user.role === "Seller" || user.role === "Admin") && <Route path="/seller/" element={<SellerLayout />}>
                 <Route path="characteristicGroups" element={<CharacteristicGroupTable />} />
                 <Route path="characteristicNames" element={<CharacteristicNameTable />} />
                 <Route path="characteristicValues" element={<CharacteristicValueTable />} />

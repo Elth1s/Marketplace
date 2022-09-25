@@ -15,7 +15,7 @@ export const TextFieldStyle = styled(TextField)(({ theme }) => ({
         borderColor: "#7E7E7E",
     },
     InputLabelProps: {
-        color: "#7E7E7E"
+        color: theme.palette.mode != "dark" ? "#7E7E7E" : "#fff",
     },
     inputProps: {
         height: "58px",
@@ -24,7 +24,7 @@ export const TextFieldStyle = styled(TextField)(({ theme }) => ({
         fontSize: "18px"
     },
     "& .MuiOutlinedInput-root": {
-        color: "#383838",
+        color: theme.palette.mode != "dark" ? "#7E7E7E" : "#fff",
         "& fieldset": {
             borderColor: "#AEAEAE"
         }

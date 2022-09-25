@@ -107,13 +107,13 @@ const CropperDialog: React.FC<ICropperDialog> = ({ imgSrc, aspectRation = 1 / 1,
                         ? <img
                             src={imgSrc}
                             alt="DefaultImage"
-                            style={{ width: "98px", height: "98px", borderRadius: "10px" }} />
+                            style={{ width: "98px", height: "98px", borderRadius: "10px", objectFit: "scale-down" }} />
                         : <Box sx={{ height: "98px", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
                             <img
                                 src={isGreen ? green_upload_cloud : upload_cloud}
                                 alt="icon"
                                 style={{ width: "25px", height: "25px" }} />
-                            <Typography variant="subtitle1" align="center" color={isDark ? "white" : "black"}>
+                            <Typography variant="subtitle1" align="center" color={isDark ? "white" : "inherit"}>
                                 {t('components.cropperDialog.selectPhoto')}
                             </Typography>
                         </Box>}

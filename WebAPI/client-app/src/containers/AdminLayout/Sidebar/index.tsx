@@ -1,7 +1,9 @@
 import {
     ListItem,
     Typography,
-    ListItemIcon
+    ListItemIcon,
+    ListItemText,
+    useTheme
 } from '@mui/material';
 
 import { FC, useEffect, useState } from 'react';
@@ -24,6 +26,8 @@ interface IMenuItem {
 
 const Sidebar: FC<IDrawer> = ({ open }) => {
     const { t } = useTranslation()
+    const { palette } = useTheme();
+
     const [menuItems, setMenuItems] = useState<Array<IMenuItem>>([
         { lable: `${t('containers.admin_seller.sideBar.sales')}`, path: '/admin/sales', rotate: undefined },
         { lable: `${t('containers.admin_seller.sideBar.categories')}`, path: '/admin/categories', rotate: undefined },
@@ -76,7 +80,13 @@ const Sidebar: FC<IDrawer> = ({ open }) => {
                             <ListItemIcon sx={{ minWidth: "auto" }}>
                                 <RotatedBox rotate={item.rotate} isRotated={selected === item.lable ? true : false} />
                             </ListItemIcon>
-                            <Typography color="inherit">{item.lable}</Typography>
+                            <ListItemText
+                                sx={{
+                                    "& .MuiListItemText-primary": {
+                                        color: palette.mode == "dark" ? palette.common.white : palette.common.black
+                                    }
+                                }} primary={item.lable}
+                            />
                         </ListItemButtonStyle>
                     </ListItem>
                 </LinkRouter>

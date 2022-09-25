@@ -16,8 +16,8 @@ import {
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from "swiper";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Controller, Navigation, Thumbs } from "swiper";
 
 import { ListItemButtonStyle, ButtonNoveltyStyle, BoxProductOfTheDayStyle } from './styled';
 
@@ -39,13 +39,17 @@ const HomePage = () => {
     const { t } = useTranslation();
     const { palette } = useTheme();
 
-    const { GetNovelties } = useActions();
+    const { GetNovelties, GetSales } = useActions();
+
     const { fullCatalogItems, products } = useTypedSelector(state => state.catalog);
+    const { sales } = useTypedSelector(state => state.sale);
 
     const navigate = useNavigate();
 
     const [selectedCategory, setSelectedCategory] = useState<number>(-1);
     const [allCategoriesMouseEnter, setAllCategoriesMouseEnter] = useState<boolean>(false);
+
+    const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
 
     const featuresData = [
         {
@@ -81,7 +85,8 @@ const HomePage = () => {
 
     const getData = async () => {
         try {
-            await GetNovelties(1, 20, [], [])
+            await GetNovelties(1, 20, [], []);
+            await GetSales();
         } catch (ex) {
         }
     };
@@ -146,16 +151,28 @@ const HomePage = () => {
                     </LinkRouter>
                 </Grid>
                 <Grid item xl={9}>
-                    <img
-                        style={{ width: "100%" }}
-                        src={homepage}
-                        alt="background"
-                    />
+                    <Swiper
+                        modules={[Controller, Navigation, Thumbs]}
+                        navigation
+                        spaceBetween={15}
+                        thumbs={{ swiper: thumbsSwiper }}
+                    >
+                        {sales.map((item, index) => (
+                            <SwiperSlide key={index}>
+                                <img
+                                    style={{ objectFit: "contain", cursor: "pointer" }}
+                                    src={item.horizontalImage}
+                                    alt="saleImage"
+                                    onClick={() => { navigate(`/sale/${item.id}`) }}
+                                />
+                            </SwiperSlide>
+                        ))}
+                    </Swiper>
                 </Grid>
             </Grid>
             <Box id="NewProducts" sx={{ marginTop: "100px" }}>
                 <Box sx={{ display: "flex", justifyContent: "space-between", mb: "40px" }}>
-                    <Typography fontSize="27px">{t('pages.home.novelty.title')}</Typography>
+                    <Typography fontSize="27px" color="inherit">{t('pages.home.novelty.title')}</Typography>
                     <ButtonNoveltyStyle
                         variant="outlined"
                         endIcon={<img
@@ -201,11 +218,14 @@ const HomePage = () => {
                             padding: "30px 28px",
                             border: "1px solid #7E7E7E",
                             borderRadius: "7px",
+                            ...(palette.mode == "dark" && {
+                                background: "black"
+                            })
                         }}>
                         <img src={item.icon} alt="icon" />
                         <Box sx={{ ml: "28px" }}>
                             <Typography variant="h5" color="primary">{item.title}</Typography>
-                            <Typography variant="h6" sx={{ mt: "16px" }}>{item.description}</Typography>
+                            <Typography variant="h6" sx={{ mt: "16px" }} color="inherit">{item.description}</Typography>
                         </Box>
                     </Paper>
                 ))}

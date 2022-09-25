@@ -152,6 +152,7 @@ namespace WebAPI.Mapper
 
             //CharacteristicValue
             CreateMap<CharacteristicValueRequest, CharacteristicValue>();
+            CreateMap<CharacteristicValue, CharacteristicValueSellerResponse>();
             CreateMap<CharacteristicValue, CharacteristicValueResponse>()
                 .ForMember(u => u.CharacteristicName, opt => opt.MapFrom(vm => vm.CharacteristicName.Name));
             #endregion

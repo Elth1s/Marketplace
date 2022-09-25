@@ -31,6 +31,11 @@
         /// <example>1000</example>
         public float Price { get; set; }
         /// <summary>
+        /// Product discount
+        /// </summary>
+        /// <example>13</example>
+        public int Discount { get; set; }
+        /// <summary>
         /// Product count
         /// </summary>
         /// <example>10</example>

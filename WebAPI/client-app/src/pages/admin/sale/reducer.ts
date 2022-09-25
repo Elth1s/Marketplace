@@ -10,6 +10,17 @@ const initialState: SaleState = {
         discountMin: 0,
         discountMax: 0,
         dateStart: "",
+        dateEnd: "",
+        categories: []
+    },
+    selectedSaleForUser: {
+        id: 0,
+        name: "",
+        horizontalImage: "",
+        verticalImage: "",
+        discountMin: 0,
+        discountMax: 0,
+        dateStart: "",
         dateEnd: ""
     },
     sales: [],
@@ -33,6 +44,11 @@ export const saleReducer = (state = initialState, action: SaleAction): SaleState
             return {
                 ...state,
                 selectedSale: action.payload,
+            }
+        case SaleActionTypes.GET_BY_ID_SALE_FOR_USER:
+            return {
+                ...state,
+                selectedSaleForUser: action.payload,
             }
         case SaleActionTypes.CREATE_SALE:
             return {

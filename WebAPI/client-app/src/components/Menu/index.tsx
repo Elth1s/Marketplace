@@ -123,10 +123,10 @@ const MainMenu = () => {
                     <Box>
                         <LinkRouter underline="none" color="unset" to="/profile/information" onClick={handleClose}>
                             <Box sx={{ my: 0.5, mb: 1.5, px: 2.5 }}>
-                                <Typography variant="h6" noWrap >
+                                <Typography variant="h6" noWrap color="inherit">
                                     {user.firstName} {user.secondName}
                                 </Typography>
-                                <Typography variant="body2" noWrap>
+                                <Typography variant="body2" noWrap color="inherit">
                                     {user.emailOrPhone}
                                 </Typography>
                             </Box>
@@ -134,11 +134,11 @@ const MainMenu = () => {
                         <Divider sx={{ my: 1, background: "#45a29e" }} />
                         {user.role == "Admin" &&
                             <LinkRouter underline="none" color="unset" to="/admin/categories" >
-                                <MenuItemStyle                                >
+                                <MenuItemStyle >
                                     <IconButton sx={{ mr: 2, width: 24, height: 24, color: "secondary" }}>
                                         <AdminPanelSettingsOutlined />
                                     </IconButton>
-                                    <Typography variant="h6" noWrap sx={{ color: 'secondary' }}>
+                                    <Typography variant="h6" noWrap color="inherit">
                                         {t('containers.default.header.userMenu.adminPanel')}
                                     </Typography>
                                 </MenuItemStyle>
@@ -154,7 +154,7 @@ const MainMenu = () => {
                                     <IconButton sx={{ mr: 2, width: 24, height: 24, color: "secondary" }}>
                                         <Store />
                                     </IconButton>
-                                    <Typography variant="h6" noWrap sx={{ color: 'secondary' }}>
+                                    <Typography variant="h6" noWrap color="inherit">
                                         {t('containers.default.header.userMenu.sellerPanel')}
                                     </Typography>
                                 </MenuItemStyle>
@@ -163,7 +163,7 @@ const MainMenu = () => {
                                 <IconButton sx={{ mr: 2, width: 24, height: 24, color: "secondary" }}>
                                     <Store />
                                 </IconButton>
-                                <Typography variant="h6" noWrap sx={{ color: 'secondary' }}>
+                                <Typography variant="h6" noWrap color="inherit">
                                     {t('containers.default.header.userMenu.createShop')}
                                 </Typography>
                             </MenuItemStyle>
@@ -177,7 +177,7 @@ const MainMenu = () => {
                         <IconButton sx={{ mr: 2, width: 24, height: 24 }}>
                             {option.icon}
                         </IconButton>
-                        <Typography variant="h6" noWrap sx={{ color: 'secondary' }}>
+                        <Typography variant="h6" noWrap color="inherit">
                             {option.label}
                         </Typography>
                         {option.switchElement &&
@@ -191,7 +191,7 @@ const MainMenu = () => {
                         <IconButton sx={{ mr: 2, width: 24, height: 24 }}>
                             <Logout />
                         </IconButton>
-                        <Typography variant="h6" noWrap >
+                        <Typography variant="h6" noWrap color="inherit">
                             {t('containers.default.header.userMenu.logOut')}
                         </Typography>
                     </MenuItemStyle>
@@ -199,7 +199,7 @@ const MainMenu = () => {
                         <IconButton sx={{ mr: 2, width: 24, height: 24, color: "secondary" }}>
                             <Login />
                         </IconButton>
-                        <Typography variant="h6" noWrap sx={{ color: 'secondary' }}>
+                        <Typography variant="h6" noWrap color="inherit">
                             {t('containers.default.header.userMenu.signIn')}
                         </Typography>
                     </MenuItemStyle>

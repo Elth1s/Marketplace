@@ -244,7 +244,7 @@ const ProductMainPage: FC<Props> = ({ addInCart, moveToReview }) => {
                                 <ListItemStyle key={`delivery_types_${index}`}>
                                     <img
                                         style={{ width: "30px", height: "30px", marginRight: "70px" }}
-                                        src={item.darkIcon}
+                                        src={palette.mode != "dark" ? item.darkIcon : item.lightIcon}
                                         alt="icon"
                                     />
                                     <Typography color="inherit" variant="h4" fontWeight="medium">

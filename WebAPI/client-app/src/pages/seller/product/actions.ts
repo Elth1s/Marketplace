@@ -11,7 +11,8 @@ import {
     ICategory,
     IProductImage,
     IFilterGroupSeller,
-    IProductCreate,
+    IProductRequest,
+    ICharacteristicGroupSeller,
 } from "./types"
 import { ServerError } from "../../../store/types"
 
@@ -99,6 +100,24 @@ export const GetFiltersByCategoryId = (id: number) => {
     }
 }
 
+export const GetCharacteristicsByUser = () => {
+    return async (dispatch: Dispatch<ProductAction>) => {
+        try {
+            let response = await http.get<Array<ICharacteristicGroupSeller>>(`api/CharacteristicValue/GetCharacteristicsByUser`)
+
+            dispatch({
+                type: ProductActionTypes.GET_CHARACTERISTICS_BY_USER,
+                payload: response.data
+            })
+
+            return Promise.resolve();
+        }
+        catch (error) {
+            return Promise.reject(error as ServerError)
+        }
+    }
+}
+
 export const GetProducts = () => {
     return async (dispatch: Dispatch<ProductAction>) => {
         try {
@@ -130,7 +149,7 @@ export const CreateProductImage = (base64: string) => {
     }
 }
 
-export const CreateProduct = (values: IProductCreate) => {
+export const CreateProduct = (values: IProductRequest) => {
     return async (dispatch: Dispatch<ProductAction>) => {
         try {
             let response = await http.post(`api/Product/Create`, values)

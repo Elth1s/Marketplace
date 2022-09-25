@@ -3,6 +3,7 @@ import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Checkbox, P
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
+import { grid_active, grid_dark, grid_light } from "../../../assets/icons";
 import ProductItem from "../../../components/ProductItem";
 import { useActions } from "../../../hooks/useActions";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
@@ -15,7 +16,7 @@ const SearchProducts = () => {
     const { t } = useTranslation();
     const { palette } = useTheme();
 
-    const { GetCategoriesForSearch, GetFiltersByCategoryIdForUser, SearchProductsForUser } = useActions();
+    const { GetCategoriesForSearch, GetFiltersByCategoryIdForUser, SearchProductsForUser, ResetCatalogFilters } = useActions();
     const { products, countProducts, filterNames, searchCatalog } = useTypedSelector(state => state.catalog);
 
     const [page, setPage] = useState(1);
@@ -41,6 +42,9 @@ const SearchProducts = () => {
                 behavior: 'smooth'
             });
             await SearchProductsForUser(productName, page, rowsPerPage, categories, filters)
+
+            if (categories?.length == 0)
+                await ResetCatalogFilters();
 
             if (categories?.length == 1)
                 await GetFiltersByCategoryIdForUser(categories[0])
@@ -77,7 +81,8 @@ const SearchProducts = () => {
     const categoryHandleClick = (event: React.MouseEvent<unknown>, id: number) => {
         const tmpList: Array<number> = [];
 
-        tmpList.push(id)
+        if (id != 0)
+            tmpList.push(id)
 
         setFilters([]);
         setCategories(tmpList);
@@ -115,6 +120,31 @@ const SearchProducts = () => {
             </Typography>
             <Box sx={{ display: "flex", mt: "20px" }}>
                 <BoxFilterStyle>
+                    <Box
+                        sx={{
+                            display: "flex",
+                            cursor: "pointer"
+                        }}
+                        onClick={(event) => categoryHandleClick(event, 0)}
+                    >
+                        <Box sx={{ display: "flex", alignItems: "center" }}>
+                            {palette.mode == "dark"
+                                ? <img
+                                    style={{ width: "20px", height: "20px", objectFit: "contain" }}
+                                    src={categories.length == 0 ? grid_active : grid_light}
+                                    alt="allProducts"
+                                />
+                                : <img
+                                    style={{ width: "20px", height: "20px", objectFit: "contain" }}
+                                    src={categories.length == 0 ? grid_active : grid_dark}
+                                    alt="allProducts"
+                                />
+                            }
+                        </Box>
+                        <Typography variant="h4" fontWeight="bold" color={categories.length == 0 ? "primary" : "inherit"} sx={{ pl: "10px" }}>
+                            {t("pages.catalog.allProducts")}
+                        </Typography>
+                    </Box>
                     {searchCatalog?.length != 0
                         && <>
                             {searchCatalog.map((parent, index) => {
@@ -162,16 +192,17 @@ const SearchProducts = () => {
                                                 parent.children?.length != 0
                                                 && <>
                                                     {parent.children.map((child, index) => {
+                                                        console.log(categories.length != 0 && categories[0] == child.id)
                                                         return (
                                                             <Typography
                                                                 key={`child_category_${index}`}
                                                                 variant="h4"
-                                                                color="inherit"
                                                                 sx={{
                                                                     mt: "10px",
                                                                     cursor: "pointer"
                                                                 }}
                                                                 onClick={(event) => categoryHandleClick(event, child.id)}
+                                                                color={(categories.length != 0 && categories[0] == child.id) ? "primary" : "inherit"}
                                                             >
                                                                 {child.name} ({child.countProducts})
                                                             </Typography>

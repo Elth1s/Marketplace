@@ -18,15 +18,15 @@ const BreadcrumbsComponent: FC<Props> = ({ parents }) => {
     const { t } = useTranslation();
 
     return (
-        <Breadcrumbs aria-label="breadcrumb" sx={{ marginBottom: "30px" }} separator={<NavigateNext sx={{ color: "#7e7e7e" }} fontSize="small" />} >
-            <LinkRouter underline="none" color="common.black" to="/">
+        <Breadcrumbs aria-label="breadcrumb" color="inherit" sx={{ marginBottom: "30px" }} separator={<NavigateNext sx={{ color: "#7e7e7e" }} fontSize="small" />} >
+            <LinkRouter underline="none" color="inherit" to="/">
                 {t("components.breadcrumbs.home")}
             </LinkRouter>
             {parents.length == 0
                 ? <Typography color="#7e7e7e">
                     {t("components.breadcrumbs.catalog")}
                 </Typography>
-                : <LinkRouter underline="none" color="common.black" to="/catalog">
+                : <LinkRouter underline="none" color="inherit" to="/catalog">
                     {t("components.breadcrumbs.catalog")}
                 </LinkRouter>}
             {parents.map((value, index) => {
@@ -37,7 +37,7 @@ const BreadcrumbsComponent: FC<Props> = ({ parents }) => {
                         {value.name}
                     </Typography>
                 ) : (
-                    <LinkRouter underline="none" color="common.black" to={`/catalog/${value.urlSlug}`} key={index}>
+                    <LinkRouter underline="none" color="inherit" to={`/catalog/${value.urlSlug}`} key={index}>
                         {value.name}
                     </LinkRouter>
                 );

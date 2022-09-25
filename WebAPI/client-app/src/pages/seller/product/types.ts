@@ -4,6 +4,7 @@ export enum ProductActionTypes {
     GET_PRODUCT_STATUSES = "GET_PRODUCT_STATUSES",
     GET_CATEGORIES_WITHOUT_CHILDREN = "GET_CATEGORIES_WITHOUT_CHILDREN",
     GET_FILTERS_BY_CATEGORY_ID = "GET_FILTERS_BY_CATEGORY_ID",
+    GET_CHARACTERISTICS_BY_USER = "GET_CHARACTERISTICS_BY_USER",
 }
 
 export interface ICategory {
@@ -28,17 +29,23 @@ export interface IFilterRequest {
     customValue: number | null
 }
 
+export interface ICharacteristicRequest {
+    nameId: number,
+    valueId: number
+}
+
 export interface IProductInfo {
     id: number,
     name: string,
     image: string,
     price: number,
+    discount: number,
     count: number,
     statusName: string,
     categoryName: string
 }
 
-export interface IProductCreate {
+export interface IProductRequest {
     name: string,
     description: string,
     price: number,
@@ -46,7 +53,8 @@ export interface IProductCreate {
     statusId: number,
     categoryId: number,
     images: Array<IProductImage>,
-    filtersValue: Array<IFilterRequest>
+    filtersValue: Array<IFilterRequest>,
+    characteristicsValue: Array<ICharacteristicRequest>
 }
 
 export interface IFilterGroupSeller {
@@ -69,6 +77,24 @@ export interface IFilterValueSeller {
     max: number,
 }
 
+export interface ICharacteristicGroupSeller {
+    id: number,
+    name: string,
+    characteristicNames: Array<ICharacteristicNameSeller>
+}
+
+export interface ICharacteristicNameSeller {
+    id: number,
+    name: string,
+    unitMeasure: string,
+    characteristicValues: Array<ICharacteristicValueSeller>
+}
+
+export interface ICharacteristicValueSeller {
+    id: number,
+    value: string,
+}
+
 export interface ISearchProducts {
     count: number,
     values: Array<IProductInfo>
@@ -79,7 +105,8 @@ export interface ProductState {
     products: Array<IProductInfo>,
     productStatuses: Array<IProductStatus>,
     categories: Array<ICategory>,
-    filters: Array<IFilterGroupSeller>
+    filters: Array<IFilterGroupSeller>,
+    characteristics: Array<ICharacteristicGroupSeller>,
 }
 
 
@@ -108,9 +135,15 @@ export interface GetFiltersByCategoryIdAction {
     payload: Array<IFilterGroupSeller>
 }
 
+export interface GetCharacteristicsByUserAction {
+    type: ProductActionTypes.GET_CHARACTERISTICS_BY_USER,
+    payload: Array<ICharacteristicGroupSeller>
+}
+
 
 export type ProductAction = GetProductsAction |
     GetProductStatusesAction |
     GetCategoriesWithoutChildrenAction |
     GetFiltersByCategoryIdAction |
-    SearchProductsAction;
+    SearchProductsAction |
+    GetCharacteristicsByUserAction;

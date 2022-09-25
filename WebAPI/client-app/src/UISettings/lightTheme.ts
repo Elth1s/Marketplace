@@ -1,4 +1,4 @@
-import { createTheme } from "@mui/material";
+import { createTheme, hexToRgb } from "@mui/material";
 
 const lightTheme = createTheme({
     breakpoints: {
@@ -32,6 +32,16 @@ const lightTheme = createTheme({
         },
     },
     components: {
+        MuiCssBaseline: {
+            styleOverrides: {
+                "&::-webkit-scrollbar-corner": {
+                    backgroundColor: hexToRgb("#fff")
+                },
+                "&::-webkit-scrollbar-track": {
+                    backgroundColor: hexToRgb("#fff")
+                }
+            }
+        },
         MuiContainer: {
             defaultProps: {
                 style: {
@@ -46,6 +56,20 @@ const lightTheme = createTheme({
             styleOverrides: {
                 root: {
                     "&& .MuiTouchRipple-child": { borderRadius: "12px" }
+                }
+            }
+        },
+        MuiAvatar: {
+            defaultProps: {
+                imgProps: {
+                    sx: {
+                        objectFit: "scale-down"
+                    }
+                }
+            },
+            styleOverrides: {
+                root: {
+                    borderRadius: "10px"
                 }
             }
         },

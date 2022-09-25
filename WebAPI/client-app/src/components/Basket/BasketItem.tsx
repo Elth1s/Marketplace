@@ -1,10 +1,10 @@
-import { Box, IconButton, Typography } from "@mui/material"
+import { Box, IconButton, Typography, useTheme } from "@mui/material"
 import { FC, useEffect, useState } from "react"
 
 import { useActions } from "../../hooks/useActions"
 
 import { small_empty } from "../../assets/backgrounds"
-import { basket_trash, minus, plus } from "../../assets/icons"
+import { basket_trash, minus, minus_light, plus, plus_light, trash_light } from "../../assets/icons"
 import LinkRouter from "../LinkRouter"
 import { TextFieldStyle } from "./styled"
 import { useTranslation } from "react-i18next"
@@ -24,8 +24,9 @@ interface Props {
 
 const BasketItem: FC<Props> = ({ id, count, image, name, price, discount, productCount, urlSlug, closeBasket, linkUrlSlug }) => {
     const { t } = useTranslation();
+    const { palette } = useTheme();
 
-    const { GetBasketItems, UpdateBasketItem, RemoveFromBasket } = useActions();
+    const { GetBasketItems, UpdateBasketItem, RemoveFromBasket, ChangeIsInCartUserProducts } = useActions();
 
     const [basketItemCount, setBasketItemCount] = useState<number>(count);
 
@@ -63,13 +64,13 @@ const BasketItem: FC<Props> = ({ id, count, image, name, price, discount, produc
     return (
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", my: "15px" }}>
             <img
-                style={{ width: "90px", height: "90px", objectFit: "contain" }}
+                style={{ width: "90px", height: "90px", objectFit: "contain", marginRight: "10px" }}
                 src={image != "" ? image : small_empty}
                 alt="productImage"
             />
             <Box>
                 <LinkRouter underline="hover" color="inherit" to={`/product/${urlSlug}`} onClick={closeBasket}>
-                    <Typography variant="h6" sx={{ width: "250px" }}>
+                    <Typography variant="h6" color="inherit" sx={{ width: "250px" }}>
                         {name}
                     </Typography>
                 </LinkRouter>
@@ -88,7 +89,7 @@ const BasketItem: FC<Props> = ({ id, count, image, name, price, discount, produc
                     >
                         <img
                             style={{ width: "20px", height: "20px", cursor: "pointer" }}
-                            src={minus}
+                            src={palette.mode != "dark" ? minus : minus_light}
                             alt="minus"
                         />
                     </IconButton>
@@ -111,7 +112,7 @@ const BasketItem: FC<Props> = ({ id, count, image, name, price, discount, produc
                     >
                         <img
                             style={{ width: "20px", height: "20px", cursor: "pointer" }}
-                            src={plus}
+                            src={palette.mode != "dark" ? plus : plus_light}
                             alt="plus"
                         />
                     </IconButton>
@@ -121,9 +122,9 @@ const BasketItem: FC<Props> = ({ id, count, image, name, price, discount, produc
                 {discount != null
                     ? <Box sx={{ mr: "35px" }}>
                         <Typography variant="h6" color="#7e7e7e">{price} {t("currency")}</Typography>
-                        <Typography variant="h5" sx={{ mt: "5px" }}>{discount} {t("currency")}</Typography>
+                        <Typography variant="h5" color="inherit" sx={{ mt: "5px" }}>{discount} {t("currency")}</Typography>
                     </Box>
-                    : <Typography variant="h5" sx={{ mr: "35px" }}>{price} {t("currency")}</Typography>
+                    : <Typography variant="h5" color="inherit" sx={{ mr: "35px" }}>{price} {t("currency")}</Typography>
                 }
             </Box>
             <IconButton
@@ -133,12 +134,13 @@ const BasketItem: FC<Props> = ({ id, count, image, name, price, discount, produc
                 color="inherit"
                 onClick={async () => {
                     await RemoveFromBasket(id, urlSlug == linkUrlSlug ? true : false);
+                    await ChangeIsInCartUserProducts(urlSlug)
                     await GetBasketItems();
                 }}
             >
                 <img
                     style={{ width: "30px", height: "30px" }}
-                    src={basket_trash}
+                    src={palette.mode != "dark" ? basket_trash : trash_light}
                     alt="icon"
                 />
             </IconButton>

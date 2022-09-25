@@ -1,7 +1,9 @@
 import {
     ListItem,
     Typography,
-    ListItemIcon
+    ListItemIcon,
+    ListItemText,
+    useTheme
 } from '@mui/material';
 
 import { FC, useEffect, useState } from 'react';
@@ -24,12 +26,14 @@ export interface IMenuItem {
 
 const Sidebar: FC<IDrawer> = ({ open }) => {
     const { t } = useTranslation()
+    const { palette } = useTheme();
+
     const [menuItems, setMenuItems] = useState<Array<IMenuItem>>([
         { lable: `${t('containers.admin_seller.sideBar.characteristicGroups')}`, path: '/seller/characteristicGroups', rotate: undefined },
         { lable: `${t('containers.admin_seller.sideBar.characteristicNames')}`, path: '/seller/characteristicNames', rotate: undefined },
         { lable: `${t('containers.admin_seller.sideBar.characteristicValues')}`, path: '/seller/characteristicValues', rotate: undefined },
         { lable: `${t('containers.admin_seller.sideBar.products')}`, path: '/seller/products', rotate: undefined },
-        { lable: "orders", path: '/seller/orders', rotate: undefined }
+        { lable: `${t('containers.admin_seller.sideBar.order')}`, path: '/seller/orders', rotate: undefined }
     ]);
     const [selected, setSelected] = useState<string>("");
     const location = useLocation();
@@ -65,7 +69,13 @@ const Sidebar: FC<IDrawer> = ({ open }) => {
                             <ListItemIcon sx={{ minWidth: "auto" }}>
                                 <RotatedBox rotate={item.rotate} isRotated={selected === item.lable ? true : false} />
                             </ListItemIcon>
-                            <Typography color="inherit">{item.lable}</Typography>
+                            <ListItemText
+                                sx={{
+                                    "& .MuiListItemText-primary": {
+                                        color: palette.mode == "dark" ? palette.common.white : palette.common.black
+                                    }
+                                }} primary={item.lable}
+                            />
                         </ListItemButtonStyle>
                     </ListItem>
                 </LinkRouter>

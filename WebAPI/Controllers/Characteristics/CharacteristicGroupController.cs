@@ -51,6 +51,8 @@ namespace WebAPI.Controllers.Characteristics
             return Ok(result);
         }
 
+
+
         /// <summary>
         /// Return of sorted characteristic groups
         /// </summary>

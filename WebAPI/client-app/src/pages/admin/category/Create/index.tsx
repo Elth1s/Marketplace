@@ -171,25 +171,25 @@ const CategoryCreate: FC<CreateProps> = ({ afterCreate }) => {
                                             <Typography variant="h4" color="inherit" align="center">
                                                 {t("validationProps.categoryImage")}
                                             </Typography>
-                                            <CropperDialog imgSrc={formik.values.image} onDialogSave={onSaveImage} isDark={true}/>
+                                            <CropperDialog imgSrc={formik.values.image} onDialogSave={onSaveImage} />
                                         </Grid>
                                         <Grid item xs={3} sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-between" }}>
                                             <Typography variant="h4" color="inherit" align="center">
                                                 {t("validationProps.categoryLightIcon")}
                                             </Typography>
-                                            <CropperDialog imgSrc={formik.values.lightIcon} onDialogSave={onSaveLightIcon} isDark={true}/>
+                                            <CropperDialog imgSrc={formik.values.lightIcon} onDialogSave={onSaveLightIcon} isDark={true} />
                                         </Grid>
                                         <Grid item xs={3} sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-between" }}>
                                             <Typography variant="h4" color="inherit" align="center">
                                                 {t("validationProps.categoryDarkIcon")}
                                             </Typography>
-                                            <CropperDialog imgSrc={formik.values.darkIcon} onDialogSave={onSaveDarkIcon} isDark={true}/>
+                                            <CropperDialog imgSrc={formik.values.darkIcon} onDialogSave={onSaveDarkIcon} />
                                         </Grid>
                                         <Grid item xs={3} sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-between" }}>
                                             <Typography variant="h4" color="inherit" align="center">
                                                 {t("validationProps.categoryActiveIcon")}
                                             </Typography>
-                                            <CropperDialog imgSrc={formik.values.activeIcon} onDialogSave={onSaveActiveIcon} isDark={true}/>
+                                            <CropperDialog imgSrc={formik.values.activeIcon} onDialogSave={onSaveActiveIcon} />
                                         </Grid>
                                     </Grid>
                                 </AdminSellerDialogContentStyle>

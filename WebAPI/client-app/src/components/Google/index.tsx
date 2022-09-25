@@ -47,7 +47,7 @@ const GoogleExternalLogin = () => {
             cookiePolicy='single_host_origin'
             prompt='select_account'
             render={renderProps => (
-                <AuthAvatar onClick={renderProps.onClick} sx={{ cursor: "pointer" }} src={google} />
+                <AuthAvatar onClick={renderProps.onClick} sx={{ cursor: "pointer", borderRadius: "50%" }} src={google} />
             )}
         />
     );

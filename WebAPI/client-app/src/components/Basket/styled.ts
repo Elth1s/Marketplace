@@ -15,7 +15,7 @@ export const TextFieldStyle = styled(TextField)(({ theme }) => ({
         },
     },
     "& .MuiOutlinedInput-root": {
-        color: "#777",
+        color: theme.palette.mode != "dark" ? "#777" : "#fff",
         "&>*:nth-of-type(1)": {
             padding: "2.5px 8.5px",
             fontSize: "12px",
@@ -23,15 +23,15 @@ export const TextFieldStyle = styled(TextField)(({ theme }) => ({
         },
         "& fieldset": {
             borderRadius: "5px",
-            border: "1px solid black"
+            border: theme.palette.mode != "dark" ? "1px solid black" : "1px solid white"
         },
         "&:hover fieldset": {
             borderRadius: "5px",
-            border: "1px solid black"
+            border: theme.palette.mode != "dark" ? "1px solid black" : "1px solid white"
         },
         "&.Mui-focused fieldset": {
             borderRadius: "5px",
-            border: "1px solid black"
+            border: theme.palette.mode != "dark" ? "1px solid black" : "1px solid white"
         }
     },
 }));

@@ -9,7 +9,8 @@ import {
     Typography,
     IconButton,
     Button,
-    TextField
+    TextField,
+    useTheme
 } from '@mui/material';
 
 import { TransitionProps } from '@mui/material/transitions';
@@ -30,6 +31,7 @@ import { useActions } from '../../../../hooks/useActions';
 import { useTypedSelector } from '../../../../hooks/useTypedSelector';
 import { ToastError, ToastWarning } from '../../../../components/ToastComponent';
 import { toast } from 'react-toastify';
+import { TextFieldSecondStyle } from '../../../../components/TextField/styled';
 
 const Transition = forwardRef(function Transition(
     props: TransitionProps & {
@@ -46,6 +48,8 @@ interface Props {
 
 const AddShopReview: FC<Props> = ({ getData }) => {
     const { t } = useTranslation();
+    const { palette } = useTheme();
+
     const [open, setOpen] = useState(false);
 
     const { AddShopReview } = useActions();
@@ -118,9 +122,16 @@ const AddShopReview: FC<Props> = ({ getData }) => {
                 sx={{
                     fontSize: "24px",
                     lineHeight: "30px",
-                    fontWeight: "600",
+                    fontWeight: "500",
                     borderRadius: "10px",
                     padding: "14px 48px",
+                    textTransform: "none",
+                    "&:hover": {
+                        background: palette.primary.main
+                    },
+                    "&& .MuiTouchRipple-child": {
+                        backgroundColor: palette.primary.main
+                    }
                 }}
             >
                 {t('pages.seller.addReview.button')}
@@ -135,7 +146,7 @@ const AddShopReview: FC<Props> = ({ getData }) => {
                     sx: { minWidth: { sm: "925px" } },
                     style: { borderRadius: 12 }
                 }}>
-                <DialogTitle sx={{ p: "34px 28px" }}>
+                <DialogTitle color="inherit" sx={{ p: "34px 28px" }}>
                     <Box sx={{
                         display: "flex",
                         justifyContent: "space-between",
@@ -144,7 +155,7 @@ const AddShopReview: FC<Props> = ({ getData }) => {
                         <Typography color="inherit" sx={{ fontSize: "30px", lineHeight: "38px" }}>
                             {t('pages.seller.addReview.dialogTitle')}
                         </Typography>
-                        <IconButton aria-label="close" onClick={handleClickClose}>
+                        <IconButton aria-label="close" color="inherit" onClick={handleClickClose}>
                             <Close />
                         </IconButton>
                     </Box>
@@ -198,36 +209,36 @@ const AddShopReview: FC<Props> = ({ getData }) => {
                                     </Grid>
                                 </Grid>
                                 <Grid item xs={12} sx={{ mb: "25px" }}>
-                                    <TextField
+                                    <TextFieldSecondStyle
                                         fullWidth
                                         variant="outlined"
                                         type="text"
-                                        label={t('pages.seller.addReview.fullName')}
+                                        placeholder={t('pages.seller.addReview.fullName')}
                                         error={Boolean(touched.fullName && errors.fullName)}
                                         helperText={touched.fullName && errors.fullName}
                                         {...getFieldProps("fullName")}
                                     />
                                 </Grid>
                                 <Grid item xs={12} sx={{ mb: "45px" }}>
-                                    <TextField
+                                    <TextFieldSecondStyle
                                         disabled={user.isEmailExist}
                                         fullWidth
                                         variant="outlined"
                                         type="email"
-                                        label={t('pages.seller.addReview.email')}
+                                        placeholder={t('pages.seller.addReview.email')}
                                         error={Boolean(touched.email && errors.email)}
                                         helperText={touched.email && errors.email}
                                         {...getFieldProps("email")}
                                     />
                                 </Grid>
                                 <Grid item xs={12} sx={{ mb: "25px" }}>
-                                    <TextField
+                                    <TextFieldSecondStyle
                                         fullWidth
                                         multiline
                                         rows={5}
                                         variant="outlined"
                                         type="text"
-                                        label={t('pages.seller.addReview.comment')}
+                                        placeholder={t('pages.seller.addReview.comment')}
                                         error={Boolean(touched.comment && errors.comment)}
                                         helperText={touched.comment && errors.comment}
                                         {...getFieldProps("comment")}

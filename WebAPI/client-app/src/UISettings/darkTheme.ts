@@ -1,4 +1,4 @@
-import { createTheme } from "@mui/material";
+import { createTheme, hexToRgb, rgbToHex } from "@mui/material";
 
 const darkTheme = createTheme({
     breakpoints: {
@@ -14,7 +14,7 @@ const darkTheme = createTheme({
         mode: "dark",
         background: {
             default: "#181A1B",
-            paper: "#181A1B",
+            paper: "#181A1B !important",
         },
         primary: {
             main: '#F45626',
@@ -36,6 +36,32 @@ const darkTheme = createTheme({
         },
     },
     components: {
+        MuiCssBaseline: {
+            styleOverrides: {
+                "&::-webkit-scrollbar-corner": {
+                    backgroundColor: hexToRgb("#181A1B")
+                },
+                "&::-webkit-scrollbar-track": {
+                    backgroundColor: hexToRgb("#181A1B")
+                }
+            }
+        },
+        MuiDialog: {
+            styleOverrides: {
+                root: {
+                    "& .MuiDialog-paper": {
+                        backgroundImage: "none"
+                    }
+                }
+            }
+        },
+        MuiAccordion: {
+            styleOverrides: {
+                root: {
+                    backgroundImage: "none"
+                }
+            }
+        },
         MuiContainer: {
             defaultProps: {
                 style: {
@@ -50,6 +76,20 @@ const darkTheme = createTheme({
             styleOverrides: {
                 root: {
                     "&& .MuiTouchRipple-child": { borderRadius: "12px" }
+                }
+            }
+        },
+        MuiAvatar: {
+            defaultProps: {
+                imgProps: {
+                    sx: {
+                        objectFit: "scale-down"
+                    }
+                }
+            },
+            styleOverrides: {
+                root: {
+                    borderRadius: "10px"
                 }
             }
         },

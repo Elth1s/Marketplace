@@ -9,7 +9,8 @@ const initialState: ProductState = {
     products: [],
     productStatuses: [],
     categories: [],
-    filters: []
+    filters: [],
+    characteristics: []
 }
 
 export const productSellerReducer = (state = initialState, action: ProductAction): ProductState => {
@@ -39,6 +40,11 @@ export const productSellerReducer = (state = initialState, action: ProductAction
             return {
                 ...state,
                 filters: action.payload,
+            }
+        case ProductActionTypes.GET_CHARACTERISTICS_BY_USER:
+            return {
+                ...state,
+                characteristics: action.payload,
             }
         default:
             return state;

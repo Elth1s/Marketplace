@@ -5,6 +5,7 @@ import Grid from "@mui/material/Grid";
 import { useTranslation } from "react-i18next";
 
 import { icon_facebook, icon_instagram, icon_telegram, icon_viber } from "../../assets/icons";
+import LinkRouter from "../../components/LinkRouter";
 
 import { ItemBoxStyled, TitleStyle, LinkStyle } from "./styled";
 
@@ -83,7 +84,19 @@ const Footer = () => {
                             <TitleStyle variant="h4" sx={{ marginBottom: "40px" }}>{link.title}</TitleStyle>
                             {link.sublink.map((item, index) => (
                                 <ItemBoxStyled key={index} display="flex">
-                                    <LinkStyle href={item.path} variant="h4">{item.title}</LinkStyle>
+                                    <LinkRouter
+                                        underline="none"
+                                        color="inherit"
+                                        to={item.path}
+                                        onClick={() => {
+                                            window.scrollTo({
+                                                top: 0,
+                                                behavior: 'smooth'
+                                            });
+                                        }}
+                                    >
+                                        {item.title}
+                                    </LinkRouter>
                                 </ItemBoxStyled>
                             ))}
                         </Grid>

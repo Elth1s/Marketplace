@@ -8,10 +8,10 @@ import { HeadCell } from '../../../../store/types';
 import { useActions } from "../../../../hooks/useActions";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 
-import { TableCellStyle } from '../../../../components/Table/style';
 import EnhancedTable from '../../../../components/EnhancedTable';
 
 import { IOrderInfo } from '../type';
+import { TableCellStyle } from '../../../../components/EnhancedTable/styled';
 
 const OrdersTable = () => {
     const { t } = useTranslation();
@@ -100,9 +100,7 @@ const OrdersTable = () => {
 
     return (
         <>
-            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", my: "30px" }}>
-                <Typography variant="h1">{t('containers.admin_seller.sideBar.order')}</Typography>
-            </Box>
+            <Typography variant="h1" color="inherit" sx={{ my: "30px", py: "4.5px" }}>{t('containers.admin_seller.sideBar.order')}</Typography>
             <EnhancedTable
                 page={page}
                 rowsPerPage={rowsPerPage}
@@ -117,8 +115,8 @@ const OrdersTable = () => {
                 headCells={headCells}
                 numSelected={selected.length}
                 count={count}
-                onDelete={ () => {} }
-                update={ () => {} }
+                onDelete={() => { }}
+                update={() => { }}
                 tableBody={
                     orders.map((row, index) => {
                         const isItemSelected = isSelected(row.id);

@@ -37,9 +37,7 @@ export const DrawerStyle = styled(Drawer, { shouldForwardProp: (prop) => prop !=
 
 export const ListItemButtonStyle = styled(ListItemButton)(({ theme }) => ({
   padding: "14px 0px 14px 24px",
-  borderColor: "#E5E5E5",
-  borderStyle: "solid",
-  borderWidth: "0px 0px 1px 1px"
+  borderBottom: "1px solid rgba(255, 255, 255, 0.12)"
 }));
 
 const rotateRight = keyframes`

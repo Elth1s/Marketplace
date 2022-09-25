@@ -28,7 +28,7 @@ const FacebookExternalLogin = () => {
             appId={process.env.REACT_APP_FACEBOOK_APP_ID as string}
             callback={responseFacebook}
             render={renderProps => (
-                <AuthAvatar onClick={renderProps.onClick} sx={{ cursor: "pointer", marginLeft: "40px" }} src={facebook} ></AuthAvatar>
+                <AuthAvatar onClick={renderProps.onClick} sx={{ cursor: "pointer", marginLeft: "40px", borderRadius: "50%" }} src={facebook} ></AuthAvatar>
             )} />
     );
 }

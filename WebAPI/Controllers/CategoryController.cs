@@ -96,14 +96,15 @@ namespace WebAPI.Controllers
         /// <summary>
         /// Return of catalog with products by sale
         /// </summary>
+        /// <param name="saleId">Sale identifier</param>
         /// <response code="200">Getting catalog with products completed successfully</response>
         /// <response code="500">An internal error has occurred</response>
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<FullCatalogItemResponse>))]
         [SwaggerResponse(StatusCodes.Status500InternalServerError)]
-        [HttpGet("GetCategoriesBySale")]
-        public async Task<IActionResult> GetCategoriesBySale([FromQuery] SaleProductsRequest request)
+        [HttpGet("GetCategoriesBySale/{saleId}")]
+        public async Task<IActionResult> GetCategoriesBySale(int saleId)
         {
-            var result = await _categoryService.GetCategoriesBySaleAsync(request);
+            var result = await _categoryService.GetCategoriesBySaleAsync(saleId);
             return Ok(result);
         }
 

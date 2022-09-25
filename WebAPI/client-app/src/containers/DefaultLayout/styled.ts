@@ -10,14 +10,14 @@ export const TextFieldStyle = styled(TextField)(({ theme }) => ({
 
     },
     InputLabelProps: {
-        color: "#7E7E7E",
+        color: theme.palette.mode != "dark" ? "#7E7E7E" : "#fff",
 
     },
     inputProps: {
 
     },
     "& .MuiOutlinedInput-root": {
-        color: "#777777",
+        color: theme.palette.mode != "dark" ? "#777" : "#fff",
 
         fontSize: "20px",
         lineHeight: "25px",

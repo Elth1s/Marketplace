@@ -8,6 +8,7 @@ import {
     Divider,
     Paper,
     Button,
+    useTheme,
 } from '@mui/material';
 import React, { useEffect } from 'react'
 import { useParams } from "react-router-dom";
@@ -20,10 +21,11 @@ import { getLocalAccessToken } from '../../http_comon';
 import LinkRouter from '../LinkRouter';
 import BasketItem from './BasketItem';
 
-import { orange_shopping_cart, basket_empty } from '../../assets/icons';
+import { orange_shopping_cart, basket_empty, basket_empty_light } from '../../assets/icons';
 
 const Basket = () => {
     const { t } = useTranslation();
+    const { palette } = useTheme()
 
     const { GetBasketItems, BasketMenuChange } = useActions();
     const { basketItems, isBasketMenuOpen } = useTypedSelector(state => state.basket);
@@ -106,7 +108,7 @@ const Basket = () => {
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
                 <Box sx={{ height: "auto", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <Typography variant='h3' lineHeight="30px" fontWeight="bold">
+                    <Typography variant='h3' lineHeight="30px" fontWeight="bold" color="inherit">
                         {t('components.basket.title')}
                     </Typography>
                     <IconButton
@@ -142,13 +144,13 @@ const Basket = () => {
                         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", my: "120px" }}>
                             <img
                                 style={{ width: "100px", height: "100px" }}
-                                src={basket_empty}
+                                src={palette.mode != "dark" ? basket_empty : basket_empty_light}
                                 alt="basket_empty"
                             />
-                            <Typography variant='h5' sx={{ my: "13.5px" }}>
+                            <Typography variant='h5' sx={{ my: "13.5px" }} color="inherit">
                                 {t("components.basket.basketEmpty")}
                             </Typography>
-                            <Typography variant='subtitle1'>
+                            <Typography variant='subtitle1' color="inherit">
                                 {t("components.basket.basketEmptyDescription")}
                             </Typography>
                         </Box>

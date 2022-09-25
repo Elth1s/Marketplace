@@ -158,13 +158,13 @@ namespace WebAPI.Services
             return response;
         }
 
-        public async Task<IEnumerable<FullCatalogItemResponse>> GetCategoriesBySaleAsync(SaleProductsRequest request)
+        public async Task<IEnumerable<FullCatalogItemResponse>> GetCategoriesBySaleAsync(int saleId)
         {
-            var sale = await _saleRepository.GetByIdAsync(request.SaleId);
+            var sale = await _saleRepository.GetByIdAsync(saleId);
             sale.SaleNullChecking();
 
             var query = _context.Products
-                 .Where(item => item.SaleId == request.SaleId)
+                 .Where(item => item.SaleId == saleId)
                  .Include(o => o.Category).ThenInclude(c => c.CategoryTranslations)
                  .Include(o => o.Status).ThenInclude(s => s.ProductStatusTranslations)
                  .Include(pi => pi.Images)
@@ -193,7 +193,7 @@ namespace WebAPI.Services
                 {
                     response.Add(_mapper.Map<FullCatalogItemResponse>(category));
                     var newChild = _mapper.Map<FullCatalogItemResponse>(categories.First());
-                    var countProductInCategorySpec = new ProductGetByCategoryIdSpecification(newChild.Id, request.SaleId);
+                    var countProductInCategorySpec = new ProductGetByCategoryIdSpecification(newChild.Id, saleId);
                     newChild.CountProducts = await _productRepository.CountAsync(countProductInCategorySpec);
                     response[response.Count - 1].Children = new List<FullCatalogItemResponse>() { newChild };
                 }
@@ -201,7 +201,7 @@ namespace WebAPI.Services
                 {
                     var index = response.IndexOf(isExist);
                     var newChild = _mapper.Map<FullCatalogItemResponse>(categories.First());
-                    var countProductInCategorySpec = new ProductGetByCategoryIdSpecification(newChild.Id, request.SaleId);
+                    var countProductInCategorySpec = new ProductGetByCategoryIdSpecification(newChild.Id, saleId);
                     newChild.CountProducts = await _productRepository.CountAsync(countProductInCategorySpec);
                     response[index].Children = response[index].Children.Append(newChild);
                 }

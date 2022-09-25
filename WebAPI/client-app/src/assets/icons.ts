@@ -136,3 +136,13 @@ export const cash = "/assets/icons/cash.png";
 export const arrow_return = "/assets/icons/arrow-return.png";
 
 export const in_shopping_cart = "/assets/icons/in-shopping-cart.png"
+
+export const grid_active = "/assets/icons/grid-active.png"
+export const grid_dark = "/assets/icons/grid-dark.png"
+export const grid_light = "/assets/icons/grid-light.png"
+
+export const basket_empty_light = "/assets/icons/basket-empty-light.png"
+
+export const trash_light = "/assets/icons/trash-light.png"
+export const minus_light = "/assets/icons/minus-light.png"
+export const plus_light = "/assets/icons/plus-light.png"

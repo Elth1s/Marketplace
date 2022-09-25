@@ -5044,13 +5044,13 @@ namespace DAL.Data
         {
             var deliveryTypes = new List<DeliveryType>
             {
-                  new(){ Id=1, DarkIcon="truck.png",LightIcon="truck.png", DeliveryTypeTranslations=new List<DeliveryTypeTranslation>(){
+                  new(){ Id=1, DarkIcon="truck.png",LightIcon="truck-light.png", DeliveryTypeTranslations=new List<DeliveryTypeTranslation>(){
                         new (){ LanguageId=LanguageId.English, Name="Nova Poshta"},
                         new (){ LanguageId=LanguageId.Ukrainian, Name="Нова Пошта"} } },
-                  new(){ Id=2, DarkIcon="truck.png",LightIcon="truck.png", DeliveryTypeTranslations=new List<DeliveryTypeTranslation>(){
+                  new(){ Id=2, DarkIcon="truck.png",LightIcon="truck-light.png", DeliveryTypeTranslations=new List<DeliveryTypeTranslation>(){
                         new (){ LanguageId=LanguageId.English, Name="Ukrposhta"},
                         new (){ LanguageId=LanguageId.Ukrainian, Name="Укрпошта"} } },
-                  new(){ Id=3, DarkIcon="package.png",LightIcon="package.png", DeliveryTypeTranslations=new List<DeliveryTypeTranslation>(){
+                  new(){ Id=3, DarkIcon="package.png",LightIcon="package-light.png", DeliveryTypeTranslations=new List<DeliveryTypeTranslation>(){
                         new (){ LanguageId=LanguageId.English, Name="Pickup from the post office"},
                         new (){ LanguageId=LanguageId.Ukrainian, Name="Самовивіз з пошти"} } }
             };

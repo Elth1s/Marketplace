@@ -3,6 +3,7 @@ export enum CategoryActionTypes {
     SEARCH_CATEGORIES = "SEARCH_CATEGORIES",
     GET_CATEGORIES_FOR_SELECT = "GET_CATEGORIES_FOR_SELECT",
     GET_BY_ID_CATEGORY = "GET_BY_ID_CATEGORY",
+    GET_BY_ID_CATEGORY_FILTERS = "GET_BY_ID_CATEGORY_FILTERS",
     CREATE_CATEGOTY = "CREATE_CATEGOTY",
     UPDATE_CATEGORY = "UPDATE_CATEGORY",
 }
@@ -17,6 +18,11 @@ export interface ICategory {
     darkIcon: string,
     activeIcon: string,
     parentId: number | null
+}
+
+export interface ICategoryFilterValue {
+    id: number,
+    name: string,
 }
 
 export interface ICategoryInfo {
@@ -43,6 +49,7 @@ export interface ISearchCategories {
 
 export interface CategoryState {
     selectedCategory: ICategory,
+    selectedCategoryFilters: Array<ICategoryFilterValue>,
     categories: Array<ICategoryInfo>,
     categoriesForSelect: Array<ICategoryForSelect>,
     count: number
@@ -81,10 +88,16 @@ export interface UpdateCategoryAction {
     payload: ICategory
 }
 
+export interface GetCategoryFiltersAction {
+    type: CategoryActionTypes.GET_BY_ID_CATEGORY_FILTERS,
+    payload: Array<ICategoryFilterValue>
+}
+
 
 export type CategoryAction = GetCategoriesAction |
     GetCategoriesForSelectAction |
     SearchCategoriesAction |
     GetByIdCategoryAction |
     CreateCategoryAction |
-    UpdateCategoryAction;
+    UpdateCategoryAction |
+    GetCategoryFiltersAction;
